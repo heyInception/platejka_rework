@@ -5,7 +5,7 @@
         <?php if (is_page(2054)) : ?>
           <h2><?php the_field('zagolovok_services'); ?></h2>
         <?php else : ?>
-          <?php the_title() ?>
+          <h2><?php the_title() ?></h2>
         <?php endif; ?>
         <?php the_content(); ?>
         <div class="seo__cards">

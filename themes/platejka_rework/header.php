@@ -9,16 +9,10 @@
  *
  * @package platejka_rework
  */
-$modified_date = strtotime($post->post_modified_gmt);
-header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $modified_date) . ' GMT');
-if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) >= $modified_date) {
-	header($_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified');
-	exit;
-}
 ?>
 
 <!doctype html>
-<html <?php language_attributes(); ?>>
+<html <?php language_attributes(); ?> class="page">
 
 <head>
 	<meta charset="<?php bloginfo('charset'); ?>">
@@ -191,7 +185,7 @@ if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MOD
   <script src="https://cdn.botfaqtor.ru/one.js"></script> -->
 </head>
 
-<body <?php body_class(); ?>>
+<body <?php body_class('page__body'); ?>>
 	<?php wp_body_open(); ?>
 	<?php platejka_render_section( 'preloader' ); ?>
 	<div id="page" class="site">

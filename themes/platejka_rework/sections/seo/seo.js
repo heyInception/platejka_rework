@@ -1,1 +1,96 @@
-(self.webpackChunkgulp_builder=self.webpackChunkgulp_builder||[]).push([[485],{211:(e,t,i)=>{const{initSeoSections:n}=i(401);n(document)},401:e=>{"use strict";function t(e){const t=e.querySelector("[data-seo-content]"),i=e.querySelector("[data-seo-toggle]");if(!t||!i)return!1;const n=[...t.children],o=n[0],s=n[1];if("H2"!==o?.tagName||"P"!==s?.tagName||n.length<3)return!1;const r=t.ownerDocument.createElement("div");r.dataset.seoCollapsible="",t.insertBefore(r,n[2]),n.slice(2).forEach((e=>r.appendChild(e)));const a=window.matchMedia("(prefers-reduced-motion: reduce)"),d=i.dataset.seoShowLabel||"Показать ещё",h=i.dataset.seoHideLabel||"Скрыть";let c=!1;Object.assign(r.style,{height:"0px",overflow:"hidden",transition:a.matches?"none":"height 450ms cubic-bezier(0.22, 1, 0.36, 1)"}),r.hidden=!0;const l=()=>{i.setAttribute("aria-expanded",String(c)),i.textContent=c?h:d};return r.addEventListener("transitionend",(e=>{"height"===e.propertyName&&(c?r.style.height="auto":r.hidden=!0)})),i.addEventListener("click",(()=>{c?(()=>{if(c=!1,l(),a.matches)return r.style.height="0px",void(r.hidden=!0);r.style.height=`${r.scrollHeight}px`,r.offsetHeight,r.style.height="0px"})():(c=!0,r.hidden=!1,l(),a.matches?r.style.height="auto":requestAnimationFrame((()=>{r.style.height=`${r.scrollHeight}px`})))})),l(),i.hidden=!1,!0}e.exports={initSeoSection:t,initSeoSections:function(e=document){return[...e.querySelectorAll("[data-seo]")].filter((e=>t(e))).length}}}},e=>{e(e.s=211)}]);
+(() => {
+  "use strict";
+
+  const initSeoSection = (section) => {
+    const content = section.querySelector("[data-seo-content]");
+    const toggle = section.querySelector("[data-seo-toggle]");
+
+    if (!content || !toggle) {
+      return false;
+    }
+
+    const children = [...content.children];
+    const leadIndex = children.findIndex((child) => child.tagName === "P");
+
+    if (leadIndex < 0 || leadIndex === children.length - 1) {
+      return false;
+    }
+
+    const collapsible = content.ownerDocument.createElement("div");
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    );
+    const showLabel = toggle.dataset.seoShowLabel || "Показать ещё";
+    const hideLabel = toggle.dataset.seoHideLabel || "Скрыть";
+    let expanded = false;
+
+    collapsible.dataset.seoCollapsible = "";
+    content.insertBefore(collapsible, children[leadIndex + 1]);
+    children
+      .slice(leadIndex + 1)
+      .forEach((child) => collapsible.appendChild(child));
+
+    Object.assign(collapsible.style, {
+      height: "0px",
+      overflow: "hidden",
+      transition: reducedMotion.matches
+        ? "none"
+        : "height 450ms cubic-bezier(0.22, 1, 0.36, 1)",
+    });
+    collapsible.hidden = true;
+
+    const updateToggle = () => {
+      toggle.setAttribute("aria-expanded", String(expanded));
+      toggle.textContent = expanded ? hideLabel : showLabel;
+    };
+
+    collapsible.addEventListener("transitionend", (event) => {
+      if (event.propertyName !== "height") {
+        return;
+      }
+
+      if (expanded) {
+        collapsible.style.height = "auto";
+      } else {
+        collapsible.hidden = true;
+      }
+    });
+
+    toggle.addEventListener("click", () => {
+      if (expanded) {
+        expanded = false;
+        updateToggle();
+
+        if (reducedMotion.matches) {
+          collapsible.style.height = "0px";
+          collapsible.hidden = true;
+          return;
+        }
+
+        collapsible.style.height = `${collapsible.scrollHeight}px`;
+        collapsible.offsetHeight;
+        collapsible.style.height = "0px";
+        return;
+      }
+
+      expanded = true;
+      collapsible.hidden = false;
+      updateToggle();
+
+      if (reducedMotion.matches) {
+        collapsible.style.height = "auto";
+        return;
+      }
+
+      requestAnimationFrame(() => {
+        collapsible.style.height = `${collapsible.scrollHeight}px`;
+      });
+    });
+
+    updateToggle();
+    toggle.hidden = false;
+    return true;
+  };
+
+  document.querySelectorAll("[data-seo]").forEach(initSeoSection);
+})();
