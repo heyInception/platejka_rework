@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "provenance": "Captured from platejka-pagespeed/js/cross-blocks.js calculateTransfer using Node; literals independently hand-checked. No new PHP code used.",
+  "rates": { "USD": 80, "EUR": 90, "CNY": 11 },
+  "cases": [
+    {
+      "currency": "USD",
+      "amount": 0.01,
+      "nativeCommission": 300,
+      "commission": 24000,
+      "base": 0.8,
+      "total": 24000.8
+    },
+    {
+      "currency": "USD",
+      "amount": 1000.25,
+      "nativeCommission": 300,
+      "commission": 24000,
+      "base": 80020,
+      "total": 104020
+    },
+    {
+      "currency": "USD",
+      "amount": 4999.99,
+      "nativeCommission": 300,
+      "commission": 24000,
+      "base": 399999.2,
+      "total": 423999.2
+    },
+    {
+      "currency": "USD",
+      "amount": 5000,
+      "nativeCommission": 50,
+      "commission": 4000,
+      "base": 400000,
+      "total": 404000
+    },
+    {
+      "currency": "USD",
+      "amount": 1000000.99,
+      "nativeCommission": 10000.01,
+      "commission": 800000.79,
+      "base": 80000079.2,
+      "total": 80800079.99
+    },
+    {
+      "currency": "EUR",
+      "amount": 0.01,
+      "nativeCommission": 300,
+      "commission": 27000,
+      "base": 0.9,
+      "total": 27000.9
+    },
+    {
+      "currency": "EUR",
+      "amount": 1000.25,
+      "nativeCommission": 300,
+      "commission": 27000,
+      "base": 90022.5,
+      "total": 117022.5
+    },
+    {
+      "currency": "EUR",
+      "amount": 4999.99,
+      "nativeCommission": 300,
+      "commission": 27000,
+      "base": 449999.1,
+      "total": 476999.1
+    },
+    {
+      "currency": "EUR",
+      "amount": 5000,
+      "nativeCommission": 50,
+      "commission": 4500,
+      "base": 450000,
+      "total": 454500
+    },
+    {
+      "currency": "EUR",
+      "amount": 1000000.99,
+      "nativeCommission": 10000.01,
+      "commission": 900000.89,
+      "base": 90000089.1,
+      "total": 90900089.99
+    },
+    {
+      "currency": "CNY",
+      "amount": 0.01,
+      "nativeCommission": 2181.82,
+      "commission": 24000,
+      "base": 0.11,
+      "total": 24000.11
+    },
+    {
+      "currency": "CNY",
+      "amount": 1000.25,
+      "nativeCommission": 2181.82,
+      "commission": 24000,
+      "base": 11002.75,
+      "total": 35002.75
+    },
+    {
+      "currency": "CNY",
+      "amount": 4999.99,
+      "nativeCommission": 2181.82,
+      "commission": 24000,
+      "base": 54999.89,
+      "total": 78999.89
+    },
+    {
+      "currency": "CNY",
+      "amount": 5000,
+      "nativeCommission": 50,
+      "commission": 550,
+      "base": 55000,
+      "total": 55550
+    },
+    {
+      "currency": "CNY",
+      "amount": 1000000.99,
+      "nativeCommission": 10000.01,
+      "commission": 110000.11,
+      "base": 11000010.89,
+      "total": 11110011
+    }
+  ],
+  "rounding_rates": { "USD": 1, "EUR": 1, "CNY": 1 },
+  "rounding_cases": [
+    {
+      "currency": "USD",
+      "amount": 1.005,
+      "nativeCommission": 300,
+      "commission": 300,
+      "base": 1.01,
+      "total": 301.01
+    },
+    {
+      "currency": "USD",
+      "amount": 1.255,
+      "nativeCommission": 300,
+      "commission": 300,
+      "base": 1.26,
+      "total": 301.26
+    },
+    {
+      "currency": "USD",
+      "amount": 10.075,
+      "nativeCommission": 300,
+      "commission": 300,
+      "base": 10.07,
+      "total": 310.07
+    }
+  ]
+}

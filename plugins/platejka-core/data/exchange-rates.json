@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "base": "RUB",
+  "effective_date": "2026-09-29",
+  "updated_at": "2026-09-29T09:45:54Z",
+  "rates": {
+    "USD": 84.4075,
+    "EUR": 96.2499,
+    "CNY": 12.5629
+  }
+}
