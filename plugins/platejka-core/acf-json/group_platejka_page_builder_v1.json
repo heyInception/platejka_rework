@@ -1,0 +1,1319 @@
+{
+    "key": "group_platejka_page_builder_v1",
+    "title": "Конструктор секций страницы",
+    "fields": [
+        {
+            "key": "field_platejka_page_builder_v1",
+            "label": "Использовать конструктор секций",
+            "name": "platejka_page_builder",
+            "type": "true_false",
+            "instructions": "Если выключено, страница использует текущую PHP-композицию.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "Включён",
+            "ui_off_text": "Выключен"
+        },
+        {
+            "key": "field_platejka_sections_v1",
+            "label": "Секции",
+            "name": "platejka_sections",
+            "type": "flexible_content",
+            "instructions": "Порядок строк определяет порядок секций на странице.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_platejka_page_builder_v1",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layouts": {
+                "layout_platejka_hero_main_v1": {
+                    "key": "layout_platejka_hero_main_v1",
+                    "name": "hero-main",
+                    "label": "Hero — Главная",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_row_hero_main_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_row_hero_main_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_row_hero_main_overrides_v1",
+                            "label": "Переопределения",
+                            "name": "overrides",
+                            "type": "clone",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "clone": [
+                                "field_platejka_defaults_hero_main_v1"
+                            ],
+                            "display": "group",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": 1
+                },
+                "layout_platejka_about_v1": {
+                    "key": "layout_platejka_about_v1",
+                    "name": "about",
+                    "label": "О компании",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_row_about_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_row_about_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_row_about_overrides_v1",
+                            "label": "Переопределения",
+                            "name": "overrides",
+                            "type": "clone",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "clone": [
+                                "field_platejka_defaults_about_v1"
+                            ],
+                            "display": "group",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_shipments_v1": {
+                    "key": "layout_platejka_shipments_v1",
+                    "name": "shipments",
+                    "label": "Направления платежей",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_row_shipments_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_row_shipments_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_row_shipments_variant_v1",
+                            "label": "Вариант оформления",
+                            "name": "variant",
+                            "type": "select",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "inherit": "Наследовать",
+                                "main": "Главная",
+                                "default": "Внутренняя"
+                            },
+                            "default_value": "inherit",
+                            "return_format": "value",
+                            "multiple": 0,
+                            "allow_null": 0,
+                            "ui": 0,
+                            "ajax": 0,
+                            "placeholder": ""
+                        },
+                        {
+                            "key": "field_platejka_row_shipments_overrides_v1",
+                            "label": "Переопределения",
+                            "name": "overrides",
+                            "type": "clone",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "clone": [
+                                "field_platejka_defaults_shipments_v1"
+                            ],
+                            "display": "group",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_guarantees_v1": {
+                    "key": "layout_platejka_guarantees_v1",
+                    "name": "guarantees",
+                    "label": "Гарантии",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_row_guarantees_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_row_guarantees_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_row_guarantees_variant_v1",
+                            "label": "Вариант оформления",
+                            "name": "variant",
+                            "type": "select",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "inherit": "Наследовать",
+                                "main": "Главная",
+                                "default": "Внутренняя"
+                            },
+                            "default_value": "inherit",
+                            "return_format": "value",
+                            "multiple": 0,
+                            "allow_null": 0,
+                            "ui": 0,
+                            "ajax": 0,
+                            "placeholder": ""
+                        },
+                        {
+                            "key": "field_platejka_row_guarantees_overrides_v1",
+                            "label": "Переопределения",
+                            "name": "overrides",
+                            "type": "clone",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "clone": [
+                                "field_platejka_defaults_guarantees_v1"
+                            ],
+                            "display": "group",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_documents_v1": {
+                    "key": "layout_platejka_documents_v1",
+                    "name": "documents",
+                    "label": "Документы",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_row_documents_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_row_documents_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_row_documents_variant_v1",
+                            "label": "Вариант оформления",
+                            "name": "variant",
+                            "type": "select",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "inherit": "Наследовать",
+                                "main": "Главная",
+                                "default": "Внутренняя"
+                            },
+                            "default_value": "inherit",
+                            "return_format": "value",
+                            "multiple": 0,
+                            "allow_null": 0,
+                            "ui": 0,
+                            "ajax": 0,
+                            "placeholder": ""
+                        },
+                        {
+                            "key": "field_platejka_row_documents_overrides_v1",
+                            "label": "Переопределения",
+                            "name": "overrides",
+                            "type": "clone",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "clone": [
+                                "field_platejka_defaults_documents_v1"
+                            ],
+                            "display": "group",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_compliance_v1": {
+                    "key": "layout_platejka_compliance_v1",
+                    "name": "compliance",
+                    "label": "Комплаенс",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_row_compliance_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_row_compliance_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_row_compliance_overrides_v1",
+                            "label": "Переопределения",
+                            "name": "overrides",
+                            "type": "clone",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "clone": [
+                                "field_platejka_defaults_compliance_v1"
+                            ],
+                            "display": "group",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_review_main_v1": {
+                    "key": "layout_platejka_review_main_v1",
+                    "name": "review-main",
+                    "label": "Отзывы",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_row_review_main_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_row_review_main_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_row_review_main_overrides_v1",
+                            "label": "Переопределения",
+                            "name": "overrides",
+                            "type": "clone",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "clone": [
+                                "field_platejka_defaults_review_main_v1"
+                            ],
+                            "display": "group",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_work_v1": {
+                    "key": "layout_platejka_work_v1",
+                    "name": "work",
+                    "label": "Как мы работаем",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_row_work_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_row_work_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_row_work_overrides_v1",
+                            "label": "Переопределения",
+                            "name": "overrides",
+                            "type": "clone",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "clone": [
+                                "field_platejka_defaults_work_v1"
+                            ],
+                            "display": "group",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_calculator_v1": {
+                    "key": "layout_platejka_calculator_v1",
+                    "name": "calculator",
+                    "label": "Калькулятор",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_row_calculator_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_row_calculator_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_row_calculator_overrides_v1",
+                            "label": "Переопределения",
+                            "name": "overrides",
+                            "type": "clone",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "clone": [
+                                "field_platejka_defaults_calculator_v1"
+                            ],
+                            "display": "group",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_with_us_v1": {
+                    "key": "layout_platejka_with_us_v1",
+                    "name": "with-us",
+                    "label": "Почему с нами",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_row_with_us_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_row_with_us_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_row_with_us_overrides_v1",
+                            "label": "Переопределения",
+                            "name": "overrides",
+                            "type": "clone",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "clone": [
+                                "field_platejka_defaults_with_us_v1"
+                            ],
+                            "display": "group",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_destinations_v1": {
+                    "key": "layout_platejka_destinations_v1",
+                    "name": "destinations",
+                    "label": "Доступные направления",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_row_destinations_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_row_destinations_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_row_destinations_overrides_v1",
+                            "label": "Переопределения",
+                            "name": "overrides",
+                            "type": "clone",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "clone": [
+                                "field_platejka_defaults_destinations_v1"
+                            ],
+                            "display": "group",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_seo_v1": {
+                    "key": "layout_platejka_seo_v1",
+                    "name": "seo",
+                    "label": "SEO-блок",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_row_seo_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_row_seo_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_row_seo_overrides_v1",
+                            "label": "Переопределения",
+                            "name": "overrides",
+                            "type": "clone",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "clone": [
+                                "field_platejka_defaults_seo_v1"
+                            ],
+                            "display": "group",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_problems_v1": {
+                    "key": "layout_platejka_problems_v1",
+                    "name": "problems",
+                    "label": "Проблемы",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_row_problems_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_row_problems_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_row_problems_overrides_v1",
+                            "label": "Переопределения",
+                            "name": "overrides",
+                            "type": "clone",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "clone": [
+                                "field_platejka_defaults_problems_v1"
+                            ],
+                            "display": "group",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_serves_v1": {
+                    "key": "layout_platejka_serves_v1",
+                    "name": "serves",
+                    "label": "Для кого работаем",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_row_serves_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_row_serves_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_row_serves_overrides_v1",
+                            "label": "Переопределения",
+                            "name": "overrides",
+                            "type": "clone",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "clone": [
+                                "field_platejka_defaults_serves_v1"
+                            ],
+                            "display": "group",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_cases_v1": {
+                    "key": "layout_platejka_cases_v1",
+                    "name": "cases",
+                    "label": "Кейсы",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_row_cases_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_row_cases_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_row_cases_overrides_v1",
+                            "label": "Переопределения",
+                            "name": "overrides",
+                            "type": "clone",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "clone": [
+                                "field_platejka_defaults_cases_v1"
+                            ],
+                            "display": "group",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_table_v1": {
+                    "key": "layout_platejka_table_v1",
+                    "name": "table",
+                    "label": "Сравнительная таблица",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_row_table_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_row_table_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_row_table_overrides_v1",
+                            "label": "Переопределения",
+                            "name": "overrides",
+                            "type": "clone",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "clone": [
+                                "field_platejka_defaults_table_v1"
+                            ],
+                            "display": "group",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_faq_v1": {
+                    "key": "layout_platejka_faq_v1",
+                    "name": "faq",
+                    "label": "Часто задаваемые вопросы",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_row_faq_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_row_faq_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_row_faq_overrides_v1",
+                            "label": "Переопределения",
+                            "name": "overrides",
+                            "type": "clone",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "clone": [
+                                "field_platejka_defaults_faq_v1"
+                            ],
+                            "display": "group",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_call_v1": {
+                    "key": "layout_platejka_call_v1",
+                    "name": "call",
+                    "label": "Форма заявки",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_row_call_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_row_call_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_row_call_overrides_v1",
+                            "label": "Переопределения",
+                            "name": "overrides",
+                            "type": "clone",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "clone": [
+                                "field_platejka_defaults_call_v1"
+                            ],
+                            "display": "group",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                }
+            },
+            "min": "",
+            "max": "",
+            "button_label": "Добавить секцию"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "page"
+            }
+        ]
+    ],
+    "menu_order": -100,
+    "position": "acf_after_title",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": [],
+    "active": true,
+    "description": "Порядок, видимость и локальные переопределения секций страницы.",
+    "show_in_rest": 0,
+    "modified": 1791230400
+}

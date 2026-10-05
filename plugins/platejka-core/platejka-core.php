@@ -20,7 +20,9 @@ if ( ! defined( 'PLATEJKA_CORE_PATH' ) ) {
 $platejka_register_acf = static function (): void {
 	if ( function_exists( 'acf' ) && function_exists( 'add_filter' ) ) {
 		require_once PLATEJKA_CORE_PATH . 'src/Acf/LocalJson.php';
+		require_once PLATEJKA_CORE_PATH . 'src/Acf/SectionDefaults.php';
 		\Platejka\Core\Acf\LocalJson::register();
+		\Platejka\Core\Acf\SectionDefaults::register();
 	}
 };
 
