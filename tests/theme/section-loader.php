@@ -82,11 +82,16 @@ $assert_page_order = static function ( string $path, array $markers, string $lab
 	$assert( ! is_wp_error( $response ) && 200 === wp_remote_retrieve_response_code( $response ), $label . ' returns HTTP 200.' );
 	$html   = is_wp_error( $response ) ? '' : (string) wp_remote_retrieve_body( $response );
 	$offset = -1;
+	$preloader = strpos( $html, 'data-preloader' );
+	$assert( false !== $preloader, $label . ' renders the global preloader.' );
 	foreach ( $markers as $marker ) {
 		$found = strpos( $html, $marker, $offset + 1 );
 		$assert( false !== $found && $found > $offset, $label . ' renders in order: ' . $marker );
 		$offset = false === $found ? $offset : $found;
 	}
+	$footer = strpos( $html, '<footer class="footer"', $offset + 1 );
+	$assert( false !== $preloader && false !== strpos( $html, $markers[0] ) && $preloader < strpos( $html, $markers[0] ), $label . ' renders the preloader before page sections.' );
+	$assert( false !== $footer && $footer > $offset, $label . ' renders the supplied footer after page sections.' );
 	$assert( ! str_contains( $html, '@if (mode' ), $label . ' does not expose export directives.' );
 };
 

@@ -193,6 +193,7 @@ if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MOD
 
 <body <?php body_class(); ?>>
 	<?php wp_body_open(); ?>
+	<?php platejka_render_section( 'preloader' ); ?>
 	<div id="page" class="site">
 		<header class="header">
 			<div class="header__top">
