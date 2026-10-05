@@ -155,9 +155,10 @@ function platejka_rework_scripts()
 }
 add_action('wp_enqueue_scripts', 'platejka_rework_scripts');
 
-/**
- * Implement the Custom Header feature.
- */
+/** Page-builder data must be available before templates declare assets. */
+require get_template_directory() . '/inc/section-builder.php';
+
+/** Conditional section assets and rendering. */
 require get_template_directory() . '/inc/assets.php';
 
 /**

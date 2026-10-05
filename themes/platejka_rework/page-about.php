@@ -12,8 +12,7 @@
  * @package platejka_rework
  */
 
-$sections = platejka_use_sections(
-	array(
+$fallback_sections = array(
 		'about-hero',
 		'location',
 		'review-main',
@@ -23,8 +22,8 @@ $sections = platejka_use_sections(
 		'exhibitions',
 		'developing',
 		'call-about',
-	)
-);
+	);
+$sections = platejka_use_sections( platejka_get_page_sections( get_queried_object_id(), $fallback_sections ) );
 get_header();
 ?>
 

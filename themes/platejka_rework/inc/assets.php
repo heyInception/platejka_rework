@@ -15,12 +15,18 @@ function platejka_normalize_section( $section ): ?array {
 	);
 	$resolved = $aliases[ $slug ] ?? array( 'directory' => $slug, 'template' => $slug );
 
-	return array(
+	$normalized = array(
 		'slug'      => $slug,
 		'directory' => $resolved['directory'],
 		'template'  => $resolved['template'],
 		'mode'      => isset( $config['mode'] ) && 'main' === $config['mode'] ? 'main' : 'default',
 	);
+	foreach ( array( 'row', 'instance', 'anchor' ) as $key ) {
+		if ( array_key_exists( $key, $config ) ) {
+			$normalized[ $key ] = $config[ $key ];
+		}
+	}
+	return $normalized;
 }
 
 function platejka_use_sections( array $sections ): array {
