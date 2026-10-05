@@ -16,6 +16,8 @@ if ( ! defined( 'PLATEJKA_CORE_PATH' ) ) {
 	define( 'PLATEJKA_CORE_PATH', wp_normalize_path( plugin_dir_path( __FILE__ ) ) );
 }
 
+require_once PLATEJKA_CORE_PATH . 'src/Acf/SectionSeed.php';
+
 // Wait for all plugins so ACF may load before or after Platejka Core.
 $platejka_register_acf = static function (): void {
 	if ( function_exists( 'acf' ) && function_exists( 'add_filter' ) ) {
