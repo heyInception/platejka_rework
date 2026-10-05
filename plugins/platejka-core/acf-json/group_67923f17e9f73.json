@@ -1,0 +1,704 @@
+{
+    "key": "group_67923f17e9f73",
+    "title": "Сквозные блоки",
+    "fields": [
+        {
+            "key": "field_67924d166072f",
+            "label": "Сквозные блоки",
+            "name": "skvoznye_bloki",
+            "aria-label": "",
+            "type": "flexible_content",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layouts": {
+                "layout_67923fbad513e": {
+                    "key": "layout_67923fbad513e",
+                    "name": "destinations",
+                    "label": "Доступные направления",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_67924ddd60730",
+                            "label": "Включить блок",
+                            "name": "vklyuchit_blok",
+                            "aria-label": "",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui_on_text": "",
+                            "ui_off_text": "",
+                            "ui": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_67924f2b88f2c": {
+                    "key": "layout_67924f2b88f2c",
+                    "name": "work",
+                    "label": "Как это работает",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_67924f786a57e",
+                            "label": "Как это работает",
+                            "name": "work_section",
+                            "aria-label": "",
+                            "type": "repeater",
+                            "instructions": "Если нажать кнопку включить блок то придётся заполнять блок полностью, а если не нажимать то блок будет заполнен автоматически . \r\nДанные берутся с главной страницы",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "layout": "block",
+                            "min": 0,
+                            "max": 1,
+                            "collapsed": "",
+                            "button_label": "Включить блок",
+                            "rows_per_page": 20,
+                            "sub_fields": [
+                                {
+                                    "key": "field_67924f786a57f",
+                                    "label": "Левая колонка",
+                                    "name": "",
+                                    "aria-label": "",
+                                    "type": "tab",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "placement": "top",
+                                    "endpoint": 0,
+                                    "parent_repeater": "field_67924f786a57e"
+                                },
+                                {
+                                    "key": "field_67924f786a580",
+                                    "label": "Заголовок",
+                                    "name": "zagolovok_left",
+                                    "aria-label": "",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": "",
+                                    "maxlength": "",
+                                    "placeholder": "",
+                                    "prepend": "",
+                                    "append": "",
+                                    "parent_repeater": "field_67924f786a57e"
+                                },
+                                {
+                                    "key": "field_67924f786a581",
+                                    "label": "Элементы",
+                                    "name": "elementy_left",
+                                    "aria-label": "",
+                                    "type": "repeater",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "layout": "table",
+                                    "pagination": 0,
+                                    "min": 0,
+                                    "max": 0,
+                                    "collapsed": "",
+                                    "button_label": "Добавить",
+                                    "rows_per_page": 20,
+                                    "sub_fields": [
+                                        {
+                                            "key": "field_67924f786a582",
+                                            "label": "Заголовок",
+                                            "name": "zagolovok",
+                                            "aria-label": "",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": "",
+                                            "maxlength": "",
+                                            "placeholder": "",
+                                            "prepend": "",
+                                            "append": "",
+                                            "parent_repeater": "field_67924f786a581"
+                                        },
+                                        {
+                                            "key": "field_67924f786a583",
+                                            "label": "Текст",
+                                            "name": "tekst",
+                                            "aria-label": "",
+                                            "type": "textarea",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": "",
+                                            "maxlength": "",
+                                            "rows": "",
+                                            "placeholder": "",
+                                            "new_lines": "",
+                                            "parent_repeater": "field_67924f786a581"
+                                        }
+                                    ],
+                                    "parent_repeater": "field_67924f786a57e"
+                                },
+                                {
+                                    "key": "field_67924f786a584",
+                                    "label": "Правая колонка",
+                                    "name": "",
+                                    "aria-label": "",
+                                    "type": "tab",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "placement": "top",
+                                    "endpoint": 0,
+                                    "parent_repeater": "field_67924f786a57e"
+                                },
+                                {
+                                    "key": "field_67924f786a585",
+                                    "label": "Заголовок",
+                                    "name": "zagolovok",
+                                    "aria-label": "",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": "",
+                                    "maxlength": "",
+                                    "placeholder": "",
+                                    "prepend": "",
+                                    "append": "",
+                                    "parent_repeater": "field_67924f786a57e"
+                                },
+                                {
+                                    "key": "field_67924f786a586",
+                                    "label": "Элементы",
+                                    "name": "elementy",
+                                    "aria-label": "",
+                                    "type": "repeater",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "layout": "table",
+                                    "pagination": 0,
+                                    "min": 0,
+                                    "max": 0,
+                                    "collapsed": "",
+                                    "button_label": "Добавить",
+                                    "rows_per_page": 20,
+                                    "sub_fields": [
+                                        {
+                                            "key": "field_67924f786a587",
+                                            "label": "Изображение",
+                                            "name": "izobrazhenie",
+                                            "aria-label": "",
+                                            "type": "image",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "return_format": "array",
+                                            "library": "all",
+                                            "min_width": "",
+                                            "min_height": "",
+                                            "min_size": "",
+                                            "max_width": "",
+                                            "max_height": "",
+                                            "max_size": "",
+                                            "mime_types": "",
+                                            "preview_size": "medium",
+                                            "parent_repeater": "field_67924f786a586"
+                                        },
+                                        {
+                                            "key": "field_67924f786a588",
+                                            "label": "Заголовок",
+                                            "name": "zagolovok",
+                                            "aria-label": "",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": "",
+                                            "maxlength": "",
+                                            "placeholder": "",
+                                            "prepend": "",
+                                            "append": "",
+                                            "parent_repeater": "field_67924f786a586"
+                                        },
+                                        {
+                                            "key": "field_67924f786a589",
+                                            "label": "Текст",
+                                            "name": "tekst",
+                                            "aria-label": "",
+                                            "type": "textarea",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": "",
+                                            "maxlength": "",
+                                            "rows": "",
+                                            "placeholder": "",
+                                            "new_lines": "",
+                                            "parent_repeater": "field_67924f786a586"
+                                        },
+                                        {
+                                            "key": "field_67924f786a58a",
+                                            "label": "Выбор элемента",
+                                            "name": "vybor_elementa",
+                                            "aria-label": "",
+                                            "type": "select",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "15",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "choices": {
+                                                "work__item_normal": "Нормальный",
+                                                "work__item_half": "Половина"
+                                            },
+                                            "default_value": false,
+                                            "return_format": "value",
+                                            "multiple": 0,
+                                            "allow_null": 0,
+                                            "ui": 0,
+                                            "ajax": 0,
+                                            "placeholder": "",
+                                            "parent_repeater": "field_67924f786a586"
+                                        }
+                                    ],
+                                    "parent_repeater": "field_67924f786a57e"
+                                }
+                            ]
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_67924ff244799": {
+                    "key": "layout_67924ff244799",
+                    "name": "wtt",
+                    "label": "Обмен валют по курсу биржи",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_67924fff4479b",
+                            "label": "Включить блок",
+                            "name": "vklyuchit_blok",
+                            "aria-label": "",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui_on_text": "",
+                            "ui_off_text": "",
+                            "ui": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_679250104479c": {
+                    "key": "layout_679250104479c",
+                    "name": "reviews",
+                    "label": "Отзывы",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_679250204479e",
+                            "label": "Включить блок",
+                            "name": "vklyuchit_blok",
+                            "aria-label": "",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui_on_text": "",
+                            "ui_off_text": "",
+                            "ui": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_679250314479f": {
+                    "key": "layout_679250314479f",
+                    "name": "tariff",
+                    "label": "Тарифы и условия",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_67925eb497c2a",
+                            "label": "Тарифы",
+                            "name": "tarify",
+                            "aria-label": "",
+                            "type": "repeater",
+                            "instructions": "Если нажать кнопку включить блок то придётся заполнять блок полностью, а если не нажимать то блок будет заполнен автоматически . \r\nДанные берутся отсюда http://localhost:8883/wp-admin/admin.php?page=setting-site",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "layout": "block",
+                            "min": 0,
+                            "max": 1,
+                            "collapsed": "",
+                            "button_label": "Включить блок",
+                            "rows_per_page": 20,
+                            "sub_fields": [
+                                {
+                                    "key": "field_6792507b447a3",
+                                    "label": "Первая вкладка",
+                                    "name": "",
+                                    "aria-label": "",
+                                    "type": "tab",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "placement": "top",
+                                    "endpoint": 0,
+                                    "parent_repeater": "field_67925eb497c2a"
+                                },
+                                {
+                                    "key": "field_67925047447a2",
+                                    "label": "Тарифы и условия",
+                                    "name": "tariffs",
+                                    "aria-label": "",
+                                    "type": "group",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "layout": "block",
+                                    "sub_fields": [
+                                        {
+                                            "key": "field_679250bf447a6",
+                                            "label": "Заголовок",
+                                            "name": "zagolovok",
+                                            "aria-label": "",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": "",
+                                            "maxlength": "",
+                                            "placeholder": "",
+                                            "prepend": "",
+                                            "append": ""
+                                        },
+                                        {
+                                            "key": "field_679250d3447a7",
+                                            "label": "Текст",
+                                            "name": "tekst",
+                                            "aria-label": "",
+                                            "type": "textarea",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": "",
+                                            "maxlength": "",
+                                            "rows": "",
+                                            "placeholder": "",
+                                            "new_lines": ""
+                                        }
+                                    ],
+                                    "parent_repeater": "field_67925eb497c2a"
+                                },
+                                {
+                                    "key": "field_6792509b447a4",
+                                    "label": "Вторая вкладка",
+                                    "name": "",
+                                    "aria-label": "",
+                                    "type": "tab",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "placement": "top",
+                                    "endpoint": 0,
+                                    "parent_repeater": "field_67925eb497c2a"
+                                },
+                                {
+                                    "key": "field_6792510f447a8",
+                                    "label": "Платежка Логистик: Доставим и сэкономим!",
+                                    "name": "platezhka_logistik_dostavim_i_sekonomim",
+                                    "aria-label": "",
+                                    "type": "group",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "layout": "block",
+                                    "sub_fields": [
+                                        {
+                                            "key": "field_6792511c447a9",
+                                            "label": "Заголовок",
+                                            "name": "zagolovok",
+                                            "aria-label": "",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": "",
+                                            "maxlength": "",
+                                            "placeholder": "",
+                                            "prepend": "",
+                                            "append": ""
+                                        },
+                                        {
+                                            "key": "field_67925128447aa",
+                                            "label": "Текст",
+                                            "name": "tekst",
+                                            "aria-label": "",
+                                            "type": "textarea",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": "",
+                                            "maxlength": "",
+                                            "rows": "",
+                                            "placeholder": "",
+                                            "new_lines": ""
+                                        }
+                                    ],
+                                    "parent_repeater": "field_67925eb497c2a"
+                                },
+                                {
+                                    "key": "field_679250ad447a5",
+                                    "label": "Третья вкладка",
+                                    "name": "",
+                                    "aria-label": "",
+                                    "type": "tab",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "placement": "top",
+                                    "endpoint": 0,
+                                    "parent_repeater": "field_67925eb497c2a"
+                                },
+                                {
+                                    "key": "field_6792513c447ab",
+                                    "label": "Выгодные условия для крупных переводов!",
+                                    "name": "vygodnye_usloviya_dlya_krupnyh_perevodov",
+                                    "aria-label": "",
+                                    "type": "group",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "layout": "block",
+                                    "sub_fields": [
+                                        {
+                                            "key": "field_6792513c447ac",
+                                            "label": "Заголовок",
+                                            "name": "zagolovok",
+                                            "aria-label": "",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": "",
+                                            "maxlength": "",
+                                            "placeholder": "",
+                                            "prepend": "",
+                                            "append": ""
+                                        },
+                                        {
+                                            "key": "field_6792513c447ad",
+                                            "label": "Текст",
+                                            "name": "tekst",
+                                            "aria-label": "",
+                                            "type": "textarea",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": "",
+                                            "maxlength": "",
+                                            "rows": "",
+                                            "placeholder": "",
+                                            "new_lines": ""
+                                        }
+                                    ],
+                                    "parent_repeater": "field_67925eb497c2a"
+                                }
+                            ]
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                }
+            },
+            "min": "",
+            "max": "",
+            "button_label": "Добавить"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "page_template",
+                "operator": "==",
+                "value": "default"
+            }
+        ],
+        [
+            {
+                "param": "page_template",
+                "operator": "==",
+                "value": "page-cryptocurrency.php"
+            }
+        ]
+    ],
+    "menu_order": -1,
+    "position": "acf_after_title",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1758732782
+}
