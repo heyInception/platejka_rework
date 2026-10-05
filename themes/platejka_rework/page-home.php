@@ -13,6 +13,28 @@
  * @package platejka_rework
  */
 
+$sections = platejka_use_sections(
+	array(
+		'hero-main',
+		'about',
+		array( 'slug' => 'shipments', 'mode' => 'main' ),
+		array( 'slug' => 'guarantees', 'mode' => 'main' ),
+		array( 'slug' => 'documents', 'mode' => 'main' ),
+		'compliance',
+		'review-main',
+		'work',
+		'calculator',
+		'with-us',
+		'destinations',
+		'seo',
+		'problems',
+		'serves',
+		'cases',
+		'table',
+		'faq',
+		'call',
+	)
+);
 get_header();
 ?>
 
@@ -22,12 +44,7 @@ get_header();
 		while ( have_posts() ) :
 			the_post();
 
-			get_template_part( 'template-parts/content', 'page' );
-
-			// If comments are open or we have at least one comment, load up the comment template.
-			if ( comments_open() || get_comments_number() ) :
-				comments_template();
-			endif;
+			platejka_render_sections( $sections );
 
 		endwhile; // End of the loop.
 		?>
@@ -35,5 +52,4 @@ get_header();
 	</main><!-- #main -->
 
 <?php
-get_sidebar();
 get_footer();

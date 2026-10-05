@@ -76,6 +76,36 @@ $default_shipments = (string) ob_get_clean();
 $assert( str_contains( $default_shipments, 'shipments--default' ), 'Default mode renders the default export branch.' );
 $assert( ! str_contains( $default_shipments, 'shipments--main' ), 'Default mode omits the main export branch.' );
 
+$assert_page_order = static function ( string $path, array $markers, string $label ) use ( $assert ): void {
+	$url      = add_query_arg( 'section-smoke', rawurlencode( $label ), home_url( $path ) );
+	$response = wp_remote_get( $url, array( 'timeout' => 20 ) );
+	$assert( ! is_wp_error( $response ) && 200 === wp_remote_retrieve_response_code( $response ), $label . ' returns HTTP 200.' );
+	$html   = is_wp_error( $response ) ? '' : (string) wp_remote_retrieve_body( $response );
+	$offset = -1;
+	foreach ( $markers as $marker ) {
+		$found = strpos( $html, $marker, $offset + 1 );
+		$assert( false !== $found && $found > $offset, $label . ' renders in order: ' . $marker );
+		$offset = false === $found ? $offset : $found;
+	}
+	$assert( ! str_contains( $html, '@if (mode' ), $label . ' does not expose export directives.' );
+};
+
+$assert_page_order(
+	'/',
+	array( 'data-hero', 'data-about', 'shipments--main', 'guarantees--main', 'documents--main', 'data-compliance', 'class="review-main', 'class="work', 'data-transfer-calculator-section', 'class="with-us', 'class="destinations', 'data-seo', 'class="problems', 'class="serves', 'class="cases', 'class="comparison', 'data-faq', 'data-call' ),
+	'Home page'
+);
+$assert_page_order(
+	'/o-kompanii/',
+	array( 'class="about-hero', 'class="location', 'class="review-main', 'class="infrastructure', 'class="financial', 'class="employees', 'class="exhibitions', 'class="developing', 'class="call' ),
+	'About page'
+);
+$assert_page_order(
+	'/china/',
+	array( 'data-hero', 'data-about', 'shipments--default', 'guarantees--default', 'documents--default', 'class="protection', 'class="review', 'class="work', 'class="problems', 'data-transfer-calculator-section', 'data-seo', 'data-faq', 'data-call' ),
+	'Default page'
+);
+
 WP_CLI::log( sprintf( 'Section loader smoke: %d checks, %d failures.', $checks, count( $failures ) ) );
 if ( $failures ) {
 	WP_CLI::halt( 1 );
