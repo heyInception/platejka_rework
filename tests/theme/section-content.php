@@ -95,14 +95,31 @@ $assert( '' === platejka_section_image( 999999999, 'large' ), 'Invalid attachmen
 
 $form_html = platejka_cf7_form( 305 );
 $assert( str_contains( $form_html, 'wpcf7' ), 'A valid selected CF7 form renders through its numeric ID.' );
+$assert( str_contains( platejka_cf7_form( 4966 ), 'wpcf7' ), 'The calculator CF7 form renders through its numeric ID.' );
 $assert( '' === platejka_cf7_form( 999999999 ), 'A missing CF7 form renders nothing.' );
 $assert( '' === platejka_cf7_form( 24 ), 'A non-CF7 post ID renders nothing.' );
+$assert( $image_id > 0 && '' !== platejka_section_file_url( $image_id ), 'File helper returns a URL only for an attachment.' );
+$assert( '' === platejka_section_file_url( 999999999 ), 'File helper rejects missing attachments.' );
 
 $seed = \Platejka\Core\Acf\SectionSeed::get();
 $assert( 1 === ( $seed['schema_version'] ?? null ) && is_array( $seed['sections'] ?? null ), 'Seed reader returns the validated version-one envelope.' );
+$assert( 18 === count( $seed['sections'] ?? array() ) && 18 === count( $seed['home_rows'] ?? array() ), 'Seed contains all 18 section defaults and all 18 home rows.' );
 $assert( 'Международные платежи' === ( $seed['sections']['hero-main']['title'] ?? null ), 'Seed preserves the pre-migration home content.' );
 $seed_image = platejka_section_image( 'theme://sections/hero/img/hero-bg.png', 'large', array( 'class' => 'seed-image' ) );
 $assert( str_contains( $seed_image, 'class="seed-image"' ) && str_contains( $seed_image, 'width="' ) && str_contains( $seed_image, 'height="' ), 'Pre-migration theme media renders with intrinsic dimensions.' );
+$old_marker = get_option( 'platejka_section_builder_version', null );
+delete_option( 'platejka_section_builder_version' );
+$seed_main = platejka_resolve_section_data( array( 'slug' => 'shipments', 'mode' => 'main', 'row' => array() ) );
+$seed_default = platejka_resolve_section_data( array( 'slug' => 'shipments', 'mode' => 'default', 'row' => array() ) );
+$assert( ( $seed_main['title'] ?? '' ) !== ( $seed_default['title'] ?? '' ), 'Main and default variants resolve separate seed groups.' );
+update_option( 'platejka_section_builder_version', 1, false );
+$migrated_empty = platejka_resolve_section_data( array( 'slug' => 'shipments', 'mode' => 'main', 'row' => array() ) );
+$assert( array() === $migrated_empty, 'Migration marker prevents an empty global value from falling back to seed content.' );
+if ( null === $old_marker ) {
+	delete_option( 'platejka_section_builder_version' );
+} else {
+	update_option( 'platejka_section_builder_version', $old_marker, false );
+}
 
 WP_CLI::log( sprintf( 'Section content: %d checks, %d failures.', $checks, count( $failures ) ) );
 if ( $failures ) {

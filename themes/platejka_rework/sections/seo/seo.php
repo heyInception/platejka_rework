@@ -1,75 +1,11 @@
-<section class="seo" data-seo>
-  <div class="container">
-    <div class="seo__wrap">
-      <div class="seo__group" data-seo-content>
+<?php $root_id = $section_anchor ?: $section_instance; $items = is_array( $section_data['items'] ?? null ) ? $section_data['items'] : array(); $show_label = (string) ( $section_data['show_label'] ?? '' ); $hide_label = (string) ( $section_data['hide_label'] ?? '' ); ?>
+<section class="seo" id="<?php echo esc_attr( $root_id ); ?>" data-seo><div class="container"><div class="seo__wrap"><div class="seo__group" data-seo-content>
         <?php if (is_page(2054)) : ?>
           <h2><?php the_field('zagolovok_services'); ?></h2>
         <?php else : ?>
           <h2><?php the_title() ?></h2>
         <?php endif; ?>
         <?php the_content(); ?>
-        <div class="seo__cards">
-          <article class="seo__card">
-            <span class="seo__number">1</span>
-            <h3>Оставьте заявку</h3>
-            <p>Свяжитесь с нами через наш сайт или заполните форму – должна быть указана информация для связи с вами.
-              Наша
-              команда готова ответить на ваши вопросы и обсудить детали сотрудничества. Вы можете сразу указать
-              предпочтительные способы оплаты, чтобы ускорить обработку заявки.</p>
-          </article>
-          <article class="seo__card">
-            <span class="seo__number">2</span>
-            <h3>Предоставление документации</h3>
-            <p>Предоставьте необходимую документацию, включая контракт и инвойсы с КНР. Мы тщательно изучим документы
-              подтверждающие все условия. Все документы проходят проверку на соответствие стандартам качества и
-              происхождения товаров, что упрощает взаимодействие с производителями и брендом.</p>
-          </article>
-          <article class="seo__card">
-            <span class="seo__number">3</span>
-            <h3>Заключение договора</h3>
-            <p>После проверки документации мы заключаем с вами договор на оказание агентских услуг, утверждающий права и
-              обязанности сторон. В договор можно включить полное сопровождение, условия использования сборных
-              грузоперевозок, логистики и маршрутов напрямую, чтобы минимизировать риски при отправке товаров из Китая.
-            </p>
-          </article>
-          <article class="seo__card">
-            <span class="seo__number">4</span>
-            <h3>Перевод денежных средств</h3>
-            <p>В соответствии с агентским договором ваша компания перечисляет рубли на счет нашей компании. Перед
-              оплатой
-              мы мгновенно конвертируем средства в юани/доллары по выгодному курсу и отправляем их в банк КНР
-              (согласовав
-              с вами). Используем официальный курс конвертации на день совершения сделки. Фиксируете курс в момент
-              отправки.</p>
-          </article>
-          <article class="seo__card">
-            <span class="seo__number">5</span>
-            <h3>Подтверждение транзакции</h3>
-            <p>Мы предоставляем вам платежное поручение с данными о конвертации и переводе ваших средств. После
-              получения
-              денежных средств поставщиком вы получаете копию накладных и подтверждающие документы, что гарантирует
-              прозрачность и доверие получателя. Каждый платёж подтверждается SWIFT MT103.</p>
-          </article>
-          <article class="seo__card">
-            <span class="seo__number">6</span>
-            <h3>Контроль комплаенса</h3>
-            <p>Важным условием сотрудничества является предоставление официального отчета платежного агента. Этот
-              документ
-              понадобится вашим логистам.</p>
-          </article>
-        </div>
-
-      </div>
-      <button
-        class="btn-reset seo__toggle"
-        type="button"
-        data-seo-toggle
-        data-seo-show-label="Показать ещё"
-        data-seo-hide-label="Скрыть"
-        aria-expanded="false"
-        hidden>
-        Показать ещё
-      </button>
-    </div>
-  </div>
-</section>
+  <?php if ( ! empty( $section_data['description'] ) ) : ?><div class="seo__description"><?php echo wp_kses_post( $section_data['description'] ); ?></div><?php endif; ?>
+  <div class="seo__cards" data-seo-collapsible><?php foreach ( $items as $index => $item ) : ?><article class="seo__card"><span class="seo__number"><?php echo esc_html( ( $item['value'] ?? '' ) ?: (string) ( $index + 1 ) ); ?></span><h3><?php echo esc_html( $item['title'] ?? '' ); ?></h3><div><?php echo wp_kses_post( $item['text'] ?? '' ); ?></div></article><?php endforeach; ?></div>
+</div><button class="btn-reset seo__toggle" type="button" data-seo-toggle data-seo-show-label="<?php echo esc_attr( $show_label ); ?>" data-seo-hide-label="<?php echo esc_attr( $hide_label ); ?>" aria-expanded="false" hidden><?php echo esc_html( $show_label ); ?></button></div></div></section>

@@ -34,6 +34,12 @@ $templates = array(
 	'serves/serves.php'            => array( 'old' => 'Для кого работает Платёжка', 'hook' => 'data-horizontal-slider' ),
 	'cases/cases.php'              => array( 'old' => 'Более 2 000 отзывов', 'hook' => 'data-horizontal-slider' ),
 	'table/table.php'              => array( 'old' => 'Почему работа с нами', 'hook' => '<table>' ),
+	'shipments/shipments.php'      => array( 'old' => 'Предоставьте платежи за рубеж', 'hook' => 'data-shipments' ),
+	'guarantees/guarantees.php'    => array( 'old' => 'Гарантии безопасности транзакций', 'hook' => 'data-guarantees' ),
+	'documents/documents.php'      => array( 'old' => 'Документы для начала работы', 'hook' => 'data-documents-slider' ),
+	'calculator/calculator.php'    => array( 'old' => 'Рассчитайте стоимость международного перевода', 'hook' => 'data-transfer-calculator' ),
+	'faq/faq.php'                  => array( 'old' => 'Ответы на частые вопросы', 'hook' => 'data-faq' ),
+	'call/call.php'                => array( 'old' => 'Оставьте заявку —', 'hook' => 'data-call' ),
 );
 
 foreach ( $templates as $relative => $expectation ) {
@@ -72,6 +78,11 @@ foreach ( $templates as $relative => $expectation ) {
 	$assert( ! str_contains( $html, $expectation['old'] ), $relative . ' contains no former editorial headline fallback.' );
 	$assert( str_contains( $html, $expectation['hook'] ), $relative . ' retains its stable JavaScript/DOM hook.' );
 }
+
+$seo_source = (string) file_get_contents( get_theme_file_path( 'sections/seo/seo.php' ) );
+$assert( str_contains( $seo_source, "<?php if (is_page(2054)) : ?>" ) && str_contains( $seo_source, "<?php the_field('zagolovok_services'); ?>" ), 'SEO keeps the exact page-2054 title branch.' );
+$assert( str_contains( $seo_source, '<?php the_title() ?>' ) && str_contains( $seo_source, '<?php the_content(); ?>' ), 'SEO keeps the existing title fallback and the_content().' );
+$assert( ! str_contains( $seo_source, 'Оставьте заявку</h3>' ), 'SEO cards no longer embed their former editorial fallback.' );
 
 WP_CLI::log( sprintf( 'Section templates: %d checks, %d failures.', $checks, count( $failures ) ) );
 if ( $failures ) {

@@ -177,3 +177,13 @@ function platejka_cf7_form( $form_id ): string {
 	}
 	return (string) do_shortcode( '[contact-form-7 id="' . $form_id . '"]' );
 }
+
+/** @param int|mixed $attachment_id */
+function platejka_section_file_url( $attachment_id ): string {
+	$attachment_id = absint( $attachment_id );
+	if ( ! $attachment_id || 'attachment' !== get_post_type( $attachment_id ) ) {
+		return '';
+	}
+	$url = wp_get_attachment_url( $attachment_id );
+	return is_string( $url ) ? $url : '';
+}
