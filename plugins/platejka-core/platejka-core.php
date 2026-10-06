@@ -18,6 +18,11 @@ if ( ! defined( 'PLATEJKA_CORE_PATH' ) ) {
 
 require_once PLATEJKA_CORE_PATH . 'src/Acf/SectionSeed.php';
 
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+	require_once PLATEJKA_CORE_PATH . 'src/Cli/SectionBuilderMigrationCommand.php';
+	\WP_CLI::add_command( 'platejka section-builder migrate', \Platejka\Core\Cli\SectionBuilderMigrationCommand::class );
+}
+
 // Wait for all plugins so ACF may load before or after Platejka Core.
 $platejka_register_acf = static function (): void {
 	if ( function_exists( 'acf' ) && function_exists( 'add_filter' ) ) {
