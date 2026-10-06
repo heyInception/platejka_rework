@@ -4,7 +4,7 @@
     {
       "id": 22,
       "slug": "o-kompanii",
-      "template": "page-company.php",
+      "template": "page-about.php",
       "meta": {
         "about_btn1": {
           "type": "string",
@@ -37,6 +37,54 @@
         "about_title": {
           "type": "string",
           "empty": false
+        },
+        "advantages": {
+          "type": "string",
+          "empty": true
+        },
+        "advantages_elementy": {
+          "type": "string",
+          "empty": true
+        },
+        "advantages_podzagolovok": {
+          "type": "string",
+          "empty": true
+        },
+        "advantages_zagolovok": {
+          "type": "string",
+          "empty": true
+        },
+        "cryptocurrency": {
+          "type": "string",
+          "empty": true
+        },
+        "cryptocurrency_elementy": {
+          "type": "string",
+          "empty": true
+        },
+        "cryptocurrency_zagolovok": {
+          "type": "string",
+          "empty": true
+        },
+        "features": {
+          "type": "string",
+          "empty": true
+        },
+        "features_elementy": {
+          "type": "string",
+          "empty": true
+        },
+        "features_izobrazhenie": {
+          "type": "string",
+          "empty": true
+        },
+        "features_opisanie": {
+          "type": "string",
+          "empty": true
+        },
+        "features_zagolovok": {
+          "type": "string",
+          "empty": true
         },
         "footer_adres": {
           "type": "string",
@@ -362,6 +410,46 @@
           "type": "string",
           "empty": false
         },
+        "international": {
+          "type": "string",
+          "empty": true
+        },
+        "international_izobrazhenie": {
+          "type": "string",
+          "empty": true
+        },
+        "international_opisanie": {
+          "type": "string",
+          "empty": true
+        },
+        "international_spisok": {
+          "type": "string",
+          "empty": true
+        },
+        "international_zagolovok": {
+          "type": "string",
+          "empty": true
+        },
+        "izobrazheniya_reev": {
+          "type": "string",
+          "empty": true
+        },
+        "kak_my_rabotaem": {
+          "type": "string",
+          "empty": true
+        },
+        "kak_my_rabotaem_elementy": {
+          "type": "string",
+          "empty": true
+        },
+        "kak_my_rabotaem_tekst": {
+          "type": "string",
+          "empty": true
+        },
+        "kak_my_rabotaem_zagolovok": {
+          "type": "string",
+          "empty": true
+        },
         "kartochka_about": {
           "type": "string",
           "empty": true
@@ -377,6 +465,22 @@
         "logo": {
           "type": "string",
           "empty": false
+        },
+        "napravleniya_destinations": {
+          "type": "string",
+          "empty": true
+        },
+        "nashi_preimushhestva": {
+          "type": "string",
+          "empty": true
+        },
+        "nashi_preimushhestva_elementy": {
+          "type": "string",
+          "empty": true
+        },
+        "nashi_preimushhestva_zagolovok": {
+          "type": "string",
+          "empty": true
         },
         "o_kompanii": {
           "type": "array",
@@ -1199,7 +1303,15 @@
           "type": "string",
           "empty": false
         },
+        "pereklyuchatel_hero": {
+          "type": "string",
+          "empty": false
+        },
         "podzaglovok_hero": {
+          "type": "string",
+          "empty": true
+        },
+        "podzagolovok_destinations": {
           "type": "string",
           "empty": true
         },
@@ -1215,7 +1327,43 @@
           "type": "string",
           "empty": true
         },
+        "polnaya_shema": {
+          "type": "string",
+          "empty": true
+        },
+        "polnaya_shema_elementy": {
+          "type": "string",
+          "empty": true
+        },
+        "polnaya_shema_izobrazhenie": {
+          "type": "string",
+          "empty": true
+        },
+        "polnaya_shema_izobrazhenie_mobilnoe": {
+          "type": "string",
+          "empty": true
+        },
+        "polnaya_shema_zagolovok": {
+          "type": "string",
+          "empty": true
+        },
         "priemushhestva_ach": {
+          "type": "string",
+          "empty": true
+        },
+        "process": {
+          "type": "string",
+          "empty": true
+        },
+        "process_elementy": {
+          "type": "string",
+          "empty": true
+        },
+        "process_tekst": {
+          "type": "string",
+          "empty": true
+        },
+        "process_zagolovok": {
           "type": "string",
           "empty": true
         },
@@ -1360,6 +1508,18 @@
           "empty": false
         },
         "shagi_connect": {
+          "type": "string",
+          "empty": true
+        },
+        "shema": {
+          "type": "string",
+          "empty": true
+        },
+        "shema_izobrazhenie": {
+          "type": "string",
+          "empty": true
+        },
+        "shema_zagolovok": {
           "type": "string",
           "empty": true
         },
@@ -1637,6 +1797,10 @@
           "type": "string",
           "empty": false
         },
+        "video_hero": {
+          "type": "string",
+          "empty": true
+        },
         "vklyuchit_blok_about": {
           "type": "string",
           "empty": false
@@ -1650,6 +1814,10 @@
           "empty": false
         },
         "vklyuchit_blok_connect": {
+          "type": "string",
+          "empty": false
+        },
+        "vklyuchit_blok_destinations": {
           "type": "string",
           "empty": false
         },
@@ -1697,6 +1865,30 @@
           "type": "string",
           "empty": false
         },
+        "wehelp": {
+          "type": "string",
+          "empty": true
+        },
+        "wehelp_elementy": {
+          "type": "string",
+          "empty": true
+        },
+        "wehelp_tekst": {
+          "type": "string",
+          "empty": true
+        },
+        "wehelp_zagolovok": {
+          "type": "string",
+          "empty": true
+        },
+        "wehelp_zagolovok_formy": {
+          "type": "string",
+          "empty": true
+        },
+        "work_section": {
+          "type": "string",
+          "empty": true
+        },
         "zaglovok_hero": {
           "type": "string",
           "empty": false
@@ -1714,6 +1906,10 @@
           "empty": true
         },
         "zagolovok_connect": {
+          "type": "string",
+          "empty": true
+        },
+        "zagolovok_destinations": {
           "type": "string",
           "empty": true
         },
@@ -3973,6 +4169,99 @@
           "empty": false
         },
         "pereklyuchatel_hero": {
+          "type": "string",
+          "empty": false
+        },
+        "platejka_page_builder": {
+          "type": "string",
+          "empty": false
+        },
+        "platejka_sections": {
+          "type": "array",
+          "empty": false,
+          "count": 18
+        },
+        "platejka_sections_0_enabled": {
+          "type": "string",
+          "empty": false
+        },
+        "platejka_sections_10_enabled": {
+          "type": "string",
+          "empty": false
+        },
+        "platejka_sections_11_enabled": {
+          "type": "string",
+          "empty": false
+        },
+        "platejka_sections_12_enabled": {
+          "type": "string",
+          "empty": false
+        },
+        "platejka_sections_13_enabled": {
+          "type": "string",
+          "empty": false
+        },
+        "platejka_sections_14_enabled": {
+          "type": "string",
+          "empty": false
+        },
+        "platejka_sections_15_enabled": {
+          "type": "string",
+          "empty": false
+        },
+        "platejka_sections_16_enabled": {
+          "type": "string",
+          "empty": false
+        },
+        "platejka_sections_17_enabled": {
+          "type": "string",
+          "empty": false
+        },
+        "platejka_sections_1_enabled": {
+          "type": "string",
+          "empty": false
+        },
+        "platejka_sections_2_enabled": {
+          "type": "string",
+          "empty": false
+        },
+        "platejka_sections_2_variant": {
+          "type": "string",
+          "empty": false
+        },
+        "platejka_sections_3_enabled": {
+          "type": "string",
+          "empty": false
+        },
+        "platejka_sections_3_variant": {
+          "type": "string",
+          "empty": false
+        },
+        "platejka_sections_4_enabled": {
+          "type": "string",
+          "empty": false
+        },
+        "platejka_sections_4_variant": {
+          "type": "string",
+          "empty": false
+        },
+        "platejka_sections_5_enabled": {
+          "type": "string",
+          "empty": false
+        },
+        "platejka_sections_6_enabled": {
+          "type": "string",
+          "empty": false
+        },
+        "platejka_sections_7_enabled": {
+          "type": "string",
+          "empty": false
+        },
+        "platejka_sections_8_enabled": {
+          "type": "string",
+          "empty": false
+        },
+        "platejka_sections_9_enabled": {
           "type": "string",
           "empty": false
         },

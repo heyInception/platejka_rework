@@ -70,7 +70,16 @@ function platejka_rework_assets(): void {
 		}
 		if ( is_file( $script_path ) ) {
 			wp_enqueue_script( $handle, $base_url . '/' . $directory . '.js', array( 'platejka_rework-common' ), platejka_section_asset_version( $script_path ), true );
+			$labels_script_path = $base_path . '/' . $directory . '-labels.js';
+			if ( is_file( $labels_script_path ) ) {
+				wp_enqueue_script( $handle . '-labels', $base_url . '/' . $directory . '-labels.js', array( $handle ), platejka_section_asset_version( $labels_script_path ), true );
+			}
 		}
+	}
+
+	if ( isset( $loaded['hero'] ) && ! isset( $loaded['calculator'] ) ) {
+		$labels_path = get_theme_file_path( 'sections/calculator/calculator-labels.js' );
+		wp_enqueue_script( 'platejka-rework-section-calculator-labels', get_theme_file_uri( 'sections/calculator/calculator-labels.js' ), array( 'platejka-rework-section-hero' ), platejka_section_asset_version( $labels_path ), true );
 	}
 }
 add_action( 'wp_enqueue_scripts', 'platejka_rework_assets' );

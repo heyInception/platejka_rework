@@ -68,7 +68,7 @@ $main_shipments = (string) ob_get_clean();
 $assert( str_contains( $main_shipments, 'shipments--main' ), 'Main mode renders the main export branch.' );
 $assert( ! str_contains( $main_shipments, 'shipments--default' ), 'Main mode omits the default export branch.' );
 $assert( ! str_contains( $main_shipments, '@if' ), 'Export mode directives are removed from rendered output.' );
-$assert( str_contains( $main_shipments, '/sections/shipments/img/shipments/main-1.png' ), 'Relative image paths become absolute section URLs.' );
+$assert( str_contains( $main_shipments, 'class="shipment-card__image' ) && str_contains( $main_shipments, 'srcset="' ), 'Migrated editorial images render through responsive WordPress attachment markup.' );
 
 ob_start();
 platejka_render_section( 'shipments' );

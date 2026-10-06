@@ -3,7 +3,7 @@
 
 /** @param mixed $local @param mixed $global @return mixed */
 function platejka_resolve_scalar( $local, $global ) {
-	return null === $local || '' === $local || array() === $local ? $global : $local;
+	return null === $local || false === $local || '' === $local || array() === $local ? $global : $local;
 }
 
 /** @param mixed $local @param mixed $global @return array<mixed> */
@@ -55,6 +55,17 @@ function platejka_section_array( $value ): array {
 	return is_array( $value ) ? $value : array();
 }
 
+/** @param mixed $rows @return array<string,string> */
+function platejka_section_label_map( $rows ): array {
+	$labels = array();
+	foreach ( is_array( $rows ) ? $rows : array() as $row ) {
+		if ( is_array( $row ) && isset( $row['key'] ) && is_string( $row['key'] ) && '' !== $row['key'] ) {
+			$labels[ $row['key'] ] = (string) ( $row['label'] ?? '' );
+		}
+	}
+	return $labels;
+}
+
 /**
  * Resolve an enabled builder row against options-page defaults.
  *
@@ -82,7 +93,8 @@ function platejka_resolve_section_data( array $config, int $post_id = 0 ): array
 	}
 
 	$row   = platejka_section_array( $config['row'] ?? array() );
-	$local = platejka_section_array( $row['overrides'] ?? array() );
+	$variant_override_key = 'main' === $mode ? 'overrides_main' : 'overrides_default';
+	$local = platejka_section_array( $row[ $variant_override_key ] ?? ( $row['overrides'] ?? array() ) );
 	// ACF clone fields may wrap the cloned group depending on their display settings.
 	if ( isset( $local[ $field_name ] ) && is_array( $local[ $field_name ] ) ) {
 		$local = $local[ $field_name ];
@@ -115,7 +127,7 @@ function platejka_section_image( $attachment_id, $size = 'large', array $attribu
 			return '';
 		}
 		$dimensions = wp_getimagesize( $path );
-		$attributes = array_merge( array( 'loading' => 'lazy', 'decoding' => 'async' ), $attributes );
+		$attributes = array_merge( array( 'alt' => '', 'loading' => 'lazy', 'decoding' => 'async' ), $attributes );
 		$attributes['src'] = get_theme_file_uri( $relative );
 		if ( is_array( $dimensions ) ) {
 			$attributes['width']  = $dimensions[0];
@@ -150,19 +162,22 @@ function platejka_heading_text( $value ): string {
 function platejka_section_heading( array $heading, string $class = '' ): string {
 	$text       = trim( (string) ( $heading['text'] ?? '' ) );
 	$accent     = trim( (string) ( $heading['accent'] ?? '' ) );
-	$semantic  = trim( wp_strip_all_tags( $text . ( '' !== $accent ? ' ' . $accent : '' ) ) );
+	$accent_position = '' !== $accent ? mb_stripos( $text, $accent ) : false;
+	$semantic  = trim( wp_strip_all_tags( false === $accent_position ? $text . ( '' !== $accent ? ' ' . $accent : '' ) : $text ) );
 	$class_attr = esc_attr( $class );
-	if ( empty( $heading['decorative'] ) ) {
+	if ( false !== $accent_position ) {
+		$before  = mb_substr( $text, 0, $accent_position );
+		$matched = mb_substr( $text, $accent_position, mb_strlen( $accent ) );
+		$after   = mb_substr( $text, $accent_position + mb_strlen( $accent ) );
+		$visible = platejka_heading_text( $before ) . '<span>' . platejka_heading_text( $matched ) . '</span>' . platejka_heading_text( $after );
+	} else {
 		$visible = platejka_heading_text( $text );
 		if ( '' !== $accent ) {
 			$visible .= ' <span>' . platejka_heading_text( $accent ) . '</span>';
 		}
-		return '<h2 class="' . $class_attr . '">' . $visible . '</h2>';
 	}
-
-	$visible = platejka_heading_text( $text );
-	if ( '' !== $accent ) {
-		$visible .= ' <span>' . platejka_heading_text( $accent ) . '</span>';
+	if ( empty( $heading['decorative'] ) ) {
+		return '<h2 class="' . $class_attr . '">' . $visible . '</h2>';
 	}
 	return '<h2 class="screen-reader-text">' . esc_html( $semantic ) . '</h2>'
 		. '<div class="' . $class_attr . '" aria-hidden="true">' . $visible . '</div>';
@@ -173,6 +188,9 @@ function platejka_cf7_form( $form_id ): string {
 	$form_id = absint( $form_id );
 	$post    = $form_id ? get_post( $form_id ) : null;
 	if ( ! $post || 'wpcf7_contact_form' !== $post->post_type || 'publish' !== $post->post_status ) {
+		if ( $form_id && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log( sprintf( 'Platejka section builder: Contact Form 7 form %d is missing, unpublished, or has the wrong post type.', $form_id ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+		}
 		return '';
 	}
 	return (string) do_shortcode( '[contact-form-7 id="' . $form_id . '"]' );

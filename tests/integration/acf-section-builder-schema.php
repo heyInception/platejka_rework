@@ -99,6 +99,8 @@ foreach ( $layouts as $layout ) {
 	$assert( 'text' === ( $by_name['anchor']['type'] ?? null ), 'Layout provides an anchor: ' . ( $layout['name'] ?? '' ) );
 	if ( in_array( $layout['name'] ?? '', array( 'shipments', 'guarantees', 'documents' ), true ) ) {
 		$assert( array( 'inherit' => 'Наследовать', 'main' => 'Главная', 'default' => 'Внутренняя' ) === ( $by_name['variant']['choices'] ?? null ), 'Variant choices are complete: ' . $layout['name'] );
+		$assert( ! empty( $by_name['overrides_main']['conditional_logic'] ), 'Main overrides are conditionally visible: ' . $layout['name'] );
+		$assert( ! empty( $by_name['overrides_default']['conditional_logic'] ), 'Default overrides are conditionally visible: ' . $layout['name'] );
 	}
 }
 

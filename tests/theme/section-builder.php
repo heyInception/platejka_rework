@@ -25,7 +25,7 @@ if ( $failures ) {
 $fallback = array( 'hero-main', 'about', array( 'slug' => 'shipments', 'mode' => 'main' ) );
 $assert( $fallback === platejka_resolve_page_section_rows( false, array(), $fallback, 24 ), 'Disabled builder returns the PHP fallback unchanged.' );
 $assert( array() === platejka_resolve_page_section_rows( true, array(), $fallback, 24 ), 'Enabled builder with no rows renders no sections.' );
-$assert( $fallback === platejka_get_page_sections( 24, $fallback ), 'An unmigrated real page keeps its PHP fallback.' );
+$assert( $fallback === platejka_get_page_sections( 22, $fallback ), 'An unmigrated real page keeps its PHP fallback.' );
 
 $rows = array(
 	array( 'acf_fc_layout' => 'faq', 'enabled' => 1, 'anchor' => 'first-faq', 'overrides' => array( 'title' => 'Первый' ) ),
@@ -75,6 +75,17 @@ $duplicate_anchor = platejka_validate_builder_rows(
 	)
 );
 $assert( is_wp_error( $duplicate_anchor ) && 'duplicate_section_anchor' === $duplicate_anchor->get_error_code(), 'Duplicate anchors fail validation.' );
+$raw_invalid_anchor = platejka_validate_builder_rows(
+	array( array( 'acf_fc_layout' => 'faq', 'field_platejka_row_faq_anchor_v1' => 'Bad Anchor!' ) )
+);
+$assert( is_wp_error( $raw_invalid_anchor ) && 'invalid_section_anchor' === $raw_invalid_anchor->get_error_code(), 'Raw ACF field-key anchors are validated.' );
+$raw_duplicate_anchor = platejka_validate_builder_rows(
+	array(
+		array( 'acf_fc_layout' => 'faq', 'field_platejka_row_faq_anchor_v1' => 'answers' ),
+		array( 'acf_fc_layout' => 'call', 'field_platejka_row_call_anchor_v1' => 'answers' ),
+	)
+);
+$assert( is_wp_error( $raw_duplicate_anchor ) && 'duplicate_section_anchor' === $raw_duplicate_anchor->get_error_code(), 'Duplicate raw ACF field-key anchors are rejected.' );
 
 $normalized = platejka_use_sections( $resolved );
 $assert( 2 === count( $normalized ) && 'section-24-3' === ( $normalized[1]['instance'] ?? null ), 'The existing normalizer preserves builder instance context.' );

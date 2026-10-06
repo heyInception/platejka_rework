@@ -33,7 +33,7 @@ $templates = array(
 	'problems/problems.php'        => array( 'old' => 'Какие <span>проблемы', 'hook' => 'data-problems-slider' ),
 	'serves/serves.php'            => array( 'old' => 'Для кого работает Платёжка', 'hook' => 'data-horizontal-slider' ),
 	'cases/cases.php'              => array( 'old' => 'Более 2 000 отзывов', 'hook' => 'data-horizontal-slider' ),
-	'table/table.php'              => array( 'old' => 'Почему работа с нами', 'hook' => '<table>' ),
+	'table/table.php'              => array( 'old' => 'Почему работа с нами', 'hook' => '<table aria-label=' ),
 	'shipments/shipments.php'      => array( 'old' => 'Предоставьте платежи за рубеж', 'hook' => 'data-shipments' ),
 	'guarantees/guarantees.php'    => array( 'old' => 'Гарантии безопасности транзакций', 'hook' => 'data-guarantees' ),
 	'documents/documents.php'      => array( 'old' => 'Документы для начала работы', 'hook' => 'data-documents-slider' ),
@@ -79,10 +79,27 @@ foreach ( $templates as $relative => $expectation ) {
 	$assert( str_contains( $html, $expectation['hook'] ), $relative . ' retains its stable JavaScript/DOM hook.' );
 }
 
+$behavior_hooks = array(
+	'about/about.php'             => array( 'data-about-dialog-open', 'data-about-dialog', 'data-about-dialog-close' ),
+	'compliance/compliance.php'   => array( 'data-compliance-dialog-open', 'data-compliance-dialog', 'data-compliance-dialog-close' ),
+	'review-main/review-main.php' => array( 'data-review-video-panel', 'data-review-text-panel', 'data-review-dialog', 'data-review-video' ),
+	'problems/problems.php'       => array( 'data-problems-dialog-open', 'data-problems-dialog', 'data-problems-dialog-close' ),
+);
+foreach ( $behavior_hooks as $relative => $hooks ) {
+	$source = (string) file_get_contents( get_theme_file_path( 'sections/' . $relative ) );
+	foreach ( $hooks as $hook ) {
+		$assert( str_contains( $source, $hook ), $relative . ' preserves behavior hook ' . $hook . '.' );
+	}
+}
+
 $seo_source = (string) file_get_contents( get_theme_file_path( 'sections/seo/seo.php' ) );
 $assert( str_contains( $seo_source, "<?php if (is_page(2054)) : ?>" ) && str_contains( $seo_source, "<?php the_field('zagolovok_services'); ?>" ), 'SEO keeps the exact page-2054 title branch.' );
 $assert( str_contains( $seo_source, '<?php the_title() ?>' ) && str_contains( $seo_source, '<?php the_content(); ?>' ), 'SEO keeps the existing title fallback and the_content().' );
 $assert( ! str_contains( $seo_source, 'Оставьте заявку</h3>' ), 'SEO cards no longer embed their former editorial fallback.' );
+
+$calculator_source = (string) file_get_contents( get_theme_file_path( 'sections/calculator/calculator.php' ) );
+$assert( str_contains( $calculator_source, 'data-calculator-select="country"' ) && str_contains( $calculator_source, 'data-search-enabled="true"' ), 'Calculator preserves searchable Select2 country hooks.' );
+$assert( str_contains( $calculator_source, "'JP' => 'Япония'" ) && str_contains( $calculator_source, "'ZA' => 'Южно-Африканская Республика'" ), 'Calculator preserves the complete international destination list.' );
 
 WP_CLI::log( sprintf( 'Section templates: %d checks, %d failures.', $checks, count( $failures ) ) );
 if ( $failures ) {

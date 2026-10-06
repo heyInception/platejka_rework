@@ -105,7 +105,7 @@ $groups = array(
 	'group_65a959b489bb6' => 'Часто задаваемые вопросы',
 );
 $files = glob( $json_path . '/*.json' );
-$assert( is_array( $files ) && 7 === count( $files ), 'Plugin must contain exactly seven JSON schema files.' );
+$assert( is_array( $files ) && 9 === count( $files ), 'Plugin must contain the seven legacy and two new JSON schema files.' );
 $collect_keys = static function ( array $nodes ) use ( &$collect_keys, $assert ): array {
 	$keys = array();
 	foreach ( $nodes as $node ) {
@@ -164,7 +164,7 @@ if ( is_file( $fixture_path ) ) {
 	$assert( 1 === ( $fixture['schema_version'] ?? null ), 'Fixture schema version must be one.' );
 	$pages = $fixture['pages'] ?? array();
 	$assert( $page_ids === array_column( $pages, 'id' ), 'Fixture must contain exactly the three pages in ID order.' );
-	$expected_pages = array( 22 => array( 'o-kompanii', 'page-company.php' ), 24 => array( 'glavnaya', 'page-home.php' ), 1873 => array( 'china', 'page-payments.php' ) );
+	$expected_pages = array( 22 => array( 'o-kompanii', 'page-about.php' ), 24 => array( 'glavnaya', 'page-home.php' ), 1873 => array( 'china', 'page-payments.php' ) );
 	foreach ( $pages as $page ) {
 		$id = $page['id'] ?? 0;
 		$assert( isset( $expected_pages[ $id ] ), 'Fixture contains an unexpected page.' );

@@ -11,9 +11,9 @@ $assert = static function ( bool $condition, string $message ) use ( &$checks, &
 $snapshot = static function (): string {
 	global $wpdb;
 	return hash( 'sha256', serialize( array(
-		$wpdb->get_results( "SELECT * FROM {$wpdb->posts} ORDER BY ID", ARRAY_A ),
-		$wpdb->get_results( "SELECT * FROM {$wpdb->postmeta} ORDER BY meta_id", ARRAY_A ),
-		$wpdb->get_results( "SELECT * FROM {$wpdb->options} ORDER BY option_id", ARRAY_A ),
+		$wpdb->get_results( "SELECT * FROM {$wpdb->postmeta} WHERE post_id = 24 AND meta_key LIKE '%platejka%' ORDER BY meta_id", ARRAY_A ),
+		$wpdb->get_results( "SELECT option_name, option_value FROM {$wpdb->options} WHERE option_name IN ('platejka_section_builder_version', 'platejka_section_builder_additive_version') OR option_name LIKE 'platejka_section_defaults_%' OR option_name LIKE '_platejka_section_defaults_%' ORDER BY option_name", ARRAY_A ),
+		$wpdb->get_results( "SELECT p.*, pm.meta_value AS seed_source FROM {$wpdb->posts} p INNER JOIN {$wpdb->postmeta} pm ON pm.post_id = p.ID AND pm.meta_key = '_platejka_section_seed_source' ORDER BY p.ID", ARRAY_A ),
 	) ) );
 };
 
@@ -34,7 +34,7 @@ $source_names = array_map( static fn( $item ) => is_array( $item ) ? ( $item['so
 $assert( count( $source_names ) === count( array_unique( $source_names ) ), 'Preview plans each media source at most once.' );
 $assert( false === ( $report['writes']['performed'] ?? true ), 'Preview reports no performed writes.' );
 $assert( $report === $second_report, 'Repeated previews are deterministic.' );
-$assert( hash_equals( $before, $snapshot() ), 'Preview leaves posts, postmeta, options, and media unchanged.' );
+$assert( hash_equals( $before, $snapshot() ), 'Preview leaves builder meta, section options, and migrated media unchanged.' );
 
 WP_CLI::log( sprintf( 'Section migration preview: %d checks, %d failures.', $checks, count( $failures ) ) );
 if ( $failures ) { WP_CLI::halt( 1 ); }

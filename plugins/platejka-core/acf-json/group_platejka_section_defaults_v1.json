@@ -453,6 +453,25 @@
                     "library": "all"
                 },
                 {
+                    "key": "field_platejka_about_labels_v1",
+                    "label": "Подписи интерфейса",
+                    "name": "labels",
+                    "type": "repeater",
+                    "instructions": "Системный ключ не меняйте; редактируйте только текст.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {"width": "", "class": "", "id": ""},
+                    "layout": "table",
+                    "min": 0,
+                    "max": 0,
+                    "button_label": "Добавить подпись",
+                    "collapsed": "field_platejka_about_labels_label_v1",
+                    "sub_fields": [
+                        {"key": "field_platejka_about_labels_key_v1", "label": "Ключ", "name": "key", "type": "text", "required": 1, "conditional_logic": 0, "wrapper": {"width": "35", "class": "", "id": ""}},
+                        {"key": "field_platejka_about_labels_label_v1", "label": "Текст", "name": "label", "type": "textarea", "required": 1, "conditional_logic": 0, "wrapper": {"width": "65", "class": "", "id": ""}, "rows": 2, "new_lines": ""}
+                    ]
+                },
+                {
                     "key": "field_platejka_about_primary_link_v1",
                     "label": "Основная ссылка",
                     "name": "primary_link",
@@ -1992,6 +2011,44 @@
                     "delay": 0
                 },
                 {
+                    "key": "field_platejka_compliance_labels_v1",
+                    "label": "Подписи интерфейса",
+                    "name": "labels",
+                    "type": "repeater",
+                    "instructions": "Системный ключ не меняйте; редактируйте только текст.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {"width": "", "class": "", "id": ""},
+                    "layout": "table",
+                    "min": 0,
+                    "max": 0,
+                    "button_label": "Добавить подпись",
+                    "collapsed": "field_platejka_compliance_labels_label_v1",
+                    "sub_fields": [
+                        {"key": "field_platejka_compliance_labels_key_v1", "label": "Ключ", "name": "key", "type": "text", "required": 1, "conditional_logic": 0, "wrapper": {"width": "35", "class": "", "id": ""}},
+                        {"key": "field_platejka_compliance_labels_label_v1", "label": "Текст", "name": "label", "type": "textarea", "required": 1, "conditional_logic": 0, "wrapper": {"width": "65", "class": "", "id": ""}, "rows": 2, "new_lines": ""}
+                    ]
+                },
+                {
+                    "key": "field_platejka_compliance_banks_v1",
+                    "label": "Банки",
+                    "name": "banks",
+                    "type": "repeater",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {"width": "", "class": "", "id": ""},
+                    "layout": "table",
+                    "min": 0,
+                    "max": 0,
+                    "button_label": "Добавить банк",
+                    "collapsed": "field_platejka_compliance_banks_title_v1",
+                    "sub_fields": [
+                        {"key": "field_platejka_compliance_banks_title_v1", "label": "Название", "name": "title", "type": "text", "required": 0, "conditional_logic": 0, "wrapper": {"width": "50", "class": "", "id": ""}},
+                        {"key": "field_platejka_compliance_banks_image_v1", "label": "Логотип", "name": "image", "type": "image", "required": 0, "conditional_logic": 0, "wrapper": {"width": "50", "class": "", "id": ""}, "return_format": "id", "preview_size": "thumbnail", "library": "all"}
+                    ]
+                },
+                {
                     "key": "field_platejka_compliance_items_v1",
                     "label": "Элементы",
                     "name": "items",
@@ -2142,6 +2199,25 @@
                     "delay": 0
                 },
                 {
+                    "key": "field_platejka_review_main_labels_v1",
+                    "label": "Подписи интерфейса",
+                    "name": "labels",
+                    "type": "repeater",
+                    "instructions": "Системный ключ не меняйте; редактируйте только текст.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {"width": "", "class": "", "id": ""},
+                    "layout": "table",
+                    "min": 0,
+                    "max": 0,
+                    "button_label": "Добавить подпись",
+                    "collapsed": "field_platejka_review_main_labels_label_v1",
+                    "sub_fields": [
+                        {"key": "field_platejka_review_main_labels_key_v1", "label": "Ключ", "name": "key", "type": "text", "required": 1, "conditional_logic": 0, "wrapper": {"width": "35", "class": "", "id": ""}},
+                        {"key": "field_platejka_review_main_labels_label_v1", "label": "Текст", "name": "label", "type": "text", "required": 1, "conditional_logic": 0, "wrapper": {"width": "65", "class": "", "id": ""}}
+                    ]
+                },
+                {
                     "key": "field_platejka_review_main_items_v1",
                     "label": "Элементы",
                     "name": "items",
@@ -2222,6 +2298,23 @@
                             }
                         },
                         {
+                            "key": "field_platejka_review_main_items_date_v1",
+                            "label": "Дата",
+                            "name": "date",
+                            "type": "date_picker",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "display_format": "d.m.Y",
+                            "return_format": "Y-m-d",
+                            "first_day": 1
+                        },
+                        {
                             "key": "field_platejka_review_main_items_image_v1",
                             "label": "Изображение",
                             "name": "image",
@@ -2253,6 +2346,48 @@
                             },
                             "return_format": "array"
                         }
+                    ]
+                },
+                {
+                    "key": "field_platejka_review_main_video_items_v1",
+                    "label": "Видео-отзывы",
+                    "name": "video_items",
+                    "type": "repeater",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {"width": "", "class": "", "id": ""},
+                    "layout": "block",
+                    "min": 0,
+                    "max": 0,
+                    "button_label": "Добавить видео-отзыв",
+                    "collapsed": "field_platejka_review_main_video_items_title_v1",
+                    "sub_fields": [
+                        {"key": "field_platejka_review_main_video_items_title_v1", "label": "Имя", "name": "title", "type": "text", "required": 0, "conditional_logic": 0, "wrapper": {"width": "", "class": "", "id": ""}},
+                        {"key": "field_platejka_review_main_video_items_text_v1", "label": "Должность", "name": "text", "type": "textarea", "required": 0, "conditional_logic": 0, "wrapper": {"width": "", "class": "", "id": ""}, "rows": 2, "new_lines": "br"},
+                        {"key": "field_platejka_review_main_video_items_image_v1", "label": "Обложка", "name": "image", "type": "image", "required": 0, "conditional_logic": 0, "wrapper": {"width": "", "class": "", "id": ""}, "return_format": "id", "preview_size": "medium", "library": "all"},
+                        {"key": "field_platejka_review_main_video_items_file_v1", "label": "Видео", "name": "file", "type": "file", "required": 0, "conditional_logic": 0, "wrapper": {"width": "", "class": "", "id": ""}, "return_format": "id", "library": "all", "mime_types": "mp4,webm"}
+                    ]
+                },
+                {
+                    "key": "field_platejka_review_main_ratings_v1",
+                    "label": "Рейтинги площадок",
+                    "name": "ratings",
+                    "type": "repeater",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {"width": "", "class": "", "id": ""},
+                    "layout": "table",
+                    "min": 0,
+                    "max": 0,
+                    "button_label": "Добавить рейтинг",
+                    "collapsed": "field_platejka_review_main_ratings_title_v1",
+                    "sub_fields": [
+                        {"key": "field_platejka_review_main_ratings_title_v1", "label": "Площадка", "name": "title", "type": "text", "required": 0, "conditional_logic": 0, "wrapper": {"width": "", "class": "", "id": ""}},
+                        {"key": "field_platejka_review_main_ratings_value_v1", "label": "Оценка", "name": "value", "type": "text", "required": 0, "conditional_logic": 0, "wrapper": {"width": "", "class": "", "id": ""}},
+                        {"key": "field_platejka_review_main_ratings_caption_v1", "label": "Подпись", "name": "caption", "type": "text", "required": 0, "conditional_logic": 0, "wrapper": {"width": "", "class": "", "id": ""}},
+                        {"key": "field_platejka_review_main_ratings_image_v1", "label": "Логотип", "name": "image", "type": "image", "required": 0, "conditional_logic": 0, "wrapper": {"width": "", "class": "", "id": ""}, "return_format": "id", "preview_size": "thumbnail", "library": "all"}
                     ]
                 }
             ]
@@ -2319,6 +2454,21 @@
                     "toolbar": "basic",
                     "media_upload": 0,
                     "delay": 0
+                },
+                {
+                    "key": "field_platejka_work_primary_link_v1",
+                    "label": "Основная ссылка",
+                    "name": "primary_link",
+                    "type": "link",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "array"
                 },
                 {
                     "key": "field_platejka_work_items_v1",
@@ -2483,6 +2633,56 @@
                         "class": "",
                         "id": ""
                     }
+                },
+                {
+                    "key": "field_platejka_calculator_labels_v1",
+                    "label": "Подписи интерфейса",
+                    "name": "labels",
+                    "type": "repeater",
+                    "instructions": "Системный ключ не меняйте; редактируйте только отображаемый текст.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "layout": "table",
+                    "min": 0,
+                    "max": 0,
+                    "rows_per_page": 20,
+                    "button_label": "Добавить подпись",
+                    "collapsed": "field_platejka_calculator_labels_label_v1",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_calculator_labels_key_v1",
+                            "label": "Ключ",
+                            "name": "key",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 1,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "35",
+                                "class": "",
+                                "id": ""
+                            }
+                        },
+                        {
+                            "key": "field_platejka_calculator_labels_label_v1",
+                            "label": "Текст",
+                            "name": "label",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 1,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "65",
+                                "class": "",
+                                "id": ""
+                            }
+                        }
+                    ]
                 },
                 {
                     "key": "field_platejka_calculator_items_v1",
@@ -2825,6 +3025,23 @@
                     "delay": 0
                 },
                 {
+                    "key": "field_platejka_destinations_image_v1",
+                    "label": "Декоративное изображение",
+                    "name": "image",
+                    "type": "image",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "id",
+                    "preview_size": "medium",
+                    "library": "all"
+                },
+                {
                     "key": "field_platejka_destinations_items_v1",
                     "label": "Элементы",
                     "name": "items",
@@ -3133,6 +3350,25 @@
                     "toolbar": "basic",
                     "media_upload": 0,
                     "delay": 0
+                },
+                {
+                    "key": "field_platejka_problems_labels_v1",
+                    "label": "Подписи интерфейса",
+                    "name": "labels",
+                    "type": "repeater",
+                    "instructions": "Системный ключ не меняйте; редактируйте только текст.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {"width": "", "class": "", "id": ""},
+                    "layout": "table",
+                    "min": 0,
+                    "max": 0,
+                    "button_label": "Добавить подпись",
+                    "collapsed": "field_platejka_problems_labels_label_v1",
+                    "sub_fields": [
+                        {"key": "field_platejka_problems_labels_key_v1", "label": "Ключ", "name": "key", "type": "text", "required": 1, "conditional_logic": 0, "wrapper": {"width": "35", "class": "", "id": ""}},
+                        {"key": "field_platejka_problems_labels_label_v1", "label": "Текст", "name": "label", "type": "textarea", "required": 1, "conditional_logic": 0, "wrapper": {"width": "65", "class": "", "id": ""}, "rows": 3, "new_lines": ""}
+                    ]
                 },
                 {
                     "key": "field_platejka_problems_items_v1",
@@ -3692,7 +3928,11 @@
                                 "class": "",
                                 "id": ""
                             }
-                        }
+                        },
+                        {"key":"field_platejka_table_items_partner_value_v1","label":"Финансовые фирмы — значение","name":"partner_value","type":"text","required":0,"conditional_logic":0,"wrapper":{"width":"","class":"","id":""}},
+                        {"key":"field_platejka_table_items_partner_text_v1","label":"Финансовые фирмы — описание","name":"partner_text","type":"wysiwyg","required":0,"conditional_logic":0,"wrapper":{"width":"","class":"","id":""},"tabs":"all","toolbar":"basic","media_upload":0,"delay":0},
+                        {"key":"field_platejka_table_items_bank_value_v1","label":"Банки — значение","name":"bank_value","type":"text","required":0,"conditional_logic":0,"wrapper":{"width":"","class":"","id":""}},
+                        {"key":"field_platejka_table_items_bank_text_v1","label":"Банки — описание","name":"bank_text","type":"wysiwyg","required":0,"conditional_logic":0,"wrapper":{"width":"","class":"","id":""},"tabs":"all","toolbar":"basic","media_upload":0,"delay":0}
                     ]
                 }
             ]

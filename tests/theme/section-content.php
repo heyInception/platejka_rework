@@ -35,6 +35,7 @@ if ( $failures ) {
 }
 
 $assert( 'Глобально' === platejka_resolve_scalar( '', 'Глобально' ), 'Empty scalar inherits the global value.' );
+$assert( 'Глобально' === platejka_resolve_scalar( false, 'Глобально' ), 'An empty ACF false value inherits the global value.' );
 $assert( 'Локально' === platejka_resolve_scalar( 'Локально', 'Глобально' ), 'Non-empty scalar overrides the global value.' );
 $assert( '0' === platejka_resolve_scalar( '0', 'Глобально' ), 'The string zero remains an intentional local value.' );
 $assert( array( 'global' ) === platejka_resolve_collection( array(), array( 'global' ) ), 'Empty collection inherits globally.' );
@@ -79,10 +80,12 @@ $assert( str_contains( $plain_heading, '<h2 class="example__title">' ) && str_co
 $decorative_heading = platejka_section_heading( array( 'text' => 'Основной текст', 'accent' => 'Акцент', 'decorative' => true ), 'example__title' );
 $assert( 1 === substr_count( $decorative_heading, '<h2 class="screen-reader-text">' ) && str_contains( $decorative_heading, '<div class="example__title" aria-hidden="true">' ), 'Decorative headings pair one screen-reader h2 with one aria-hidden div.' );
 $assert( 2 === substr_count( wp_strip_all_tags( $decorative_heading ), 'Основной текст' ) && 2 === substr_count( wp_strip_all_tags( $decorative_heading ), 'Акцент' ), 'Semantic and decorative headings derive from the same text.' );
+$embedded_accent_heading = platejka_section_heading( array( 'text' => 'Основной Акцент текст', 'accent' => 'Акцент', 'decorative' => true ), 'example__title' );
+$assert( 2 === substr_count( wp_strip_all_tags( $embedded_accent_heading ), 'Акцент' ) && ! str_contains( wp_strip_all_tags( $embedded_accent_heading ), 'Акцент Акцент' ), 'An accent already present in the title is highlighted without duplicate visible or semantic text.' );
 
 $image_id = 0;
 foreach ( get_posts( array( 'post_type' => 'attachment', 'post_mime_type' => 'image', 'post_status' => 'inherit', 'posts_per_page' => 20, 'fields' => 'ids' ) ) as $candidate ) {
-	if ( wp_get_attachment_metadata( $candidate ) ) {
+	if ( wp_get_attachment_metadata( $candidate ) && wp_get_attachment_image_srcset( $candidate, 'large' ) ) {
 		$image_id = (int) $candidate;
 		break;
 	}
@@ -112,8 +115,14 @@ delete_option( 'platejka_section_builder_version' );
 $seed_main = platejka_resolve_section_data( array( 'slug' => 'shipments', 'mode' => 'main', 'row' => array() ) );
 $seed_default = platejka_resolve_section_data( array( 'slug' => 'shipments', 'mode' => 'default', 'row' => array() ) );
 $assert( ( $seed_main['title'] ?? '' ) !== ( $seed_default['title'] ?? '' ), 'Main and default variants resolve separate seed groups.' );
+$main_override = platejka_resolve_section_data( array( 'slug' => 'shipments', 'mode' => 'main', 'row' => array( 'overrides_main' => array( 'main' => array( 'title' => 'Локальный main' ) ) ) ) );
+$default_override = platejka_resolve_section_data( array( 'slug' => 'shipments', 'mode' => 'default', 'row' => array( 'overrides_default' => array( 'default' => array( 'title' => 'Локальный default' ) ) ) ) );
+$assert( 'Локальный main' === ( $main_override['title'] ?? null ) && 'Локальный default' === ( $default_override['title'] ?? null ), 'Variant-specific conditional override groups resolve only their effective mode.' );
 update_option( 'platejka_section_builder_version', 1, false );
-$migrated_empty = platejka_resolve_section_data( array( 'slug' => 'shipments', 'mode' => 'main', 'row' => array() ) );
+$force_empty_global = static fn() => false;
+add_filter( 'acf/load_value/name=call', $force_empty_global );
+$migrated_empty = platejka_resolve_section_data( array( 'slug' => 'call', 'mode' => 'default', 'row' => array() ) );
+remove_filter( 'acf/load_value/name=call', $force_empty_global );
 $assert( array() === $migrated_empty, 'Migration marker prevents an empty global value from falling back to seed content.' );
 if ( null === $old_marker ) {
 	delete_option( 'platejka_section_builder_version' );

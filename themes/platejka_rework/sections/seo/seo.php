@@ -7,5 +7,5 @@
         <?php endif; ?>
         <?php the_content(); ?>
   <?php if ( ! empty( $section_data['description'] ) ) : ?><div class="seo__description"><?php echo wp_kses_post( $section_data['description'] ); ?></div><?php endif; ?>
-  <div class="seo__cards" data-seo-collapsible><?php foreach ( $items as $index => $item ) : ?><article class="seo__card"><span class="seo__number"><?php echo esc_html( ( $item['value'] ?? '' ) ?: (string) ( $index + 1 ) ); ?></span><h3><?php echo esc_html( $item['title'] ?? '' ); ?></h3><div><?php echo wp_kses_post( $item['text'] ?? '' ); ?></div></article><?php endforeach; ?></div>
+  <div class="seo__cards"><?php foreach ( $items as $index => $item ) : ?><article class="seo__card"><span class="seo__number"><?php echo esc_html( ( $item['value'] ?? '' ) ?: (string) ( $index + 1 ) ); ?></span><h3><?php echo esc_html( $item['title'] ?? '' ); ?></h3><div><?php echo wp_kses_post( $item['text'] ?? '' ); ?></div></article><?php endforeach; ?></div>
 </div><button class="btn-reset seo__toggle" type="button" data-seo-toggle data-seo-show-label="<?php echo esc_attr( $show_label ); ?>" data-seo-hide-label="<?php echo esc_attr( $hide_label ); ?>" aria-expanded="false" hidden><?php echo esc_html( $show_label ); ?></button></div></div></section>

@@ -89,7 +89,17 @@ function platejka_validate_builder_rows( array $rows ) {
 			++$hero_count;
 		}
 
-		$anchor = isset( $row['anchor'] ) && is_string( $row['anchor'] ) ? $row['anchor'] : '';
+		$anchor = '';
+		if ( isset( $row['anchor'] ) && is_string( $row['anchor'] ) ) {
+			$anchor = $row['anchor'];
+		} else {
+			foreach ( $row as $field_key => $field_value ) {
+				if ( is_string( $field_key ) && str_starts_with( $field_key, 'field_platejka_row_' ) && str_ends_with( $field_key, '_anchor_v1' ) && is_string( $field_value ) ) {
+					$anchor = $field_value;
+					break;
+				}
+			}
+		}
 		if ( '' === $anchor ) {
 			continue;
 		}
