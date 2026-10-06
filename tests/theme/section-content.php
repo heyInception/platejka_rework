@@ -100,6 +100,9 @@ $assert( '' === platejka_cf7_form( 24 ), 'A non-CF7 post ID renders nothing.' );
 
 $seed = \Platejka\Core\Acf\SectionSeed::get();
 $assert( 1 === ( $seed['schema_version'] ?? null ) && is_array( $seed['sections'] ?? null ), 'Seed reader returns the validated version-one envelope.' );
+$assert( 'Международные платежи' === ( $seed['sections']['hero-main']['title'] ?? null ), 'Seed preserves the pre-migration home content.' );
+$seed_image = platejka_section_image( 'theme://sections/hero/img/hero-bg.png', 'large', array( 'class' => 'seed-image' ) );
+$assert( str_contains( $seed_image, 'class="seed-image"' ) && str_contains( $seed_image, 'width="' ) && str_contains( $seed_image, 'height="' ), 'Pre-migration theme media renders with intrinsic dimensions.' );
 
 WP_CLI::log( sprintf( 'Section content: %d checks, %d failures.', $checks, count( $failures ) ) );
 if ( $failures ) {

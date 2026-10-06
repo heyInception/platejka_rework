@@ -453,6 +453,21 @@
                     "library": "all"
                 },
                 {
+                    "key": "field_platejka_about_primary_link_v1",
+                    "label": "Основная ссылка",
+                    "name": "primary_link",
+                    "type": "link",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "array"
+                },
+                {
                     "key": "field_platejka_about_items_v1",
                     "label": "Элементы",
                     "name": "items",

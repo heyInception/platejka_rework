@@ -105,6 +105,32 @@ function platejka_section_dom_id( string $instance, string $local_id ): string {
 
 /** @param int|mixed $attachment_id @param string|array<int,int> $size @param array<string,mixed> $attributes */
 function platejka_section_image( $attachment_id, $size = 'large', array $attributes = array() ): string {
+	if ( is_string( $attachment_id ) && str_starts_with( $attachment_id, 'theme://' ) ) {
+		$relative = ltrim( substr( $attachment_id, 8 ), '/' );
+		if ( ! preg_match( '~^[a-zA-Z0-9_./-]+$~', $relative ) || str_contains( $relative, '..' ) ) {
+			return '';
+		}
+		$path = get_theme_file_path( $relative );
+		if ( ! is_file( $path ) ) {
+			return '';
+		}
+		$dimensions = wp_getimagesize( $path );
+		$attributes = array_merge( array( 'loading' => 'lazy', 'decoding' => 'async' ), $attributes );
+		$attributes['src'] = get_theme_file_uri( $relative );
+		if ( is_array( $dimensions ) ) {
+			$attributes['width']  = $dimensions[0];
+			$attributes['height'] = $dimensions[1];
+		}
+		$html = '<img';
+		foreach ( $attributes as $name => $value ) {
+			if ( '' === $value && str_starts_with( (string) $name, 'data-' ) ) {
+				$html .= ' ' . esc_attr( $name );
+				continue;
+			}
+			$html .= ' ' . esc_attr( $name ) . '="' . esc_attr( (string) $value ) . '"';
+		}
+		return $html . '>';
+	}
 	$attachment_id = absint( $attachment_id );
 	if ( ! $attachment_id || ! wp_attachment_is_image( $attachment_id ) ) {
 		return '';

@@ -1,5 +1,135 @@
 {
   "schema_version": 1,
-  "sections": {},
+  "sections": {
+    "hero-main": {
+      "title": "Международные платежи",
+      "title_accent": "за 1 день для Вашего бизнеса",
+      "description": "<p>Оплачивайте счета поставщиков и контрагентов за границей без ограничений</p><p>Официальный платежный агент</p>",
+      "image": "theme://sections/hero/img/hero-bg.png",
+      "items": [
+        {"title": "от 0.3%", "text": "Комиссия"},
+        {"title": "1-3 дня", "text": "В любую страну"},
+        {"title": "100 000 ₽", "text": "Минимальная сумма платежа"}
+      ],
+      "secondary_items": [
+        {"title": "На рынке", "value": "5 лет"},
+        {"title": "В реестре ЦБ РФ", "image": "theme://sections/hero/img/registry.png", "link": {"url": "#", "title": "Проверить", "target": ""}},
+        {"title": "В Ассоциации платёжных агентов", "image": "theme://sections/hero/img/associations.png", "link": {"url": "#", "title": "Документы", "target": ""}}
+      ]
+    },
+    "about": {
+      "eyebrow": "О компании",
+      "title": "Официальный платёжный агент в реестре ЦБ РФ",
+      "title_accent": "Официальный",
+      "description": "<p>Компания работает как платёжный агент с полной юридической идентификацией. Реквизиты, реестровые записи и адрес офиса открыты — их можно сверить в государственных источниках за несколько минут.</p>",
+      "image": "theme://sections/about/img/about-img.png",
+      "primary_link": {"url": "#", "title": "Образец агентского договора", "target": ""},
+      "items": [
+        {"title": "Выписка из реестра СРО", "image": "theme://sections/about/img/about-sro.png", "link": {"url": "#", "title": "Смотреть", "target": ""}},
+        {"title": "Выписка из реестра ЦБ РФ", "image": "theme://sections/about/img/cb-img.png", "link": {"url": "#", "title": "Смотреть", "target": ""}}
+      ]
+    },
+    "compliance": {
+      "eyebrow": "Финансовый комплаенс",
+      "title": "Как мы работаем, если платёж завис и не вернулся",
+      "description": "<p>Разбираем причину, связываемся с банками и помогаем вернуть или провести платёж по корректному маршруту.</p>",
+      "items": [
+        {"title": "Опыт с международными платежами", "image": "theme://sections/compliance/img/compliance/item-main-1.png"},
+        {"title": "Прямые контакты в банках-партнёрах", "image": "theme://sections/compliance/img/compliance/item-main-2.png"},
+        {"title": "Держим вас в курсе на всём этапе", "image": "theme://sections/compliance/img/compliance/item-main-3.png"},
+        {"title": "Работаем с ведущими банками", "text": "<p>Налаженные контакты для решения сложных ситуаций</p>"},
+        {"title": "Возможность тестового платежа", "text": "<p>Начните с тестового платежа от 100 $. Проверим маршрут на небольшой сумме, чтобы вы понимали, как пройдёт основная транзакция.</p>", "image": "theme://sections/compliance/img/compliance/test-main-img.png"}
+      ]
+    },
+    "review-main": {
+      "eyebrow": "Отзывы",
+      "title": "Клиенты остаются с нами надолго",
+      "description": "<p>Высокие оценки и отзывы о нашей работе на независимых площадках</p>",
+      "items": [
+        {"title": "Sasha Mekhel", "text": "<p>Platejka.com — отличный международный бизнес-платежный сервис! Платформа понятна и проста в использовании, платежи проходят быстро и надёжно, а поддержка всегда готова помочь.</p>", "value": "★★★★★", "caption": "Отзыв на Яндекс", "image": "theme://sections/review-main/img/review/yandex-main.png"},
+        {"title": "Ева Джозеф", "text": "<p>Особенно понравились прозрачность и скорость переводов. Размер комиссий был понятен с самого начала, без скрытых или дополнительных расходов.</p>", "value": "★★★★★", "caption": "Отзыв на Яндекс", "image": "theme://sections/review-main/img/review/yandex-main.png"},
+        {"title": "Вера Вера", "text": "<p>Служба поддержки предоставляет рекомендации и решения в дружелюбной и профессиональной манере, а безопасность каждой транзакции вселяет уверенность.</p>", "value": "★★★★★", "caption": "Отзыв на Яндекс", "image": "theme://sections/review-main/img/review/yandex-main.png"}
+      ]
+    },
+    "work": {
+      "title": "Как мы работаем",
+      "description": "<p>Для платежа понадобятся реквизиты получателя и документы для заключения договора.</p>",
+      "items": [
+        {"title": "Реквизиты получателя", "text": "<p>Данные из инвойса: сумма, валюта, реквизиты получателя и назначение платежа.</p>", "image": "theme://sections/work/img/work/doc-1.png"},
+        {"title": "Документы для заключения договора", "text": "<p>Для проведения международных платежей мы проверяем каждого клиента в рамках комплаенс-процедуры.</p>", "image": "theme://sections/work/img/work/doc-2.png"},
+        {"title": "Заключаем договор с российским или гонконгским юрлицом", "text": "<p>Выбираем подходящую юрисдикцию и оформляем договор для проведения международного платежа.</p>"},
+        {"title": "Вы переводите рубли на наш счёт в России", "text": "<p>Оплачиваете перевод в рублях без необходимости самостоятельно проводить валютную операцию.</p>"},
+        {"title": "Переводим эквивалентную сумму через SWIFT", "text": "<p>Отправляем средства с европейского счёта в нужной валюте по международной системе SWIFT.</p>"},
+        {"title": "Контрагент получает деньги в нужной валюте", "text": "<p>Поставщик получает сумму по указанным реквизитам и может закрыть обязательства по сделке.</p>"},
+        {"title": "Предоставляем отчёт платёжного агента", "text": "<p>После проведения платежа передаём документы с полной информацией о выполненной операции.</p>"}
+      ]
+    },
+    "with-us": {
+      "title": "Особенности работы с нами",
+      "description": "<p>Обеспечиваем прозрачность каждой операции и предоставляем информацию по статусу платежа, чтобы вы всегда понимали, на каком этапе находится перевод.</p>",
+      "items": [
+        {"title": "Надёжные платежи", "text": "<p>Проводим международные платежи через собственную инфраструктуру, обеспечивая стабильность операций и корректное зачисление средств без лишних задержек.</p>", "image": "theme://sections/with-us/img/with-us/main-item-1.png"},
+        {"title": "Переводы за 1–3 дня", "text": "<p>Отправляем средства в разные страны мира в среднем за 1–3 дня, чтобы вы могли планировать платежи и увереннее управлять финансами.</p>", "image": "theme://sections/with-us/img/with-us/main-item-2.png"},
+        {"title": "Гибкие способы оплаты", "text": "<p>Подбираем удобный способ оплаты под вашу задачу: банковский перевод, карта или электронный кошелёк.</p>", "image": "theme://sections/with-us/img/with-us/main-item-3.png"},
+        {"title": "Безопасность операций", "text": "<p>Проверяем реквизиты и сопровождаем перевод до зачисления, снижая риски ошибок и проблем при проведении платежа.</p>", "image": "theme://sections/with-us/img/with-us/main-item-4.png"},
+        {"title": "Выгодные условия", "text": "<p>Предлагаем понятные комиссии и конкурентный курс обмена валют, чтобы снизить расходы на международные расчёты.</p>", "image": "theme://sections/with-us/img/with-us/main-item-5.png"},
+        {"title": "Быстрая обработка", "text": "<p>Оперативно обрабатываем международные платежи, в том числе срочные переводы и операции по контрактам с ограниченными сроками.</p>", "image": "theme://sections/with-us/img/with-us/main-item-6.png"}
+      ]
+    },
+    "destinations": {
+      "title": "Доступные направления",
+      "description": "<p>Мы работаем с более чем 200 странами, включая:</p>",
+      "image": "theme://sections/destinations/img/destinations/globe-main.png",
+      "items": [
+        {"title":"Китай","image":"theme://sections/destinations/img/destinations/flags-1.png"},{"title":"Вьетнам","image":"theme://sections/destinations/img/destinations/flags-2.png"},{"title":"Индия","image":"theme://sections/destinations/img/destinations/flags-3.png"},{"title":"Россия","image":"theme://sections/destinations/img/destinations/flags-4.png"},{"title":"Армения","image":"theme://sections/destinations/img/destinations/flags-5.png"},{"title":"Европа","image":"theme://sections/destinations/img/destinations/flags-6.png"},{"title":"Турция","image":"theme://sections/destinations/img/destinations/flags-7.png"},{"title":"Беларусь","image":"theme://sections/destinations/img/destinations/flags-8.png"},{"title":"Кыргызстан","image":"theme://sections/destinations/img/destinations/flags-9.png"},{"title":"Молдова","image":"theme://sections/destinations/img/destinations/flags-10.png"},
+        {"title":"Таджикистан","image":"theme://sections/destinations/img/destinations/flags-11.png"},{"title":"Узбекистан","image":"theme://sections/destinations/img/destinations/flags-12.png"},{"title":"Греция","image":"theme://sections/destinations/img/destinations/flags-13.png"},{"title":"Кипр","image":"theme://sections/destinations/img/destinations/flags-14.png"},{"title":"Сербия","image":"theme://sections/destinations/img/destinations/flags-15.png"},{"title":"США","image":"theme://sections/destinations/img/destinations/flags-16.png"},{"title":"Италия","image":"theme://sections/destinations/img/destinations/flags-17.png"},{"title":"Канада","image":"theme://sections/destinations/img/destinations/flags-18.png"},{"title":"Германия","image":"theme://sections/destinations/img/destinations/flags-19.png"},{"title":"Великобритания","image":"theme://sections/destinations/img/destinations/flags-20.png"},
+        {"title":"Швейцария","image":"theme://sections/destinations/img/destinations/flags-21.png"},{"title":"Казахстан","image":"theme://sections/destinations/img/destinations/flags-22.png"},{"title":"Таиланд","image":"theme://sections/destinations/img/destinations/flags-23.png"},{"title":"Марокко","image":"theme://sections/destinations/img/destinations/flags-24.png"},{"title":"Куба","image":"theme://sections/destinations/img/destinations/flags-25.png"},{"title":"Сингапур","image":"theme://sections/destinations/img/destinations/flags-26.png"},{"title":"Португалия","image":"theme://sections/destinations/img/destinations/flags-27.png"},{"title":"Австрия","image":"theme://sections/destinations/img/destinations/flags-28.png"},{"title":"Черногория","image":"theme://sections/destinations/img/destinations/flags-29.png"},{"title":"Литва","image":"theme://sections/destinations/img/destinations/flags-30.png"},
+        {"title":"Польша","image":"theme://sections/destinations/img/destinations/flags-31.png"},{"title":"Швеция","image":"theme://sections/destinations/img/destinations/flags-32.png"},{"title":"Болгария","image":"theme://sections/destinations/img/destinations/flags-33.png"},{"title":"Чехия","image":"theme://sections/destinations/img/destinations/flags-34.png"},{"title":"Япония","image":"theme://sections/destinations/img/destinations/flags-35.png"},{"title":"Южная Корея","image":"theme://sections/destinations/img/destinations/flags-36.png"},{"title":"Азербайджан","image":"theme://sections/destinations/img/destinations/flags-37.png"},{"title":"Эстония","image":"theme://sections/destinations/img/destinations/flags-38.png"},{"title":"Латвия","image":"theme://sections/destinations/img/destinations/flags-39.png"},{"title":"Нидерланды","image":"theme://sections/destinations/img/destinations/flags-40.png"},
+        {"title":"Израиль","image":"theme://sections/destinations/img/destinations/flags-41.png"},{"title":"Франция","image":"theme://sections/destinations/img/destinations/flags-42.png"},{"title":"Грузия","image":"theme://sections/destinations/img/destinations/flags-43.png"},{"title":"Испания","image":"theme://sections/destinations/img/destinations/flags-44.png"},{"title":"ОАЭ","image":"theme://sections/destinations/img/destinations/flags-45.png"}
+      ]
+    },
+    "problems": {
+      "title": "Какие проблемы мы решаем",
+      "description": "<p>Помогаем бизнесу проводить платежи в условиях банковских ограничений</p>",
+      "items": [
+        {"title":"Платёж не проходит в китайский банк","text":"<p><strong>Проблема:</strong> прямой перевод из российского банка возвращается или блокируется.</p><p><strong>Решение:</strong> подбираем рабочий маршрут и проводим оплату через подходящую платёжную схему.</p>","image":"theme://sections/problems/img/problems/item-1.png"},
+        {"title":"Появилась сложность с документами","text":"<p><strong>Проблема:</strong> для оплаты нужны договор, инвойс и корректное назначение платежа.</p><p><strong>Решение:</strong> проверяем документы и предоставляем закрывающие документы по сделке.</p>","image":"theme://sections/problems/img/problems/item-2.png"},
+        {"title":"Оплата поставщику в нужной валюте","text":"<p><strong>Проблема:</strong> необходимо перечислить деньги контрагенту в юанях или долларах.</p><p><strong>Решение:</strong> организуем перевод в CNY или USD на счёт поставщика.</p>","image":"theme://sections/problems/img/problems/item-3.png"}
+      ]
+    },
+    "serves": {
+      "title": "Для кого работает Платёжка",
+      "description": "<p>Помогаем компаниям из разных отраслей проводить международные платежи и работать с зарубежными партнёрами.</p>",
+      "items": [
+        {"title":"Розничные и оптовые торговые компании","text":"<p>Помогаем оплачивать товары и материалы зарубежным поставщикам, чтобы сохранять сроки поставок.</p>","image":"theme://sections/serves/img/serves/serves-main-1.png"},
+        {"title":"Логистические компании","text":"<p>Проводим платежи за международные перевозки и услуги подрядчиков, чтобы сокращать задержки.</p>","image":"theme://sections/serves/img/serves/serves-main-2.png"},
+        {"title":"IT-компании и маркетинговые агентства","text":"<p>Помогаем оплачивать зарубежные сервисы, подрядчиков и разработку.</p>","image":"theme://sections/serves/img/serves/serves-main-3.png"},
+        {"title":"Автосалоны и дилеры","text":"<p>Проводим платежи за автомобили, комплектующие и сопутствующие услуги.</p>","image":"theme://sections/serves/img/serves/serves-main-4.png"},
+        {"title":"Строительные компании","text":"<p>Помогаем оплачивать материалы и оборудование за рубежом.</p>","image":"theme://sections/serves/img/serves/serves-main-5.png"},
+        {"title":"Финтех и электронная коммерция","text":"<p>Проводим трансграничные платежи для онлайн-ритейла, маркетплейсов и финтех-компаний.</p>","image":"theme://sections/serves/img/serves/serves-main-6.png"},
+        {"title":"Наука, образование и консалтинг","text":"<p>Помогаем оплачивать публикации, конференции, экспертов и образовательные программы.</p>","image":"theme://sections/serves/img/serves/serves-main-7.png"}
+      ]
+    },
+    "cases": {
+      "title": "Кейсы",
+      "description": "<p>Более 2 000 отзывов на независимых площадках</p>",
+      "items": [
+        {"title":"Максим Липилин","text":"<p>«Оплачиваем промышленное оборудование в Китае через этот сервис»</p>","value":"★★★★★","caption":"директор СК «Бетоныч»","image":"theme://sections/cases/img/cases/betonych.png"},
+        {"title":"Юлия Макарова","text":"<p>«Проводим с Платёжкой все наши транзакции в Турцию»</p>","value":"★★★★★","caption":"финансовый директор Миран Трейд","image":"theme://sections/cases/img/cases/miran-trade.png"},
+        {"title":"Иванова Анна","text":"<p>«Оплачиваем поставки автозапчастей из Польши с помощью Платёжки»</p>","value":"★★★★★","caption":"CEO компании «Филтрон»","image":"theme://sections/cases/img/cases/filtron.png"}
+      ]
+    },
+    "table": {
+      "eyebrow": "Критерий",
+      "title": "Почему работа с нами — ваш лучший выбор",
+      "items": [
+        {"title":"Модель цены","value":"от 0,3 до 2%","text":"<p>Фиксированная комиссия, валюта конвертируется по курсу биржи.</p>"},
+        {"title":"Скорость платежей","value":"От 2 часов до 3 дней","text":"<p>Срок зависит от страны, банка и валюты.</p>"},
+        {"title":"Риски","value":"Гарантия результата","text":"<p>Работаем по договору и сопровождаем платёж.</p>"},
+        {"title":"Удобство работы","value":"Быстрая связь","text":"<p>Переписка в чате и решение вопросов по звонку.</p>"},
+        {"title":"Документооборот","value":"Простой","text":"<p>Электронные копии в чате, оригиналы направляются электронно или почтой.</p>"}
+      ]
+    }
+  },
   "home_rows": []
 }
