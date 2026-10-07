@@ -1,80 +1,45 @@
-<section class="call" data-call aria-labelledby="call-title">
-  <div class="container">
-    <div class="call__panel call__row">
-      <div class="call__layout">
-        <div class="call__column">
-          <h2 class="call__title" id="call-title" data-call-title>
-            Оставьте заявку —<br>
-            перезвоним,<br>
-            проконсультируем,<br>
-            подключим
-          </h2>
-
-          <ul class="list-reset hero__trust call__trust" aria-label="Преимущества сервиса">
-            <li class="hero__trust-card hero__trust-card_experience" data-call-card>
-              <div class="hero__trust-years" aria-label="Пять лет">
-                <img src="img/hero__trust-years-left.svg" width="16" height="52" alt="">
-                <span aria-hidden="true">5 лет</span>
-                <img src="img/hero__trust-years-right.svg" width="16" height="52" alt="">
-              </div>
-              <p class="hero__trust-caption">На рынке</p>
-            </li>
-            <li class="hero__trust-card hero__trust-card_registry" data-call-card>
-              <p class="hero__trust-title">В&nbsp;реестре ЦБ&nbsp;РФ<br>и&nbsp;СРО</p>
-              <img class="hero__trust-decor hero__trust-decor_registry" src="img/registry.png" width="161"
-                height="161" alt="">
-            </li>
-            <li class="hero__trust-card hero__trust-card_association" data-call-card>
-              <p class="hero__trust-title">В Ассоциации<br>платёжных агентов</p>
-              <img class="hero__trust-decor hero__trust-decor_association" src="img/associations.png" width="161"
-                height="161" alt="">
-            </li>
-          </ul>
-        </div>
-
-        <div class="call__form" data-call-form>
-          <form action="#">
-            <input class="ui-input js-phone-mask" type="tel" name="phone" inputmode="tel" autocomplete="tel"
-              placeholder="Номер телефона" aria-label="Номер телефона" required>
-            <input class="ui-input" type="email" name="email" autocomplete="email" placeholder="Email"
-              aria-label="Email">
-            <textarea class="ui-input call__message" name="message" placeholder="Ваше сообщение"
-              aria-label="Ваше сообщение" required></textarea>
-            <button class="ui-button call__submit" type="submit">
-              Отправить заявку
-              <img src="img/svg/ChevronRight.svg" alt="Отправить заявку" width="20" height="20">
-            </button>
-            <label class="custom-checkbox call__consent">
-              <input type="checkbox" name="privacy" class="custom-checkbox__field" required>
-              <span class="custom-checkbox__content">Принимаю условия <a href="#" class="ui-link">политики
-                  конфиденциальности</a> и даю <a href="#" class="ui-link">согласие на обработку персональных
-                  данных</a>.</span>
-            </label>
-          </form>
-        </div>
-      </div>
+<?php
+$data        = platejka_section_array( $section_data ?? array() );
+$instance    = isset( $section_instance ) ? (string) $section_instance : 'call-about';
+$anchor      = isset( $section_anchor ) ? trim( (string) $section_anchor ) : '';
+$title_id    = platejka_section_dom_id( $instance, 'call-title' );
+$trust_items = platejka_section_array( $data['trust_items'] ?? array() );
+$cards       = platejka_section_array( $data['cards'] ?? array() );
+$icons       = array(
+  'telegram' => 'img/call-about/telegram.svg', 'whatsapp' => 'img/call-about/whatsapp.svg', 'vk' => 'img/call-about/vk.svg',
+  'telegram-media' => 'img/call-about/telegram-media.svg', 'vc' => 'img/call-about/vc.svg', 'rbc' => 'img/call-about/rbc.svg', 'lenta' => 'img/call-about/lenta.svg',
+);
+?>
+<section class="call"<?php echo '' !== $anchor ? ' id="' . esc_attr( $anchor ) . '"' : ''; ?> data-call aria-labelledby="<?php echo esc_attr( $title_id ); ?>">
+  <div class="container"><div class="call__panel call__row"><div class="call__layout">
+    <div class="call__column">
+      <?php echo str_replace( '<h2', '<h2 data-call-title', platejka_section_heading( platejka_section_array( $data['heading'] ?? array() ), 'call__title', $title_id ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+      <ul class="list-reset hero__trust call__trust" aria-label="<?php echo esc_attr( (string) ( $data['trust_label'] ?? '' ) ); ?>">
+        <?php foreach ( $trust_items as $item ) :
+          $item = platejka_section_array( $item );
+          $variant = in_array( $item['variant'] ?? '', array( 'experience', 'registry', 'association' ), true ) ? (string) $item['variant'] : 'registry';
+        ?>
+          <li class="hero__trust-card hero__trust-card_<?php echo esc_attr( $variant ); ?>" data-call-card>
+            <?php if ( 'experience' === $variant ) : ?>
+              <div class="hero__trust-years" aria-label="<?php echo esc_attr( (string) ( $item['value'] ?? '' ) ); ?>"><img src="img/hero__trust-years-left.svg" width="16" height="52" alt=""><span aria-hidden="true"><?php echo esc_html( (string) ( $item['value'] ?? '' ) ); ?></span><img src="img/hero__trust-years-right.svg" width="16" height="52" alt=""></div><p class="hero__trust-caption"><?php echo esc_html( (string) ( $item['title'] ?? '' ) ); ?></p>
+            <?php else : ?>
+              <p class="hero__trust-title"><?php echo platejka_heading_text( $item['title'] ?? '' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p><?php echo platejka_section_image( $item['image'] ?? 0, 'medium', array( 'class' => 'hero__trust-decor hero__trust-decor_' . $variant, 'alt' => '', 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => '161px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+            <?php endif; ?>
+          </li>
+        <?php endforeach; ?>
+      </ul>
     </div>
-  </div>
-  <div class="container">
-    <div class="call-about__cards">
-      <article class="call-about__card">
-        <h3>Свяжитесь с нами</h3>
-        <p>Ответим на вопросы и поможем подобрать решение в удобном мессенджере.</p>
-        <div class="call-about__links"><a href="#" aria-label="Написать в Telegram"><img
-              src="img/call-about/telegram.svg" alt="" width="52" height="52"></a><a href="#"
-            aria-label="Написать в WhatsApp"><img src="img/call-about/whatsapp.svg" alt="" width="52" height="52"></a>
-        </div>
-      </article>
-      <article class="call-about__card">
-        <h3>Читайте нас в соцсетях</h3>
-        <p>Делимся новостями, кейсами и полезными материалами о международных платежах.</p>
-        <div class="call-about__links"><a href="#" aria-label="ВКонтакте"><img src="img/call-about/vk.svg" alt=""
-              width="52" height="52"></a><a href="#" aria-label="Telegram"><img src="img/call-about/telegram-media.svg"
-              alt="" width="52" height="52"></a><a href="#" aria-label="VC.ru"><img src="img/call-about/vc.svg" alt=""
-              width="52" height="52"></a><a href="#" aria-label="РБК"><img src="img/call-about/rbc.svg" alt=""
-              width="52" height="52"></a><a href="#" aria-label="Лента.ру"><img src="img/call-about/lenta.svg" alt=""
-              width="52" height="52"></a></div>
-      </article>
-    </div>
-  </div>
+    <div class="call__form" data-call-form><?php echo platejka_cf7_form( $data['form'] ?? 0 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
+  </div></div></div>
+  <div class="container"><div class="call-about__cards">
+    <?php foreach ( $cards as $card ) : $card = platejka_section_array( $card ); ?>
+      <article class="call-about__card"><h3><?php echo esc_html( (string) ( $card['title'] ?? '' ) ); ?></h3><?php echo wpautop( wp_kses_post( (string) ( $card['text'] ?? '' ) ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><div class="call-about__links">
+        <?php foreach ( platejka_section_array( $card['links'] ?? array() ) as $item ) :
+          $item = platejka_section_array( $item ); $link = platejka_section_array( $item['link'] ?? array() );
+          $url = esc_url( (string) ( $link['url'] ?? '' ) ); $icon = $icons[ $item['icon'] ?? '' ] ?? '';
+          if ( '' === $url || '#' === $url || '' === $icon ) { continue; }
+        ?><a href="<?php echo esc_attr( $url ); ?>" aria-label="<?php echo esc_attr( (string) ( $item['label'] ?? '' ) ); ?>"<?php echo ! empty( $link['target'] ) ? ' target="' . esc_attr( $link['target'] ) . '" rel="noopener"' : ''; ?>><img src="<?php echo esc_attr( $icon ); ?>" alt="" width="52" height="52"></a><?php endforeach; ?>
+      </div></article>
+    <?php endforeach; ?>
+  </div></div>
 </section>

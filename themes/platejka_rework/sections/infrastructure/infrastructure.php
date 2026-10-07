@@ -12,9 +12,7 @@ $entity_icons    = array( 'indonesia' => 'img/infrastructure/flag-indonesia.svg'
   <div class="container">
     <header class="infrastructure__header">
       <?php
-      $heading_html = platejka_section_heading( platejka_section_array( $data['heading'] ?? array() ), '' );
-      $heading_html = preg_replace( '/<h2 class=""/', '<h2 id="' . esc_attr( $title_id ) . '"', $heading_html, 1 );
-      echo $heading_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+      echo platejka_section_heading( platejka_section_array( $data['heading'] ?? array() ), '', $title_id ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
       ?>
       <?php echo wpautop( wp_kses_post( (string) ( $data['description'] ?? '' ) ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
       <div class="infrastructure__specializations">

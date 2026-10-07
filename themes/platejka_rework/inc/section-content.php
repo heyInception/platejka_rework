@@ -176,12 +176,13 @@ function platejka_heading_text( $value ): string {
 /**
  * @param array{text?:mixed,accent?:mixed,decorative?:mixed} $heading
  */
-function platejka_section_heading( array $heading, string $class = '' ): string {
+function platejka_section_heading( array $heading, string $class = '', string $id = '' ): string {
 	$text       = trim( (string) ( $heading['text'] ?? '' ) );
 	$accent     = trim( (string) ( $heading['accent'] ?? '' ) );
 	$accent_position = '' !== $accent ? mb_stripos( $text, $accent ) : false;
 	$semantic  = trim( wp_strip_all_tags( false === $accent_position ? $text . ( '' !== $accent ? ' ' . $accent : '' ) : $text ) );
 	$class_attr = esc_attr( $class );
+	$id_attr    = '' !== $id ? ' id="' . esc_attr( $id ) . '"' : '';
 	if ( false !== $accent_position ) {
 		$before  = mb_substr( $text, 0, $accent_position );
 		$matched = mb_substr( $text, $accent_position, mb_strlen( $accent ) );
@@ -194,9 +195,9 @@ function platejka_section_heading( array $heading, string $class = '' ): string 
 		}
 	}
 	if ( empty( $heading['decorative'] ) ) {
-		return '<h2 class="' . $class_attr . '">' . $visible . '</h2>';
+		return '<h2' . $id_attr . ' class="' . $class_attr . '">' . $visible . '</h2>';
 	}
-	return '<h2 class="screen-reader-text">' . esc_html( $semantic ) . '</h2>'
+	return '<h2' . $id_attr . ' class="screen-reader-text">' . esc_html( $semantic ) . '</h2>'
 		. '<div class="' . $class_attr . '" aria-hidden="true">' . $visible . '</div>';
 }
 

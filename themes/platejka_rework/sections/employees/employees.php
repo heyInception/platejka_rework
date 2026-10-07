@@ -1,17 +1,24 @@
-<section class="employees" aria-labelledby="employees-title" data-employees>
+<?php
+$data       = platejka_section_array( $section_data ?? array() );
+$instance   = isset( $section_instance ) ? (string) $section_instance : 'employees';
+$title_id   = platejka_section_dom_id( $instance, 'employees-title' );
+$anchor     = isset( $section_anchor ) ? trim( (string) $section_anchor ) : '';
+$quote_html = wpautop( wp_kses_post( (string) ( $data['quote'] ?? '' ) ) );
+$quote_html = preg_replace( '/<p(\s|>)/', '<p data-employees-text$1', $quote_html, 1 );
+?>
+<section class="employees"<?php echo '' !== $anchor ? ' id="' . esc_attr( $anchor ) . '"' : ''; ?> aria-labelledby="<?php echo esc_attr( $title_id ); ?>" data-employees>
   <div class="employees__panel">
     <div class="container">
       <div class="employees__layout">
         <div class="employees__quote">
-          <h2 id="employees-title" data-employees-heading>Наши&nbsp;сотрудники знают всё&nbsp;о&nbsp;технологиях платежей</h2>
+          <?php echo str_replace( '<h2', '<h2 data-employees-heading', platejka_section_heading( platejka_section_array( $data['heading'] ?? array() ), '', $title_id ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
           <blockquote class="employees__blockquote">
             <img class="employees__quote-mark" src="img/employees/ps.svg" width="28" height="20" alt=""
               data-employees-quote-mark>
-            <p data-employees-text>5 лет назад, говоря о том, что нас ждут новые вызовы и ответы на них, мы не могли
-              предположить какого масштаба они будут характера</p>
+            <?php echo $quote_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
             <footer class="employees__author" data-employees-author>
-              <img src="img/employees/director-img.png" width="128" height="128" alt="Клочков Михаил">
-              <div><strong>Клочков Михаил</strong><span>Директор по развитию</span></div>
+              <?php echo platejka_section_image( $data['author_image'] ?? 0, 'thumbnail', array( 'alt' => (string) ( $data['author_name'] ?? '' ), 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => '128px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+              <div><strong><?php echo esc_html( (string) ( $data['author_name'] ?? '' ) ); ?></strong><span><?php echo esc_html( (string) ( $data['author_role'] ?? '' ) ); ?></span></div>
             </footer>
           </blockquote>
           <svg class="employees__signature" width="229" height="59" viewBox="0 0 229 59" fill="none"
@@ -28,8 +35,7 @@
           </svg>
 
         </div>
-        <img class="employees__image" src="img/employees/employees-img.png" width="584" height="426"
-          alt="Команда Платёжки в офисе" data-employees-image>
+        <?php echo platejka_section_image( $data['team_image'] ?? 0, 'large', array( 'class' => 'employees__image', 'alt' => 'Команда Платёжки в офисе', 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => '(max-width: 767px) 100vw, 584px', 'data-employees-image' => '' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
       </div>
     </div>
   </div>

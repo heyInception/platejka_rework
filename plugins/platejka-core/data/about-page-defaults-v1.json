@@ -84,7 +84,7 @@
       ]
     },
     "call-about": {
-      "heading":{"text":"Оставьте заявку — перезвоним, проконсультируем, подключим","accent":"","decorative":0},"form":3321,"trust_label":"Преимущества сервиса",
+      "heading":{"text":"Оставьте заявку —\nперезвоним,\nпроконсультируем,\nподключим","accent":"","decorative":0},"form":3321,"trust_label":"Преимущества сервиса",
       "trust_items":[{"variant":"experience","value":"5 лет","title":"На рынке","text":"","image":""},{"variant":"registry","value":"","title":"В реестре ЦБ РФ и СРО","text":"","image":"theme://sections/call/img/registry.png"},{"variant":"association","value":"","title":"В Ассоциации платёжных агентов","text":"","image":"theme://sections/call/img/associations.png"}],
       "cards":[
         {"title":"Свяжитесь с нами","text":"Ответим на вопросы и поможем подобрать решение в удобном мессенджере.","links":[{"icon":"telegram","link":{"url":"https://t.me/platejka_com","title":"","target":"_blank"},"label":"Написать в Telegram"},{"icon":"whatsapp","link":{"url":"https://wa.me/79361895321","title":"","target":"_blank"},"label":"Написать в WhatsApp"}]},
