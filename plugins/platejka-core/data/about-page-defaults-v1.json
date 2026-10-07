@@ -6,14 +6,14 @@
       "title": "Ваш надёжный платёжный агент",
       "lead": "Когда прямые переводы из российских банков блокируются, мы находим подходящий способ доставить ваши деньги поставщику",
       "proofs": [
-        {"image":"theme://sections/about-hero/img/about-hero/img-cb-rf.png","icon":"theme://sections/about-hero/img/about-hero/card-cb-rf.png","title":"Внесены в реестр ЦБ РФ","text":"Официальный статус и прозрачная работа","link":{"url":"https://www.cbr.ru/registries/microfinance/","title":"Проверить","target":"_blank"}},
-        {"image":"theme://sections/about-hero/img/about-hero/img-agent.png","icon":"theme://sections/about-hero/img/about-hero/card-agent.png","title":"В ассоциации платёжных агентов","text":"Лучшая гарантия и репутация агента","link":{"url":"","title":"","target":""}}
+        {"image":"theme://sections/about-hero/img/about-hero/img-cb-rf.png","icon":"theme://sections/about-hero/img/about-hero/card-cb-rf.png","title":"Внесены в реестр ЦБ РФ","text":"Официальный статус и прозрачная работа","link":{"url":"https://cbr.ru/rbr/rbr_fr/doc?id=49140","title":"Проверить","target":"_blank"}},
+        {"image":"theme://sections/about-hero/img/about-hero/img-agent.png","icon":"theme://sections/about-hero/img/about-hero/card-agent.png","title":"В ассоциации платёжных агентов","text":"Лучшая гарантия и репутация агента","link":{"url":"/wp-content/uploads/2026/02/vypiska_iz_reestra_sro_ooo_platezhka.pdf","title":"Документы","target":"_blank"}}
       ],
       "metrics": [
         {"variant":"badge","value":"с 2022","title":"ЦБ РФ","text":"Занимаемся зарубежными платежами","links":[]},
         {"variant":"simple","value":"318+","title":"","text":"Клиентов на текущем обслуживании","links":[]},
-        {"variant":"rating","value":"4.9","title":"Средняя оценка по отзывам на:","text":"","links":[{"icon":"locator","link":{"url":"","title":"Локатор","target":""}},{"icon":"2gis","link":{"url":"","title":"2ГИС","target":""}},{"icon":"yell","link":{"url":"","title":"Yell","target":""}}]},
-        {"variant":"media","value":"","title":"Мы в СМИ","text":"","links":[{"icon":"vk","link":{"url":"","title":"ВКонтакте","target":""}},{"icon":"telegram","link":{"url":"","title":"Telegram","target":""}},{"icon":"vc","link":{"url":"","title":"VC.ru","target":""}},{"icon":"rbc","link":{"url":"","title":"РБК","target":""}},{"icon":"lenta","link":{"url":"","title":"Лента.ру","target":""}}]},
+        {"variant":"rating","value":"4.9","title":"Средняя оценка по отзывам на:","text":"","links":[{"icon":"locator","link":{"url":"https://yandex.ru/profile/217714971749?lang=ru","title":"Локатор","target":"_blank"}},{"icon":"2gis","link":{"url":"https://go.2gis.com/qUUel","title":"2ГИС","target":"_blank"}},{"icon":"yell","link":{"url":"https://www.yell.ru/moscow/com/internet-buxgalteriya-platezhka_14472104/","title":"Yell","target":"_blank"}}]},
+        {"variant":"media","value":"","title":"Мы в СМИ","text":"","links":[{"icon":"vk","link":{"url":"https://vk.com/platejka_official","title":"ВКонтакте","target":"_blank"}},{"icon":"telegram","link":{"url":"https://t.me/platejka_SWIFT","title":"Telegram","target":"_blank"}},{"icon":"vc","link":{"url":"https://vc.ru/u/3360297-mihail-platezhkin","title":"VC.ru","target":"_blank"}},{"icon":"rbc","link":{"url":"","title":"","target":""}},{"icon":"lenta","link":{"url":"","title":"","target":""}}]},
         {"variant":"nps","value":"9.2","title":"","text":"NPS индекс потребительской лояльности","links":[]}
       ]
     },
@@ -52,12 +52,12 @@
     },
     "financial": {
       "eyebrow":"Финансовый комплаенс","heading":{"text":"Как мы работаем, если платёж завис и не вернулся","accent":"если платёж завис и не вернулся","decorative":1},
-      "description":"Разбираем причину, связываемся с банками и помогаем вернуть или провести платёж по корректному маршруту.","link":{"url":"","title":"Связаться с комплаенсом","target":""},
+      "description":"Разбираем причину, связываемся с банками и помогаем вернуть или провести платёж по корректному маршруту.","link":{"url":"","title":"","target":""},
       "benefits":[{"image":"theme://sections/financial/img/financial/item-main-1.png","text":"Опыт с международными платежами"},{"image":"theme://sections/financial/img/financial/item-main-2.png","text":"Прямые контакты в банках-партнёрах"},{"image":"theme://sections/financial/img/financial/item-main-3.png","text":"Держим вас в курсе на всём этапе"}],
       "case":{"label":"Реальный кейс","badge":"Решили за 24 часа","title":"Платёж завис в Bank of China","text":"Команда комплаенса направила запросы в банк-корреспондент, уточнила статус перевода и помогла оперативно вывести платёж из проверки","image":"theme://sections/financial/img/financial/img-financial.png","logo":"theme://sections/financial/img/financial/bank-main-1.png"},
       "banks_title":"Работаем с ведущими банками","banks_description":"Налаженные контакты для решения сложных ситуаций",
       "banks":[{"image":"theme://sections/financial/img/financial/bank-main-1.png","title":"Bank of China"},{"image":"theme://sections/financial/img/financial/bank-main-2.png","title":"ICBC"},{"image":"theme://sections/financial/img/financial/bank-main-3.png","title":"Emirates NBD"},{"image":"theme://sections/financial/img/financial/bank-main-4.png","title":"Bank Mandiri (Indonesia)"},{"image":"theme://sections/financial/img/financial/bank-main-5.png","title":"China Construction Bank"},{"image":"theme://sections/financial/img/financial/bank-main-6.png","title":"Bank of Communications"},{"image":"theme://sections/financial/img/financial/bank-main-7.png","title":"Wise"}],
-      "test":{"title":"Возможность тестового платежа","text":"Начните с тестового платежа от 100 $. Проверим маршрут на небольшой сумме, чтобы вы понимали, как пройдёт основная транзакция.","link":{"url":"","title":"Отправить тестовый платёж","target":""},"image":"theme://sections/financial/img/financial/test-main-img.png"}
+      "test":{"title":"Возможность тестового платежа","text":"Начните с тестового платежа от 100 $. Проверим маршрут на небольшой сумме, чтобы вы понимали, как пройдёт основная транзакция.","link":{"url":"","title":"","target":""},"image":"theme://sections/financial/img/financial/test-main-img.png"}
     },
     "employees": {
       "heading":{"text":"Наши сотрудники знают всё о технологиях платежей","accent":"","decorative":0},
@@ -88,7 +88,7 @@
       "trust_items":[{"variant":"experience","value":"5 лет","title":"На рынке","text":"","image":""},{"variant":"registry","value":"","title":"В реестре ЦБ РФ и СРО","text":"","image":"theme://sections/call/img/registry.png"},{"variant":"association","value":"","title":"В Ассоциации платёжных агентов","text":"","image":"theme://sections/call/img/associations.png"}],
       "cards":[
         {"title":"Свяжитесь с нами","text":"Ответим на вопросы и поможем подобрать решение в удобном мессенджере.","links":[{"icon":"telegram","link":{"url":"https://t.me/platejka_com","title":"","target":"_blank"},"label":"Написать в Telegram"},{"icon":"whatsapp","link":{"url":"https://wa.me/79361895321","title":"","target":"_blank"},"label":"Написать в WhatsApp"}]},
-        {"title":"Читайте нас в соцсетях","text":"Делимся новостями, кейсами и полезными материалами о международных платежах.","links":[{"icon":"vk","link":{"url":"","title":"","target":""},"label":"ВКонтакте"},{"icon":"telegram-media","link":{"url":"https://t.me/platejka_com","title":"","target":"_blank"},"label":"Telegram"},{"icon":"vc","link":{"url":"","title":"","target":""},"label":"VC.ru"},{"icon":"rbc","link":{"url":"","title":"","target":""},"label":"РБК"},{"icon":"lenta","link":{"url":"","title":"","target":""},"label":"Лента.ру"}]}
+        {"title":"Читайте нас в соцсетях","text":"Делимся новостями, кейсами и полезными материалами о международных платежах.","links":[{"icon":"vk","link":{"url":"https://vk.com/platejka_official","title":"","target":"_blank"},"label":"ВКонтакте"},{"icon":"telegram-media","link":{"url":"https://t.me/platejka_SWIFT","title":"","target":"_blank"},"label":"Telegram"},{"icon":"vc","link":{"url":"https://vc.ru/u/3360297-mihail-platezhkin","title":"","target":"_blank"},"label":"VC.ru"},{"icon":"rbc","link":{"url":"","title":"","target":""},"label":"РБК"},{"icon":"lenta","link":{"url":"","title":"","target":""},"label":"Лента.ру"}]}
       ]
     }
   },

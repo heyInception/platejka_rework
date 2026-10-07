@@ -22,6 +22,7 @@ if ( class_exists( $class ) ) {
 	$assert( $expected === ( $report['page']['sections'] ?? null ), 'Preview contains the exact approved nine-section order.' );
 	$assert( array( 'about-hero', 'location', 'infrastructure', 'financial', 'employees', 'exhibitions', 'developing', 'call-about' ) === ( $report['page_local_sections'] ?? null ), 'Preview seeds exactly eight local content sections.' );
 	$assert( false === ( $report['writes']['performed'] ?? true ), 'Preview performs no writes.' );
+	$assert( false === ( $report['conflict']['meaningful_rows'] ?? true ), 'An interrupted canonical ACF row save is recognized as resumable, not as an editor conflict.' );
 	$assert( $report === $repeat, 'Repeated previews are deterministic.' );
 	$sources = array_merge( $report['media']['reused'] ?? array(), $report['media']['to_import'] ?? array() );
 	$names = array_map( static fn( $item ) => is_array( $item ) ? ( $item['source'] ?? '' ) : $item, $sources );

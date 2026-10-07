@@ -52,16 +52,22 @@ final class AboutPageMigrationCommand {
 		$current_rows = is_array( $current_rows ) ? self::normalizeAcfValue( $current_rows ) : array();
 		$current_rows = apply_filters( 'platejka_about_page_migration_current_rows', $current_rows );
 		$current_rows = is_array( $current_rows ) ? $current_rows : array();
-		$conflict = ! $already_migrated && self::hasMeaningfulRows( $current_rows );
-		if ( $apply && $conflict ) {
-			throw new RuntimeException( 'About-page migration refused: existing meaningful About rows require manual resolution.' );
-		}
+		$has_meaningful_rows = self::hasMeaningfulRows( $current_rows );
 
 		$media_map = array(); $reused = array(); $missing = array();
 		foreach ( self::mediaSources( $seed['sections'] ) as $source ) {
 			$id = self::attachmentForSource( $source );
 			if ( $id ) { $media_map[ $source ] = $id; $reused[] = array( 'source' => $source, 'attachment_id' => $id ); }
 			else { $missing[] = $source; }
+		}
+		$candidate_rows = self::seedRows( $seed, $media_map );
+		$resumable = $has_meaningful_rows && array() === $missing && (
+			self::acfStable( $current_rows ) === self::acfStable( $candidate_rows )
+			|| self::rowsMatchIgnoringLinks( $current_rows, $candidate_rows )
+		);
+		$conflict = ! $already_migrated && $has_meaningful_rows && ! $resumable;
+		if ( $apply && $conflict ) {
+			throw new RuntimeException( 'About-page migration refused: existing meaningful About rows require manual resolution.' );
 		}
 		$imported = array();
 		if ( $apply && ! $already_migrated ) {
@@ -135,6 +141,20 @@ final class AboutPageMigrationCommand {
 			}
 		}
 		return false;
+	}
+
+	/** Allow a stopped first run to resume when ACF only discarded/normalized link subfields. */
+	private static function rowsMatchIgnoringLinks( array $current, array $target ): bool {
+		$without_links = static function ( $value ) use ( &$without_links ) {
+			if ( ! is_array( $value ) ) { return $value; }
+			$out = array();
+			foreach ( $value as $key => $child ) {
+				if ( 'link' === $key ) { continue; }
+				$out[ $key ] = $without_links( $child );
+			}
+			return $out;
+		};
+		return self::acfStable( $without_links( $current ) ) === self::acfStable( $without_links( $target ) );
 	}
 
 	/** @param mixed $value */
