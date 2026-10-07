@@ -1,7 +1,7 @@
 # About Page ACF Migration Design
 
-**Date:** 2026-10-07  
-**Target:** WordPress page ID 22 (`/o-kompanii/`)  
+**Date:** 2026-10-07
+**Target:** WordPress page ID 22 (`/o-kompanii/`)
 **Status:** Approved in conversation; awaiting written-spec review
 
 ## Goal
