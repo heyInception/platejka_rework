@@ -103,6 +103,8 @@ $assert( is_wp_error( $raw_duplicate_anchor ) && 'duplicate_section_anchor' === 
 
 $normalized = platejka_use_sections( $resolved );
 $assert( 2 === count( $normalized ) && 'section-24-3' === ( $normalized[1]['instance'] ?? null ), 'The existing normalizer preserves builder instance context.' );
+$normalized_review = platejka_normalize_section( array( 'slug' => 'review', 'content_slug' => 'review-main' ) );
+$assert( 'review-main' === ( $normalized_review['content_slug'] ?? null ), 'The section normalizer preserves the canonical content slug.' );
 
 foreach ( array( 'faq', 'about' ) as $slug ) {
 	wp_dequeue_style( 'platejka-rework-section-' . $slug );

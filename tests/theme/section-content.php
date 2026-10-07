@@ -89,6 +89,19 @@ $internal_review = platejka_resolve_section_data(
 $assert( 'Локальный заголовок отзывов' === ( $internal_review['title'] ?? null ), 'Internal review unwraps a prefixed review-main clone override.' );
 $assert( count( $global_review['video_items'] ?? array() ) === count( $internal_review['video_items'] ?? array() ), 'Internal review inherits the canonical review-main collection.' );
 
+$old_default_page_marker = get_option( 'platejka_default_page_builder_version', null );
+delete_option( 'platejka_default_page_builder_version' );
+$force_empty_hero = static fn() => false;
+add_filter( 'acf/load_value/name=hero', $force_empty_hero );
+$seeded_internal_hero = platejka_resolve_section_data( array( 'slug' => 'hero', 'row' => array() ) );
+remove_filter( 'acf/load_value/name=hero', $force_empty_hero );
+$assert( 'Платежи в Китай' === ( $seeded_internal_hero['title']['primary'] ?? null ), 'Internal-page seed keeps fallback templates populated before migration apply.' );
+if ( null === $old_default_page_marker ) {
+	delete_option( 'platejka_default_page_builder_version' );
+} else {
+	update_option( 'platejka_default_page_builder_version', $old_default_page_marker, false );
+}
+
 $plain_heading = platejka_section_heading( array( 'text' => "Первая строка\nВторая строка", 'decorative' => false ), 'example__title' );
 $assert( str_contains( $plain_heading, '<h2 class="example__title">' ) && str_contains( $plain_heading, 'Первая строка<br>Вторая строка' ), 'Ordinary headings stay visible semantic h2 elements with controlled line breaks.' );
 $decorative_heading = platejka_section_heading( array( 'text' => 'Основной текст', 'accent' => 'Акцент', 'decorative' => true ), 'example__title' );

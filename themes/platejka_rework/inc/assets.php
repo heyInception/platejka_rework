@@ -21,7 +21,7 @@ function platejka_normalize_section( $section ): ?array {
 		'template'  => $resolved['template'],
 		'mode'      => isset( $config['mode'] ) && 'main' === $config['mode'] ? 'main' : 'default',
 	);
-	foreach ( array( 'row', 'instance', 'anchor' ) as $key ) {
+	foreach ( array( 'content_slug', 'row', 'instance', 'anchor' ) as $key ) {
 		if ( array_key_exists( $key, $config ) ) {
 			$normalized[ $key ] = $config[ $key ];
 		}

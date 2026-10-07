@@ -96,6 +96,10 @@ function platejka_resolve_section_data( array $config, int $post_id = 0 ): array
 		$seed   = \Platejka\Core\Acf\SectionSeed::get();
 		$global = platejka_section_array( $seed['sections'][ $content_slug ] ?? array() );
 	}
+	if ( array() === $global && 1 !== (int) get_option( 'platejka_default_page_builder_version', 0 ) && class_exists( 'Platejka\\Core\\Acf\\DefaultPageSeed' ) ) {
+		$seed   = \Platejka\Core\Acf\DefaultPageSeed::get();
+		$global = platejka_section_array( $seed['sections'][ $content_slug ] ?? array() );
+	}
 	if ( $variant ) {
 		$global = platejka_section_array( $global[ $mode ] ?? array() );
 	}
