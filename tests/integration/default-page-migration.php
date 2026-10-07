@@ -42,12 +42,14 @@ $assert( 'dry-run' === ( $report['mode'] ?? null ), 'Preview reports dry-run mod
 $assert( 1873 === ( $report['page']['id'] ?? null ), 'Preview targets only post 1873.' );
 $assert( $expected_order === ( $report['page']['sections'] ?? null ), 'Preview contains the approved 13-section order.' );
 $assert( array( 'hero', 'protection' ) === ( $report['options']['sections'] ?? null ), 'Preview seeds only hero and protection canonical groups.' );
+$assert( array( 'hero' => true, 'protection' => true ) === ( $report['writes']['options'] ?? null ), 'Structurally present but empty ACF groups are scheduled for seeding.' );
 $assert( false === ( $report['writes']['performed'] ?? true ), 'Preview performs no writes.' );
 $assert( $report === $repeat, 'Repeated previews are deterministic.' );
 
 $sources = array_merge( $report['media']['reused'] ?? array(), $report['media']['to_import'] ?? array() );
 $source_names = array_map( static fn( $item ) => is_array( $item ) ? ( $item['source'] ?? '' ) : $item, $sources );
 $assert( count( $source_names ) === count( array_unique( $source_names ) ), 'Each seed media source is planned at most once.' );
+$assert( 9 === count( $source_names ), 'Preview accounts for all nine hero/protection media sources.' );
 $assert( hash_equals( $before, $snapshot() ), 'Preview leaves post 1873, target options, marker, and migrated media unchanged.' );
 
 WP_CLI::log( sprintf( 'Default-page migration preview: %d checks, %d failures.', $checks, count( $failures ) ) );

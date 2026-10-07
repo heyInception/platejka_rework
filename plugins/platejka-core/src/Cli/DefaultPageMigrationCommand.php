@@ -44,12 +44,14 @@ final class DefaultPageMigrationCommand {
 
 		$already_migrated = 1 === (int) get_option( self::VERSION_OPTION, 0 );
 		$current_options   = array();
+		$current_has_value = array();
 		$seed_targets      = array();
 		foreach ( $seed['sections'] as $slug => $value ) {
 			$field_key = self::fieldKey( $slug );
 			$current   = get_field( $field_key, self::OPTIONS_ID, false );
 			$current_options[ $slug ] = self::normalizeAcfValue( $current );
-			if ( ! $already_migrated && array() === self::sectionArray( $current_options[ $slug ] ) ) {
+			$current_has_value[ $slug ] = self::hasMeaningfulValue( $current_options[ $slug ] );
+			if ( ! $already_migrated && ! $current_has_value[ $slug ] ) {
 				$seed_targets[ $slug ] = $value;
 			}
 		}
@@ -78,7 +80,7 @@ final class DefaultPageMigrationCommand {
 
 		$target_options = array();
 		foreach ( $seed['sections'] as $slug => $seed_value ) {
-			$target_options[ $slug ] = $already_migrated || array() !== self::sectionArray( $current_options[ $slug ] )
+			$target_options[ $slug ] = $already_migrated || $current_has_value[ $slug ]
 				? self::sectionArray( $current_options[ $slug ] )
 				: self::sectionArray( self::replaceMediaSources( $seed_value, $media_map ) );
 		}
@@ -162,6 +164,22 @@ final class DefaultPageMigrationCommand {
 
 	private static function fieldKey( string $slug ): string {
 		return 'field_platejka_defaults_' . str_replace( '-', '_', $slug ) . '_v1';
+	}
+
+	/** @param mixed $value */
+	private static function hasMeaningfulValue( $value ): bool {
+		if ( is_array( $value ) ) {
+			foreach ( $value as $child ) {
+				if ( self::hasMeaningfulValue( $child ) ) {
+					return true;
+				}
+			}
+			return false;
+		}
+		if ( is_string( $value ) ) {
+			return '' !== trim( $value );
+		}
+		return null !== $value && false !== $value;
 	}
 
 	/** @param mixed $value @return array<string,mixed> */
