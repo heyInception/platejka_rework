@@ -33,14 +33,20 @@ $render = static function ( string $relative, array $data, string $instance, str
 
 $hero = $render( 'about-hero/about-hero.php', array(
 	'eyebrow' => 'Fixture company', 'title' => 'Fixture hero title', 'lead' => '<strong>Fixture lead</strong>',
-	'proofs' => array( array( 'image' => $image_id, 'icon' => $image_id, 'title' => 'Fixture proof', 'text' => 'Fixture proof text', 'link' => array( 'url' => '#proof', 'title' => 'Proof', 'target' => '' ) ) ),
-	'metrics' => array( array( 'variant' => 'simple', 'value' => '777+', 'title' => '', 'text' => 'Fixture metric', 'links' => array() ) ),
+	'proofs' => array( array( 'image' => $image_id, 'icon' => $image_id, 'title' => 'Fixture proof', 'text' => 'Fixture proof text', 'link' => array( 'url' => '#proof', 'title' => 'Proof', 'target' => '_blank' ) ) ),
+	'metrics' => array(
+		array( 'variant' => 'simple', 'value' => '777+', 'title' => '', 'text' => 'Fixture metric', 'links' => array() ),
+		array( 'variant' => 'rating', 'value' => '5.0', 'title' => 'Fixture rating', 'text' => '', 'links' => array( array( 'icon' => 'locator', 'link' => array( 'url' => 'https://rating.example/', 'title' => 'Rating', 'target' => '_blank' ) ) ) ),
+		array( 'variant' => 'media', 'value' => '', 'title' => 'Fixture media', 'text' => '', 'links' => array( array( 'icon' => 'vk', 'link' => array( 'url' => 'https://media.example/', 'title' => 'Media', 'target' => '_blank' ) ) ) ),
+	),
 ), 'section-22-1', 'fixture-hero' );
 $assert( str_contains( $hero, 'class="about-hero"' ) && str_contains( $hero, 'data-about-hero' ) && str_contains( $hero, 'id="fixture-hero"' ), 'About hero preserves its root hook and applies the public anchor.' );
 $assert( str_contains( $hero, '<h1') && str_contains( $hero, 'Fixture hero title' ) && str_contains( $hero, 'Fixture lead' ), 'About hero renders fixture H1 and lead.' );
 $assert( str_contains( $hero, 'Fixture proof' ) && str_contains( $hero, '777+' ) && ! str_contains( $hero, '318+' ), 'About hero repeaters replace static proof and metric content.' );
 $assert( str_contains( $hero, 'srcset="' ) && str_contains( $hero, 'sizes="' ) && str_contains( $hero, 'loading="eager"' ), 'About hero renders responsive high-priority proof media.' );
 $assert( str_contains( $hero, 'section-22-1-about-hero-title' ) && str_contains( $hero, 'section-22-1-about-hero-signature-clip' ), 'About hero derives accessible and SVG IDs from its instance.' );
+$assert( str_contains( $hero, 'href="#proof"' ) && str_contains( $hero, 'href="https://rating.example/"' ) && str_contains( $hero, 'href="https://media.example/"' ), 'About hero renders editable proof, rating, and media links.' );
+$assert( 3 === substr_count( $hero, 'rel="noopener"' ), 'About hero protects every fixture link that opens a new tab.' );
 
 $location = $render( 'location/location.php', array(
 	'title' => 'Fixture office', 'description' => '<p>Fixture location body<script>alert(1)</script></p>', 'address' => 'Fixture address',

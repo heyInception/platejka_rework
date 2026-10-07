@@ -46,7 +46,7 @@ final class AboutPageMigrationCommand {
 			throw new RuntimeException( 'About-page target ID 22 is missing or is not a page.' );
 		}
 
-		$already_migrated = 1 === (int) get_option( self::VERSION_OPTION, 0 );
+		$already_migrated = (bool) apply_filters( 'platejka_about_page_migration_already_migrated', 1 === (int) get_option( self::VERSION_OPTION, 0 ) );
 		$current_enabled = (bool) get_field( self::BUILDER_FIELD, self::PAGE_ID, false );
 		$current_rows = get_field( self::ROWS_FIELD, self::PAGE_ID, false );
 		$current_rows = is_array( $current_rows ) ? self::normalizeAcfValue( $current_rows ) : array();
@@ -61,10 +61,7 @@ final class AboutPageMigrationCommand {
 			else { $missing[] = $source; }
 		}
 		$candidate_rows = self::seedRows( $seed, $media_map );
-		$resumable = $has_meaningful_rows && array() === $missing && (
-			self::acfStable( $current_rows ) === self::acfStable( $candidate_rows )
-			|| self::rowsMatchIgnoringLinks( $current_rows, $candidate_rows )
-		);
+		$resumable = $has_meaningful_rows && array() === $missing && self::acfStable( $current_rows ) === self::acfStable( $candidate_rows );
 		$conflict = ! $already_migrated && $has_meaningful_rows && ! $resumable;
 		if ( $apply && $conflict ) {
 			throw new RuntimeException( 'About-page migration refused: existing meaningful About rows require manual resolution.' );
@@ -141,20 +138,6 @@ final class AboutPageMigrationCommand {
 			}
 		}
 		return false;
-	}
-
-	/** Allow a stopped first run to resume when ACF only discarded/normalized link subfields. */
-	private static function rowsMatchIgnoringLinks( array $current, array $target ): bool {
-		$without_links = static function ( $value ) use ( &$without_links ) {
-			if ( ! is_array( $value ) ) { return $value; }
-			$out = array();
-			foreach ( $value as $key => $child ) {
-				if ( 'link' === $key ) { continue; }
-				$out[ $key ] = $without_links( $child );
-			}
-			return $out;
-		};
-		return self::acfStable( $without_links( $current ) ) === self::acfStable( $without_links( $target ) );
 	}
 
 	/** @param mixed $value */

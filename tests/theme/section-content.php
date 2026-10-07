@@ -121,8 +121,21 @@ remove_filter( 'acf/load_value/name=hero', $force_empty_hero );
 $assert( 'Платежи в Китай' === ( $seeded_internal_hero['title']['primary'] ?? null ), 'Internal-page seed keeps fallback templates populated before migration apply.' );
 $old_about_marker = get_option( 'platejka_about_page_builder_version', null );
 delete_option( 'platejka_about_page_builder_version' );
-$seeded_about_hero = platejka_resolve_section_data( array( 'slug' => 'about-hero', 'row' => array() ), 22 );
+$seeded_about_hero = platejka_resolve_section_data( array( 'slug' => 'about-hero' ), 22 );
 $assert( 'Ваш надёжный платёжный агент' === ( $seeded_about_hero['title'] ?? null ), 'About-page seed keeps its fallback templates populated before migration apply.' );
+update_option( 'platejka_about_page_builder_version', 1, false );
+$force_empty_about_hero = static fn() => false;
+add_filter( 'acf/load_value/name=about_hero', $force_empty_about_hero );
+$seeded_about_rollback = platejka_resolve_section_data( array( 'slug' => 'about-hero' ), 22 );
+$unrelated_about_slug = platejka_resolve_section_data( array( 'slug' => 'about-hero' ), 24 );
+$cleared_about_row = platejka_resolve_section_data( array( 'slug' => 'about-hero', 'row' => array( 'overrides' => array( 'title' => '', 'proofs' => array() ) ) ), 22 );
+remove_filter( 'acf/load_value/name=about_hero', $force_empty_about_hero );
+$assert( 'Ваш надёжный платёжный агент' === ( $seeded_about_rollback['title'] ?? null ), 'About-page seed keeps the static fallback populated after a completed migration is disabled.' );
+$assert( array() === $unrelated_about_slug, 'About-page local defaults do not leak to other page IDs.' );
+$assert( array_key_exists( 'title', $cleared_about_row ) && '' === $cleared_about_row['title'] && array() === ( $cleared_about_row['proofs'] ?? null ), 'Enabled About rows can intentionally clear local scalar and repeater values without inheriting the migration seed.' );
+$section_data = $seeded_about_rollback; $section_instance = 'section-22-rollback'; $section_anchor = '';
+ob_start(); include get_theme_file_path( 'sections/about-hero/about-hero.php' ); $about_rollback_html = (string) ob_get_clean();
+$assert( str_contains( $about_rollback_html, 'data-about-hero' ) && str_contains( $about_rollback_html, 'Ваш надёжный платёжный агент' ), 'Completed-migration rollback renders populated About fallback markup.' );
 if ( null === $old_about_marker ) {
 	delete_option( 'platejka_about_page_builder_version' );
 } else {

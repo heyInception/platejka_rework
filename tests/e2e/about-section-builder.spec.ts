@@ -40,6 +40,12 @@ test("migrated About page preserves its nine-section layout and interactions", a
   ]);
 
   await expect(page.locator("[data-about-hero]")).toHaveCount(1);
+  await expect(page.locator(".about-hero__proof-link").first()).toHaveAttribute(
+    "href",
+    /^https:\/\//,
+  );
+  await expect(page.locator(".about-hero__rating-sites a")).toHaveCount(3);
+  await expect(page.locator(".about-hero__media a")).toHaveCount(3);
   for (const selector of [
     ".about-hero__visual[data-about-hero-visual]",
     ".about-hero__proof[data-about-hero-proof]",

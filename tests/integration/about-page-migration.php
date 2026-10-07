@@ -45,6 +45,17 @@ if ( class_exists( $class ) ) {
 	$media_import = strpos( $command_source, 'importThemeMedia( $source )' );
 	$assert( false !== $conflict_guard && false !== $media_import && $conflict_guard < $media_import && hash_equals( $before, $snapshot() ), 'Meaningful-row conflict guard precedes media or field writes.' );
 
+	$edited_link_rows = $report['page']['rows'];
+	$edited_link_rows[0]['overrides']['proofs'][0]['link']['url'] = 'https://editor.example/';
+	$load_edited_links = static fn() => $edited_link_rows;
+	$force_pending = static fn() => false;
+	add_filter( 'platejka_about_page_migration_current_rows', $load_edited_links );
+	add_filter( 'platejka_about_page_migration_already_migrated', $force_pending );
+	$link_conflict = $class::preview();
+	remove_filter( 'platejka_about_page_migration_already_migrated', $force_pending );
+	remove_filter( 'platejka_about_page_migration_current_rows', $load_edited_links );
+	$assert( true === ( $link_conflict['conflict']['meaningful_rows'] ?? false ), 'Resume rejects an editor-modified link instead of overwriting it with seed data.' );
+
 	$temp = wp_tempnam( 'invalid-about-seed.json' ); file_put_contents( $temp, '{"schema_version":2}' );
 	$invalid_path = static fn() => $temp; add_filter( 'platejka_about_page_seed_path', $invalid_path );
 	$invalid_refused = false; try { $class::preview(); } catch ( RuntimeException $exception ) { $invalid_refused = str_contains( $exception->getMessage(), 'seed' ); }

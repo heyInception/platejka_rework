@@ -78,7 +78,6 @@ function platejka_section_content_slug( string $template_slug ): string {
  * @return array<string,mixed>
  */
 function platejka_resolve_section_data( array $config, int $post_id = 0 ): array {
-	unset( $post_id );
 	$slug         = isset( $config['slug'] ) && is_string( $config['slug'] ) ? $config['slug'] : '';
 	$content_slug = isset( $config['content_slug'] ) && is_string( $config['content_slug'] )
 		? $config['content_slug']
@@ -100,7 +99,7 @@ function platejka_resolve_section_data( array $config, int $post_id = 0 ): array
 		$seed   = \Platejka\Core\Acf\DefaultPageSeed::get();
 		$global = platejka_section_array( $seed['sections'][ $content_slug ] ?? array() );
 	}
-	if ( array() === $global && 1 !== (int) get_option( 'platejka_about_page_builder_version', 0 ) && class_exists( 'Platejka\\Core\\Acf\\AboutPageSeed' ) ) {
+	if ( 22 === $post_id && ! array_key_exists( 'row', $config ) && array() === $global && class_exists( 'Platejka\\Core\\Acf\\AboutPageSeed' ) ) {
 		$seed   = \Platejka\Core\Acf\AboutPageSeed::get();
 		$global = platejka_section_array( $seed['sections'][ $content_slug ] ?? array() );
 	}
