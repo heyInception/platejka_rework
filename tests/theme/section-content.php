@@ -89,6 +89,29 @@ $internal_review = platejka_resolve_section_data(
 $assert( 'Локальный заголовок отзывов' === ( $internal_review['title'] ?? null ), 'Internal review unwraps a prefixed review-main clone override.' );
 $assert( count( $global_review['video_items'] ?? array() ) === count( $internal_review['video_items'] ?? array() ), 'Internal review inherits the canonical review-main collection.' );
 
+$about_global_review = static fn( $global, $content_slug ) => 'review-main' === $content_slug ? array(
+	'title'       => 'Сквозной заголовок',
+	'video_items' => array( array( 'title' => 'Сквозное видео' ) ),
+) : $global;
+add_filter( 'platejka_section_global_data', $about_global_review, 10, 2 );
+$about_inherited_review = platejka_resolve_section_data(
+	array( 'slug' => 'review-main', 'content_slug' => 'review-main', 'row' => array( 'overrides' => array() ) ),
+	22
+);
+$about_local_review = platejka_resolve_section_data(
+	array(
+		'slug'         => 'review-main',
+		'content_slug' => 'review-main',
+		'row'          => array( 'overrides' => array( 'review_main' => array( 'title' => '', 'video_items' => array( array( 'title' => 'Локальное видео' ) ) ) ) ),
+	),
+	22
+);
+remove_filter( 'platejka_section_global_data', $about_global_review, 10 );
+$assert( 'Сквозной заголовок' === ( $about_inherited_review['title'] ?? null ), 'An empty About review override inherits shared scalar content.' );
+$assert( array( array( 'title' => 'Сквозное видео' ) ) === ( $about_inherited_review['video_items'] ?? null ), 'An empty About review collection inherits the shared collection.' );
+$assert( 'Сквозной заголовок' === ( $about_local_review['title'] ?? null ), 'An empty local review scalar still inherits its shared value.' );
+$assert( array( array( 'title' => 'Локальное видео' ) ) === ( $about_local_review['video_items'] ?? null ), 'A non-empty local review collection replaces the shared collection.' );
+
 $old_default_page_marker = get_option( 'platejka_default_page_builder_version', null );
 delete_option( 'platejka_default_page_builder_version' );
 $force_empty_hero = static fn() => false;

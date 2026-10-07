@@ -23,7 +23,7 @@ $fallback_sections = array(
 		'developing',
 		'call-about',
 	);
-$sections = platejka_use_sections( platejka_get_page_sections( get_queried_object_id(), $fallback_sections ) );
+$sections = platejka_use_sections( platejka_get_about_page_sections( get_queried_object_id(), $fallback_sections ) );
 get_header();
 ?>
 

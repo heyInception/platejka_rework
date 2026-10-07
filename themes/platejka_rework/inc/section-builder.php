@@ -25,6 +25,14 @@ function platejka_section_builder_registry(): array {
 		'table',
 		'faq',
 		'call',
+		'about-hero',
+		'location',
+		'infrastructure',
+		'financial',
+		'employees',
+		'exhibitions',
+		'developing',
+		'call-about',
 	);
 
 	$registry = array();
@@ -76,6 +84,21 @@ function platejka_get_page_sections( int $post_id, array $fallback ): array {
 
 	$enabled = (bool) get_field( 'platejka_page_builder', $post_id );
 	$rows    = get_field( 'platejka_sections', $post_id );
+	return platejka_resolve_page_section_rows( $enabled, is_array( $rows ) ? $rows : array(), $fallback, $post_id );
+}
+
+/**
+ * Resolve the dedicated section collection used only by the About page.
+ *
+ * @return array<int,mixed>
+ */
+function platejka_get_about_page_sections( int $post_id, array $fallback ): array {
+	if ( 22 !== $post_id || ! function_exists( 'get_field' ) ) {
+		return $fallback;
+	}
+
+	$enabled = (bool) get_field( 'platejka_about_page_builder', $post_id );
+	$rows    = get_field( 'platejka_about_sections', $post_id );
 	return platejka_resolve_page_section_rows( $enabled, is_array( $rows ) ? $rows : array(), $fallback, $post_id );
 }
 
@@ -137,6 +160,7 @@ function platejka_validate_builder_field( $valid, $value ) {
 	return is_wp_error( $result ) ? $result->get_error_message() : $valid;
 }
 add_filter( 'acf/validate_value/key=field_platejka_sections_v1', 'platejka_validate_builder_field', 10, 2 );
+add_filter( 'acf/validate_value/key=field_platejka_about_sections_v1', 'platejka_validate_builder_field', 10, 2 );
 
 /**
  * @param mixed $title Existing ACF layout title.
@@ -152,3 +176,4 @@ function platejka_builder_layout_title( $title ) {
 	return $title . ' — ' . $status . ( '' !== $anchor ? ' — #' . esc_html( $anchor ) : '' );
 }
 add_filter( 'acf/fields/flexible_content/layout_title/name=platejka_sections', 'platejka_builder_layout_title' );
+add_filter( 'acf/fields/flexible_content/layout_title/name=platejka_about_sections', 'platejka_builder_layout_title' );
