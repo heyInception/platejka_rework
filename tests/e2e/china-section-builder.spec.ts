@@ -53,6 +53,7 @@ test("migrated China page keeps its section order, layout hooks, and interaction
     ".hero__trust-card_registry .hero__trust-decor_registry",
     ".protection__cards .protection__card",
     ".review__tabs[data-review-tabs]",
+    ".review__intro > p",
     ".work__document .work__wrap",
     ".calculator__panel[data-transfer-calculator]",
     ".call__form .ui-input",
