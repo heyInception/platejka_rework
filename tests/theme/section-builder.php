@@ -46,6 +46,20 @@ $variant_rows = array(
 $variants = platejka_resolve_page_section_rows( true, $variant_rows, array(), 24 );
 $assert( array( 'main', 'default', 'default' ) === array_column( $variants, 'mode' ), 'Variant modes normalize to main/default and invalid values fail closed to default.' );
 
+$internal_rows = platejka_resolve_page_section_rows(
+	true,
+	array(
+		array( 'acf_fc_layout' => 'hero', 'enabled' => 1 ),
+		array( 'acf_fc_layout' => 'protection', 'enabled' => 1 ),
+		array( 'acf_fc_layout' => 'review', 'enabled' => 1 ),
+		array( 'acf_fc_layout' => 'unknown-section', 'enabled' => 1 ),
+	),
+	array(),
+	1873
+);
+$assert( array( 'hero', 'protection', 'review' ) === array_column( $internal_rows, 'slug' ), 'Internal-page layouts resolve while an unknown slug fails closed.' );
+$assert( array( 'hero', 'protection', 'review-main' ) === array_column( $internal_rows, 'content_slug' ), 'Normalized rows separate template slugs from canonical content slugs.' );
+
 $assert( true === platejka_validate_builder_rows( $rows ), 'Duplicate non-hero rows are valid.' );
 $hero_error = platejka_validate_builder_rows(
 	array(

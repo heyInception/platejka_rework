@@ -66,6 +66,11 @@ function platejka_section_label_map( $rows ): array {
 	return $labels;
 }
 
+/** Keep the rendered template slug separate from its canonical options group. */
+function platejka_section_content_slug( string $template_slug ): string {
+	return 'review' === $template_slug ? 'review-main' : $template_slug;
+}
+
 /**
  * Resolve an enabled builder row against options-page defaults.
  *
@@ -74,19 +79,22 @@ function platejka_section_label_map( $rows ): array {
  */
 function platejka_resolve_section_data( array $config, int $post_id = 0 ): array {
 	unset( $post_id );
-	$slug = isset( $config['slug'] ) && is_string( $config['slug'] ) ? $config['slug'] : '';
-	if ( ! preg_match( '/^[a-z0-9-]+$/', $slug ) ) {
+	$slug         = isset( $config['slug'] ) && is_string( $config['slug'] ) ? $config['slug'] : '';
+	$content_slug = isset( $config['content_slug'] ) && is_string( $config['content_slug'] )
+		? $config['content_slug']
+		: platejka_section_content_slug( $slug );
+	if ( ! preg_match( '/^[a-z0-9-]+$/', $slug ) || ! preg_match( '/^[a-z0-9-]+$/', $content_slug ) ) {
 		return array();
 	}
 
-	$field_name = str_replace( '-', '_', $slug );
+	$field_name = str_replace( '-', '_', $content_slug );
 	$mode       = isset( $config['mode'] ) && 'main' === $config['mode'] ? 'main' : 'default';
 	$variant    = in_array( $slug, array( 'shipments', 'guarantees', 'documents' ), true );
 	$global     = function_exists( 'get_field' ) ? platejka_section_array( get_field( $field_name, 'platejka_section_defaults' ) ) : array();
 
 	if ( array() === $global && 1 !== (int) get_option( 'platejka_section_builder_version', 0 ) && class_exists( 'Platejka\\Core\\Acf\\SectionSeed' ) ) {
 		$seed   = \Platejka\Core\Acf\SectionSeed::get();
-		$global = platejka_section_array( $seed['sections'][ $slug ] ?? array() );
+		$global = platejka_section_array( $seed['sections'][ $content_slug ] ?? array() );
 	}
 	if ( $variant ) {
 		$global = platejka_section_array( $global[ $mode ] ?? array() );

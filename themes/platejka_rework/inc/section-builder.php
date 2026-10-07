@@ -5,12 +5,15 @@
 function platejka_section_builder_registry(): array {
 	$slugs = array(
 		'hero-main',
+		'hero',
 		'about',
 		'shipments',
 		'guarantees',
 		'documents',
 		'compliance',
 		'review-main',
+		'protection',
+		'review',
 		'work',
 		'calculator',
 		'with-us',
@@ -53,11 +56,12 @@ function platejka_resolve_page_section_rows( bool $builder_enabled, array $rows,
 		$mode           = in_array( $requested_mode, array( 'main', 'default' ), true ) ? $requested_mode : 'default';
 		$anchor         = isset( $row['anchor'] ) && is_string( $row['anchor'] ) ? $row['anchor'] : '';
 		$sections[]     = array(
-			'slug'     => $slug,
-			'mode'     => $mode,
-			'row'      => $row,
-			'instance' => 'section-' . $post_id . '-' . ( $index + 1 ),
-			'anchor'   => $anchor,
+			'slug'         => $slug,
+			'content_slug' => platejka_section_content_slug( $slug ),
+			'mode'         => $mode,
+			'row'          => $row,
+			'instance'     => 'section-' . $post_id . '-' . ( $index + 1 ),
+			'anchor'       => $anchor,
 		);
 	}
 

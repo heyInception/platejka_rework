@@ -18,6 +18,7 @@ $required = array(
 	'platejka_resolve_collection',
 	'platejka_resolve_tristate',
 	'platejka_merge_section_data',
+	'platejka_section_content_slug',
 	'platejka_resolve_section_data',
 	'platejka_section_dom_id',
 	'platejka_section_image',
@@ -74,6 +75,19 @@ $second = platejka_resolve_section_data(
 $assert( 'Первый' === ( $first['title'] ?? null ) && 'Второй' === ( $second['title'] ?? null ), 'Repeated layouts resolve their own row overrides.' );
 
 $assert( 'section-24-2-faq-question-1' === platejka_section_dom_id( 'section-24-2', 'faq-question-1' ), 'DOM IDs combine stable sanitized instance and local identifiers.' );
+
+$assert( 'review-main' === platejka_section_content_slug( 'review' ), 'Internal review maps to canonical review-main content.' );
+$assert( 'protection' === platejka_section_content_slug( 'protection' ), 'Other valid slugs keep their own canonical content name.' );
+$global_review = get_field( 'review_main', 'platejka_section_defaults' );
+$internal_review = platejka_resolve_section_data(
+	array(
+		'slug'         => 'review',
+		'content_slug' => 'review-main',
+		'row'          => array( 'overrides' => array( 'review_main' => array( 'title' => 'Локальный заголовок отзывов' ) ) ),
+	)
+);
+$assert( 'Локальный заголовок отзывов' === ( $internal_review['title'] ?? null ), 'Internal review unwraps a prefixed review-main clone override.' );
+$assert( count( $global_review['video_items'] ?? array() ) === count( $internal_review['video_items'] ?? array() ), 'Internal review inherits the canonical review-main collection.' );
 
 $plain_heading = platejka_section_heading( array( 'text' => "Первая строка\nВторая строка", 'decorative' => false ), 'example__title' );
 $assert( str_contains( $plain_heading, '<h2 class="example__title">' ) && str_contains( $plain_heading, 'Первая строка<br>Вторая строка' ), 'Ordinary headings stay visible semantic h2 elements with controlled line breaks.' );
