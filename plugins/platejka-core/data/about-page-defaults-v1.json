@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "sections": {
+    "about-hero": {
+      "eyebrow": "О компании",
+      "title": "Ваш надёжный платёжный агент",
+      "lead": "Когда прямые переводы из российских банков блокируются, мы находим подходящий способ доставить ваши деньги поставщику",
+      "proofs": [
+        {"image":"theme://sections/about-hero/img/about-hero/img-cb-rf.png","icon":"theme://sections/about-hero/img/about-hero/card-cb-rf.png","title":"Внесены в реестр ЦБ РФ","text":"Официальный статус и прозрачная работа","link":{"url":"https://www.cbr.ru/registries/microfinance/","title":"Проверить","target":"_blank"}},
+        {"image":"theme://sections/about-hero/img/about-hero/img-agent.png","icon":"theme://sections/about-hero/img/about-hero/card-agent.png","title":"В ассоциации платёжных агентов","text":"Лучшая гарантия и репутация агента","link":{"url":"","title":"","target":""}}
+      ],
+      "metrics": [
+        {"variant":"badge","value":"с 2022","title":"ЦБ РФ","text":"Занимаемся зарубежными платежами","links":[]},
+        {"variant":"simple","value":"318+","title":"","text":"Клиентов на текущем обслуживании","links":[]},
+        {"variant":"rating","value":"4.9","title":"Средняя оценка по отзывам на:","text":"","links":[{"icon":"locator","link":{"url":"","title":"Локатор","target":""}},{"icon":"2gis","link":{"url":"","title":"2ГИС","target":""}},{"icon":"yell","link":{"url":"","title":"Yell","target":""}}]},
+        {"variant":"media","value":"","title":"Мы в СМИ","text":"","links":[{"icon":"vk","link":{"url":"","title":"ВКонтакте","target":""}},{"icon":"telegram","link":{"url":"","title":"Telegram","target":""}},{"icon":"vc","link":{"url":"","title":"VC.ru","target":""}},{"icon":"rbc","link":{"url":"","title":"РБК","target":""}},{"icon":"lenta","link":{"url":"","title":"Лента.ру","target":""}}]},
+        {"variant":"nps","value":"9.2","title":"","text":"NPS индекс потребительской лояльности","links":[]}
+      ]
+    },
+    "location": {
+      "title":"Будем рады видеть вас в нашем главном офисе",
+      "description":"Компания работает как платёжный агент с полной юридической идентификацией. Реквизиты, реестровые записи и адрес офиса открыты — их можно сверить в государственных источниках за несколько минут.",
+      "address":"127204, Россия, Москва, Долгопрудненское шоссе, 3",
+      "phone":"+78005338819","phone_label":"По всем вопросам","email":"a@platejka.com","email_label":"Поддержка",
+      "map_label":"Карта главного офиса Платёжки","gallery_label":"Фотографии офиса","prev_label":"Предыдущая фотография","next_label":"Следующая фотография",
+      "gallery":[
+        {"image":"theme://sections/location/img/location/slider-img-1.png","alt":"Главный офис Платёжки"},
+        {"image":"theme://sections/location/img/location/slider-img-2.png","alt":"Переговорная в офисе"},
+        {"image":"theme://sections/location/img/location/slider-img-3.png","alt":"Рабочее пространство офиса"},
+        {"image":"theme://sections/location/img/location/slider-img-4(test).png","alt":"Интерьер офиса"}
+      ]
+    },
+    "infrastructure": {
+      "heading":{"text":"Платежная инфраструктура нашего сервиса","accent":"","decorative":0},
+      "description":"Договорённости с 18 экспортёрами РФ о валютной выручке","specializations_label":"Ключевые специализации:",
+      "specializations":[{"image":"theme://sections/infrastructure/img/destinations/flags-1.png","title":"Китай"},{"image":"theme://sections/infrastructure/img/destinations/flags-6.png","title":"Европа"}],
+      "facts":[{"value":"21","text":"сотрудник в московском офисе"},{"value":"10","text":"офисы и компании в 10 странах"},{"value":"12","text":"сотрудников за рубежом"}],
+      "network_image":"theme://sections/infrastructure/img/infrastructure/globe.png","entities_label":"Страны присутствия",
+      "entities":[
+        {"image":"theme://sections/infrastructure/img/destinations/flags-38.png","icon":"","title":"Эстония","caption":"Юрлицо","state":"default"},
+        {"image":"","icon":"indonesia","title":"Индонезия","caption":"Юрлицо","state":"default"},
+        {"image":"theme://sections/infrastructure/img/destinations/flags-4.png","icon":"","title":"Россия","caption":"Юрлицо","state":"default"},
+        {"image":"theme://sections/infrastructure/img/destinations/flags-1.png","icon":"","title":"Китай","caption":"Юрлицо","state":"active"},
+        {"image":"theme://sections/infrastructure/img/destinations/flags-16.png","icon":"","title":"США","caption":"Юрлицо","state":"default"},
+        {"image":"theme://sections/infrastructure/img/destinations/flags-34.png","icon":"","title":"Чехия","caption":"Юрлицо","state":"default"},
+        {"image":"theme://sections/infrastructure/img/destinations/flags-19.png","icon":"","title":"Германия","caption":"Юрлицо","state":"default"},
+        {"image":"theme://sections/infrastructure/img/destinations/flags-23.png","icon":"","title":"Таиланд","caption":"Юрлицо, до 2025 г.","state":"thailand"},
+        {"image":"theme://sections/infrastructure/img/destinations/flags-7.png","icon":"","title":"Турция","caption":"Юрлицо","state":"default"},
+        {"image":"theme://sections/infrastructure/img/destinations/flags-45.png","icon":"","title":"ОАЭ","caption":"Юрлицо","state":"default"},
+        {"image":"theme://sections/infrastructure/img/destinations/flags-22.png","icon":"","title":"Казахстан","caption":"Юрлицо","state":"default"}
+      ]
+    },
+    "financial": {
+      "eyebrow":"Финансовый комплаенс","heading":{"text":"Как мы работаем, если платёж завис и не вернулся","accent":"если платёж завис и не вернулся","decorative":1},
+      "description":"Разбираем причину, связываемся с банками и помогаем вернуть или провести платёж по корректному маршруту.","link":{"url":"","title":"Связаться с комплаенсом","target":""},
+      "benefits":[{"image":"theme://sections/financial/img/financial/item-main-1.png","text":"Опыт с международными платежами"},{"image":"theme://sections/financial/img/financial/item-main-2.png","text":"Прямые контакты в банках-партнёрах"},{"image":"theme://sections/financial/img/financial/item-main-3.png","text":"Держим вас в курсе на всём этапе"}],
+      "case":{"label":"Реальный кейс","badge":"Решили за 24 часа","title":"Платёж завис в Bank of China","text":"Команда комплаенса направила запросы в банк-корреспондент, уточнила статус перевода и помогла оперативно вывести платёж из проверки","image":"theme://sections/financial/img/financial/img-financial.png","logo":"theme://sections/financial/img/financial/bank-main-1.png"},
+      "banks_title":"Работаем с ведущими банками","banks_description":"Налаженные контакты для решения сложных ситуаций",
+      "banks":[{"image":"theme://sections/financial/img/financial/bank-main-1.png","title":"Bank of China"},{"image":"theme://sections/financial/img/financial/bank-main-2.png","title":"ICBC"},{"image":"theme://sections/financial/img/financial/bank-main-3.png","title":"Emirates NBD"},{"image":"theme://sections/financial/img/financial/bank-main-4.png","title":"Bank Mandiri (Indonesia)"},{"image":"theme://sections/financial/img/financial/bank-main-5.png","title":"China Construction Bank"},{"image":"theme://sections/financial/img/financial/bank-main-6.png","title":"Bank of Communications"},{"image":"theme://sections/financial/img/financial/bank-main-7.png","title":"Wise"}],
+      "test":{"title":"Возможность тестового платежа","text":"Начните с тестового платежа от 100 $. Проверим маршрут на небольшой сумме, чтобы вы понимали, как пройдёт основная транзакция.","link":{"url":"","title":"Отправить тестовый платёж","target":""},"image":"theme://sections/financial/img/financial/test-main-img.png"}
+    },
+    "employees": {
+      "heading":{"text":"Наши сотрудники знают всё о технологиях платежей","accent":"","decorative":0},
+      "quote":"5 лет назад, говоря о том, что нас ждут новые вызовы и ответы на них, мы не могли предположить какого масштаба они будут характера",
+      "author_name":"Клочков Михаил","author_role":"Директор по развитию","author_image":"theme://sections/employees/img/employees/director-img.png","team_image":"theme://sections/employees/img/employees/employees-img.png"
+    },
+    "exhibitions": {
+      "title":"Мы на выставках","subtitle":"Мы активно участвуем в международных финансовых и бизнес-мероприятиях — делимся опытом",
+      "description":"Представляем наши решения по международным платежам и обсуждаем тренды с представителями компаний со всего мира. Наши эксперты не только рассказывают о сервисе «Платежка», но и показывают, как эффективно решать задачи валютного контроля, ускорять переводы и оптимизировать финансовые процессы.",
+      "trademark":{"image":"theme://sections/exhibitions/img/exhibitions/platejka.png","title":"Платёжка ®","caption":"Запатентованный товарный знак"},
+      "gallery_label":"Фотографии с выставок","prev_label":"Предыдущая фотография","next_label":"Следующая фотография",
+      "gallery":[{"image":"theme://sections/exhibitions/img/exhibitions/slider-img-1.png","alt":"Стенд Платёжки на выставке"},{"image":"theme://sections/exhibitions/img/exhibitions/slider-img-2.png","alt":"Команда Платёжки на выставке"},{"image":"theme://sections/exhibitions/img/exhibitions/slider-img-3.png","alt":"Выступление эксперта Платёжки"},{"image":"theme://sections/exhibitions/img/exhibitions/slider-img-4.png","alt":"Деловая встреча на выставке"}]
+    },
+    "developing": {
+      "heading":{"text":"Уже 12 лет развиваемся в своем деле","accent":"","decorative":0},"region_label":"История развития компании","prev_label":"Предыдущий этап","next_label":"Следующий этап",
+      "items":[
+        {"year":"2012","title":"Основание бухгалтерского направления","text":"Запуск собственной бухгалтерской компании. С первых лет работали не только с локальными задачами, но и с внешнеэкономической деятельностью","image":"theme://sections/developing/img/developing/2012-img-1.png"},
+        {"year":"2014","title":"Формирование международной инфраструктуры","text":"В разные годы открыты и задействованы юридические лица и структуры в Германии, Чехии, Эстонии и Латвии для торговли, логистики, расчётов и европейских контрактов.","image":"theme://sections/developing/img/developing/2012-img-2.png"},
+        {"year":"2018","title":"Развитие платёжных направлений","text":"Начали активно развивать платёжную инфраструктуру, работая с партнёрами в Великобритании и США.","image":"theme://sections/developing/img/developing/2012-img-3.png"},
+        {"year":"2019","title":"Выход на рынок платежей в Китай","text":"Начались платежи в Китай для внешних клиентов. Ранее международные расчёты использовались внутри собственной группы компаний.","image":"theme://sections/developing/img/developing/2012-img-4.png"},
+        {"year":"2020","title":"Комплаенс и собственные технологии","text":"Сформированы внутренние регламенты KYC/AML и начата разработка собственной платёжной системы Veront.","image":"theme://sections/developing/img/developing/2012-img-5.png"},
+        {"year":"2024","title":"Институциональное развитие","text":"Вступление в Сколково как финтех-проект, открытие клиентского офиса и расширение международного присутствия.","image":"theme://sections/developing/img/developing/2012-img-6.png"},
+        {"year":"2025","title":"В реестре ЦБ РФ и СРО","text":"Пройдены проверки Центрального банка РФ. Компания зарегистрирована в реестре и ведёт деятельность по требованиям регулятора.","image":"theme://sections/developing/img/developing/2012-img-7.png"}
+      ]
+    },
+    "call-about": {
+      "heading":{"text":"Оставьте заявку — перезвоним, проконсультируем, подключим","accent":"","decorative":0},"form":3321,"trust_label":"Преимущества сервиса",
+      "trust_items":[{"variant":"experience","value":"5 лет","title":"На рынке","text":"","image":""},{"variant":"registry","value":"","title":"В реестре ЦБ РФ и СРО","text":"","image":"theme://sections/call/img/registry.png"},{"variant":"association","value":"","title":"В Ассоциации платёжных агентов","text":"","image":"theme://sections/call/img/associations.png"}],
+      "cards":[
+        {"title":"Свяжитесь с нами","text":"Ответим на вопросы и поможем подобрать решение в удобном мессенджере.","links":[{"icon":"telegram","link":{"url":"https://t.me/platejka_com","title":"","target":"_blank"},"label":"Написать в Telegram"},{"icon":"whatsapp","link":{"url":"https://wa.me/79361895321","title":"","target":"_blank"},"label":"Написать в WhatsApp"}]},
+        {"title":"Читайте нас в соцсетях","text":"Делимся новостями, кейсами и полезными материалами о международных платежах.","links":[{"icon":"vk","link":{"url":"","title":"","target":""},"label":"ВКонтакте"},{"icon":"telegram-media","link":{"url":"https://t.me/platejka_com","title":"","target":"_blank"},"label":"Telegram"},{"icon":"vc","link":{"url":"","title":"","target":""},"label":"VC.ru"},{"icon":"rbc","link":{"url":"","title":"","target":""},"label":"РБК"},{"icon":"lenta","link":{"url":"","title":"","target":""},"label":"Лента.ру"}]}
+      ]
+    }
+  },
+  "page_rows": [
+    {"acf_fc_layout":"about-hero","enabled":1},{"acf_fc_layout":"location","enabled":1},{"acf_fc_layout":"review-main","enabled":1},{"acf_fc_layout":"infrastructure","enabled":1},{"acf_fc_layout":"financial","enabled":1},{"acf_fc_layout":"employees","enabled":1},{"acf_fc_layout":"exhibitions","enabled":1},{"acf_fc_layout":"developing","enabled":1},{"acf_fc_layout":"call-about","enabled":1}
+  ]
+}

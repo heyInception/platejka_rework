@@ -1,0 +1,2862 @@
+{
+    "key": "group_platejka_about_page_builder_v1",
+    "title": "О компании — сборщик секций",
+    "fields": [
+        {
+            "key": "field_platejka_about_page_builder_v1",
+            "label": "Использовать сборщик секций",
+            "name": "platejka_about_page_builder",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_platejka_about_sections_v1",
+            "label": "Секции страницы",
+            "name": "platejka_about_sections",
+            "type": "flexible_content",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layouts": {
+                "layout_platejka_about_about_hero_v1": {
+                    "key": "layout_platejka_about_about_hero_v1",
+                    "name": "about-hero",
+                    "label": "Первый экран",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_about_row_about_hero_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_about_row_about_hero_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_about_row_about_hero_overrides_v1",
+                            "label": "Контент секции",
+                            "name": "overrides",
+                            "type": "group",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "layout": "block",
+                            "sub_fields": [
+                                {
+                                    "key": "field_platejka_about_hero_eyebrow_v1",
+                                    "label": "Надзаголовок",
+                                    "name": "eyebrow",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_hero_title_v1",
+                                    "label": "Заголовок H1",
+                                    "name": "title",
+                                    "type": "textarea",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "rows": 3,
+                                    "new_lines": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_hero_lead_v1",
+                                    "label": "Описание",
+                                    "name": "lead",
+                                    "type": "wysiwyg",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "tabs": "all",
+                                    "toolbar": "basic",
+                                    "media_upload": 0,
+                                    "delay": 0
+                                },
+                                {
+                                    "key": "field_platejka_about_hero_proofs_v1",
+                                    "label": "Карточки подтверждений",
+                                    "name": "proofs",
+                                    "type": "repeater",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "layout": "block",
+                                    "min": 0,
+                                    "max": 0,
+                                    "button_label": "Добавить: карточки подтверждений",
+                                    "collapsed": "field_platejka_about_hero_proof_image_v1",
+                                    "sub_fields": [
+                                        {
+                                            "key": "field_platejka_about_hero_proof_image_v1",
+                                            "label": "Основное изображение",
+                                            "name": "image",
+                                            "type": "image",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "return_format": "id",
+                                            "preview_size": "medium",
+                                            "library": "all"
+                                        },
+                                        {
+                                            "key": "field_platejka_about_hero_proof_icon_v1",
+                                            "label": "Иконка",
+                                            "name": "icon",
+                                            "type": "image",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "return_format": "id",
+                                            "preview_size": "medium",
+                                            "library": "all"
+                                        },
+                                        {
+                                            "key": "field_platejka_about_hero_proof_title_v1",
+                                            "label": "Заголовок",
+                                            "name": "title",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_hero_proof_text_v1",
+                                            "label": "Текст",
+                                            "name": "text",
+                                            "type": "textarea",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "rows": 3,
+                                            "new_lines": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_hero_proof_link_v1",
+                                            "label": "Ссылка",
+                                            "name": "link",
+                                            "type": "link",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "return_format": "array"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "key": "field_platejka_about_hero_metrics_v1",
+                                    "label": "Показатели",
+                                    "name": "metrics",
+                                    "type": "repeater",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "layout": "block",
+                                    "min": 0,
+                                    "max": 0,
+                                    "button_label": "Добавить: показатели",
+                                    "collapsed": "field_platejka_about_hero_metric_variant_v1",
+                                    "sub_fields": [
+                                        {
+                                            "key": "field_platejka_about_hero_metric_variant_v1",
+                                            "label": "Вид",
+                                            "name": "variant",
+                                            "type": "select",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "choices": {
+                                                "simple": "Обычный",
+                                                "badge": "С подписью",
+                                                "rating": "Рейтинг",
+                                                "media": "СМИ",
+                                                "nps": "NPS"
+                                            },
+                                            "default_value": "",
+                                            "return_format": "value",
+                                            "multiple": 0,
+                                            "allow_null": 0,
+                                            "ui": 0,
+                                            "ajax": 0,
+                                            "placeholder": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_hero_metric_value_v1",
+                                            "label": "Значение",
+                                            "name": "value",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_hero_metric_title_v1",
+                                            "label": "Подпись",
+                                            "name": "title",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_hero_metric_text_v1",
+                                            "label": "Текст",
+                                            "name": "text",
+                                            "type": "textarea",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "rows": 3,
+                                            "new_lines": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_hero_metric_links_v1",
+                                            "label": "Значки и ссылки",
+                                            "name": "links",
+                                            "type": "repeater",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "layout": "block",
+                                            "min": 0,
+                                            "max": 0,
+                                            "button_label": "Добавить: значки и ссылки",
+                                            "collapsed": "field_platejka_about_hero_metric_link_icon_v1",
+                                            "sub_fields": [
+                                                {
+                                                    "key": "field_platejka_about_hero_metric_link_icon_v1",
+                                                    "label": "Иконка темы",
+                                                    "name": "icon",
+                                                    "type": "select",
+                                                    "instructions": "",
+                                                    "required": 0,
+                                                    "conditional_logic": 0,
+                                                    "wrapper": {
+                                                        "width": "",
+                                                        "class": "",
+                                                        "id": ""
+                                                    },
+                                                    "choices": {
+                                                        "locator": "Локатор",
+                                                        "2gis": "2ГИС",
+                                                        "yell": "Yell",
+                                                        "vk": "VK",
+                                                        "telegram": "Telegram",
+                                                        "vc": "VC.ru",
+                                                        "rbc": "РБК",
+                                                        "lenta": "Лента.ру"
+                                                    },
+                                                    "default_value": "",
+                                                    "return_format": "value",
+                                                    "multiple": 0,
+                                                    "allow_null": 0,
+                                                    "ui": 0,
+                                                    "ajax": 0,
+                                                    "placeholder": ""
+                                                },
+                                                {
+                                                    "key": "field_platejka_about_hero_metric_link_v1",
+                                                    "label": "Ссылка",
+                                                    "name": "link",
+                                                    "type": "link",
+                                                    "instructions": "",
+                                                    "required": 0,
+                                                    "conditional_logic": 0,
+                                                    "wrapper": {
+                                                        "width": "",
+                                                        "class": "",
+                                                        "id": ""
+                                                    },
+                                                    "return_format": "array"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "min": "",
+                    "max": 1
+                },
+                "layout_platejka_about_location_v1": {
+                    "key": "layout_platejka_about_location_v1",
+                    "name": "location",
+                    "label": "Офис",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_about_row_location_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_about_row_location_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_about_row_location_overrides_v1",
+                            "label": "Контент секции",
+                            "name": "overrides",
+                            "type": "group",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "layout": "block",
+                            "sub_fields": [
+                                {
+                                    "key": "field_platejka_about_location_title_v1",
+                                    "label": "Заголовок",
+                                    "name": "title",
+                                    "type": "textarea",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "rows": 3,
+                                    "new_lines": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_location_description_v1",
+                                    "label": "Описание",
+                                    "name": "description",
+                                    "type": "wysiwyg",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "tabs": "all",
+                                    "toolbar": "basic",
+                                    "media_upload": 0,
+                                    "delay": 0
+                                },
+                                {
+                                    "key": "field_platejka_about_location_address_v1",
+                                    "label": "Адрес",
+                                    "name": "address",
+                                    "type": "textarea",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "rows": 3,
+                                    "new_lines": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_location_phone_v1",
+                                    "label": "Телефон",
+                                    "name": "phone",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_location_phone_label_v1",
+                                    "label": "Подпись телефона",
+                                    "name": "phone_label",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_location_email_v1",
+                                    "label": "Email",
+                                    "name": "email",
+                                    "type": "email",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    }
+                                },
+                                {
+                                    "key": "field_platejka_about_location_email_label_v1",
+                                    "label": "Подпись email",
+                                    "name": "email_label",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_location_map_label_v1",
+                                    "label": "Подпись карты",
+                                    "name": "map_label",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_location_gallery_label_v1",
+                                    "label": "Подпись галереи",
+                                    "name": "gallery_label",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_location_prev_label_v1",
+                                    "label": "Предыдущая фотография",
+                                    "name": "prev_label",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_location_next_label_v1",
+                                    "label": "Следующая фотография",
+                                    "name": "next_label",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_location_gallery_v1",
+                                    "label": "Галерея",
+                                    "name": "gallery",
+                                    "type": "repeater",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "layout": "block",
+                                    "min": 0,
+                                    "max": 0,
+                                    "button_label": "Добавить: галерея",
+                                    "collapsed": "field_platejka_about_location_gallery_image_v1",
+                                    "sub_fields": [
+                                        {
+                                            "key": "field_platejka_about_location_gallery_image_v1",
+                                            "label": "Изображение",
+                                            "name": "image",
+                                            "type": "image",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "return_format": "id",
+                                            "preview_size": "medium",
+                                            "library": "all"
+                                        },
+                                        {
+                                            "key": "field_platejka_about_location_gallery_alt_v1",
+                                            "label": "Alt",
+                                            "name": "alt",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": ""
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_about_review_main_v1": {
+                    "key": "layout_platejka_about_review_main_v1",
+                    "name": "review-main",
+                    "label": "Отзывы",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_about_row_review_main_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_about_row_review_main_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_about_row_review_main_overrides_v1",
+                            "label": "Локальные переопределения",
+                            "name": "overrides",
+                            "type": "clone",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "clone": [
+                                "field_platejka_defaults_review_main_v1"
+                            ],
+                            "display": "group",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_about_infrastructure_v1": {
+                    "key": "layout_platejka_about_infrastructure_v1",
+                    "name": "infrastructure",
+                    "label": "Инфраструктура",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_about_row_infrastructure_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_about_row_infrastructure_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_about_row_infrastructure_overrides_v1",
+                            "label": "Контент секции",
+                            "name": "overrides",
+                            "type": "group",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "layout": "block",
+                            "sub_fields": [
+                                {
+                                    "key": "field_platejka_about_infrastructure_heading_v1",
+                                    "label": "Заголовок",
+                                    "name": "heading",
+                                    "type": "group",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "layout": "block",
+                                    "sub_fields": [
+                                        {
+                                            "key": "field_platejka_about_infrastructure_heading_text_v1",
+                                            "label": "Текст",
+                                            "name": "text",
+                                            "type": "textarea",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "rows": 3,
+                                            "new_lines": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_infrastructure_heading_accent_v1",
+                                            "label": "Выделенная часть",
+                                            "name": "accent",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_infrastructure_heading_decorative_v1",
+                                            "label": "Декоративное отображение",
+                                            "name": "decorative",
+                                            "type": "true_false",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "message": "",
+                                            "default_value": 0,
+                                            "ui": 1,
+                                            "ui_on_text": "",
+                                            "ui_off_text": ""
+                                        }
+                                    ]
+                                },
+                                {
+                                    "key": "field_platejka_about_infrastructure_description_v1",
+                                    "label": "Описание",
+                                    "name": "description",
+                                    "type": "wysiwyg",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "tabs": "all",
+                                    "toolbar": "basic",
+                                    "media_upload": 0,
+                                    "delay": 0
+                                },
+                                {
+                                    "key": "field_platejka_about_infrastructure_specializations_label_v1",
+                                    "label": "Подпись специализаций",
+                                    "name": "specializations_label",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_infrastructure_specializations_v1",
+                                    "label": "Специализации",
+                                    "name": "specializations",
+                                    "type": "repeater",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "layout": "block",
+                                    "min": 0,
+                                    "max": 0,
+                                    "button_label": "Добавить: специализации",
+                                    "collapsed": "field_platejka_about_infrastructure_specialization_image_v1",
+                                    "sub_fields": [
+                                        {
+                                            "key": "field_platejka_about_infrastructure_specialization_image_v1",
+                                            "label": "Изображение",
+                                            "name": "image",
+                                            "type": "image",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "return_format": "id",
+                                            "preview_size": "medium",
+                                            "library": "all"
+                                        },
+                                        {
+                                            "key": "field_platejka_about_infrastructure_specialization_title_v1",
+                                            "label": "Название",
+                                            "name": "title",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": ""
+                                        }
+                                    ]
+                                },
+                                {
+                                    "key": "field_platejka_about_infrastructure_facts_v1",
+                                    "label": "Показатели",
+                                    "name": "facts",
+                                    "type": "repeater",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "layout": "block",
+                                    "min": 0,
+                                    "max": 0,
+                                    "button_label": "Добавить: показатели",
+                                    "collapsed": "field_platejka_about_infrastructure_fact_value_v1",
+                                    "sub_fields": [
+                                        {
+                                            "key": "field_platejka_about_infrastructure_fact_value_v1",
+                                            "label": "Значение",
+                                            "name": "value",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_infrastructure_fact_text_v1",
+                                            "label": "Текст",
+                                            "name": "text",
+                                            "type": "textarea",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "rows": 3,
+                                            "new_lines": ""
+                                        }
+                                    ]
+                                },
+                                {
+                                    "key": "field_platejka_about_infrastructure_network_image_v1",
+                                    "label": "Изображение инфраструктуры",
+                                    "name": "network_image",
+                                    "type": "image",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "return_format": "id",
+                                    "preview_size": "medium",
+                                    "library": "all"
+                                },
+                                {
+                                    "key": "field_platejka_about_infrastructure_entities_label_v1",
+                                    "label": "Подпись списка стран",
+                                    "name": "entities_label",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_infrastructure_entities_v1",
+                                    "label": "Страны присутствия",
+                                    "name": "entities",
+                                    "type": "repeater",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "layout": "block",
+                                    "min": 0,
+                                    "max": 0,
+                                    "button_label": "Добавить: страны присутствия",
+                                    "collapsed": "field_platejka_about_infrastructure_entity_image_v1",
+                                    "sub_fields": [
+                                        {
+                                            "key": "field_platejka_about_infrastructure_entity_image_v1",
+                                            "label": "Изображение",
+                                            "name": "image",
+                                            "type": "image",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "return_format": "id",
+                                            "preview_size": "medium",
+                                            "library": "all"
+                                        },
+                                        {
+                                            "key": "field_platejka_about_infrastructure_entity_icon_v1",
+                                            "label": "SVG темы",
+                                            "name": "icon",
+                                            "type": "select",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "choices": {
+                                                "": "Нет",
+                                                "indonesia": "Индонезия"
+                                            },
+                                            "default_value": "",
+                                            "return_format": "value",
+                                            "multiple": 0,
+                                            "allow_null": 0,
+                                            "ui": 0,
+                                            "ajax": 0,
+                                            "placeholder": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_infrastructure_entity_title_v1",
+                                            "label": "Страна",
+                                            "name": "title",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_infrastructure_entity_caption_v1",
+                                            "label": "Подпись",
+                                            "name": "caption",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_infrastructure_entity_state_v1",
+                                            "label": "Состояние",
+                                            "name": "state",
+                                            "type": "select",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "choices": {
+                                                "normal": "Обычное",
+                                                "active": "Активное",
+                                                "thailand": "Таиланд"
+                                            },
+                                            "default_value": "",
+                                            "return_format": "value",
+                                            "multiple": 0,
+                                            "allow_null": 0,
+                                            "ui": 0,
+                                            "ajax": 0,
+                                            "placeholder": ""
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_about_financial_v1": {
+                    "key": "layout_platejka_about_financial_v1",
+                    "name": "financial",
+                    "label": "Финансовый комплаенс",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_about_row_financial_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_about_row_financial_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_about_row_financial_overrides_v1",
+                            "label": "Контент секции",
+                            "name": "overrides",
+                            "type": "group",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "layout": "block",
+                            "sub_fields": [
+                                {
+                                    "key": "field_platejka_about_financial_eyebrow_v1",
+                                    "label": "Надзаголовок",
+                                    "name": "eyebrow",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_financial_heading_v1",
+                                    "label": "Заголовок",
+                                    "name": "heading",
+                                    "type": "group",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "layout": "block",
+                                    "sub_fields": [
+                                        {
+                                            "key": "field_platejka_about_financial_heading_text_v1",
+                                            "label": "Текст",
+                                            "name": "text",
+                                            "type": "textarea",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "rows": 3,
+                                            "new_lines": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_financial_heading_accent_v1",
+                                            "label": "Выделенная часть",
+                                            "name": "accent",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_financial_heading_decorative_v1",
+                                            "label": "Декоративное отображение",
+                                            "name": "decorative",
+                                            "type": "true_false",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "message": "",
+                                            "default_value": 0,
+                                            "ui": 1,
+                                            "ui_on_text": "",
+                                            "ui_off_text": ""
+                                        }
+                                    ]
+                                },
+                                {
+                                    "key": "field_platejka_about_financial_description_v1",
+                                    "label": "Описание",
+                                    "name": "description",
+                                    "type": "wysiwyg",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "tabs": "all",
+                                    "toolbar": "basic",
+                                    "media_upload": 0,
+                                    "delay": 0
+                                },
+                                {
+                                    "key": "field_platejka_about_financial_link_v1",
+                                    "label": "Основная ссылка",
+                                    "name": "link",
+                                    "type": "link",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "return_format": "array"
+                                },
+                                {
+                                    "key": "field_platejka_about_financial_benefits_v1",
+                                    "label": "Преимущества",
+                                    "name": "benefits",
+                                    "type": "repeater",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "layout": "block",
+                                    "min": 0,
+                                    "max": 0,
+                                    "button_label": "Добавить: преимущества",
+                                    "collapsed": "field_platejka_about_financial_benefit_image_v1",
+                                    "sub_fields": [
+                                        {
+                                            "key": "field_platejka_about_financial_benefit_image_v1",
+                                            "label": "Иконка",
+                                            "name": "image",
+                                            "type": "image",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "return_format": "id",
+                                            "preview_size": "medium",
+                                            "library": "all"
+                                        },
+                                        {
+                                            "key": "field_platejka_about_financial_benefit_text_v1",
+                                            "label": "Текст",
+                                            "name": "text",
+                                            "type": "textarea",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "rows": 3,
+                                            "new_lines": ""
+                                        }
+                                    ]
+                                },
+                                {
+                                    "key": "field_platejka_about_financial_case_v1",
+                                    "label": "Кейс",
+                                    "name": "case",
+                                    "type": "group",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "layout": "block",
+                                    "sub_fields": [
+                                        {
+                                            "key": "field_platejka_about_financial_case_label_v1",
+                                            "label": "Метка",
+                                            "name": "label",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_financial_case_badge_v1",
+                                            "label": "Результат",
+                                            "name": "badge",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_financial_case_title_v1",
+                                            "label": "Заголовок",
+                                            "name": "title",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_financial_case_text_v1",
+                                            "label": "Текст",
+                                            "name": "text",
+                                            "type": "wysiwyg",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "tabs": "all",
+                                            "toolbar": "basic",
+                                            "media_upload": 0,
+                                            "delay": 0
+                                        },
+                                        {
+                                            "key": "field_platejka_about_financial_case_image_v1",
+                                            "label": "Изображение",
+                                            "name": "image",
+                                            "type": "image",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "return_format": "id",
+                                            "preview_size": "medium",
+                                            "library": "all"
+                                        },
+                                        {
+                                            "key": "field_platejka_about_financial_case_logo_v1",
+                                            "label": "Логотип",
+                                            "name": "logo",
+                                            "type": "image",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "return_format": "id",
+                                            "preview_size": "medium",
+                                            "library": "all"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "key": "field_platejka_about_financial_banks_title_v1",
+                                    "label": "Заголовок банков",
+                                    "name": "banks_title",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_financial_banks_description_v1",
+                                    "label": "Описание банков",
+                                    "name": "banks_description",
+                                    "type": "textarea",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "rows": 3,
+                                    "new_lines": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_financial_banks_v1",
+                                    "label": "Банки",
+                                    "name": "banks",
+                                    "type": "repeater",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "layout": "block",
+                                    "min": 0,
+                                    "max": 0,
+                                    "button_label": "Добавить: банки",
+                                    "collapsed": "field_platejka_about_financial_bank_image_v1",
+                                    "sub_fields": [
+                                        {
+                                            "key": "field_platejka_about_financial_bank_image_v1",
+                                            "label": "Логотип",
+                                            "name": "image",
+                                            "type": "image",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "return_format": "id",
+                                            "preview_size": "medium",
+                                            "library": "all"
+                                        },
+                                        {
+                                            "key": "field_platejka_about_financial_bank_title_v1",
+                                            "label": "Название",
+                                            "name": "title",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": ""
+                                        }
+                                    ]
+                                },
+                                {
+                                    "key": "field_platejka_about_financial_test_v1",
+                                    "label": "Тестовый платёж",
+                                    "name": "test",
+                                    "type": "group",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "layout": "block",
+                                    "sub_fields": [
+                                        {
+                                            "key": "field_platejka_about_financial_test_title_v1",
+                                            "label": "Заголовок",
+                                            "name": "title",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_financial_test_text_v1",
+                                            "label": "Текст",
+                                            "name": "text",
+                                            "type": "wysiwyg",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "tabs": "all",
+                                            "toolbar": "basic",
+                                            "media_upload": 0,
+                                            "delay": 0
+                                        },
+                                        {
+                                            "key": "field_platejka_about_financial_test_link_v1",
+                                            "label": "Ссылка",
+                                            "name": "link",
+                                            "type": "link",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "return_format": "array"
+                                        },
+                                        {
+                                            "key": "field_platejka_about_financial_test_image_v1",
+                                            "label": "Изображение",
+                                            "name": "image",
+                                            "type": "image",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "return_format": "id",
+                                            "preview_size": "medium",
+                                            "library": "all"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_about_employees_v1": {
+                    "key": "layout_platejka_about_employees_v1",
+                    "name": "employees",
+                    "label": "Сотрудники",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_about_row_employees_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_about_row_employees_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_about_row_employees_overrides_v1",
+                            "label": "Контент секции",
+                            "name": "overrides",
+                            "type": "group",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "layout": "block",
+                            "sub_fields": [
+                                {
+                                    "key": "field_platejka_about_employees_heading_v1",
+                                    "label": "Заголовок",
+                                    "name": "heading",
+                                    "type": "group",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "layout": "block",
+                                    "sub_fields": [
+                                        {
+                                            "key": "field_platejka_about_employees_heading_text_v1",
+                                            "label": "Текст",
+                                            "name": "text",
+                                            "type": "textarea",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "rows": 3,
+                                            "new_lines": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_employees_heading_accent_v1",
+                                            "label": "Выделенная часть",
+                                            "name": "accent",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_employees_heading_decorative_v1",
+                                            "label": "Декоративное отображение",
+                                            "name": "decorative",
+                                            "type": "true_false",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "message": "",
+                                            "default_value": 0,
+                                            "ui": 1,
+                                            "ui_on_text": "",
+                                            "ui_off_text": ""
+                                        }
+                                    ]
+                                },
+                                {
+                                    "key": "field_platejka_about_employees_quote_v1",
+                                    "label": "Цитата",
+                                    "name": "quote",
+                                    "type": "wysiwyg",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "tabs": "all",
+                                    "toolbar": "basic",
+                                    "media_upload": 0,
+                                    "delay": 0
+                                },
+                                {
+                                    "key": "field_platejka_about_employees_author_name_v1",
+                                    "label": "Имя автора",
+                                    "name": "author_name",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_employees_author_role_v1",
+                                    "label": "Должность",
+                                    "name": "author_role",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_employees_author_image_v1",
+                                    "label": "Фото автора",
+                                    "name": "author_image",
+                                    "type": "image",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "return_format": "id",
+                                    "preview_size": "medium",
+                                    "library": "all"
+                                },
+                                {
+                                    "key": "field_platejka_about_employees_team_image_v1",
+                                    "label": "Фото команды",
+                                    "name": "team_image",
+                                    "type": "image",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "return_format": "id",
+                                    "preview_size": "medium",
+                                    "library": "all"
+                                }
+                            ]
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_about_exhibitions_v1": {
+                    "key": "layout_platejka_about_exhibitions_v1",
+                    "name": "exhibitions",
+                    "label": "Выставки",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_about_row_exhibitions_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_about_row_exhibitions_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_about_row_exhibitions_overrides_v1",
+                            "label": "Контент секции",
+                            "name": "overrides",
+                            "type": "group",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "layout": "block",
+                            "sub_fields": [
+                                {
+                                    "key": "field_platejka_about_exhibitions_title_v1",
+                                    "label": "Заголовок",
+                                    "name": "title",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_exhibitions_subtitle_v1",
+                                    "label": "Подзаголовок",
+                                    "name": "subtitle",
+                                    "type": "textarea",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "rows": 3,
+                                    "new_lines": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_exhibitions_description_v1",
+                                    "label": "Описание",
+                                    "name": "description",
+                                    "type": "wysiwyg",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "tabs": "all",
+                                    "toolbar": "basic",
+                                    "media_upload": 0,
+                                    "delay": 0
+                                },
+                                {
+                                    "key": "field_platejka_about_exhibitions_trademark_v1",
+                                    "label": "Товарный знак",
+                                    "name": "trademark",
+                                    "type": "group",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "layout": "block",
+                                    "sub_fields": [
+                                        {
+                                            "key": "field_platejka_about_exhibitions_trademark_image_v1",
+                                            "label": "Изображение",
+                                            "name": "image",
+                                            "type": "image",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "return_format": "id",
+                                            "preview_size": "medium",
+                                            "library": "all"
+                                        },
+                                        {
+                                            "key": "field_platejka_about_exhibitions_trademark_title_v1",
+                                            "label": "Название",
+                                            "name": "title",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_exhibitions_trademark_caption_v1",
+                                            "label": "Подпись",
+                                            "name": "caption",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": ""
+                                        }
+                                    ]
+                                },
+                                {
+                                    "key": "field_platejka_about_exhibitions_gallery_label_v1",
+                                    "label": "Подпись галереи",
+                                    "name": "gallery_label",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_exhibitions_prev_label_v1",
+                                    "label": "Предыдущая фотография",
+                                    "name": "prev_label",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_exhibitions_next_label_v1",
+                                    "label": "Следующая фотография",
+                                    "name": "next_label",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_exhibitions_gallery_v1",
+                                    "label": "Галерея",
+                                    "name": "gallery",
+                                    "type": "repeater",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "layout": "block",
+                                    "min": 0,
+                                    "max": 0,
+                                    "button_label": "Добавить: галерея",
+                                    "collapsed": "field_platejka_about_exhibitions_gallery_image_v1",
+                                    "sub_fields": [
+                                        {
+                                            "key": "field_platejka_about_exhibitions_gallery_image_v1",
+                                            "label": "Изображение",
+                                            "name": "image",
+                                            "type": "image",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "return_format": "id",
+                                            "preview_size": "medium",
+                                            "library": "all"
+                                        },
+                                        {
+                                            "key": "field_platejka_about_exhibitions_gallery_alt_v1",
+                                            "label": "Alt",
+                                            "name": "alt",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": ""
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_about_developing_v1": {
+                    "key": "layout_platejka_about_developing_v1",
+                    "name": "developing",
+                    "label": "История развития",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_about_row_developing_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_about_row_developing_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_about_row_developing_overrides_v1",
+                            "label": "Контент секции",
+                            "name": "overrides",
+                            "type": "group",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "layout": "block",
+                            "sub_fields": [
+                                {
+                                    "key": "field_platejka_about_developing_heading_v1",
+                                    "label": "Заголовок",
+                                    "name": "heading",
+                                    "type": "group",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "layout": "block",
+                                    "sub_fields": [
+                                        {
+                                            "key": "field_platejka_about_developing_heading_text_v1",
+                                            "label": "Текст",
+                                            "name": "text",
+                                            "type": "textarea",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "rows": 3,
+                                            "new_lines": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_developing_heading_accent_v1",
+                                            "label": "Выделенная часть",
+                                            "name": "accent",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_developing_heading_decorative_v1",
+                                            "label": "Декоративное отображение",
+                                            "name": "decorative",
+                                            "type": "true_false",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "message": "",
+                                            "default_value": 0,
+                                            "ui": 1,
+                                            "ui_on_text": "",
+                                            "ui_off_text": ""
+                                        }
+                                    ]
+                                },
+                                {
+                                    "key": "field_platejka_about_developing_region_label_v1",
+                                    "label": "Подпись истории",
+                                    "name": "region_label",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_developing_prev_label_v1",
+                                    "label": "Предыдущий этап",
+                                    "name": "prev_label",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_developing_next_label_v1",
+                                    "label": "Следующий этап",
+                                    "name": "next_label",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_developing_items_v1",
+                                    "label": "Этапы",
+                                    "name": "items",
+                                    "type": "repeater",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "layout": "block",
+                                    "min": 0,
+                                    "max": 0,
+                                    "button_label": "Добавить: этапы",
+                                    "collapsed": "field_platejka_about_developing_item_year_v1",
+                                    "sub_fields": [
+                                        {
+                                            "key": "field_platejka_about_developing_item_year_v1",
+                                            "label": "Год",
+                                            "name": "year",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_developing_item_title_v1",
+                                            "label": "Заголовок",
+                                            "name": "title",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_developing_item_text_v1",
+                                            "label": "Текст",
+                                            "name": "text",
+                                            "type": "wysiwyg",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "tabs": "all",
+                                            "toolbar": "basic",
+                                            "media_upload": 0,
+                                            "delay": 0
+                                        },
+                                        {
+                                            "key": "field_platejka_about_developing_item_image_v1",
+                                            "label": "Изображение",
+                                            "name": "image",
+                                            "type": "image",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "return_format": "id",
+                                            "preview_size": "medium",
+                                            "library": "all"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_about_call_about_v1": {
+                    "key": "layout_platejka_about_call_about_v1",
+                    "name": "call-about",
+                    "label": "Форма и контакты",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_about_row_call_about_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_about_row_call_about_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_about_row_call_about_overrides_v1",
+                            "label": "Контент секции",
+                            "name": "overrides",
+                            "type": "group",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "layout": "block",
+                            "sub_fields": [
+                                {
+                                    "key": "field_platejka_about_call_about_heading_v1",
+                                    "label": "Заголовок",
+                                    "name": "heading",
+                                    "type": "group",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "layout": "block",
+                                    "sub_fields": [
+                                        {
+                                            "key": "field_platejka_about_call_about_heading_text_v1",
+                                            "label": "Текст",
+                                            "name": "text",
+                                            "type": "textarea",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "rows": 3,
+                                            "new_lines": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_call_about_heading_accent_v1",
+                                            "label": "Выделенная часть",
+                                            "name": "accent",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_call_about_heading_decorative_v1",
+                                            "label": "Декоративное отображение",
+                                            "name": "decorative",
+                                            "type": "true_false",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "message": "",
+                                            "default_value": 0,
+                                            "ui": 1,
+                                            "ui_on_text": "",
+                                            "ui_off_text": ""
+                                        }
+                                    ]
+                                },
+                                {
+                                    "key": "field_platejka_about_call_about_form_v1",
+                                    "label": "Форма",
+                                    "name": "form",
+                                    "type": "post_object",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "post_type": [
+                                        "wpcf7_contact_form"
+                                    ],
+                                    "return_format": "id",
+                                    "multiple": 0,
+                                    "allow_null": 1,
+                                    "ui": 1
+                                },
+                                {
+                                    "key": "field_platejka_about_call_about_trust_label_v1",
+                                    "label": "Подпись карточек доверия",
+                                    "name": "trust_label",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": ""
+                                },
+                                {
+                                    "key": "field_platejka_about_call_about_trust_items_v1",
+                                    "label": "Карточки доверия",
+                                    "name": "trust_items",
+                                    "type": "repeater",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "layout": "block",
+                                    "min": 0,
+                                    "max": 0,
+                                    "button_label": "Добавить: карточки доверия",
+                                    "collapsed": "field_platejka_about_call_about_trust_variant_v1",
+                                    "sub_fields": [
+                                        {
+                                            "key": "field_platejka_about_call_about_trust_variant_v1",
+                                            "label": "Вид",
+                                            "name": "variant",
+                                            "type": "select",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "choices": {
+                                                "experience": "Опыт",
+                                                "registry": "Реестр",
+                                                "association": "Ассоциация"
+                                            },
+                                            "default_value": "",
+                                            "return_format": "value",
+                                            "multiple": 0,
+                                            "allow_null": 0,
+                                            "ui": 0,
+                                            "ajax": 0,
+                                            "placeholder": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_call_about_trust_value_v1",
+                                            "label": "Значение",
+                                            "name": "value",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_call_about_trust_title_v1",
+                                            "label": "Заголовок",
+                                            "name": "title",
+                                            "type": "textarea",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "rows": 3,
+                                            "new_lines": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_call_about_trust_text_v1",
+                                            "label": "Подпись",
+                                            "name": "text",
+                                            "type": "textarea",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "rows": 3,
+                                            "new_lines": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_call_about_trust_image_v1",
+                                            "label": "Изображение",
+                                            "name": "image",
+                                            "type": "image",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "return_format": "id",
+                                            "preview_size": "medium",
+                                            "library": "all"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "key": "field_platejka_about_call_about_cards_v1",
+                                    "label": "Контактные карточки",
+                                    "name": "cards",
+                                    "type": "repeater",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "layout": "block",
+                                    "min": 0,
+                                    "max": 0,
+                                    "button_label": "Добавить: контактные карточки",
+                                    "collapsed": "field_platejka_about_call_about_card_title_v1",
+                                    "sub_fields": [
+                                        {
+                                            "key": "field_platejka_about_call_about_card_title_v1",
+                                            "label": "Заголовок",
+                                            "name": "title",
+                                            "type": "text",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "default_value": ""
+                                        },
+                                        {
+                                            "key": "field_platejka_about_call_about_card_text_v1",
+                                            "label": "Текст",
+                                            "name": "text",
+                                            "type": "wysiwyg",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "tabs": "all",
+                                            "toolbar": "basic",
+                                            "media_upload": 0,
+                                            "delay": 0
+                                        },
+                                        {
+                                            "key": "field_platejka_about_call_about_card_links_v1",
+                                            "label": "Ссылки",
+                                            "name": "links",
+                                            "type": "repeater",
+                                            "instructions": "",
+                                            "required": 0,
+                                            "conditional_logic": 0,
+                                            "wrapper": {
+                                                "width": "",
+                                                "class": "",
+                                                "id": ""
+                                            },
+                                            "layout": "block",
+                                            "min": 0,
+                                            "max": 0,
+                                            "button_label": "Добавить: ссылки",
+                                            "collapsed": "field_platejka_about_call_about_card_link_icon_v1",
+                                            "sub_fields": [
+                                                {
+                                                    "key": "field_platejka_about_call_about_card_link_icon_v1",
+                                                    "label": "Иконка темы",
+                                                    "name": "icon",
+                                                    "type": "select",
+                                                    "instructions": "",
+                                                    "required": 0,
+                                                    "conditional_logic": 0,
+                                                    "wrapper": {
+                                                        "width": "",
+                                                        "class": "",
+                                                        "id": ""
+                                                    },
+                                                    "choices": {
+                                                        "telegram": "Telegram",
+                                                        "whatsapp": "WhatsApp",
+                                                        "vk": "VK",
+                                                        "telegram-media": "Telegram медиа",
+                                                        "vc": "VC.ru",
+                                                        "rbc": "РБК",
+                                                        "lenta": "Лента.ру"
+                                                    },
+                                                    "default_value": "",
+                                                    "return_format": "value",
+                                                    "multiple": 0,
+                                                    "allow_null": 0,
+                                                    "ui": 0,
+                                                    "ajax": 0,
+                                                    "placeholder": ""
+                                                },
+                                                {
+                                                    "key": "field_platejka_about_call_about_card_link_v1",
+                                                    "label": "Ссылка",
+                                                    "name": "link",
+                                                    "type": "link",
+                                                    "instructions": "",
+                                                    "required": 0,
+                                                    "conditional_logic": 0,
+                                                    "wrapper": {
+                                                        "width": "",
+                                                        "class": "",
+                                                        "id": ""
+                                                    },
+                                                    "return_format": "array"
+                                                },
+                                                {
+                                                    "key": "field_platejka_about_call_about_card_link_label_v1",
+                                                    "label": "Доступная подпись",
+                                                    "name": "label",
+                                                    "type": "text",
+                                                    "instructions": "",
+                                                    "required": 0,
+                                                    "conditional_logic": 0,
+                                                    "wrapper": {
+                                                        "width": "",
+                                                        "class": "",
+                                                        "id": ""
+                                                    },
+                                                    "default_value": ""
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                }
+            },
+            "min": "",
+            "max": "",
+            "button_label": "Добавить секцию"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post",
+                "operator": "==",
+                "value": "22"
+            }
+        ]
+    ],
+    "menu_order": -110,
+    "position": "acf_after_title",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": [],
+    "active": true,
+    "description": "Локальный порядок и контент секций страницы «О компании».",
+    "show_in_rest": 0,
+    "modified": 1791320000
+}

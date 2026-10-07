@@ -1609,6 +1609,11 @@
                 "param": "post_type",
                 "operator": "==",
                 "value": "page"
+            },
+            {
+                "param": "post",
+                "operator": "!=",
+                "value": "22"
             }
         ]
     ],
@@ -1621,5 +1626,5 @@
     "active": true,
     "description": "Порядок, видимость и локальные переопределения секций страницы.",
     "show_in_rest": 0,
-    "modified": 1791230400
+    "modified": 1791320000
 }

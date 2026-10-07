@@ -18,6 +18,7 @@ if ( ! defined( 'PLATEJKA_CORE_PATH' ) ) {
 
 require_once PLATEJKA_CORE_PATH . 'src/Acf/SectionSeed.php';
 require_once PLATEJKA_CORE_PATH . 'src/Acf/DefaultPageSeed.php';
+require_once PLATEJKA_CORE_PATH . 'src/Acf/AboutPageSeed.php';
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	require_once PLATEJKA_CORE_PATH . 'src/Cli/SectionBuilderMigrationCommand.php';
