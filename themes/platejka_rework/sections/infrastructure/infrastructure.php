@@ -1,45 +1,45 @@
-<section class="infrastructure" aria-labelledby="infrastructure-title">
+<?php
+$data            = platejka_section_array( $section_data ?? array() );
+$instance        = isset( $section_instance ) ? (string) $section_instance : 'infrastructure';
+$title_id        = platejka_section_dom_id( $instance, 'infrastructure-title' );
+$anchor          = isset( $section_anchor ) ? trim( (string) $section_anchor ) : '';
+$specializations = platejka_section_array( $data['specializations'] ?? array() );
+$facts           = platejka_section_array( $data['facts'] ?? array() );
+$entities        = platejka_section_array( $data['entities'] ?? array() );
+$entity_icons    = array( 'indonesia' => 'img/infrastructure/flag-indonesia.svg' );
+?>
+<section class="infrastructure"<?php echo '' !== $anchor ? ' id="' . esc_attr( $anchor ) . '"' : ''; ?> aria-labelledby="<?php echo esc_attr( $title_id ); ?>">
   <div class="container">
     <header class="infrastructure__header">
-      <h2 id="infrastructure-title">Платежная инфраструктура&nbsp;нашего сервиса</h2>
-      <p>Договорённости с 18 экспортёрами РФ о валютной выручке</p>
+      <?php
+      $heading_html = platejka_section_heading( platejka_section_array( $data['heading'] ?? array() ), '' );
+      $heading_html = preg_replace( '/<h2 class=""/', '<h2 id="' . esc_attr( $title_id ) . '"', $heading_html, 1 );
+      echo $heading_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+      ?>
+      <?php echo wpautop( wp_kses_post( (string) ( $data['description'] ?? '' ) ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
       <div class="infrastructure__specializations">
-        <span>Ключевые специализации:</span>
-        <strong><img src="img/destinations/flags-1.png" width="40" height="40" alt="">Китай</strong>
-        <strong><img src="img/destinations/flags-6.png" width="40" height="40" alt="">Европа</strong>
+        <span><?php echo esc_html( (string) ( $data['specializations_label'] ?? '' ) ); ?></span>
+        <?php foreach ( $specializations as $item ) : $item = platejka_section_array( $item ); ?>
+          <strong><?php echo platejka_section_image( $item['image'] ?? 0, 'thumbnail', array( 'alt' => '', 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => '40px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php echo esc_html( (string) ( $item['title'] ?? '' ) ); ?></strong>
+        <?php endforeach; ?>
       </div>
     </header>
     <ul class="infrastructure__facts list-reset" aria-label="Инфраструктура в цифрах">
-      <li class="infrastructure__fact"><strong>21</strong><span>сотрудник в&nbsp;московском офисе</span></li>
-      <li class="infrastructure__fact"><strong>10</strong><span>офисы и компании в 10 странах</span></li>
-      <li class="infrastructure__fact"><strong>12</strong><span>сотрудников за&nbsp;рубежом</span></li>
+      <?php foreach ( $facts as $fact ) : $fact = platejka_section_array( $fact ); ?><li class="infrastructure__fact"><strong><?php echo esc_html( (string) ( $fact['value'] ?? '' ) ); ?></strong><span><?php echo esc_html( (string) ( $fact['text'] ?? '' ) ); ?></span></li><?php endforeach; ?>
     </ul>
     <div class="infrastructure__network">
-      <img src="img/infrastructure/globe.png" width="1014" height="447" alt="">
-      <ul class="infrastructure__entities list-reset" aria-label="Страны присутствия">
-        <li class="infrastructure__entity"><img src="img/destinations/flags-38.png" alt="" width="40" height="40"><span
-            class="infrastructure__entity-name">Эстония</span><small>Юрлицо</small></li>
-        <li class="infrastructure__entity"><img src="img/infrastructure/flag-indonesia.svg" alt="" width="40"
-            height="40"><span class="infrastructure__entity-name">Индонезия</span><small>Юрлицо</small></li>
-        <li class="infrastructure__entity"><img src="img/destinations/flags-4.png" alt="" width="40" height="40"><span
-            class="infrastructure__entity-name">Россия</span><small>Юрлицо</small></li>
-        <li class="infrastructure__entity infrastructure__entity--active"><img src="img/destinations/flags-1.png" alt=""
-            width="40" height="40"><span class="infrastructure__entity-name">Китай</span><small>Юрлицо</small></li>
-        <li class="infrastructure__entity"><img src="img/destinations/flags-16.png" alt="" width="40" height="40"><span
-            class="infrastructure__entity-name">США</span><small>Юрлицо</small></li>
-        <li class="infrastructure__entity"><img src="img/destinations/flags-34.png" alt="" width="40" height="40"><span
-            class="infrastructure__entity-name">Чехия</span><small>Юрлицо</small></li>
-        <li class="infrastructure__entity"><img src="img/destinations/flags-19.png" alt="" width="40" height="40"><span
-            class="infrastructure__entity-name">Германия</span><small>Юрлицо</small></li>
-        <li class="infrastructure__entity infrastructure__entity--thailand"><img src="img/destinations/flags-23.png"
-            alt="" width="40" height="40"><span class="infrastructure__entity-name">Таиланд</span><small>Юрлицо, до 2025
-            г.</small></li>
-        <li class="infrastructure__entity"><img src="img/destinations/flags-7.png" alt="" width="40" height="40"><span
-            class="infrastructure__entity-name">Турция</span><small>Юрлицо</small></li>
-        <li class="infrastructure__entity"><img src="img/destinations/flags-45.png" alt="" width="40" height="40"><span
-            class="infrastructure__entity-name">ОАЭ</span><small>Юрлицо</small></li>
-        <li class="infrastructure__entity"><img src="img/destinations/flags-22.png" alt="" width="40" height="40"><span
-            class="infrastructure__entity-name">Казахстан</span><small>Юрлицо</small></li>
+      <?php echo platejka_section_image( $data['network_image'] ?? 0, 'large', array( 'alt' => '', 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => '(max-width: 767px) 100vw, 1014px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+      <ul class="infrastructure__entities list-reset" aria-label="<?php echo esc_attr( (string) ( $data['entities_label'] ?? '' ) ); ?>">
+        <?php foreach ( $entities as $entity ) :
+          $entity = platejka_section_array( $entity );
+          $state = in_array( $entity['state'] ?? '', array( 'active', 'thailand' ), true ) ? (string) $entity['state'] : '';
+          $icon = $entity_icons[ $entity['icon'] ?? '' ] ?? '';
+        ?>
+          <li class="infrastructure__entity<?php echo '' !== $state ? ' infrastructure__entity--' . esc_attr( $state ) : ''; ?>">
+            <?php if ( '' !== $icon ) : ?><img src="<?php echo esc_attr( $icon ); ?>" alt="" width="40" height="40"><?php else : echo platejka_section_image( $entity['image'] ?? 0, 'thumbnail', array( 'alt' => '', 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => '40px' ) ); endif; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+            <span class="infrastructure__entity-name"><?php echo esc_html( (string) ( $entity['title'] ?? '' ) ); ?></span><small><?php echo esc_html( (string) ( $entity['caption'] ?? '' ) ); ?></small>
+          </li>
+        <?php endforeach; ?>
       </ul>
     </div>
   </div>

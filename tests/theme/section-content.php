@@ -119,6 +119,15 @@ add_filter( 'acf/load_value/name=hero', $force_empty_hero );
 $seeded_internal_hero = platejka_resolve_section_data( array( 'slug' => 'hero', 'row' => array() ) );
 remove_filter( 'acf/load_value/name=hero', $force_empty_hero );
 $assert( 'Платежи в Китай' === ( $seeded_internal_hero['title']['primary'] ?? null ), 'Internal-page seed keeps fallback templates populated before migration apply.' );
+$old_about_marker = get_option( 'platejka_about_page_builder_version', null );
+delete_option( 'platejka_about_page_builder_version' );
+$seeded_about_hero = platejka_resolve_section_data( array( 'slug' => 'about-hero', 'row' => array() ), 22 );
+$assert( 'Ваш надёжный платёжный агент' === ( $seeded_about_hero['title'] ?? null ), 'About-page seed keeps its fallback templates populated before migration apply.' );
+if ( null === $old_about_marker ) {
+	delete_option( 'platejka_about_page_builder_version' );
+} else {
+	update_option( 'platejka_about_page_builder_version', $old_about_marker, false );
+}
 if ( null === $old_default_page_marker ) {
 	delete_option( 'platejka_default_page_builder_version' );
 } else {
