@@ -12,6 +12,7 @@ $enable_position = strpos( $source, "update_field( 'field_platejka_about_page_bu
 $marker_position = strpos( $source, 'update_option( self::VERSION_OPTION' );
 $assert( false !== $verify_position && false !== $enable_position && false !== $marker_position && $verify_position < $enable_position && $enable_position < $marker_position, 'Source verifies content before enabling the builder and writes the marker last.' );
 $assert( str_contains( $source, 'platejka_about_page_migration_verify' ), 'Migration exposes a controlled verification-failure seam.' );
+$assert( ! str_contains( $source, 'if ( $rows_changed && ! update_field' ), 'Flexible-content success is determined by read-back verification, not the root update_field return value.' );
 
 if ( 1 === (int) get_option( 'platejka_about_page_builder_version', 0 ) && class_exists( $class ) ) {
 	$expected = array( 'about-hero', 'location', 'review-main', 'infrastructure', 'financial', 'employees', 'exhibitions', 'developing', 'call-about' );

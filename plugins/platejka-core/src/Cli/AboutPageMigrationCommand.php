@@ -91,8 +91,8 @@ final class AboutPageMigrationCommand {
 		if ( ! $already_migrated && ! $conflict ) { $writes['planned'][] = array( 'post_id' => 'wp_options', 'field' => self::VERSION_OPTION, 'current' => 0, 'target' => 1 ); }
 
 		if ( $apply && ! $already_migrated ) {
-			if ( $rows_changed && ! update_field( self::ROWS_FIELD, $target_rows, self::PAGE_ID ) ) {
-				throw new RuntimeException( 'About-page migration could not save section rows.' );
+			if ( $rows_changed ) {
+				update_field( self::ROWS_FIELD, $target_rows, self::PAGE_ID );
 			}
 			self::verifyContentAndRows( $target_rows );
 			if ( $builder_changed ) {
