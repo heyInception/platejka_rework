@@ -71,19 +71,35 @@ Page-row overrides follow these rules:
 - a non-empty repeater replaces the complete global collection.
 
 The migrated home page (ID 24) contains 18 enabled rows in the approved legacy
-order. Its original DOM classes and JavaScript hooks remain part of the tested
-layout contract. Editorial images are stored as WordPress attachment IDs and
-render with intrinsic dimensions, `srcset` and `sizes`.
+order. The China page (ID 1873) contains its approved 13-row composition:
+`hero`, `about`, `shipments`, `guarantees`, `documents`, `protection`, `review`,
+`work`, `problems`, `calculator`, `seo`, `faq`, `call`. Only ID 1873 is changed
+by the default-page migration; other pages using `page.php` retain the PHP
+fallback. The China `review` layout keeps its own markup but inherits the
+shared `review-main` content. Its `shipments`, `guarantees`, and `documents`
+rows explicitly use the `default` variant.
+
+New rows added in the editor are disabled by default. The migrated rows are
+enabled deliberately to preserve the existing public page. Its original DOM
+classes and JavaScript hooks remain part of the tested layout contract.
+Editorial images are stored as WordPress attachment IDs and rendered with
+intrinsic dimensions, `srcset` and `sizes`; decorative SVGs remain immutable
+theme assets.
 
 Preview the deterministic migration without writing anything, then apply it:
 
 ```powershell
 studio wp --path C:\Users\Inception\Studio\platejka platejka section-builder migrate
 studio wp --path C:\Users\Inception\Studio\platejka platejka section-builder migrate --apply
+studio wp --path C:\Users\Inception\Studio\platejka platejka section-builder migrate-default-page
+studio wp --path C:\Users\Inception\Studio\platejka platejka section-builder migrate-default-page --apply
 ```
 
 The migration is additive and idempotent: later runs add newly introduced
 fields without replacing populated editor values or importing duplicate media.
+To roll back the China page rendering without deleting its saved rows, disable
+its `Сборщик секций` switch. `page.php` will immediately use the original
+13-section fallback in the same order.
 
 ## Fast local verification
 
