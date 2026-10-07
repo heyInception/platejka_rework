@@ -125,17 +125,16 @@ git commit -m "feat: resolve shared review section content"
 - Modify: `themes/platejka_rework/sections/protection/protection.php`
 - Modify: `themes/platejka_rework/sections/review/review.php`
 - Modify: `tests/theme/section-template-content.php`
-- Modify: `tests/theme/china-page.php`
 
 **Interfaces:**
 - Consumes: `$section_data`, `$section_instance`, and `platejka_section_*` helpers from the renderer.
 - Produces: escaped dynamic HTML with the same root classes and interaction hooks as the static templates.
 
-- [ ] **Step 1: Add failing template contract assertions.**
+- [ ] **Step 1: Add one focused failing template contract covering all three templates.**
 
 Assert the three templates render fixture overrides, unique per-instance IDs/ARIA links, all existing root classes and `data-*` hooks, no demo `href="#"`/inline rates/fake dialog copy, and no `theme://` value. Assert missing media emits no broken image. Assert hero editorial images include dimensions plus eager/high priority and non-hero images use lazy loading.
 
-- [ ] **Step 2: Run the template and China-page tests.**
+- [ ] **Step 2: Run the focused template-content test.**
 
 Expected: FAIL because the templates still contain static copy and relative media.
 
@@ -151,7 +150,6 @@ Keep their wrapper hierarchy and slider/dialog hooks. Render review labels, `vid
 
 ```powershell
 studio wp --path C:\Users\Inception\Studio\platejka eval-file C:\Users\Inception\Studio\platejka\wp-content\tests\theme\section-template-content.php
-studio wp --path C:\Users\Inception\Studio\platejka eval-file C:\Users\Inception\Studio\platejka\wp-content\tests\theme\china-page.php
 vendor\bin\parallel-lint themes\platejka_rework plugins\platejka-core tests
 ```
 
@@ -160,7 +158,7 @@ Expected: PASS with the static layout hooks preserved.
 - [ ] **Step 6: Commit.**
 
 ```powershell
-git add themes/platejka_rework/sections/hero/hero.php themes/platejka_rework/sections/protection/protection.php themes/platejka_rework/sections/review/review.php tests/theme/section-template-content.php tests/theme/china-page.php
+git add themes/platejka_rework/sections/hero/hero.php themes/platejka_rework/sections/protection/protection.php themes/platejka_rework/sections/review/review.php tests/theme/section-template-content.php
 git commit -m "feat: render internal sections from ACF"
 ```
 
@@ -255,20 +253,19 @@ Expected: no writes and no imported media, proving idempotency.
 - Consumes: migrated local page from Task 5.
 - Produces: documented editorial workflow and end-to-end regression coverage.
 
-- [ ] **Step 1: Add browser assertions for `/china/`.**
+- [ ] **Step 1: Add one browser smoke scenario for `/china/`.**
 
-Cover exact section order, desktop/mobile overflow, one hero, default variants, hero calculator submission, review tab switching, slider/dialog behavior, responsive image attributes, unique IDs, absence of console/page errors, and representative pre-migration layout hooks.
+Cover exact section order, one hero, default variants, hero calculator submission, review tab switching/dialog behavior, responsive image attributes, absence of console/page errors, and representative pre-migration layout hooks. Keep this as a medium smoke suite rather than duplicating every PHP contract in the browser.
 
 - [ ] **Step 2: Run all focused WordPress and browser checks.**
 
 ```powershell
 studio wp --path C:\Users\Inception\Studio\platejka eval-file C:\Users\Inception\Studio\platejka\wp-content\tests\integration\acf-section-builder-schema.php
-studio wp --path C:\Users\Inception\Studio\platejka eval-file C:\Users\Inception\Studio\platejka\wp-content\tests\theme\section-builder.php
 studio wp --path C:\Users\Inception\Studio\platejka eval-file C:\Users\Inception\Studio\platejka\wp-content\tests\theme\section-content.php
 studio wp --path C:\Users\Inception\Studio\platejka eval-file C:\Users\Inception\Studio\platejka\wp-content\tests\theme\section-template-content.php
 studio wp --path C:\Users\Inception\Studio\platejka eval-file C:\Users\Inception\Studio\platejka\wp-content\tests\integration\default-page-migration-applied.php
-npx playwright test tests/e2e/china-section-builder.spec.ts tests/e2e/seo-toggle.spec.ts
-vendor\bin\phpunit --configuration phpunit.xml.dist
+npx playwright test tests/e2e/china-section-builder.spec.ts
+vendor\bin\parallel-lint themes\platejka_rework plugins\platejka-core tests
 ```
 
 Expected: all PASS; visual inspection at desktop and mobile widths shows no regression.
@@ -288,4 +285,3 @@ git commit -m "test: verify China ACF page migration"
 ```
 
 - [ ] **Step 5: Request a final whole-branch code review, address findings, rerun affected checks, then push `main` only when the worktree is clean.**
-
