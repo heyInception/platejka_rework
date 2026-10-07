@@ -18,9 +18,7 @@
             "info": "Полный пакет закрывающих документов для валютного контроля и таможни",
             "experience": {
                 "value": "5 лет",
-                "label": "На рынке",
-                "left_image": "theme://sections/hero/img/hero__trust-years-left.svg",
-                "right_image": "theme://sections/hero/img/hero__trust-years-right.svg"
+                "label": "На рынке"
             },
             "registry": {
                 "title": "В реестре ЦБ РФ и СРО",

@@ -41,6 +41,10 @@ $assert(
 	'Only the three variant sections explicitly select default.'
 );
 
+$seed_json = (string) wp_json_encode( $seed['sections'] ?? array(), JSON_UNESCAPED_SLASHES );
+preg_match_all( '~theme://[^"]+~', $seed_json, $media_matches );
+$assert( 7 === count( array_unique( $media_matches[0] ?? array() ) ) && ! str_contains( $seed_json, '.svg' ), 'Default-page seed imports seven editable raster images and leaves decorative SVGs in the theme.' );
+
 WP_CLI::log( sprintf( 'Default-page seed: %d checks, %d failures.', $checks, count( $failures ) ) );
 if ( $failures ) {
 	WP_CLI::halt( 1 );

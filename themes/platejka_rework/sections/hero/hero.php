@@ -26,7 +26,7 @@ $calculator_rates  = function_exists( 'platejka_core_get_exchange_rates' ) ? pla
         </div>
 
         <ul class="list-reset hero__trust" data-hero-cards>
-          <li class="hero__trust-card hero__trust-card_experience"><div class="hero__trust-years" aria-label="<?php echo esc_attr( $experience['value'] ?? '' ); ?>"><?php echo platejka_section_image( $experience['left_image'] ?? 0, 'thumbnail', array( 'alt' => '', 'loading' => 'eager', 'sizes' => '22px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><span aria-hidden="true"><?php echo esc_html( $experience['value'] ?? '' ); ?></span><?php echo platejka_section_image( $experience['right_image'] ?? 0, 'thumbnail', array( 'alt' => '', 'loading' => 'eager', 'sizes' => '22px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div><p class="hero__trust-caption"><?php echo esc_html( $experience['label'] ?? '' ); ?></p></li>
+          <li class="hero__trust-card hero__trust-card_experience"><div class="hero__trust-years" aria-label="<?php echo esc_attr( $experience['value'] ?? '' ); ?>"><img src="img/hero__trust-years-left.svg" width="22" height="72" alt=""><span aria-hidden="true"><?php echo esc_html( $experience['value'] ?? '' ); ?></span><img src="img/hero__trust-years-right.svg" width="22" height="72" alt=""></div><p class="hero__trust-caption"><?php echo esc_html( $experience['label'] ?? '' ); ?></p></li>
           <?php foreach ( array( 'registry' => $registry, 'association' => $association ) as $variant => $trust_item ) :
 			$link       = is_array( $trust_item['link'] ?? null ) ? $trust_item['link'] : array();
 			$link_class = 'registry' === $variant ? 'ui-link--overlay' : 'ui-link--inverse';

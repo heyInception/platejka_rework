@@ -49,7 +49,7 @@ $assert( $report === $repeat, 'Repeated previews are deterministic.' );
 $sources = array_merge( $report['media']['reused'] ?? array(), $report['media']['to_import'] ?? array() );
 $source_names = array_map( static fn( $item ) => is_array( $item ) ? ( $item['source'] ?? '' ) : $item, $sources );
 $assert( count( $source_names ) === count( array_unique( $source_names ) ), 'Each seed media source is planned at most once.' );
-$assert( 9 === count( $source_names ), 'Preview accounts for all nine hero/protection media sources.' );
+$assert( 7 === count( $source_names ), 'Preview accounts for all seven editable hero/protection media sources.' );
 $assert( hash_equals( $before, $snapshot() ), 'Preview leaves post 1873, target options, marker, and migrated media unchanged.' );
 
 WP_CLI::log( sprintf( 'Default-page migration preview: %d checks, %d failures.', $checks, count( $failures ) ) );
