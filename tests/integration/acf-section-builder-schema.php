@@ -87,9 +87,9 @@ foreach ( (array) ( $builder['fields'] ?? array() ) as $field ) {
 $assert( 'field_platejka_page_builder_v1' === ( $builder_toggle['key'] ?? null ) && 'true_false' === ( $builder_toggle['type'] ?? null ), 'Builder toggle uses its stable key and boolean type.' );
 $assert( 'field_platejka_sections_v1' === ( $sections_field['key'] ?? null ) && 'flexible_content' === ( $sections_field['type'] ?? null ), 'Sections field uses its stable key and flexible-content type.' );
 
-$expected_layouts = array( 'hero-main', 'about', 'shipments', 'guarantees', 'documents', 'compliance', 'review-main', 'work', 'calculator', 'with-us', 'destinations', 'seo', 'problems', 'serves', 'cases', 'table', 'faq', 'call' );
+$expected_layouts = array( 'hero-main', 'about', 'shipments', 'guarantees', 'documents', 'compliance', 'review-main', 'work', 'calculator', 'with-us', 'destinations', 'seo', 'problems', 'serves', 'cases', 'table', 'faq', 'call', 'hero', 'protection', 'review' );
 $layouts = array_values( (array) ( $sections_field['layouts'] ?? array() ) );
-$assert( $expected_layouts === array_column( $layouts, 'name' ), 'Builder layouts match the approved 18-section order.' );
+$assert( $expected_layouts === array_column( $layouts, 'name' ), 'Builder keeps the original layouts and appends the three approved internal-page layouts.' );
 foreach ( $layouts as $layout ) {
 	$by_name = array();
 	foreach ( (array) ( $layout['sub_fields'] ?? array() ) as $field ) {
@@ -102,6 +102,20 @@ foreach ( $layouts as $layout ) {
 		$assert( ! empty( $by_name['overrides_main']['conditional_logic'] ), 'Main overrides are conditionally visible: ' . $layout['name'] );
 		$assert( ! empty( $by_name['overrides_default']['conditional_logic'] ), 'Default overrides are conditionally visible: ' . $layout['name'] );
 	}
+}
+
+$layouts_by_name = array_column( $layouts, null, 'name' );
+foreach (
+	array(
+		'hero'       => 'field_platejka_defaults_hero_v1',
+		'protection' => 'field_platejka_defaults_protection_v1',
+		'review'     => 'field_platejka_defaults_review_main_v1',
+	) as $layout_name => $clone_key
+) {
+	$layout_fields = array_column( (array) ( $layouts_by_name[ $layout_name ]['sub_fields'] ?? array() ), null, 'name' );
+	$assert( 0 === ( $layout_fields['enabled']['default_value'] ?? null ), 'New layout defaults disabled: ' . $layout_name );
+	$assert( 'text' === ( $layout_fields['anchor']['type'] ?? null ), 'New layout provides an anchor: ' . $layout_name );
+	$assert( array( $clone_key ) === ( $layout_fields['overrides']['clone'] ?? null ), 'New layout clones the approved canonical group: ' . $layout_name );
 }
 
 foreach ( array_merge( $walk_fields( $defaults['fields'] ?? array() ), $walk_fields( $builder['fields'] ?? array() ) ) as $field ) {

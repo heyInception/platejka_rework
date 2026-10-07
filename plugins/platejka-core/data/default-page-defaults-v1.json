@@ -1,0 +1,78 @@
+{
+    "schema_version": 1,
+    "sections": {
+        "hero": {
+            "background_image": "theme://sections/hero/img/china-hero-bg.png",
+            "blur_image": "theme://sections/hero/img/china-hero-blur.png",
+            "badge": "Юридическим лицам",
+            "title": {
+                "primary": "Платежи в Китай",
+                "secondary": "для юридических лиц по агентскому договору"
+            },
+            "subtitle": "Когда прямые переводы из российских банков блокируются, мы находим подходящий способ доставить ваши деньги поставщику в КНР",
+            "items": [
+                {"title": "3%", "text": "Комиссия"},
+                {"title": "до 6 часов", "text": "Проведение платежа"},
+                {"title": "100 000 ₽", "text": "Минимальная сумма платежа"}
+            ],
+            "info": "Полный пакет закрывающих документов для валютного контроля и таможни",
+            "experience": {
+                "value": "5 лет",
+                "label": "На рынке",
+                "left_image": "theme://sections/hero/img/hero__trust-years-left.svg",
+                "right_image": "theme://sections/hero/img/hero__trust-years-right.svg"
+            },
+            "registry": {
+                "title": "В реестре ЦБ РФ и СРО",
+                "image": "theme://sections/hero/img/registry.png",
+                "link": {"url": "", "title": "Проверить", "target": ""}
+            },
+            "association": {
+                "title": "В Ассоциации\nплатёжных агентов",
+                "image": "theme://sections/hero/img/associations.png",
+                "link": {"url": "", "title": "Документы", "target": ""}
+            }
+        },
+        "protection": {
+            "eyebrow": "Защита платежа",
+            "title": "Что произойдёт, если платёж не дойдёт до адресата",
+            "description": "Обещание стопроцентной проходимости проверить невозможно, поэтому мы его не даём. Вместо этого порядок действий при возврате прописан в договоре, и вы можете прочитать этот пункт до подписания.",
+            "link": {"url": "#documents", "title": "Пункт договора о возврате", "target": ""},
+            "items": [
+                {
+                    "image": "theme://sections/protection/img/protection/item-1.png",
+                    "title": "Платёж вернулся",
+                    "text": "Если перевод отменён из-за сделки или ограничений банков-корреспондентов, вернём деньги на ваш счёт в течение 3 дней или отправим их по новому маршруту.",
+                    "detail": "Подробнее в п. 2.1.5 договора ›"
+                },
+                {
+                    "image": "theme://sections/protection/img/protection/item-2.png",
+                    "title": "Платёж завис в банке",
+                    "text": "Пока деньги не поступили поставщику, сделка не считается закрытой. Направим запросы в банки и не подпишем закрывающие документы до получения средств.",
+                    "detail": ""
+                },
+                {
+                    "image": "theme://sections/protection/img/protection/item-3.png",
+                    "title": "Ошибка в реквизитах",
+                    "text": "Если в инвойсе указаны неверные реквизиты, переоформим платёж и отправим средства по корректным данным.",
+                    "detail": ""
+                }
+            ]
+        }
+    },
+    "page_rows": [
+        {"acf_fc_layout": "hero", "enabled": 1},
+        {"acf_fc_layout": "about", "enabled": 1},
+        {"acf_fc_layout": "shipments", "enabled": 1, "variant": "default"},
+        {"acf_fc_layout": "guarantees", "enabled": 1, "variant": "default"},
+        {"acf_fc_layout": "documents", "enabled": 1, "variant": "default"},
+        {"acf_fc_layout": "protection", "enabled": 1},
+        {"acf_fc_layout": "review", "enabled": 1},
+        {"acf_fc_layout": "work", "enabled": 1},
+        {"acf_fc_layout": "problems", "enabled": 1},
+        {"acf_fc_layout": "calculator", "enabled": 1},
+        {"acf_fc_layout": "seo", "enabled": 1},
+        {"acf_fc_layout": "faq", "enabled": 1},
+        {"acf_fc_layout": "call", "enabled": 1}
+    ]
+}

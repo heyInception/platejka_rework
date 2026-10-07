@@ -246,11 +246,15 @@
                             "type": "clone",
                             "instructions": "",
                             "required": 0,
-                            "conditional_logic": [[{
-                                "field": "field_platejka_row_shipments_variant_v1",
-                                "operator": "==",
-                                "value": "main"
-                            }]],
+                            "conditional_logic": [
+                                [
+                                    {
+                                        "field": "field_platejka_row_shipments_variant_v1",
+                                        "operator": "==",
+                                        "value": "main"
+                                    }
+                                ]
+                            ],
                             "wrapper": {
                                 "width": "",
                                 "class": "",
@@ -271,13 +275,23 @@
                             "type": "clone",
                             "instructions": "",
                             "required": 0,
-                            "conditional_logic": [[{
-                                "field": "field_platejka_row_shipments_variant_v1",
-                                "operator": "!=",
-                                "value": "main"
-                            }]],
-                            "wrapper": {"width": "", "class": "", "id": ""},
-                            "clone": ["field_platejka_shipments_default_v1"],
+                            "conditional_logic": [
+                                [
+                                    {
+                                        "field": "field_platejka_row_shipments_variant_v1",
+                                        "operator": "!=",
+                                        "value": "main"
+                                    }
+                                ]
+                            ],
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "clone": [
+                                "field_platejka_shipments_default_v1"
+                            ],
                             "display": "group",
                             "layout": "block",
                             "prefix_label": 0,
@@ -360,11 +374,15 @@
                             "type": "clone",
                             "instructions": "",
                             "required": 0,
-                            "conditional_logic": [[{
-                                "field": "field_platejka_row_guarantees_variant_v1",
-                                "operator": "==",
-                                "value": "main"
-                            }]],
+                            "conditional_logic": [
+                                [
+                                    {
+                                        "field": "field_platejka_row_guarantees_variant_v1",
+                                        "operator": "==",
+                                        "value": "main"
+                                    }
+                                ]
+                            ],
                             "wrapper": {
                                 "width": "",
                                 "class": "",
@@ -385,13 +403,23 @@
                             "type": "clone",
                             "instructions": "",
                             "required": 0,
-                            "conditional_logic": [[{
-                                "field": "field_platejka_row_guarantees_variant_v1",
-                                "operator": "!=",
-                                "value": "main"
-                            }]],
-                            "wrapper": {"width": "", "class": "", "id": ""},
-                            "clone": ["field_platejka_guarantees_default_v1"],
+                            "conditional_logic": [
+                                [
+                                    {
+                                        "field": "field_platejka_row_guarantees_variant_v1",
+                                        "operator": "!=",
+                                        "value": "main"
+                                    }
+                                ]
+                            ],
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "clone": [
+                                "field_platejka_guarantees_default_v1"
+                            ],
                             "display": "group",
                             "layout": "block",
                             "prefix_label": 0,
@@ -474,11 +502,15 @@
                             "type": "clone",
                             "instructions": "",
                             "required": 0,
-                            "conditional_logic": [[{
-                                "field": "field_platejka_row_documents_variant_v1",
-                                "operator": "==",
-                                "value": "main"
-                            }]],
+                            "conditional_logic": [
+                                [
+                                    {
+                                        "field": "field_platejka_row_documents_variant_v1",
+                                        "operator": "==",
+                                        "value": "main"
+                                    }
+                                ]
+                            ],
                             "wrapper": {
                                 "width": "",
                                 "class": "",
@@ -499,13 +531,23 @@
                             "type": "clone",
                             "instructions": "",
                             "required": 0,
-                            "conditional_logic": [[{
-                                "field": "field_platejka_row_documents_variant_v1",
-                                "operator": "!=",
-                                "value": "main"
-                            }]],
-                            "wrapper": {"width": "", "class": "", "id": ""},
-                            "clone": ["field_platejka_documents_default_v1"],
+                            "conditional_logic": [
+                                [
+                                    {
+                                        "field": "field_platejka_row_documents_variant_v1",
+                                        "operator": "!=",
+                                        "value": "main"
+                                    }
+                                ]
+                            ],
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "clone": [
+                                "field_platejka_documents_default_v1"
+                            ],
                             "display": "group",
                             "layout": "block",
                             "prefix_label": 0,
@@ -1350,6 +1392,201 @@
                             },
                             "clone": [
                                 "field_platejka_defaults_call_v1"
+                            ],
+                            "display": "group",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_hero_v1": {
+                    "key": "layout_platejka_hero_v1",
+                    "name": "hero",
+                    "label": "Hero — Внутренняя страница",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_row_hero_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_row_hero_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_row_hero_overrides_v1",
+                            "label": "Переопределения",
+                            "name": "overrides",
+                            "type": "clone",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "clone": [
+                                "field_platejka_defaults_hero_v1"
+                            ],
+                            "display": "group",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": 1
+                },
+                "layout_platejka_protection_v1": {
+                    "key": "layout_platejka_protection_v1",
+                    "name": "protection",
+                    "label": "Защита платежа",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_row_protection_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_row_protection_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_row_protection_overrides_v1",
+                            "label": "Переопределения",
+                            "name": "overrides",
+                            "type": "clone",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "clone": [
+                                "field_platejka_defaults_protection_v1"
+                            ],
+                            "display": "group",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_review_v1": {
+                    "key": "layout_platejka_review_v1",
+                    "name": "review",
+                    "label": "Отзывы — Внутренняя страница",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_row_review_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_row_review_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_row_review_overrides_v1",
+                            "label": "Переопределения",
+                            "name": "overrides",
+                            "type": "clone",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "clone": [
+                                "field_platejka_defaults_review_main_v1"
                             ],
                             "display": "group",
                             "layout": "block",
