@@ -98,7 +98,7 @@ final class DefaultPageMigrationCommand {
 		);
 
 		foreach ( $target_options as $slug => $value ) {
-			$changed = ! $already_migrated && self::stable( $current_options[ $slug ] ) !== self::stable( $value );
+			$changed = ! $already_migrated && self::acfStable( $current_options[ $slug ] ) !== self::acfStable( $value );
 			$writes['options'][ $slug ] = $changed;
 			if ( $changed ) {
 				$writes['planned'][] = array( 'post_id' => self::OPTIONS_ID, 'field' => self::fieldKey( $slug ), 'current' => $current_options[ $slug ], 'target' => $value );
@@ -107,7 +107,7 @@ final class DefaultPageMigrationCommand {
 
 		if ( ! $already_migrated ) {
 			$writes['page']['builder'] = ! $current_enabled;
-			$writes['page']['rows']    = self::stable( $current_rows ) !== self::stable( $target_rows );
+			$writes['page']['rows']    = self::acfStable( $current_rows ) !== self::acfStable( $target_rows );
 			if ( $writes['page']['rows'] ) {
 				$writes['planned'][] = array( 'post_id' => self::PAGE_ID, 'field' => 'field_platejka_sections_v1', 'current' => $current_rows, 'target' => $target_rows );
 			}
@@ -299,6 +299,37 @@ final class DefaultPageMigrationCommand {
 		return (string) wp_json_encode( $value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
 	}
 
+	/** @param mixed $value */
+	private static function acfStable( $value ): string {
+		return self::stable( self::compactAcfValue( self::normalizeAcfValue( $value ) ) );
+	}
+
+	/**
+	 * Remove only ACF's empty structural defaults before comparison.
+	 * Meaningful scalar zeroes, IDs, row order, and selected variants remain intact.
+	 *
+	 * @param mixed $value
+	 * @return mixed
+	 */
+	private static function compactAcfValue( $value ) {
+		if ( ! is_array( $value ) ) {
+			return $value;
+		}
+
+		$compacted = array();
+		foreach ( $value as $key => $child ) {
+			if ( ! self::hasMeaningfulValue( $child ) ) {
+				continue;
+			}
+			if ( array_is_list( $value ) ) {
+				$compacted[] = self::compactAcfValue( $child );
+			} else {
+				$compacted[ $key ] = self::compactAcfValue( $child );
+			}
+		}
+		return $compacted;
+	}
+
 	/** @param mixed $value @param array<string,mixed>|null $field @return mixed */
 	private static function normalizeAcfValue( $value, ?array $field = null ) {
 		if ( is_array( $value ) ) {
@@ -336,13 +367,13 @@ final class DefaultPageMigrationCommand {
 		$failures = array();
 		foreach ( $target_options as $slug => $value ) {
 			$actual = self::normalizeAcfValue( get_field( self::fieldKey( $slug ), self::OPTIONS_ID, false ) );
-			if ( self::stable( $actual ) !== self::stable( $value ) ) {
+			if ( self::acfStable( $actual ) !== self::acfStable( $value ) ) {
 				$failures[] = self::fieldKey( $slug );
 			}
 		}
 		$actual_rows = get_field( 'field_platejka_sections_v1', self::PAGE_ID, false );
 		$actual_rows = is_array( $actual_rows ) ? self::normalizeAcfValue( $actual_rows ) : array();
-		if ( self::stable( $actual_rows ) !== self::stable( $target_rows ) ) {
+		if ( self::acfStable( $actual_rows ) !== self::acfStable( $target_rows ) ) {
 			$failures[] = 'field_platejka_sections_v1';
 		}
 		if ( $failures ) {
