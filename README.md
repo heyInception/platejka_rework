@@ -79,6 +79,12 @@ fallback. The China `review` layout keeps its own markup but inherits the
 shared `review-main` content. Its `shipments`, `guarantees`, and `documents`
 rows explicitly use the `default` variant.
 
+The About page (ID 22) has a separate page-only group and its own builder. Its
+approved order is `about-hero`, `location`, `review-main`, `infrastructure`,
+`financial`, `employees`, `exhibitions`, `developing`, `call-about`. Eight
+layouts keep their content on ID 22; `review-main` inherits the shared defaults
+and accepts page-level overrides. This group is not exposed to other pages.
+
 New rows added in the editor are disabled by default. The migrated rows are
 enabled deliberately to preserve the existing public page. Its original DOM
 classes and JavaScript hooks remain part of the tested layout contract.
@@ -93,6 +99,8 @@ studio wp --path C:\Users\Inception\Studio\platejka platejka section-builder mig
 studio wp --path C:\Users\Inception\Studio\platejka platejka section-builder migrate --apply
 studio wp --path C:\Users\Inception\Studio\platejka platejka section-builder migrate-default-page
 studio wp --path C:\Users\Inception\Studio\platejka platejka section-builder migrate-default-page --apply
+studio wp --path C:\Users\Inception\Studio\platejka platejka section-builder migrate-about-page
+studio wp --path C:\Users\Inception\Studio\platejka platejka section-builder migrate-about-page --apply
 ```
 
 The migration is additive and idempotent: later runs add newly introduced
@@ -100,6 +108,17 @@ fields without replacing populated editor values or importing duplicate media.
 To roll back the China page rendering without deleting its saved rows, disable
 its `Сборщик секций` switch. `page.php` will immediately use the original
 13-section fallback in the same order.
+
+The About migration is also preview-first and idempotent. It leaves the legacy
+`o_kompanii` fields intact. Disable `О компании — сборщик секций` to restore
+the original `page-about.php` fallback without deleting the migrated rows.
+
+ACF values are an editorial data layer, not a replacement for section markup.
+When adding fields, preserve existing root elements, class names, `data-*`
+hooks, heading structure, slider/dialog wrappers, and responsive image output.
+Change the DOM/CSS/JavaScript contract only as a separate, explicitly reviewed
+layout task. This prevents content migrations from silently rebuilding the
+page or breaking its visual behavior.
 
 ## Fast local verification
 

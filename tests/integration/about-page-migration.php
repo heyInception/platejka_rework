@@ -32,7 +32,13 @@ if ( class_exists( $class ) ) {
 	$meaningful = static fn() => array( array( 'acf_fc_layout' => 'location', 'enabled' => 1, 'overrides' => array( 'title' => 'Editor value' ) ) );
 	add_filter( 'platejka_about_page_migration_current_rows', $meaningful );
 	$conflict = $class::preview();
-	$assert( true === ( $conflict['conflict']['meaningful_rows'] ?? false ), 'Preview reports meaningful pre-existing About rows as a conflict.' );
+	$already_migrated = 1 === (int) get_option( 'platejka_about_page_builder_version', 0 );
+	$assert(
+		$already_migrated !== ( $conflict['conflict']['meaningful_rows'] ?? false ),
+		$already_migrated
+			? 'A completed migration ignores the artificial pre-migration conflict fixture.'
+			: 'Preview reports meaningful pre-existing About rows as a conflict.'
+	);
 	remove_filter( 'platejka_about_page_migration_current_rows', $meaningful );
 	$command_source = file_get_contents( WP_CONTENT_DIR . '/plugins/platejka-core/src/Cli/AboutPageMigrationCommand.php' );
 	$conflict_guard = strpos( $command_source, 'if ( $apply && $conflict )' );

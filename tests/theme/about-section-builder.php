@@ -29,19 +29,14 @@ if ( function_exists( 'platejka_get_about_page_sections' ) ) {
 		acf_get_store( 'values' )->reset();
 	}
 
-	$load_enabled = static fn() => 1;
-	$load_rows    = static fn() => array(
+	$fixture_rows = array(
 		array( 'acf_fc_layout' => 'about-hero', 'enabled' => 1, 'anchor' => 'intro' ),
 		array( 'acf_fc_layout' => 'location', 'enabled' => 0 ),
 		array( 'acf_fc_layout' => 'review-main', 'enabled' => 1, 'anchor' => 'reviews' ),
 		array( 'acf_fc_layout' => 'financial' ),
 		array( 'acf_fc_layout' => 'review-main', 'enabled' => 1, 'anchor' => 'more-reviews' ),
 	);
-	add_filter( 'acf/load_value/name=platejka_about_page_builder', $load_enabled );
-	add_filter( 'acf/load_value/name=platejka_about_sections', $load_rows );
-	$resolved = platejka_get_about_page_sections( 22, $fallback );
-	remove_filter( 'acf/load_value/name=platejka_about_sections', $load_rows );
-	remove_filter( 'acf/load_value/name=platejka_about_page_builder', $load_enabled );
+	$resolved = platejka_resolve_page_section_rows( true, $fixture_rows, $fallback, 22 );
 
 	$assert( array( 'about-hero', 'review-main', 'review-main' ) === array_column( $resolved, 'slug' ), 'About rows keep order while disabled and default-disabled rows are omitted.' );
 	$assert( array( 'section-22-1', 'section-22-3', 'section-22-5' ) === array_column( $resolved, 'instance' ), 'Repeatable About rows receive deterministic distinct instances.' );
