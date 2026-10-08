@@ -105,6 +105,24 @@ foreach ( $layouts as $layout ) {
 }
 
 $layouts_by_name = array_column( $layouts, null, 'name' );
+$shipments_layout_fields = array_column( (array) ( $layouts_by_name['shipments']['sub_fields'] ?? array() ), null, 'name' );
+$cases_layout_fields     = array_column( (array) ( $layouts_by_name['cases']['sub_fields'] ?? array() ), null, 'name' );
+foreach ( array( 'shipments' => $shipments_layout_fields, 'cases' => $cases_layout_fields ) as $layout_name => $layout_fields ) {
+	$assert( 'select' === ( $layout_fields['description_mode']['type'] ?? null ), 'Description mode is a select: ' . $layout_name );
+	$assert( array( 'inherit' => 'Наследовать', 'hide' => 'Скрыть' ) === ( $layout_fields['description_mode']['choices'] ?? null ), 'Description mode choices are stable: ' . $layout_name );
+	$assert( 'inherit' === ( $layout_fields['description_mode']['default_value'] ?? null ), 'Description mode defaults to inherit: ' . $layout_name );
+}
+
+$default_fields = array_column( (array) ( $defaults['fields'] ?? array() ), null, 'name' );
+$shipments      = $default_fields['shipments'] ?? array();
+$variants       = array_column( (array) ( $shipments['sub_fields'] ?? array() ), null, 'name' );
+$main_items     = array_column( (array) ( $variants['main']['sub_fields'] ?? array() ), null, 'name' )['items'] ?? array();
+$default_items  = array_column( (array) ( $variants['default']['sub_fields'] ?? array() ), null, 'name' )['items'] ?? array();
+$main_item_fields    = array_column( (array) ( $main_items['sub_fields'] ?? array() ), null, 'name' );
+$default_item_fields = array_column( (array) ( $default_items['sub_fields'] ?? array() ), null, 'name' );
+$assert( 'text' === ( $main_item_fields['price']['type'] ?? null ), 'Main shipment cards expose the price text field.' );
+$assert( ! isset( $default_item_fields['price'] ), 'Internal shipment cards do not expose a price field.' );
+
 foreach (
 	array(
 		'hero'       => 'field_platejka_defaults_hero_v1',

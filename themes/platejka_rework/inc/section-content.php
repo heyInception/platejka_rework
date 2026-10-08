@@ -119,7 +119,13 @@ function platejka_resolve_section_data( array $config, int $post_id = 0 ): array
 		$local = $local[ $mode ];
 	}
 
-	return platejka_section_array( platejka_merge_section_data( $local, $global ) );
+	$resolved          = platejka_section_array( platejka_merge_section_data( $local, $global ) );
+	$local_description = isset( $local['description'] ) ? trim( wp_strip_all_tags( (string) $local['description'] ) ) : '';
+	if ( 'hide' === ( $row['description_mode'] ?? 'inherit' ) && '' === $local_description ) {
+		$resolved['description'] = '';
+	}
+
+	return $resolved;
 }
 
 function platejka_section_dom_id( string $instance, string $local_id ): string {

@@ -734,6 +734,20 @@
                                     }
                                 },
                                 {
+                                    "key": "field_platejka_shipments_main_items_price_v1",
+                                    "label": "Цена",
+                                    "name": "price",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    }
+                                },
+                                {
                                     "key": "field_platejka_shipments_main_items_text_v1",
                                     "label": "Текст",
                                     "name": "text",

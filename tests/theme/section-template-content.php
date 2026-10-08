@@ -149,6 +149,21 @@ $assert( str_contains( $internal_review, 'id="client-reviews"' ) && str_contains
 $assert( str_contains( $internal_review, 'id="section-1873-7-review-video-tab"' ) && str_contains( $internal_review, 'data-review-dialog' ) && str_contains( $internal_review, 'loading="lazy"' ), 'Internal review preserves hooks, unique IDs, and lazy responsive media.' );
 $assert( ! str_contains( $internal_review, 'theme://' ) && ! str_contains( $internal_review, 'Елена С.' ), 'Internal review contains no seed path or static review fallback.' );
 
+$section_instance = 'section-24-3';
+$section_anchor   = 'shipments-price';
+$mode             = 'main';
+$section_data     = array(
+	'title'       => 'Направления платежей',
+	'description' => '',
+	'items'       => array(
+		array( 'title' => 'Платежи в Китай', 'price' => 'от 5%', 'text' => '', 'image' => 0, 'link' => array(), 'tags' => array() ),
+	),
+);
+ob_start();
+include get_theme_file_path( 'sections/shipments/shipments.php' );
+$shipment_price_html = (string) ob_get_clean();
+$assert( 1 === preg_match( '~<h3 class="shipment-card__title">[^<]*Платежи в Китай\s*<span class="shipment-card__price">от 5%</span></h3>~u', $shipment_price_html ), 'Shipment price renders inside the shipment-card title.' );
+
 $behavior_hooks = array(
 	'about/about.php'             => array( 'data-about-dialog-open', 'data-about-dialog', 'data-about-dialog-close' ),
 	'compliance/compliance.php'   => array( 'data-compliance-dialog-open', 'data-compliance-dialog', 'data-compliance-dialog-close' ),

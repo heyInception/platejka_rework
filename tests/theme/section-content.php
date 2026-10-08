@@ -112,6 +112,33 @@ $assert( array( array( 'title' => 'Сквозное видео' ) ) === ( $about
 $assert( 'Сквозной заголовок' === ( $about_local_review['title'] ?? null ), 'An empty local review scalar still inherits its shared value.' );
 $assert( array( array( 'title' => 'Локальное видео' ) ) === ( $about_local_review['video_items'] ?? null ), 'A non-empty local review collection replaces the shared collection.' );
 
+$description_global = static fn( $global, $content_slug ) => in_array( $content_slug, array( 'shipments', 'cases' ), true )
+	? array( 'description' => '<p>Сквозное описание</p>' )
+	: $global;
+add_filter( 'platejka_section_global_data', $description_global, 10, 2 );
+$hidden_description = platejka_resolve_section_data(
+	array(
+		'slug' => 'cases',
+		'row'  => array( 'description_mode' => 'hide', 'overrides' => array( 'cases' => array( 'description' => '' ) ) ),
+	)
+);
+$custom_description = platejka_resolve_section_data(
+	array(
+		'slug' => 'cases',
+		'row'  => array( 'description_mode' => 'hide', 'overrides' => array( 'cases' => array( 'description' => '<p>Локальное описание</p>' ) ) ),
+	)
+);
+$inherited_description = platejka_resolve_section_data(
+	array(
+		'slug' => 'cases',
+		'row'  => array( 'description_mode' => 'inherit', 'overrides' => array( 'cases' => array( 'description' => '' ) ) ),
+	)
+);
+remove_filter( 'platejka_section_global_data', $description_global, 10 );
+$assert( '' === ( $hidden_description['description'] ?? null ), 'Hide mode suppresses an inherited description when the local description is empty.' );
+$assert( '<p>Локальное описание</p>' === ( $custom_description['description'] ?? null ), 'Hide mode keeps an explicitly populated local description.' );
+$assert( '<p>Сквозное описание</p>' === ( $inherited_description['description'] ?? null ), 'Inherit mode keeps the global description.' );
+
 $old_default_page_marker = get_option( 'platejka_default_page_builder_version', null );
 delete_option( 'platejka_default_page_builder_version' );
 $force_empty_hero = static fn() => false;

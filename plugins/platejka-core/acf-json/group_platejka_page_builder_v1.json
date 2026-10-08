@@ -214,6 +214,31 @@
                             "placeholder": "bez-reshetki"
                         },
                         {
+                            "key": "field_platejka_row_shipments_description_mode_v1",
+                            "label": "Сквозное описание",
+                            "name": "description_mode",
+                            "type": "select",
+                            "instructions": "Определяет, показывать ли сквозное описание, когда локальное описание не заполнено.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "inherit": "Наследовать",
+                                "hide": "Скрыть"
+                            },
+                            "default_value": "inherit",
+                            "return_format": "value",
+                            "multiple": 0,
+                            "allow_null": 0,
+                            "ui": 0,
+                            "ajax": 0,
+                            "placeholder": ""
+                        },
+                        {
                             "key": "field_platejka_row_shipments_variant_v1",
                             "label": "Вариант оформления",
                             "name": "variant",
@@ -1181,6 +1206,31 @@
                                 "id": ""
                             },
                             "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_row_cases_description_mode_v1",
+                            "label": "Сквозное описание",
+                            "name": "description_mode",
+                            "type": "select",
+                            "instructions": "Определяет, показывать ли сквозное описание, когда локальное описание не заполнено.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "inherit": "Наследовать",
+                                "hide": "Скрыть"
+                            },
+                            "default_value": "inherit",
+                            "return_format": "value",
+                            "multiple": 0,
+                            "allow_null": 0,
+                            "ui": 0,
+                            "ajax": 0,
+                            "placeholder": ""
                         },
                         {
                             "key": "field_platejka_row_cases_overrides_v1",
