@@ -1,34 +1,180 @@
 <?php
-$root_id = $section_anchor ?: $section_instance; $title_id = platejka_section_dom_id( $section_instance, 'title' );
-$rates = function_exists( 'platejka_core_get_exchange_rates' ) ? platejka_core_get_exchange_rates() : array();
-$items = is_array( $section_data['items'] ?? null ) ? $section_data['items'] : array();
+$root_id = $section_anchor ?: $section_instance;
+$title_id = platejka_section_dom_id($section_instance, 'title');
+$rates = function_exists('platejka_core_get_exchange_rates') ? platejka_core_get_exchange_rates() : array();
+$items = is_array($section_data['items'] ?? null) ? $section_data['items'] : array();
 $labels = array();
-foreach ( is_array( $section_data['labels'] ?? null ) ? $section_data['labels'] : array() as $label ) {
-	if ( is_array( $label ) && ! empty( $label['key'] ) ) {
-		$labels[ (string) $label['key'] ] = (string) ( $label['label'] ?? '' );
+foreach (is_array($section_data['labels'] ?? null) ? $section_data['labels'] : array() as $label) {
+	if (is_array($label) && ! empty($label['key'])) {
+		$labels[(string) $label['key']] = (string) ($label['label'] ?? '');
 	}
 }
-$label = static fn( string $key ): string => (string) ( $labels[ $key ] ?? '' );
-$close_label = (string) ( $labels['close'] ?? $labels['dialog'] ?? '' );
+$label = static fn(string $key): string => (string) ($labels[$key] ?? '');
+$close_label = (string) ($labels['close'] ?? $labels['dialog'] ?? '');
+$flag_base_url = trailingslashit(get_theme_file_uri('sections/calculator/img'));
 $countries = array(
-	'CN' => 'Китай', 'TR' => 'Турция', 'US' => 'Соединённые Штаты Америки', 'AU' => 'Австралия', 'AT' => 'Австрия', 'AZ' => 'Азербайджан', 'AL' => 'Албания', 'AM' => 'Армения', 'AR' => 'Аргентина',
-	'BE' => 'Бельгия', 'BY' => 'Беларусь', 'BG' => 'Болгария', 'BA' => 'Босния и Герцеговина', 'BR' => 'Бразилия', 'HU' => 'Венгрия', 'AE' => 'Объединённые Арабские Эмираты', 'DE' => 'Германия',
-	'GR' => 'Греция', 'GE' => 'Грузия', 'DK' => 'Дания', 'EG' => 'Египет', 'IL' => 'Израиль', 'KZ' => 'Казахстан', 'GB' => 'Великобритания', 'IN' => 'Индия', 'ID' => 'Индонезия', 'IE' => 'Ирландия',
-	'ES' => 'Испания', 'IT' => 'Италия', 'CA' => 'Канада', 'KE' => 'Кения', 'KG' => 'Киргизия', 'CO' => 'Колумбия', 'CR' => 'Коста-Рика', 'LV' => 'Латвия', 'LT' => 'Литва', 'LI' => 'Лихтенштейн',
-	'LU' => 'Люксембург', 'MY' => 'Малайзия', 'MT' => 'Мальта', 'MX' => 'Мексика', 'MD' => 'Молдавия', 'MC' => 'Монако', 'NA' => 'Намибия', 'NL' => 'Нидерланды', 'NG' => 'Нигерия', 'NZ' => 'Новая Зеландия',
-	'NO' => 'Норвегия', 'PE' => 'Перу', 'PL' => 'Польша', 'PT' => 'Португалия', 'RO' => 'Румыния', 'SA' => 'Саудовская Аравия', 'MK' => 'Северная Македония', 'RS' => 'Сербия', 'SG' => 'Сингапур',
-	'SK' => 'Словакия', 'SI' => 'Словения', 'TJ' => 'Таджикистан', 'TH' => 'Таиланд', 'TW' => 'Тайвань', 'TZ' => 'Танзания', 'TN' => 'Тунис', 'TM' => 'Туркмения', 'UZ' => 'Узбекистан', 'PH' => 'Филиппины',
-	'FI' => 'Финляндия', 'FR' => 'Франция', 'HR' => 'Хорватия', 'TD' => 'Чад', 'ME' => 'Черногория', 'CZ' => 'Чехия', 'CL' => 'Чили', 'CH' => 'Швейцария', 'SE' => 'Швеция', 'ZA' => 'Южно-Африканская Республика',
-	'KR' => 'Южная Корея', 'VN' => 'Вьетнам', 'JP' => 'Япония',
+	'CN' => 'Китай',
+	'TR' => 'Турция',
+	'US' => 'Соединённые Штаты Америки',
+	'AU' => 'Австралия',
+	'AT' => 'Австрия',
+	'AZ' => 'Азербайджан',
+	'AL' => 'Албания',
+	'AM' => 'Армения',
+	'AR' => 'Аргентина',
+	'BE' => 'Бельгия',
+	'BY' => 'Беларусь',
+	'BG' => 'Болгария',
+	'BA' => 'Босния и Герцеговина',
+	'BR' => 'Бразилия',
+	'HU' => 'Венгрия',
+	'AE' => 'Объединённые Арабские Эмираты',
+	'DE' => 'Германия',
+	'GR' => 'Греция',
+	'GE' => 'Грузия',
+	'DK' => 'Дания',
+	'EG' => 'Египет',
+	'IL' => 'Израиль',
+	'KZ' => 'Казахстан',
+	'GB' => 'Великобритания',
+	'IN' => 'Индия',
+	'ID' => 'Индонезия',
+	'IE' => 'Ирландия',
+	'ES' => 'Испания',
+	'IT' => 'Италия',
+	'CA' => 'Канада',
+	'KE' => 'Кения',
+	'KG' => 'Киргизия',
+	'CO' => 'Колумбия',
+	'CR' => 'Коста-Рика',
+	'LV' => 'Латвия',
+	'LT' => 'Литва',
+	'LI' => 'Лихтенштейн',
+	'LU' => 'Люксембург',
+	'MY' => 'Малайзия',
+	'MT' => 'Мальта',
+	'MX' => 'Мексика',
+	'MD' => 'Молдавия',
+	'MC' => 'Монако',
+	'NA' => 'Намибия',
+	'NL' => 'Нидерланды',
+	'NG' => 'Нигерия',
+	'NZ' => 'Новая Зеландия',
+	'NO' => 'Норвегия',
+	'PE' => 'Перу',
+	'PL' => 'Польша',
+	'PT' => 'Португалия',
+	'RO' => 'Румыния',
+	'SA' => 'Саудовская Аравия',
+	'MK' => 'Северная Македония',
+	'RS' => 'Сербия',
+	'SG' => 'Сингапур',
+	'SK' => 'Словакия',
+	'SI' => 'Словения',
+	'TJ' => 'Таджикистан',
+	'TH' => 'Таиланд',
+	'TW' => 'Тайвань',
+	'TZ' => 'Танзания',
+	'TN' => 'Тунис',
+	'TM' => 'Туркмения',
+	'UZ' => 'Узбекистан',
+	'PH' => 'Филиппины',
+	'FI' => 'Финляндия',
+	'FR' => 'Франция',
+	'HR' => 'Хорватия',
+	'TD' => 'Чад',
+	'ME' => 'Черногория',
+	'CZ' => 'Чехия',
+	'CL' => 'Чили',
+	'CH' => 'Швейцария',
+	'SE' => 'Швеция',
+	'ZA' => 'Южно-Африканская Республика',
+	'KR' => 'Южная Корея',
+	'VN' => 'Вьетнам',
+	'JP' => 'Япония',
 );
 ?>
-<section class="calculator" id="<?php echo esc_attr( $root_id ); ?>" data-transfer-calculator-section aria-labelledby="<?php echo esc_attr( $title_id ); ?>"><div class="container">
-  <header class="calculator__heading"><?php if ( ! empty( $section_data['eyebrow'] ) ) : ?><span class="calculator__badge"><?php echo esc_html( $section_data['eyebrow'] ); ?></span><?php endif; ?><h2 id="<?php echo esc_attr( $title_id ); ?>"><?php echo esc_html( $section_data['title'] ?? '' ); ?></h2><div><?php echo wp_kses_post( $section_data['description'] ?? '' ); ?></div></header>
-  <form class="calculator__panel" data-transfer-calculator data-currency-rates="<?php echo esc_attr( wp_json_encode( $rates ) ); ?>" data-calculator-labels="<?php echo esc_attr( wp_json_encode( $labels ) ); ?>" novalidate><div class="calculator__columns"><div class="calculator__fields">
-    <div class="ui-tabs calculator__currencies" role="group" aria-label="<?php echo esc_attr( $label( 'currency' ) ); ?>"><span class="calculator__indicator" data-currency-indicator aria-hidden="true"></span><?php foreach ( array( 'CNY' => 'cn-flag.png', 'USD' => 'usa-flag.png', 'EUR' => 'eur-flag.png' ) as $currency => $flag ) : ?><button class="ui-tab calculator__currency<?php echo 'CNY' === $currency ? ' is-active' : ''; ?>" type="button" data-currency="<?php echo esc_attr( $currency ); ?>" aria-pressed="<?php echo 'CNY' === $currency ? 'true' : 'false'; ?>"><img src="img/<?php echo esc_attr( $flag ); ?>" width="20" height="20" alt=""> <?php echo esc_html( $currency ); ?></button><?php endforeach; ?></div>
-    <div class="calculator__route"><label class="calculator__field"><span class="calculator__field-label"><?php echo esc_html( $label( 'country_from' ) ); ?></span><span class="calculator__select-wrap"><img src="img/ru-flag.png" width="20" height="20" alt="" data-select-flag aria-hidden="true"><select name="country_from" data-role="country-from" data-calculator-select="country" data-search-enabled="false"><option value="RU" data-flag="img/ru-flag.png"><?php echo esc_html( $label( 'country_ru' ) ); ?></option></select></span></label><label class="calculator__field"><span class="calculator__field-label"><?php echo esc_html( $label( 'country_to' ) ); ?></span><span class="calculator__select-wrap"><img src="img/cn-flag.png" width="20" height="20" alt="" data-select-flag data-role="country-flag" aria-hidden="true"><select name="country_to" data-role="country-to" data-calculator-select="country" data-search-enabled="true"><?php foreach ( $countries as $country_code => $country_name ) : $country_label = $label( 'country_' . strtolower( $country_code ) ) ?: $country_name; $flag = 'CN' === $country_code ? 'img/cn-flag.png' : ( 'US' === $country_code ? 'img/usa-flag.png' : '' ); ?><option value="<?php echo esc_attr( $country_code ); ?>"<?php echo $flag ? ' data-flag="' . esc_attr( $flag ) . '"' : ''; ?>><?php echo esc_html( $country_label ); ?></option><?php endforeach; ?></select></span></label></div>
-    <label class="calculator__field calculator__amount-field"><span class="calculator__field-label"><?php echo esc_html( $label( 'amount' ) ); ?></span><span class="calculator__amount-wrap"><input name="amount" type="text" inputmode="decimal" autocomplete="off" value="100 000" data-role="amount" required><span data-role="currency-symbol" aria-hidden="true">¥</span></span></label>
-    <?php if ( ! empty( $section_data['note'] ) ) : ?><p class="calculator__rate-note"><?php echo esc_html( $section_data['note'] ); ?></p><?php endif; ?>
-    <div class="calculator__benefits"><?php foreach ( $items as $item ) : ?><article><h3><?php echo esc_html( $item['title'] ?? '' ); ?></h3><div><?php echo wp_kses_post( $item['text'] ?? '' ); ?></div></article><?php endforeach; ?></div>
-  </div><div class="calculator__summary"><h3><?php echo esc_html( $label( 'summary' ) ); ?></h3><dl class="calculator__results"><div><dt><?php echo esc_html( $label( 'official_rate' ) ); ?></dt><dd><output data-role="official-rate">0 ₽</output></dd></div><div><dt><?php echo esc_html( $label( 'conversion_rate' ) ); ?></dt><dd><output data-role="conversion-rate">0 ₽</output></dd></div><div><dt><?php echo esc_html( $label( 'commission' ) ); ?></dt><dd><output data-role="commission">0 ₽</output></dd></div><div class="calculator__total"><dt><?php echo esc_html( $label( 'total' ) ); ?></dt><dd><output data-role="grand-total">0 ₽</output></dd></div></dl><div class="calculator__actions"><button class="ui-button" type="submit" data-action="request"><?php echo esc_html( $label( 'request' ) ); ?></button><button class="ui-button calculator__telegram" type="button" data-action="telegram"><?php echo esc_html( $label( 'telegram' ) ); ?></button></div><p class="calculator__contract-note"><?php echo esc_html( $section_data['note'] ?? '' ); ?></p></div></div></form>
-</div><dialog class="contact-dialog" data-contact-dialog data-empty-label="<?php echo esc_attr( $label( 'summary_empty' ) ); ?>" aria-label="<?php echo esc_attr( $label( 'dialog' ) ); ?>"><div class="contact-dialog__content"><button class="btn-reset contact-dialog__close" type="button" data-dialog-close aria-label="<?php echo esc_attr( $close_label ); ?>">×</button><p class="contact-dialog__summary" data-dialog-summary></p><div data-cf7-mount><?php echo platejka_cf7_form( $section_data['form'] ?? 0 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div></div></dialog></section>
+<section class="calculator" id="<?php echo esc_attr($root_id); ?>" data-transfer-calculator-section aria-labelledby="<?php echo esc_attr($title_id); ?>">
+	<div class="container">
+		<header class="calculator__heading"><?php if (! empty($section_data['eyebrow'])) : ?>
+				<span class="calculator__badge"><?php echo esc_html($section_data['eyebrow']); ?></span>
+			<?php endif; ?>
+			<h2 id="<?php echo esc_attr($title_id); ?>">
+				<?php echo esc_html($section_data['title'] ?? ''); ?>
+			</h2>
+			<div><?php echo wp_kses_post($section_data['description'] ?? ''); ?></div>
+		</header>
+		<form class="calculator__panel" data-transfer-calculator data-currency-rates="<?php echo esc_attr(wp_json_encode($rates)); ?>" data-calculator-labels="<?php echo esc_attr(wp_json_encode($labels)); ?>" novalidate>
+			<div class="calculator__columns">
+				<div class="calculator__fields">
+					<div class="ui-tabs calculator__currencies" role="group" aria-label="<?php echo esc_attr($label('currency')); ?>">
+						<span class="calculator__indicator" data-currency-indicator aria-hidden="true"></span>
+						<?php foreach (array('CNY' => 'cn-flag.png', 'USD' => 'usa-flag.png', 'EUR' => 'eur-flag.png') as $currency => $flag) : ?>
+							<button class="ui-tab calculator__currency<?php echo 'CNY' === $currency ? ' is-active' : ''; ?>" type="button" data-currency="<?php echo esc_attr($currency); ?>" aria-pressed="<?php echo 'CNY' === $currency ? 'true' : 'false'; ?>">
+								<img src="img/<?php echo esc_attr($flag); ?>" width="20" height="20" alt="">
+								<?php echo esc_html($currency); ?>
+							</button>
+						<?php endforeach; ?>
+					</div>
+					<div class="calculator__route"><label class="calculator__field"><span class="calculator__field-label">
+								<?php echo esc_html($label('country_from')); ?></span><span class="calculator__select-wrap">
+								<img src="img/ru-flag.png" width="20" height="20" alt="" data-select-flag aria-hidden="true"><select name="country_from" data-role="country-from" data-calculator-select="country" data-search-enabled="false">
+									<option value="RU" data-flag="<?php echo esc_url($flag_base_url . 'ru-flag.png'); ?>"><?php echo esc_html($label('country_ru')); ?></option>
+								</select>
+							</span>
+						</label>
+						<label class="calculator__field">
+							<span class="calculator__field-label">
+								<?php echo esc_html($label('country_to')); ?>
+							</span>
+							<span class="calculator__select-wrap">
+								<img src="img/cn-flag.png" width="20" height="20" alt="" data-select-flag data-role="country-flag" aria-hidden="true">
+								<select name="country_to" data-role="country-to" data-calculator-select="country" data-search-enabled="true">
+									<?php foreach ($countries as $country_code => $country_name) : $country_label = $label('country_' . strtolower($country_code)) ?: $country_name;
+										$flag = 'CN' === $country_code ? $flag_base_url . 'cn-flag.png' : ('US' === $country_code ? $flag_base_url . 'usa-flag.png' : ''); ?>
+										<option value="<?php echo esc_attr($country_code); ?>" <?php echo $flag ? ' data-flag="' . esc_url($flag) . '"' : ''; ?>><?php echo esc_html($country_label); ?></option>
+									<?php endforeach; ?>
+								</select>
+							</span>
+						</label>
+					</div>
+					<label class="calculator__field calculator__amount-field"><span class="calculator__field-label"><?php echo esc_html($label('amount')); ?></span><span class="calculator__amount-wrap"><input name="amount" type="text" inputmode="decimal" autocomplete="off" value="100 000" data-role="amount" required><span data-role="currency-symbol" aria-hidden="true">¥</span></span></label>
+					<p class="calculator__rate-note">
+						<img src="img/svg/cb.svg" width="20" height="20" alt="">Расчёты проводим по курсу ЦБ РФ
+					</p>
+
+				</div>
+				<div class="calculator__summary">
+					<h3><?php echo esc_html($label('summary')); ?></h3>
+					<dl class="calculator__results">
+						<div>
+							<dt><?php echo esc_html($label('official_rate')); ?></dt>
+							<dd><output data-role="official-rate">0 ₽</output></dd>
+						</div>
+						<div>
+							<dt><?php echo esc_html($label('conversion_rate')); ?></dt>
+							<dd><output data-role="conversion-rate">0 ₽</output></dd>
+						</div>
+						<div>
+							<dt><?php echo esc_html($label('commission')); ?></dt>
+							<dd><output data-role="commission">0 ₽</output></dd>
+						</div>
+						<div class="calculator__total">
+							<dt><?php echo esc_html($label('total')); ?></dt>
+							<dd><output data-role="grand-total">0 ₽</output></dd>
+						</div>
+					</dl>
+					<div class="calculator__actions"><button class="ui-button" type="submit" data-action="request"><?php echo esc_html($label('request')); ?></button><button class="ui-button calculator__telegram" type="button" data-action="telegram"><?php echo esc_html($label('telegram')); ?></button></div>
+					<p class="calculator__contract-note"><?php echo esc_html($section_data['note'] ?? ''); ?></p>
+				</div>
+			</div>
+		</form>
+	</div>
+	<dialog class="contact-dialog" data-contact-dialog data-empty-label="<?php echo esc_attr($label('summary_empty')); ?>" aria-label="<?php echo esc_attr($label('dialog')); ?>">
+		<div class="contact-dialog__content"><button class="btn-reset contact-dialog__close" type="button" data-dialog-close aria-label="<?php echo esc_attr($close_label); ?>">×</button>
+			<p class="contact-dialog__summary" data-dialog-summary></p>
+			<div data-cf7-mount><?php echo platejka_cf7_form($section_data['form'] ?? 0); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								?></div>
+		</div>
+	</dialog>
+</section>
