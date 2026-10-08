@@ -19,16 +19,21 @@ if ( ! defined( 'PLATEJKA_CORE_PATH' ) ) {
 require_once PLATEJKA_CORE_PATH . 'src/Acf/SectionSeed.php';
 require_once PLATEJKA_CORE_PATH . 'src/Acf/DefaultPageSeed.php';
 require_once PLATEJKA_CORE_PATH . 'src/Acf/AboutPageSeed.php';
+require_once PLATEJKA_CORE_PATH . 'src/Acf/LegacyFieldVisibility.php';
+
+\Platejka\Core\Acf\LegacyFieldVisibility::register();
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	require_once PLATEJKA_CORE_PATH . 'src/Cli/SectionBuilderMigrationCommand.php';
 	require_once PLATEJKA_CORE_PATH . 'src/Cli/DefaultPageMigrationCommand.php';
 	require_once PLATEJKA_CORE_PATH . 'src/Cli/AboutPageMigrationCommand.php';
 	require_once PLATEJKA_CORE_PATH . 'src/Cli/FaqMigrationCommand.php';
+	require_once PLATEJKA_CORE_PATH . 'src/Cli/LegacySectionsMigrationCommand.php';
 	\WP_CLI::add_command( 'platejka section-builder migrate', \Platejka\Core\Cli\SectionBuilderMigrationCommand::class );
 	\WP_CLI::add_command( 'platejka section-builder migrate-default-page', \Platejka\Core\Cli\DefaultPageMigrationCommand::class );
 	\WP_CLI::add_command( 'platejka section-builder migrate-about-page', \Platejka\Core\Cli\AboutPageMigrationCommand::class );
 	\WP_CLI::add_command( 'platejka section-builder migrate-faq', \Platejka\Core\Cli\FaqMigrationCommand::class );
+	\WP_CLI::add_command( 'platejka section-builder migrate-legacy-sections', \Platejka\Core\Cli\LegacySectionsMigrationCommand::class );
 }
 
 // Wait for all plugins so ACF may load before or after Platejka Core.

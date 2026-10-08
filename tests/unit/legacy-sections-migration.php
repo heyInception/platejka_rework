@@ -5,6 +5,10 @@ $class_file = ABSPATH . 'plugins/platejka-core/src/Cli/LegacySectionsMigrationCo
 if ( is_file( $class_file ) ) {
 	require_once $class_file;
 }
+$visibility_file = ABSPATH . 'plugins/platejka-core/src/Acf/LegacyFieldVisibility.php';
+if ( is_file( $visibility_file ) ) {
+	require_once $visibility_file;
+}
 
 $class    = '\\Platejka\\Core\\Cli\\LegacySectionsMigrationCommand';
 $failures = array();
@@ -14,8 +18,11 @@ $assert   = static function ( bool $condition, string $message ) use ( &$failure
 	}
 };
 
-$assert( class_exists( $class ), 'LegacySectionsMigrationCommand is missing.' );
+	$assert( class_exists( $class ), 'LegacySectionsMigrationCommand is missing.' );
 if ( class_exists( $class ) ) {
+	$assert( $class::isEligibleStatus( 'publish' ) && $class::isEligibleStatus( 'future' ) && $class::isEligibleStatus( 'draft' ) && $class::isEligibleStatus( 'pending' ) && $class::isEligibleStatus( 'private' ), 'Required page statuses are not all eligible.' );
+	$assert( ! $class::isEligibleStatus( 'trash' ) && ! $class::isEligibleStatus( 'auto-draft' ), 'Trash or auto-drafts must not be eligible.' );
+	$assert( $class::usesDefaultTemplate( '' ) && $class::usesDefaultTemplate( 'default' ) && ! $class::usesDefaultTemplate( 'page-about.php' ), 'Default-template eligibility is incorrect.' );
 	$fields = array(
 		'field_title' => array( 'name' => 'zagolovok', 'type' => 'text' ),
 		'field_image' => array( 'name' => 'izobrazheie', 'type' => 'image' ),
@@ -96,6 +103,16 @@ if ( class_exists( $class ) ) {
 
 	$again = $class::upsertBuilderRows( $upserted['rows'], $internal, $cases, false );
 	$assert( $upserted['rows'] === ( $again['rows'] ?? null ), 'Equivalent target generation is not idempotent.' );
+}
+
+$visibility = '\\Platejka\\Core\\Acf\\LegacyFieldVisibility';
+$assert( class_exists( $visibility ), 'LegacyFieldVisibility is missing.' );
+if ( class_exists( $visibility ) ) {
+	$hidden = $visibility::legacyFieldKeys();
+	$assert( in_array( 'field_66009b8844e4f', $hidden, true ), 'Legacy homepage services repeater is not hidden.' );
+	$assert( in_array( 'field_66052169a31f1', $hidden, true ), 'Legacy internal services repeater is not hidden.' );
+	$assert( in_array( 'field_66009d41fec38', $hidden, true ), 'Legacy cases repeater is not hidden.' );
+	$assert( in_array( 'field_6790c497eeee4', $hidden, true ), 'Skipped legacy plural case images must disappear with the old editor section.' );
 }
 
 if ( $failures ) {
