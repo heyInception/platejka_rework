@@ -1,98 +1,102 @@
 # Platejka rework
 
-Local WordPress rework: the classic PHP theme `themes/platejka_rework`, companion
-plugin `plugins/platejka-core`, documentation, tests and root tool configuration.
-The allowlist in `.gitignore` excludes the site's database, uploads, caches,
-third-party plugins, mu-plugins, old themes and WordPress drop-ins.
+Локальная переработка сайта WordPress: классическая PHP-тема
+`themes/platejka_rework`, вспомогательный плагин `plugins/platejka-core`,
+документация, тесты и корневые настройки инструментов. Разрешающий список в
+`.gitignore` исключает базу данных сайта, загрузки, кеши, сторонние плагины,
+mu-плагины, старые темы и WordPress drop-in-файлы.
 
-Local site: `C:\Users\Inception\Studio\platejka`.
-Repository: `C:\Users\Inception\Studio\platejka\wp-content`.
-Read-only behavior reference: `themes/platejka-pagespeed`.
-Read-only design export: `C:\project\platejka-new\wordpress`.
+Локальный сайт: `C:\Users\Inception\Studio\platejka`.
+Репозиторий: `C:\Users\Inception\Studio\platejka\wp-content`.
+Эталон поведения только для чтения: `themes/platejka-pagespeed`.
+Экспорт дизайна только для чтения: `C:\project\platejka-new\wordpress`.
 
-Use WordPress Studio CLI for every WP-CLI operation, always targeting the site:
+Для всех операций WP-CLI используйте WordPress Studio CLI и всегда явно
+указывайте путь к сайту:
 
 ```powershell
 studio --version
 studio wp --path C:\Users\Inception\Studio\platejka eval-file C:\Users\Inception\Studio\platejka\wp-content\tests\smoke\site-baseline.php
 ```
 
-Studio resolves relative `eval-file` paths at the site root. The plan's
-`tests/smoke/site-baseline.php` argument therefore cannot find this test;
-use the absolute path above. Studio 1.22.0 returned shell exit 0 even when
-WP-CLI reported a failed assertion: require explicit PASS lines and
-`Summary: 17 checks, 0 failures.`, not only the wrapper exit code.
+Studio разрешает относительные пути `eval-file` от корня сайта. Поэтому путь
+`tests/smoke/site-baseline.php` из плана не находит тест — используйте абсолютный
+путь из примера выше. Studio 1.22.0 возвращал код завершения оболочки `0`, даже
+когда WP-CLI сообщал об ошибке проверки. Ориентируйтесь на явные строки `PASS` и
+`Summary: 17 checks, 0 failures.`, а не только на код завершения оболочки.
 
-The baseline characterizes the original site before switching themes. See
-[baseline](docs/baseline.md),
-[section assembly design](docs/superpowers/specs/2026-10-05-section-page-assembly-design.md),
-[implementation plan](docs/superpowers/plans/2026-10-05-section-page-assembly.md) and
-[asset licensing](THIRD_PARTY_LICENSES.md).
-Preserve page IDs, slugs, ACF keys/values and existing integrations.
-Production deployment and publishing are outside this project's current scope.
+Исходное состояние сайта до переключения темы описано в
+[базовой проверке](docs/baseline.md),
+[проекте сборки страниц из секций](docs/superpowers/specs/2026-10-05-section-page-assembly-design.md),
+[плане реализации](docs/superpowers/plans/2026-10-05-section-page-assembly.md) и
+[лицензиях ресурсов](THIRD_PARTY_LICENSES.md).
+Сохраняйте ID и адреса страниц, ключи и значения ACF, а также существующие
+интеграции. Развёртывание и публикация в production не входят в текущую область
+проекта.
 
-## Implemented page scope
+## Реализованные страницы
 
-- `/` — home page (existing page ID 24)
-- `/china/` — China payments (existing page ID 1873)
-- `/o-kompanii/` — About (existing page ID 22)
+- `/` — главная страница, существующий ID 24;
+- `/china/` — платежи в Китай, существующий ID 1873;
+- `/o-kompanii/` — страница «О компании», существующий ID 22.
 
-Pages are assembled from PHP components in
-`themes/platejka_rework/sections`. Each page template declares one ordered
-fallback section list before `get_header()`. When the ACF page builder is
-enabled, its ordered rows replace that fallback. The resolved list controls
-both rendering and section-specific CSS/JavaScript: removing a section also
-removes its dedicated assets. `common.css`, `common.js`, header, preloader and
-footer remain global foundations.
+Страницы собираются из PHP-компонентов в `themes/platejka_rework/sections`.
+Каждый шаблон страницы до вызова `get_header()` объявляет упорядоченный резервный
+набор секций. Если на странице включён ACF-конструктор, его строки полностью
+заменяют резервный набор. Итоговый список управляет и выводом, и подключением
+CSS/JavaScript конкретных секций: удаление секции также удаляет её отдельные
+ресурсы. `common.css`, `common.js`, шапка, прелоадер и подвал остаются общими.
 
-Page templates:
+Шаблоны страниц:
 
-- `page-home.php` — the home-page sequence and `main` section variants;
-- `page-about.php` — the About-page sequence;
-- `page.php` — the shared sequence for ordinary pages, currently using the
-  supplied China-payment copy.
+- `page-home.php` — последовательность главной страницы и варианты секции `main`;
+- `page-about.php` — последовательность страницы «О компании»;
+- `page.php` — общая последовательность обычных страниц, сейчас использующая
+  предоставленный текст страницы платежей в Китай.
 
-`the_content()` is rendered by `sections/seo/seo.php`. Relative image paths in
-section markup are resolved by the section renderer.
+`the_content()` выводится через `sections/seo/seo.php`. Относительные пути к
+изображениям в разметке секций разрешаются рендерером секций.
 
-## ACF section builder
+## ACF-конструктор секций
 
-Reusable section content is maintained on the ACF options page
-`Сквозные секции` → `Стандартный контент секций`. Every page has a separate
-`Сборщик секций` switch and an ordered flexible-content field. New rows are
-disabled by default. Non-hero layouts can be reordered and repeated; the hero
-layout is limited to one row.
+Общий контент секций редактируется на странице параметров ACF
+`Сквозные секции` → `Стандартный контент секций`. На каждой странице есть
+отдельный переключатель `Сборщик секций` и упорядоченное flexible-content-поле.
+Новые строки по умолчанию выключены. Все секции, кроме hero, можно менять
+местами и повторять; секция hero ограничена одной строкой.
 
-Page-row overrides follow these rules:
+Переопределения в строках страницы работают по следующим правилам:
 
-- an empty scalar field inherits the global section value;
-- a non-empty scalar field replaces the global value;
-- an empty repeater inherits the global collection;
-- a non-empty repeater replaces the complete global collection.
+- пустое скалярное поле наследует глобальное значение секции;
+- непустое скалярное поле заменяет глобальное значение;
+- пустой repeater наследует глобальную коллекцию;
+- непустой repeater полностью заменяет глобальную коллекцию.
 
-The migrated home page (ID 24) contains 18 enabled rows in the approved legacy
-order. The China page (ID 1873) contains its approved 13-row composition:
-`hero`, `about`, `shipments`, `guarantees`, `documents`, `protection`, `review`,
-`work`, `problems`, `calculator`, `seo`, `faq`, `call`. Only ID 1873 is changed
-by the default-page migration; other pages using `page.php` retain the PHP
-fallback. The China `review` layout keeps its own markup but inherits the
-shared `review-main` content. Its `shipments`, `guarantees`, and `documents`
-rows explicitly use the `default` variant.
+Перенесённая главная страница (ID 24) содержит 18 включённых строк в утверждённом
+порядке старого шаблона. Страница платежей в Китай (ID 1873) содержит утверждённую
+композицию из 13 строк: `hero`, `about`, `shipments`, `guarantees`, `documents`,
+`protection`, `review`, `work`, `problems`, `calculator`, `seo`, `faq`, `call`.
+Миграция обычной страницы изменяет только ID 1873; остальные страницы на
+`page.php` продолжают использовать резервную PHP-композицию. Секция `review`
+страницы платежей в Китай сохраняет собственную разметку, но наследует общий
+контент `review-main`. Строки `shipments`, `guarantees` и `documents` явно
+используют вариант `default`.
 
-The About page (ID 22) has a separate page-only group and its own builder. Its
-approved order is `about-hero`, `location`, `review-main`, `infrastructure`,
-`financial`, `employees`, `exhibitions`, `developing`, `call-about`. Eight
-layouts keep their content on ID 22; `review-main` inherits the shared defaults
-and accepts page-level overrides. This group is not exposed to other pages.
+Страница «О компании» (ID 22) имеет отдельную группу полей и собственный
+конструктор. Утверждённый порядок: `about-hero`, `location`, `review-main`,
+`infrastructure`, `financial`, `employees`, `exhibitions`, `developing`,
+`call-about`. Контент восьми секций хранится на странице 22; `review-main`
+наследует общие значения и допускает переопределения страницы. Эта группа не
+показывается на других страницах.
 
-New rows added in the editor are disabled by default. The migrated rows are
-enabled deliberately to preserve the existing public page. Its original DOM
-classes and JavaScript hooks remain part of the tested layout contract.
-Editorial images are stored as WordPress attachment IDs and rendered with
-intrinsic dimensions, `srcset` and `sizes`; decorative SVGs remain immutable
-theme assets.
+Новые строки в редакторе по умолчанию выключены. Перенесённые строки включены
+намеренно, чтобы сохранить публичный вид страниц. Исходные DOM-классы и
+JavaScript-хуки остаются частью тестируемого контракта разметки. Редакторские
+изображения хранятся как ID вложений WordPress и выводятся с исходными размерами,
+`srcset` и `sizes`; декоративные SVG остаются неизменяемыми ресурсами темы.
 
-Preview the deterministic migration without writing anything, then apply it:
+Сначала запускайте детерминированную миграцию в режиме предварительного
+просмотра, затем применяйте её с флагом `--apply`:
 
 ```powershell
 studio wp --path C:\Users\Inception\Studio\platejka platejka section-builder migrate
@@ -103,31 +107,59 @@ studio wp --path C:\Users\Inception\Studio\platejka platejka section-builder mig
 studio wp --path C:\Users\Inception\Studio\platejka platejka section-builder migrate-about-page --apply
 ```
 
-The migration is additive and idempotent: later runs add newly introduced
-fields without replacing populated editor values or importing duplicate media.
-To roll back the China page rendering without deleting its saved rows, disable
-its `Сборщик секций` switch. `page.php` will immediately use the original
-13-section fallback in the same order.
+Основная миграция аддитивна и идемпотентна: повторные запуски добавляют новые
+поля, но не заменяют заполненные редактором значения и не импортируют медиа
+повторно. Чтобы вернуть старый вывод страницы платежей в Китай, не удаляя
+сохранённые строки, выключите на ней `Сборщик секций`. `page.php` сразу вернётся
+к исходному резервному набору из 13 секций в том же порядке.
 
-The About migration is also preview-first and idempotent. It leaves the legacy
-`o_kompanii` fields intact. Disable `О компании — сборщик секций` to restore
-the original `page-about.php` fallback without deleting the migrated rows.
+Миграция страницы «О компании» также сначала показывает план и является
+идемпотентной. Поля старой группы `o_kompanii` остаются нетронутыми. Чтобы
+вернуться к исходному резервному выводу `page-about.php`, выключите
+`О компании — сборщик секций`; сохранённые строки при этом не удаляются.
 
-ACF values are an editorial data layer, not a replacement for section markup.
-When adding fields, preserve existing root elements, class names, `data-*`
-hooks, heading structure, slider/dialog wrappers, and responsive image output.
-Change the DOM/CSS/JavaScript contract only as a separate, explicitly reviewed
-layout task. This prevents content migrations from silently rebuilding the
-page or breaking its visual behavior.
+## Миграция часто задаваемых вопросов
 
-## Fast local verification
+Команда `platejka section-builder migrate-faq` переносит заполненные старые ACF
+repeater-поля FAQ со всех страниц в секцию `faq` конструктора:
 
-Run the focused section/page smoke suite with Studio WP-CLI, using its absolute
-path. It verifies conditional assets, section variants, page order, preloader
-and footer:
+- сначала добавляются строки `repeater_column_1`, затем `repeater_column_2`;
+- вопрос переносится в `items[].title`, ответ — в `items[].text`;
+- полностью пустые строки пропускаются;
+- существующая коллекция `items` в каждой FAQ-секции заменяется;
+- если FAQ-секции нет, она создаётся перед `call` или в конце списка;
+- секция FAQ и конструктор страницы включаются;
+- заголовок, описание, ссылка, якорь и остальные настройки существующей секции
+  сохраняются;
+- старые repeater-поля не очищаются.
+
+Команда по умолчанию выполняет только dry-run и выводит полный план изменений.
+Перед `--apply` создайте резервную копию базы:
+
+```powershell
+studio wp --path C:\Users\Inception\Studio\platejka platejka section-builder migrate-faq
+studio wp --path C:\Users\Inception\Studio\platejka platejka section-builder migrate-faq --apply
+```
+
+Миграция использует сырые значения ACF без display-форматирования, проверяет
+каждую страницу повторным чтением и является идемпотентной: после успешного
+применения следующий dry-run должен показывать `writes: 0`.
+
+## Быстрая локальная проверка
+
+Запускайте целевые проверки секций и страниц через Studio WP-CLI с абсолютными
+путями. Они проверяют условное подключение ресурсов, варианты секций, порядок
+страниц, прелоадер и подвал:
 
 ```powershell
 studio wp --path C:\Users\Inception\Studio\platejka eval-file C:\Users\Inception\Studio\platejka\wp-content\tests\theme\section-loader.php
 studio wp --path C:\Users\Inception\Studio\platejka eval-file C:\Users\Inception\Studio\platejka\wp-content\tests\integration\section-builder-applied.php
 npx playwright test
 ```
+
+Значения ACF являются редакторским слоем данных, а не заменой разметки секций.
+При добавлении полей сохраняйте корневые элементы, имена классов, `data-*`-хуки,
+структуру заголовков, обёртки слайдеров и диалогов, а также адаптивный вывод
+изображений. Контракт DOM/CSS/JavaScript следует менять только отдельной задачей
+с явным ревью, чтобы миграции контента не перестраивали страницы и не нарушали
+их визуальное поведение.
