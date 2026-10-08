@@ -103,6 +103,12 @@ if ( class_exists( $class ) ) {
 
 	$again = $class::upsertBuilderRows( $upserted['rows'], $internal, $cases, false );
 	$assert( $upserted['rows'] === ( $again['rows'] ?? null ), 'Equivalent target generation is not idempotent.' );
+
+	$acf_round_trip = $upserted['rows'];
+	$acf_round_trip[1]['overrides_default']['default']['eyebrow'] = false;
+	$acf_round_trip[2]['overrides']['cases']['primary_link'] = false;
+	$round_trip = $class::upsertBuilderRows( $acf_round_trip, $internal, $cases, false );
+	$assert( array() === ( $round_trip['conflicts'] ?? null ), 'ACF empty structural fields create false conflicts after migration.' );
 }
 
 $visibility = '\\Platejka\\Core\\Acf\\LegacyFieldVisibility';

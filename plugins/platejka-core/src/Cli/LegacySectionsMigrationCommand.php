@@ -185,7 +185,7 @@ final class LegacySectionsMigrationCommand {
 				}
 			} else {
 				$current = self::shipmentOverride( $row, 'default' );
-				if ( self::hasMeaningfulValue( $current ) && self::stable( $current ) !== self::stable( $shipments ) ) {
+				if ( self::hasMeaningfulValue( $current ) && self::acfStable( $current ) !== self::acfStable( $shipments ) ) {
 					$conflicts[] = array( 'section' => 'shipments', 'current' => $current, 'target' => $shipments );
 				} elseif ( ! self::hasMeaningfulValue( $current ) ) {
 					$row['enabled']           = 1;
@@ -206,7 +206,7 @@ final class LegacySectionsMigrationCommand {
 				}
 			} else {
 				$current = self::caseOverride( $row );
-				if ( self::hasMeaningfulValue( $current ) && self::stable( $current ) !== self::stable( $cases ) ) {
+				if ( self::hasMeaningfulValue( $current ) && self::acfStable( $current ) !== self::acfStable( $cases ) ) {
 					$conflicts[] = array( 'section' => 'cases', 'current' => $current, 'target' => $cases );
 				} elseif ( ! self::hasMeaningfulValue( $current ) ) {
 					$row['enabled']          = 1;

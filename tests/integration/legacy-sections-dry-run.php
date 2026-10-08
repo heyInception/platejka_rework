@@ -14,7 +14,14 @@ $assert   = static function ( bool $condition, string $message ) use ( &$failure
 
 $assert( 'dry-run' === ( $report['mode'] ?? null ), 'Command is not in dry-run mode.' );
 $assert( false === ( $report['writes']['performed'] ?? null ), 'Dry-run reported performed writes.' );
-$assert( 0 === (int) get_option( \Platejka\Core\Acf\LegacyFieldVisibility::VERSION_OPTION, 0 ), 'Migration marker changed during dry-run.' );
+$marker = (int) get_option( \Platejka\Core\Acf\LegacyFieldVisibility::VERSION_OPTION, 0 );
+$assert( in_array( $marker, array( 0, 1 ), true ), 'Migration marker has an unsupported value.' );
+if ( 1 === $marker ) {
+	$legacy_field = acf_get_field( 'field_66009b8844e4f' );
+	$assert( false === apply_filters( 'acf/prepare_field', $legacy_field ), 'Migrated legacy services remain visible after the marker.' );
+	$legacy_rows = \Platejka\Core\Cli\LegacySectionsMigrationCommand::normalizeRawValue( get_field( 'field_66009b8844e4f', 24, false ) );
+	$assert( 5 === count( is_array( $legacy_rows ) ? $legacy_rows : array() ), 'Legacy homepage postmeta is no longer readable for rollback.' );
+}
 
 $home = null;
 foreach ( (array) ( $report['pages'] ?? array() ) as $page ) {
@@ -70,8 +77,8 @@ foreach ( (array) ( $report['writes']['planned'] ?? array() ) as $write ) {
 	}
 }
 
-$assert( is_array( $global_shipments ), 'Global shipments write is missing.' );
-$assert( is_array( $global_cases ), 'Global cases write is missing.' );
+$assert( 1 === $marker || is_array( $global_shipments ), 'Global shipments write is missing before migration.' );
+$assert( 1 === $marker || is_array( $global_cases ), 'Global cases write is missing before migration.' );
 if ( is_array( $global_shipments ) ) {
 	$current_items = (array) ( $global_shipments['current']['main']['items'] ?? array() );
 	$target_items  = (array) ( $global_shipments['target']['main']['items'] ?? array() );
@@ -91,7 +98,7 @@ if ( is_array( $global_cases ) ) {
 $summary = array(
 	'mode'             => $report['mode'] ?? null,
 	'writes_performed' => $report['writes']['performed'] ?? null,
-	'marker'           => (int) get_option( \Platejka\Core\Acf\LegacyFieldVisibility::VERSION_OPTION, 0 ),
+	'marker'           => $marker,
 	'totals'           => $report['totals'] ?? array(),
 	'home'             => $home,
 	'failure_count'    => count( $failures ),
