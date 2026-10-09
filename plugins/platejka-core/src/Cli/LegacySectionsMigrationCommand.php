@@ -51,6 +51,19 @@ final class LegacySectionsMigrationCommand {
 		return '' === $template || 'default' === $template;
 	}
 
+	/** Do not create newly discovered legacy sections after the migration marker exists. */
+	public static function shouldUseLegacySource( bool $already_migrated, array $rows, string $slug ): bool {
+		if ( ! $already_migrated ) {
+			return true;
+		}
+		foreach ( $rows as $row ) {
+			if ( is_array( $row ) && $slug === ( $row['acf_fc_layout'] ?? null ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * Convert raw ACF field-key arrays to stable field-name arrays without display formatting.
 	 *
@@ -124,7 +137,7 @@ final class LegacySectionsMigrationCommand {
 			$items[] = array(
 				'title' => (string) ( $row['zagolovok'] ?? '' ),
 				'text'  => (string) ( $row['tekst'] ?? '' ),
-				'image' => self::imageId( $row['izobrazhenie_services'] ?? 0 ),
+				'image' => 0,
 				'link'  => '',
 				'tags'  => array(),
 			);
@@ -185,9 +198,12 @@ final class LegacySectionsMigrationCommand {
 				}
 			} else {
 				$current = self::shipmentOverride( $row, 'default' );
-				if ( self::hasMeaningfulValue( $current ) && self::acfStable( $current ) !== self::acfStable( $shipments ) ) {
+				$current_without_images = self::withoutShipmentImages( $current );
+				$target_without_images  = self::withoutShipmentImages( is_array( $shipments ) ? $shipments : array() );
+				$same_without_images    = self::acfStable( $current_without_images ) === self::acfStable( $target_without_images );
+				if ( self::hasMeaningfulValue( $current ) && ! $same_without_images ) {
 					$conflicts[] = array( 'section' => 'shipments', 'current' => $current, 'target' => $shipments );
-				} elseif ( ! self::hasMeaningfulValue( $current ) ) {
+				} elseif ( ! self::hasMeaningfulValue( $current ) || self::acfStable( $current ) !== self::acfStable( $shipments ) ) {
 					$row['enabled']           = 1;
 					$row['variant']           = 'default';
 					$row['description_mode']  = 'hide';
@@ -338,7 +354,7 @@ final class LegacySectionsMigrationCommand {
 				$source[]    = 'home';
 			} else {
 				$template = (string) get_page_template_slug( $page_id );
-				if ( self::usesDefaultTemplate( $template ) ) {
+				if ( self::usesDefaultTemplate( $template ) && self::shouldUseLegacySource( $already_migrated, $current_rows, 'shipments' ) ) {
 					$service_title = (string) self::readField( self::LEGACY_SERVICE_TITLE, $page_id );
 					$service_items = self::readFieldArray( self::LEGACY_SERVICE_ITEMS, $page_id );
 					if ( self::hasMeaningfulValue( $service_title ) || self::hasMeaningfulValue( $service_items ) ) {
@@ -498,6 +514,20 @@ final class LegacySectionsMigrationCommand {
 		$key   = 'main' === $variant ? 'overrides_main' : 'overrides_default';
 		$value = isset( $row[ $key ] ) && is_array( $row[ $key ] ) ? $row[ $key ] : array();
 		return isset( $value[ $variant ] ) && is_array( $value[ $variant ] ) ? $value[ $variant ] : $value;
+	}
+
+	/** @param array<string,mixed> $section @return array<string,mixed> */
+	private static function withoutShipmentImages( array $section ): array {
+		if ( ! isset( $section['items'] ) || ! is_array( $section['items'] ) ) {
+			return $section;
+		}
+		foreach ( $section['items'] as &$item ) {
+			if ( is_array( $item ) ) {
+				unset( $item['image'] );
+			}
+		}
+		unset( $item );
+		return $section;
 	}
 
 	/** @param array<string,mixed> $row @return array<string,mixed> */

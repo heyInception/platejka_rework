@@ -139,6 +139,25 @@ $assert( '' === ( $hidden_description['description'] ?? null ), 'Hide mode suppr
 $assert( '<p>Локальное описание</p>' === ( $custom_description['description'] ?? null ), 'Hide mode keeps an explicitly populated local description.' );
 $assert( '<p>Сквозное описание</p>' === ( $inherited_description['description'] ?? null ), 'Inherit mode keeps the global description.' );
 
+$shipment_image_global = static fn( $global, $content_slug ) => 'shipments' === $content_slug
+	? array( 'default' => array( 'items' => array( array( 'title' => 'Сквозная карточка', 'image' => 420 ) ) ) )
+	: $global;
+add_filter( 'platejka_section_global_data', $shipment_image_global, 10, 2 );
+$shipment_with_global_image = platejka_resolve_section_data(
+	array(
+		'slug' => 'shipments',
+		'mode' => 'default',
+		'row'  => array(
+			'overrides_default' => array(
+				'default' => array( 'items' => array( array( 'title' => 'Локальная карточка', 'image' => 0 ) ) ),
+			),
+		),
+	)
+);
+remove_filter( 'platejka_section_global_data', $shipment_image_global, 10 );
+$assert( 'Локальная карточка' === ( $shipment_with_global_image['items'][0]['title'] ?? null ), 'Local shipment text remains local.' );
+$assert( 420 === ( $shipment_with_global_image['items'][0]['image'] ?? null ), 'An empty local shipment image inherits the shared image by item position.' );
+
 $old_default_page_marker = get_option( 'platejka_default_page_builder_version', null );
 delete_option( 'platejka_default_page_builder_version' );
 $force_empty_hero = static fn() => false;

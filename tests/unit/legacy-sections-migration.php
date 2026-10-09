@@ -23,6 +23,9 @@ if ( class_exists( $class ) ) {
 	$assert( $class::isEligibleStatus( 'publish' ) && $class::isEligibleStatus( 'future' ) && $class::isEligibleStatus( 'draft' ) && $class::isEligibleStatus( 'pending' ) && $class::isEligibleStatus( 'private' ), 'Required page statuses are not all eligible.' );
 	$assert( ! $class::isEligibleStatus( 'trash' ) && ! $class::isEligibleStatus( 'auto-draft' ), 'Trash or auto-drafts must not be eligible.' );
 	$assert( $class::usesDefaultTemplate( '' ) && $class::usesDefaultTemplate( 'default' ) && ! $class::usesDefaultTemplate( 'page-about.php' ), 'Default-template eligibility is incorrect.' );
+	$assert( $class::shouldUseLegacySource( false, array(), 'shipments' ), 'Initial migration must allow a missing shipment row.' );
+	$assert( ! $class::shouldUseLegacySource( true, array( array( 'acf_fc_layout' => 'cases' ) ), 'shipments' ), 'Post-migration cleanup must not create a missing shipment row.' );
+	$assert( $class::shouldUseLegacySource( true, array( array( 'acf_fc_layout' => 'shipments' ) ), 'shipments' ), 'Post-migration cleanup must update an existing shipment row.' );
 	$fields = array(
 		'field_title' => array( 'name' => 'zagolovok', 'type' => 'text' ),
 		'field_image' => array( 'name' => 'izobrazheie', 'type' => 'image' ),
@@ -55,7 +58,7 @@ if ( class_exists( $class ) ) {
 		)
 	);
 	$assert( 'Локальные направления' === ( $internal['title'] ?? null ), 'Internal section title is not mapped.' );
-	$assert( 73 === ( $internal['items'][0]['image'] ?? null ), 'Internal shipment image is not mapped.' );
+	$assert( 0 === ( $internal['items'][0]['image'] ?? null ), 'Internal shipment must not pin a legacy image.' );
 	$assert( array() === ( $internal['items'][0]['tags'] ?? null ), 'Internal shipment tags must be empty.' );
 	$assert( '' === ( $internal['items'][0]['link'] ?? null ), 'Internal shipment link must be empty.' );
 	$assert( ! array_key_exists( 'cardclass', $internal['items'][0] ?? array() ), 'Legacy card class must be skipped.' );
@@ -84,6 +87,12 @@ if ( class_exists( $class ) ) {
 	$assert( 'hide' === ( $upserted['rows'][1]['description_mode'] ?? null ), 'Internal shipment description must be hidden.' );
 	$assert( 'hide' === ( $upserted['rows'][2]['description_mode'] ?? null ), 'Internal cases description must be hidden.' );
 	$assert( 1 === ( $upserted['rows'][1]['enabled'] ?? null ) && 1 === ( $upserted['rows'][2]['enabled'] ?? null ), 'Migrated rows must be enabled.' );
+
+	$previously_migrated = $upserted['rows'];
+	$previously_migrated[1]['overrides_default']['default']['items'][0]['image'] = 73;
+	$cleaned = $class::upsertBuilderRows( $previously_migrated, $internal, $cases, false );
+	$assert( array() === ( $cleaned['conflicts'] ?? null ), 'A previously migrated local image is incorrectly treated as an editor conflict.' );
+	$assert( 0 === ( $cleaned['rows'][1]['overrides_default']['default']['items'][0]['image'] ?? null ), 'Previously migrated local image is not cleared.' );
 
 	$manual = array(
 		array( 'acf_fc_layout' => 'hero', 'enabled' => 1 ),

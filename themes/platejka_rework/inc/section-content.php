@@ -118,6 +118,16 @@ function platejka_resolve_section_data( array $config, int $post_id = 0 ): array
 	if ( $variant && isset( $local[ $mode ] ) && is_array( $local[ $mode ] ) ) {
 		$local = $local[ $mode ];
 	}
+	if ( 'shipments' === $slug && 'default' === $mode && isset( $local['items'] ) && is_array( $local['items'] ) ) {
+		$global_items = isset( $global['items'] ) && is_array( $global['items'] ) ? $global['items'] : array();
+		foreach ( $local['items'] as $index => &$item ) {
+			if ( ! is_array( $item ) || ! empty( $item['image'] ) || ! is_array( $global_items[ $index ] ?? null ) ) {
+				continue;
+			}
+			$item['image'] = $global_items[ $index ]['image'] ?? 0;
+		}
+		unset( $item );
+	}
 
 	$resolved          = platejka_section_array( platejka_merge_section_data( $local, $global ) );
 	$local_description = isset( $local['description'] ) ? trim( wp_strip_all_tags( (string) $local['description'] ) ) : '';
