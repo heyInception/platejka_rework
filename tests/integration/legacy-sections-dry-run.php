@@ -21,6 +21,38 @@ if ( 1 === $marker ) {
 	$assert( false === apply_filters( 'acf/prepare_field', $legacy_field ), 'Migrated legacy services remain visible after the marker.' );
 	$legacy_rows = \Platejka\Core\Cli\LegacySectionsMigrationCommand::normalizeRawValue( get_field( 'field_66009b8844e4f', 24, false ) );
 	$assert( 5 === count( is_array( $legacy_rows ) ? $legacy_rows : array() ), 'Legacy homepage postmeta is no longer readable for rollback.' );
+
+	$pinned_local_images = 0;
+	foreach ( (array) ( $report['pages'] ?? array() ) as $page ) {
+		if ( ! in_array( 'shipments', (array) ( $page['source'] ?? array() ), true ) ) {
+			continue;
+		}
+		$page_rows = \Platejka\Core\Cli\LegacySectionsMigrationCommand::normalizeRawValue( get_field( 'field_platejka_sections_v1', (int) $page['id'], false ) );
+		foreach ( is_array( $page_rows ) ? $page_rows : array() as $row ) {
+			if ( ! is_array( $row ) || 'shipments' !== ( $row['acf_fc_layout'] ?? null ) || 'default' !== ( $row['variant'] ?? null ) ) {
+				continue;
+			}
+			foreach ( (array) ( $row['overrides_default']['default']['items'] ?? array() ) as $item ) {
+				$pinned_local_images += (int) ( is_array( $item ) && ! empty( $item['image'] ) );
+			}
+		}
+	}
+	$assert( 0 === $pinned_local_images, 'Local shipment images remain pinned after cleanup.' );
+
+	$china_rows = \Platejka\Core\Cli\LegacySectionsMigrationCommand::normalizeRawValue( get_field( 'field_platejka_sections_v1', 1873, false ) );
+	$china_shipments = null;
+	foreach ( is_array( $china_rows ) ? $china_rows : array() as $row ) {
+		if ( is_array( $row ) && 'shipments' === ( $row['acf_fc_layout'] ?? null ) ) {
+			$china_shipments = $row;
+			break;
+		}
+	}
+	$resolved_shipments = platejka_resolve_section_data( array( 'slug' => 'shipments', 'mode' => 'default', 'row' => is_array( $china_shipments ) ? $china_shipments : array() ), 1873 );
+	$global_shipments = get_field( 'shipments', 'platejka_section_defaults' );
+	$assert(
+		( $global_shipments['default']['items'][0]['image'] ?? null ) === ( $resolved_shipments['items'][0]['image'] ?? null ),
+		'Page 1873 does not resolve the first shared default shipment image.'
+	);
 }
 
 $home = null;
