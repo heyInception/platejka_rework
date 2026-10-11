@@ -3068,6 +3068,114 @@
                 }
             ]
         },
+        {"key":"field_platejka_defaults_tab_process_v1","label":"Процесс","name":"","type":"tab","instructions":"","required":0,"conditional_logic":0,"wrapper":{"width":"","class":"","id":""},"placement":"left","endpoint":0},
+        {
+            "key": "field_platejka_defaults_process_v1",
+            "label": "Процесс",
+            "name": "process",
+            "type": "group",
+            "instructions": "Глобальные значения можно оставить пустыми. Для включенной секции на странице заполните заголовок и хотя бы один полный шаг.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_platejka_process_title_v1",
+                    "label": "Заголовок",
+                    "name": "title",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": ""
+                },
+                {
+                    "key": "field_platejka_process_items_v1",
+                    "label": "Шаги",
+                    "name": "items",
+                    "type": "repeater",
+                    "instructions": "Каждый отображаемый шаг должен содержать заголовок и текст.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "layout": "block",
+                    "min": 0,
+                    "max": 0,
+                    "rows_per_page": 20,
+                    "button_label": "Добавить шаг",
+                    "collapsed": "field_platejka_process_item_title_v1",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_process_item_title_v1",
+                            "label": "Заголовок",
+                            "name": "title",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": ""
+                        },
+                        {
+                            "key": "field_platejka_process_item_text_v1",
+                            "label": "Текст",
+                            "name": "text",
+                            "type": "wysiwyg",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "tabs": "all",
+                            "toolbar": "basic",
+                            "media_upload": 0,
+                            "delay": 0
+                        }
+                    ]
+                },
+                {
+                    "key": "field_platejka_process_description_v1",
+                    "label": "Описание после шагов",
+                    "name": "description",
+                    "type": "wysiwyg",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "tabs": "all",
+                    "toolbar": "basic",
+                    "media_upload": 0,
+                    "delay": 0
+                }
+            ]
+        },
         {"key":"field_platejka_defaults_tab_with_us_v1","label":"Почему с нами","name":"","type":"tab","instructions":"","required":0,"conditional_logic":0,"wrapper":{"width":"","class":"","id":""},"placement":"left","endpoint":0},
         {
             "key": "field_platejka_defaults_with_us_v1",

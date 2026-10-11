@@ -92,7 +92,7 @@ foreach ( (array) ( $builder['fields'] ?? array() ) as $field ) {
 $assert( 'field_platejka_page_builder_v1' === ( $builder_toggle['key'] ?? null ) && 'true_false' === ( $builder_toggle['type'] ?? null ), 'Builder toggle uses its stable key and boolean type.' );
 $assert( 'field_platejka_sections_v1' === ( $sections_field['key'] ?? null ) && 'flexible_content' === ( $sections_field['type'] ?? null ), 'Sections field uses its stable key and flexible-content type.' );
 
-$expected_layouts = array( 'hero-main', 'about', 'shipments', 'guarantees', 'documents', 'compliance', 'review-main', 'work', 'calculator', 'with-us', 'destinations', 'seo', 'problems', 'serves', 'cases', 'table', 'faq', 'call', 'hero', 'protection', 'review' );
+$expected_layouts = array( 'hero-main', 'about', 'shipments', 'guarantees', 'documents', 'compliance', 'review-main', 'work', 'calculator', 'process', 'with-us', 'destinations', 'seo', 'problems', 'serves', 'cases', 'table', 'faq', 'call', 'hero', 'protection', 'review' );
 $layouts = array_values( (array) ( $sections_field['layouts'] ?? array() ) );
 $assert( $expected_layouts === array_column( $layouts, 'name' ), 'Builder keeps the original layouts and appends the three approved internal-page layouts.' );
 foreach ( $layouts as $layout ) {
@@ -110,6 +110,9 @@ foreach ( $layouts as $layout ) {
 }
 
 $layouts_by_name = array_column( $layouts, null, 'name' );
+$process_layout_fields = array_column( (array) ( $layouts_by_name['process']['sub_fields'] ?? array() ), null, 'name' );
+$assert( 'layout_platejka_process_v1' === ( $layouts_by_name['process']['key'] ?? null ), 'Process layout uses its stable key.' );
+$assert( array( 'field_platejka_defaults_process_v1' ) === ( $process_layout_fields['overrides']['clone'] ?? null ), 'Process layout clones the canonical Process group.' );
 $shipments_layout_fields = array_column( (array) ( $layouts_by_name['shipments']['sub_fields'] ?? array() ), null, 'name' );
 $cases_layout_fields     = array_column( (array) ( $layouts_by_name['cases']['sub_fields'] ?? array() ), null, 'name' );
 foreach ( array( 'shipments' => $shipments_layout_fields, 'cases' => $cases_layout_fields ) as $layout_name => $layout_fields ) {
@@ -119,6 +122,18 @@ foreach ( array( 'shipments' => $shipments_layout_fields, 'cases' => $cases_layo
 }
 
 $default_fields = array_column( (array) ( $defaults['fields'] ?? array() ), null, 'name' );
+$process        = $default_fields['process'] ?? array();
+$process_fields = array_column( (array) ( $process['sub_fields'] ?? array() ), null, 'name' );
+$process_items  = $process_fields['items'] ?? array();
+$process_item_fields = array_column( (array) ( $process_items['sub_fields'] ?? array() ), null, 'name' );
+$assert( 'field_platejka_defaults_process_v1' === ( $process['key'] ?? null ) && 0 === ( $process['required'] ?? null ), 'Process defaults use the stable optional group key.' );
+$assert( array( 'title', 'items', 'description' ) === array_keys( $process_fields ), 'Process exposes exactly title, items, and description.' );
+$assert( 'field_platejka_process_title_v1' === ( $process_fields['title']['key'] ?? null ) && 0 === ( $process_fields['title']['required'] ?? null ), 'Process title uses its stable optional field key.' );
+$assert( 'field_platejka_process_items_v1' === ( $process_items['key'] ?? null ) && 'repeater' === ( $process_items['type'] ?? null ) && 0 === ( $process_items['min'] ?? null ), 'Process items use the stable optional repeater key.' );
+$assert( array( 'title', 'text' ) === array_keys( $process_item_fields ), 'Process steps expose exactly title and text.' );
+$assert( 'field_platejka_process_item_title_v1' === ( $process_item_fields['title']['key'] ?? null ) && 0 === ( $process_item_fields['title']['required'] ?? null ), 'Process step title uses its stable optional field key.' );
+$assert( 'field_platejka_process_item_text_v1' === ( $process_item_fields['text']['key'] ?? null ) && 0 === ( $process_item_fields['text']['required'] ?? null ), 'Process step text uses its stable optional field key.' );
+$assert( 'field_platejka_process_description_v1' === ( $process_fields['description']['key'] ?? null ) && 0 === ( $process_fields['description']['required'] ?? null ), 'Process description uses its stable optional field key.' );
 $shipments      = $default_fields['shipments'] ?? array();
 $hero           = $default_fields['hero'] ?? array();
 $hero_fields    = array_column( (array) ( $hero['sub_fields'] ?? array() ), null, 'name' );
