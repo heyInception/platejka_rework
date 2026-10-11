@@ -115,10 +115,12 @@ $assert( wp_style_is( 'platejka-rework-section-faq', 'enqueued' ), 'Repeated ena
 $assert( wp_script_is( 'platejka-rework-section-faq', 'enqueued' ), 'Repeated enabled rows enqueue their section script.' );
 $assert( ! wp_style_is( 'platejka-rework-section-about', 'enqueued' ), 'Disabled rows do not enqueue section assets.' );
 
-foreach ( array( 'page-home.php', 'page-about.php', 'page.php' ) as $template ) {
+foreach ( array( 'page-home.php', 'page.php' ) as $template ) {
 	$source = file_get_contents( get_theme_file_path( $template ) );
 	$assert( str_contains( $source, 'platejka_get_page_sections' ), $template . ' resolves the builder before declaring active sections.' );
 }
+$about_source = file_get_contents( get_theme_file_path( 'page-about.php' ) );
+$assert( str_contains( $about_source, 'platejka_get_about_page_sections' ), 'page-about.php resolves the dedicated About builder before declaring active sections.' );
 
 WP_CLI::log( sprintf( 'Section builder: %d checks, %d failures.', $checks, count( $failures ) ) );
 if ( $failures ) {

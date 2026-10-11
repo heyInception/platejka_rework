@@ -107,7 +107,7 @@ $assert_page_order(
 );
 $assert_page_order(
 	'/china/',
-	array( 'data-hero', 'data-about', 'shipments--default', 'guarantees--default', 'documents--default', 'class="protection', 'class="review', 'class="work', 'class="problems', 'data-transfer-calculator-section', 'data-seo', 'data-faq', 'data-call' ),
+	array( 'data-hero', 'shipments--default', 'class="cases', 'data-about', 'guarantees--default', 'documents--default', 'class="protection', 'class="review', 'class="work', 'class="problems', 'data-transfer-calculator-section', 'data-seo', 'data-faq', 'data-call' ),
 	'Default page'
 );
 

@@ -69,8 +69,13 @@ $assert(
 
 $builder = $schemas['group_platejka_page_builder_v1'] ?? array();
 $assert(
-	array( array( array( 'param' => 'post_type', 'operator' => '==', 'value' => 'page' ) ) ) === ( $builder['location'] ?? null ),
-	'Builder group targets every page.'
+	array(
+		array(
+			array( 'param' => 'post_type', 'operator' => '==', 'value' => 'page' ),
+			array( 'param' => 'post', 'operator' => '!=', 'value' => '22' ),
+		),
+	) === ( $builder['location'] ?? null ),
+	'Builder group targets every page except the dedicated About builder.'
 );
 $assert( 'acf_after_title' === ( $builder['position'] ?? null ), 'Builder group appears immediately after the page title.' );
 
