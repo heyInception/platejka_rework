@@ -92,6 +92,11 @@ if ( class_exists( $class ) ) {
 
 	$again = $class::reconcileRows( $result['rows'], $mapped_six );
 	$assert( array() === ( $again['conflicts'] ?? null ) && $result['rows'] === ( $again['rows'] ?? null ), 'Equivalent post-migration rows are not idempotent.' );
+	$acf_round_trip = $result['rows'];
+	$acf_round_trip[3]['overrides'] = array( 'calculator' => array( 'title' => false, 'items' => array() ) );
+	$acf_round_trip[4]['overrides']['process']['description'] = false;
+	$round_trip_result = $class::reconcileRows( $acf_round_trip, $mapped_six );
+	$assert( array() === ( $round_trip_result['conflicts'] ?? null ) && $acf_round_trip === ( $round_trip_result['rows'] ?? null ), 'Empty ACF round-trip fields create a false post-migration conflict.' );
 
 	foreach (
 		array(

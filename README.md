@@ -176,6 +176,37 @@ studio wp --path C:\Users\Inception\Studio\platejka platejka section-builder mig
 studio wp --path C:\Users\Inception\Studio\platejka platejka section-builder migrate-legacy-sections --apply
 ```
 
+## Миграция композиции внутренних страниц
+
+Команда `platejka section-builder migrate-internal-pages` дополняет только
+компактные страницы стандартного `page.php`, на которых уже включён конструктор
+и сохранена одна из последовательностей `hero → faq`, `hero → shipments → faq`,
+`hero → cases → faq` или `hero → shipments → cases → faq`.
+
+В итоговую композицию добавляются наследуемые строки `calculator`, `guarantees`,
+`review`, `destinations`, `seo` и `call`. Существующие Hero, направления, кейсы
+и FAQ сохраняются без изменения. Локальная секция `process` создаётся только
+когда старая группа «Процесс» содержит заголовок и хотя бы один полный шаг;
+старый выбор ширины карточки пропускается. Данные `skvoznye_bloki` команда не
+читает и не изменяет.
+
+Нестандартные шаблоны, выключенный конструктор, расширенные композиции и страницы
+без пары Hero/FAQ исключаются. Дубли, лишние компактные строки и неправильный
+порядок считаются конфликтом: страница целиком пропускается, а запуск с
+`--apply` прекращается до любых записей. После записи все строки читаются заново
+и только затем сохраняется маркер версии.
+
+Сначала сохраните dry-run и резервную копию базы. Применение выполняйте только
+после проверки `pages`, `excluded`, `conflicts` и `writes.planned`:
+
+```powershell
+studio wp --path C:\Users\Inception\Studio\platejka platejka section-builder migrate-internal-pages
+studio wp --path C:\Users\Inception\Studio\platejka platejka section-builder migrate-internal-pages --apply
+```
+
+Для отката восстановите базу из резервной копии. Команда не удаляет старые поля,
+но автоматического обратного преобразования нового порядка секций не выполняет.
+
 ## Быстрая локальная проверка
 
 Запускайте целевые проверки секций и страниц через Studio WP-CLI с абсолютными
