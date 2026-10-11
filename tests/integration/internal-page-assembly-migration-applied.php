@@ -66,7 +66,8 @@ foreach ( $target_ids as $page_id_value ) {
 	$assert( 'hero' === ( $slugs[0] ?? null ) && 'call' === end( $slugs ), 'Canonical boundary order differs on page ' . $page_id . '.' );
 	foreach ( array( 'calculator', 'guarantees', 'review', 'destinations', 'seo', 'call' ) as $slug ) {
 		$index = array_search( $slug, $slugs, true );
-		$assert( false !== $index && ! $has_meaningful_value( $rows[ $index ]['overrides'] ?? array() ), 'Shared section does not inherit on page ' . $page_id . ': ' . $slug . '.' );
+		$local_values = false === $index ? true : array( $rows[ $index ]['overrides'] ?? array(), $rows[ $index ]['overrides_main'] ?? array(), $rows[ $index ]['overrides_default'] ?? array() );
+		$assert( false !== $index && ! $has_meaningful_value( $local_values ), 'Shared section does not inherit on page ' . $page_id . ': ' . $slug . '.' );
 	}
 	$process_index = array_search( 'process', $slugs, true );
 	if ( in_array( $page_id, array( 2098, 2109 ), true ) ) {

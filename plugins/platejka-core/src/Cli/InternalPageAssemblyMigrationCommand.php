@@ -33,6 +33,11 @@ final class InternalPageAssemblyMigrationCommand {
 		return self::report( true );
 	}
 
+	/** @param mixed $left @param mixed $right */
+	public static function areAcfValuesEquivalent( $left, $right ): bool {
+		return self::acfStable( $left ) === self::acfStable( $right );
+	}
+
 	/** @param array<string,mixed> $report @return array<string,mixed> */
 	public static function summarizeReport( array $report ): array {
 		$summary = $report;
@@ -161,7 +166,7 @@ final class InternalPageAssemblyMigrationCommand {
 	public static function reconcileRows( array $rows, ?array $process ): array {
 		if ( ! self::isCompactSequence( $rows ) ) {
 			$target = self::targetRowsFromCurrent( $rows, $process );
-			if ( null !== $target && self::acfStable( $rows ) === self::acfStable( $target ) ) {
+			if ( null !== $target && self::areAcfValuesEquivalent( $rows, $target ) ) {
 				return array( 'rows' => $rows, 'conflicts' => array() );
 			}
 			return array(
@@ -337,7 +342,7 @@ final class InternalPageAssemblyMigrationCommand {
 			$page['process_mapped']  = null !== $process;
 			$pages[] = $page;
 
-			if ( self::acfStable( $rows ) !== self::acfStable( $target_rows ) ) {
+			if ( ! self::areAcfValuesEquivalent( $rows, $target_rows ) ) {
 				$writes[] = array(
 					'post_id' => $page_id,
 					'field'   => self::BUILDER_ROWS,
@@ -416,13 +421,20 @@ final class InternalPageAssemblyMigrationCommand {
 			$list   = array_is_list( $current );
 			$result = array();
 			foreach ( $current as $key => $child ) {
+				if ( ! $list && in_array( $key, array( 'variant', 'description_mode' ), true ) && 'inherit' === $child ) {
+					continue;
+				}
 				if ( ! self::hasMeaningfulValue( $child ) ) {
 					continue;
 				}
+				$compacted_child = $compact( $child );
+				if ( ! $list && 'enabled' === $key && in_array( $compacted_child, array( '1', 1, true ), true ) ) {
+					$compacted_child = 1;
+				}
 				if ( $list ) {
-					$result[] = $compact( $child );
+					$result[] = $compacted_child;
 				} else {
-					$result[ $key ] = $compact( $child );
+					$result[ $key ] = $compacted_child;
 				}
 			}
 			if ( ! $list ) {
@@ -460,7 +472,7 @@ final class InternalPageAssemblyMigrationCommand {
 			}
 			$actual = get_field( $write['field'], (int) $write['post_id'], false );
 			$actual = is_array( $actual ) ? self::normalizeRawValue( $actual ) : $actual;
-			if ( self::acfStable( $actual ) !== self::acfStable( $write['target'] ) ) {
+			if ( ! self::areAcfValuesEquivalent( $actual, $write['target'] ) ) {
 				throw new RuntimeException( 'Internal-page assembly verification failed on page ' . (int) $write['post_id'] . '.' );
 			}
 		}

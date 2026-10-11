@@ -105,7 +105,7 @@ $groups = array(
 	'group_65a959b489bb6' => 'Часто задаваемые вопросы',
 );
 $files = glob( $json_path . '/*.json' );
-$assert( is_array( $files ) && 9 === count( $files ), 'Plugin must contain the seven legacy and two new JSON schema files.' );
+$assert( is_array( $files ) && 10 === count( $files ), 'Plugin must contain the seven legacy and three new JSON schema files.' );
 $collect_keys = static function ( array $nodes ) use ( &$collect_keys, $assert ): array {
 	$keys = array();
 	foreach ( $nodes as $node ) {

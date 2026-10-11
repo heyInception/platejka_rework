@@ -81,6 +81,17 @@ foreach ( (array) ( $cli_report['writes']['planned'] ?? array() ) as $write ) {
 
 $already_migrated = true === ( $report['already_migrated'] ?? null );
 $planned          = (array) ( $report['writes']['planned'] ?? array() );
+$has_meaningful_value = static function ( $value ) use ( &$has_meaningful_value ): bool {
+	if ( is_array( $value ) ) {
+		foreach ( $value as $child ) {
+			if ( $has_meaningful_value( $child ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+	return is_string( $value ) ? '' !== trim( $value ) : null !== $value && false !== $value;
+};
 if ( $already_migrated ) {
 	$assert( array() === $planned, 'Completed migration preview plans no writes.' );
 } else {
@@ -98,12 +109,13 @@ foreach ( $pages as $page_id => $page ) {
 		$process_index = array_search( 'process', $slugs, true );
 		$legacy_raw    = get_field( 'field_6790b8aa79094', (int) $page_id, false );
 		$legacy_mapped = $class::mapLegacyProcess( $class::normalizeRawValue( $legacy_raw ) );
-		$assert( $legacy_mapped === ( $target_rows[ $process_index ]['overrides']['process'] ?? null ), 'Local Process mapping differs on page ' . $page_id . '.' );
+		$assert( $class::areAcfValuesEquivalent( $legacy_mapped, $target_rows[ $process_index ]['overrides']['process'] ?? null ), 'Local Process mapping differs on page ' . $page_id . '.' );
 	}
 	foreach ( $target_rows as $row ) {
 		$slug = (string) ( $row['acf_fc_layout'] ?? '' );
 		if ( in_array( $slug, array( 'calculator', 'guarantees', 'review', 'destinations', 'seo', 'call' ), true ) ) {
-			$assert( array() === ( $row['overrides'] ?? null ), 'Shared row has a local override on page ' . $page_id . ': ' . $slug . '.' );
+			$local_values = array( $row['overrides'] ?? array(), $row['overrides_main'] ?? array(), $row['overrides_default'] ?? array() );
+			$assert( ! $has_meaningful_value( $local_values ), 'Shared row has a local override on page ' . $page_id . ': ' . $slug . '.' );
 		}
 	}
 }

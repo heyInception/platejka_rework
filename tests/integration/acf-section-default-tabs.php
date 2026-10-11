@@ -35,6 +35,7 @@ $expected = array(
 	array( 'field_platejka_defaults_review_main_v1', 'Отзывы', 'review_main' ),
 	array( 'field_platejka_defaults_work_v1', 'Как мы работаем', 'work' ),
 	array( 'field_platejka_defaults_calculator_v1', 'Калькулятор', 'calculator' ),
+	array( 'field_platejka_defaults_process_v1', 'Процесс', 'process' ),
 	array( 'field_platejka_defaults_with_us_v1', 'Почему с нами', 'with_us' ),
 	array( 'field_platejka_defaults_destinations_v1', 'Доступные направления', 'destinations' ),
 	array( 'field_platejka_defaults_seo_v1', 'SEO-блок', 'seo' ),
@@ -62,7 +63,7 @@ $assert( $valid_tabs, 'Every navigation field is a left tab followed by the unch
 $assert( ! in_array( '', $keys, true ) && count( $keys ) === count( array_unique( $keys ) ), 'Top-level ACF field keys are non-empty and unique.' );
 $live_fields = function_exists( 'acf_get_fields' ) ? acf_get_fields( 'group_platejka_section_defaults_v1' ) : array();
 $live_tabs = array_filter( is_array( $live_fields ) ? $live_fields : array(), static fn( $field ) => 'tab' === ( $field['type'] ?? '' ) && 'left' === ( $field['placement'] ?? '' ) );
-$assert( 40 === count( is_array( $live_fields ) ? $live_fields : array() ) && 20 === count( $live_tabs ), 'Live ACF loads all 20 left tabs and 20 existing groups.' );
+$assert( 42 === count( is_array( $live_fields ) ? $live_fields : array() ) && 21 === count( $live_tabs ), 'Live ACF loads all 21 left tabs and 21 section groups.' );
 
 WP_CLI::log( sprintf( 'Shared section tabs: %d checks, %d failures.', $checks, count( $failures ) ) );
 if ( $failures ) { WP_CLI::halt( 1 ); }

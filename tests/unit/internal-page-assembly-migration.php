@@ -93,10 +93,18 @@ if ( class_exists( $class ) ) {
 	$again = $class::reconcileRows( $result['rows'], $mapped_six );
 	$assert( array() === ( $again['conflicts'] ?? null ) && $result['rows'] === ( $again['rows'] ?? null ), 'Equivalent post-migration rows are not idempotent.' );
 	$acf_round_trip = $result['rows'];
+	foreach ( $acf_round_trip as &$round_trip_row ) {
+		$round_trip_row['enabled'] = '1';
+	}
+	unset( $round_trip_row );
 	$acf_round_trip[3]['overrides'] = array( 'calculator' => array( 'title' => false, 'items' => array() ) );
 	$acf_round_trip[4]['overrides']['process']['description'] = false;
+	$acf_round_trip[5]['variant'] = 'inherit';
+	$acf_round_trip[5]['overrides_main'] = array( 'main' => array( 'title' => '', 'items' => false ) );
+	$acf_round_trip[5]['overrides_default'] = array( 'default' => array( 'title' => '', 'items' => false ) );
 	$round_trip_result = $class::reconcileRows( $acf_round_trip, $mapped_six );
 	$assert( array() === ( $round_trip_result['conflicts'] ?? null ) && $acf_round_trip === ( $round_trip_result['rows'] ?? null ), 'Empty ACF round-trip fields create a false post-migration conflict.' );
+	$assert( $class::areAcfValuesEquivalent( $acf_round_trip, $result['rows'] ), 'Equivalent ACF round-trip values are not recognized.' );
 
 	foreach (
 		array(
@@ -112,6 +120,7 @@ if ( class_exists( $class ) ) {
 
 	$manual_target = $result['rows'];
 	$manual_target[3]['overrides'] = array( 'calculator' => array( 'title' => 'Редактор' ) );
+	$assert( ! $class::areAcfValuesEquivalent( $manual_target, $result['rows'] ), 'A meaningful local override is treated as equivalent.' );
 	$manual_conflict = $class::reconcileRows( $manual_target, $mapped_six );
 	$assert( ! empty( $manual_conflict['conflicts'] ) && $manual_target === ( $manual_conflict['rows'] ?? null ), 'Manual post-migration override was overwritten.' );
 }
