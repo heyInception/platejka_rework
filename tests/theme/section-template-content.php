@@ -79,6 +79,50 @@ foreach ( $templates as $relative => $expectation ) {
 	$assert( str_contains( $html, $expectation['hook'] ), $relative . ' retains its stable JavaScript/DOM hook.' );
 }
 
+$render_process = static function ( array $data, string $anchor = 'payment-process' ): string {
+	$template = get_theme_file_path( 'sections/process/process.php' );
+	if ( ! is_file( $template ) ) {
+		return '';
+	}
+	$section_data     = $data;
+	$section_instance = 'section-2098-5';
+	$section_anchor   = $anchor;
+	ob_start();
+	include $template;
+	return (string) ob_get_clean();
+};
+$process_items = array();
+for ( $step = 1; $step <= 6; ++$step ) {
+	$process_items[] = array( 'title' => 'Этап ' . $step, 'text' => '<p>Описание этапа ' . $step . '</p>' );
+}
+$process_html = $render_process(
+	array(
+		'title'       => 'Fixture <процесс>',
+		'items'       => $process_items,
+		'description' => '<p>Итоговое описание<script>alert(1)</script></p>',
+	)
+);
+$assert( str_contains( $process_html, 'id="payment-process"' ), 'Process applies the supplied public anchor.' );
+$assert( str_contains( $process_html, '<ol') && 6 === substr_count( $process_html, '<li'), 'Process renders six steps as an ordered list.' );
+$assert( str_contains( $process_html, 'Fixture &lt;процесс&gt;' ) && str_contains( $process_html, 'Описание этапа 6' ), 'Process escapes its title and renders step descriptions.' );
+$assert( str_contains( $process_html, 'Итоговое описание' ) && ! str_contains( $process_html, '<script>' ), 'Process sanitizes its optional trailing description.' );
+$assert( ! str_contains( $process_html, 'Получаем реквизиты' ), 'Process contains no seed or legacy editorial fallback.' );
+
+$filtered_process_html = $render_process(
+	array(
+		'title' => 'Фильтрация',
+		'items' => array(
+			array( 'title' => 'Полный шаг', 'text' => '<p>Полный текст</p>' ),
+			array( 'title' => 'Без текста', 'text' => '' ),
+			array( 'title' => '', 'text' => '<p>Без заголовка</p>' ),
+			'corrupt',
+		),
+	)
+);
+$assert( 1 === substr_count( $filtered_process_html, '<li' ) && ! str_contains( $filtered_process_html, 'Без текста' ) && ! str_contains( $filtered_process_html, 'Без заголовка' ), 'Process filters incomplete and corrupt steps.' );
+$assert( '' === $render_process( array( 'title' => '', 'items' => $process_items ) ), 'Process fails closed when its title is empty.' );
+$assert( '' === $render_process( array( 'title' => 'Без шагов', 'items' => array( array( 'title' => 'Неполный', 'text' => '' ) ) ) ), 'Process fails closed when it has no complete steps.' );
+
 $section_instance = 'section-1873-1';
 $section_anchor   = 'china-hero';
 $section_data     = array(
