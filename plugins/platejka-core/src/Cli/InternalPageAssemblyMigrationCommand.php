@@ -19,7 +19,7 @@ final class InternalPageAssemblyMigrationCommand {
 		unset( $args );
 		$apply  = isset( $assoc_args['apply'] );
 		$report = self::report( $apply );
-		\WP_CLI::line( (string) wp_json_encode( $report, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) );
+		\WP_CLI::line( (string) wp_json_encode( self::summarizeReport( $report ), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) );
 		\WP_CLI::success( ! empty( $report['already_migrated'] ) ? 'Internal-page assembly migration was already applied; no writes performed.' : ( $apply ? 'Internal-page assembly migration applied and verified.' : 'Dry-run only; no writes performed.' ) );
 	}
 
@@ -31,6 +31,29 @@ final class InternalPageAssemblyMigrationCommand {
 	/** @return array<string,mixed> */
 	public static function apply(): array {
 		return self::report( true );
+	}
+
+	/** @param array<string,mixed> $report @return array<string,mixed> */
+	public static function summarizeReport( array $report ): array {
+		$summary = $report;
+		foreach ( (array) ( $summary['pages'] ?? array() ) as $index => $page ) {
+			if ( is_array( $page ) ) {
+				unset( $page['target_rows'] );
+				$summary['pages'][ $index ] = $page;
+			}
+		}
+		foreach ( (array) ( $summary['writes']['planned'] ?? array() ) as $index => $write ) {
+			if ( ! is_array( $write ) ) {
+				continue;
+			}
+			$compact = array( 'post_id' => $write['post_id'] ?? 0, 'field' => $write['field'] ?? '' );
+			if ( self::BUILDER_ROWS !== ( $write['field'] ?? null ) ) {
+				$compact['from'] = $write['current'] ?? null;
+				$compact['to']   = $write['target'] ?? null;
+			}
+			$summary['writes']['planned'][ $index ] = $compact;
+		}
+		return $summary;
 	}
 
 	public static function isEligibleStatus( string $status ): bool {

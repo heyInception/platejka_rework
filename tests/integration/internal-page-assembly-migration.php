@@ -66,6 +66,7 @@ $cross_block_hash = static function (): string {
 $before = $snapshot();
 $report = $class::preview();
 $after  = $snapshot();
+$cli_report = $class::summarizeReport( $report );
 
 foreach ( array( 'mode', 'already_migrated', 'totals', 'pages', 'excluded', 'conflicts', 'writes' ) as $key ) {
 	$assert( array_key_exists( $key, $report ), 'Preview exposes report key: ' . $key . '.' );
@@ -73,6 +74,10 @@ foreach ( array( 'mode', 'already_migrated', 'totals', 'pages', 'excluded', 'con
 $assert( 'dry-run' === ( $report['mode'] ?? null ), 'Preview reports dry-run mode.' );
 $assert( false === ( $report['writes']['performed'] ?? null ), 'Preview reports no performed writes.' );
 $assert( $before === $after, 'Preview changed the marker or page content.' );
+$assert( ! array_key_exists( 'target_rows', $cli_report['pages'][0] ?? array() ), 'CLI summary duplicates full target rows inside pages.' );
+foreach ( (array) ( $cli_report['writes']['planned'] ?? array() ) as $write ) {
+	$assert( ! array_key_exists( 'current', $write ) && ! array_key_exists( 'target', $write ), 'CLI summary exposes a full ACF write payload.' );
+}
 
 $already_migrated = true === ( $report['already_migrated'] ?? null );
 $planned          = (array) ( $report['writes']['planned'] ?? array() );
@@ -120,7 +125,23 @@ $assert( false !== $verify_position && false !== $marker_position && $verify_pos
 $bootstrap = (string) file_get_contents( WP_PLUGIN_DIR . '/platejka-core/platejka-core.php' );
 $assert( str_contains( $bootstrap, 'migrate-internal-pages' ) && str_contains( $bootstrap, 'InternalPageAssemblyMigrationCommand.php' ), 'Plugin registers the internal-page migration CLI command.' );
 
-WP_CLI::log( (string) wp_json_encode( array( 'checks' => $checks, 'totals' => $report['totals'] ?? array(), 'process_pages' => $process_pages, 'excluded_count' => count( $excluded ), 'cross_block_hash' => $cross_block_hash(), 'failure_count' => count( $failures ) ), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) );
+$sequence_counts = array_count_values(
+	array_map(
+		static fn( array $page ): string => implode( ' > ', (array) ( $page['current_sections'] ?? array() ) ),
+		(array) ( $report['pages'] ?? array() )
+	)
+);
+ksort( $sequence_counts, SORT_STRING );
+$excluded_summary = array_map(
+	static fn( array $page ): array => array(
+		'id'       => (int) ( $page['id'] ?? 0 ),
+		'title'    => (string) ( $page['title'] ?? '' ),
+		'reason'   => (string) ( $page['reason'] ?? '' ),
+		'sections' => (array) ( $page['current_sections'] ?? array() ),
+	),
+	array_values( $excluded )
+);
+WP_CLI::log( (string) wp_json_encode( array( 'checks' => $checks, 'totals' => $report['totals'] ?? array(), 'sequence_counts' => $sequence_counts, 'process_pages' => $process_pages, 'excluded' => $excluded_summary, 'cross_block_hash' => $cross_block_hash(), 'failure_count' => count( $failures ) ), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) );
 if ( $failures ) {
 	WP_CLI::halt( 1 );
 }
