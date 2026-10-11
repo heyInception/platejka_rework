@@ -83,6 +83,7 @@ $section_instance = 'section-1873-1';
 $section_anchor   = 'china-hero';
 $section_data     = array(
 	'background_image' => $image_id,
+	'background_color' => '#123456',
 	'blur_image'       => $image_id,
 	'badge'            => 'Fixture hero badge',
 	'title'            => array( 'primary' => 'Fixture China', 'secondary' => 'Fixture legal entities' ),
@@ -98,6 +99,7 @@ include get_theme_file_path( 'sections/hero/hero.php' );
 $internal_hero = (string) ob_get_clean();
 $assert( str_contains( $internal_hero, 'id="china-hero"' ) && str_contains( $internal_hero, 'Fixture China' ) && str_contains( $internal_hero, 'Fixture hero subtitle' ), 'Internal hero renders resolved fixture content and its public anchor.' );
 $assert( str_contains( $internal_hero, 'data-hero-panel' ) && str_contains( $internal_hero, 'data-hero-calculator' ) && str_contains( $internal_hero, 'hero__trust-card_registry' ), 'Internal hero preserves layout and behavior hooks.' );
+$assert( str_contains( $internal_hero, 'class="hero__wrap hero__wrap_top" style="background-color:#123456;"' ), 'Internal hero applies its selected background color as an inline style.' );
 $assert( str_contains( $internal_hero, 'id="section-1873-1-hero-amount"' ) && str_contains( $internal_hero, 'aria-labelledby="section-1873-1-contact-dialog-title"' ), 'Internal hero emits instance-safe form and dialog IDs.' );
 $assert( str_contains( $internal_hero, 'loading="eager"' ) && str_contains( $internal_hero, 'fetchpriority="high"' ) && str_contains( $internal_hero, 'srcset="' ), 'Internal hero renders a responsive high-priority attachment.' );
 $assert( ! str_contains( $internal_hero, 'href="#"' ) && ! str_contains( $internal_hero, '12.3' ) && ! str_contains( $internal_hero, 'Форма будет подключена' ), 'Internal hero removes demo links, rates, and fake dialog copy.' );

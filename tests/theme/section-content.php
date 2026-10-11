@@ -112,6 +112,50 @@ $assert( array( array( 'title' => 'Сквозное видео' ) ) === ( $about
 $assert( 'Сквозной заголовок' === ( $about_local_review['title'] ?? null ), 'An empty local review scalar still inherits its shared value.' );
 $assert( array( array( 'title' => 'Локальное видео' ) ) === ( $about_local_review['video_items'] ?? null ), 'A non-empty local review collection replaces the shared collection.' );
 
+$internal_hero_global = static fn( $global, $content_slug ) => 'hero' === $content_slug ? array(
+	'background_color' => '#ae0000',
+	'background_image' => 5386,
+	'blur_image'       => 5387,
+	'badge'            => 'Юридическим лицам',
+	'title'            => array( 'primary' => 'Платежи в Китай', 'secondary' => 'для юридических лиц' ),
+	'subtitle'         => 'Описание страницы China',
+	'items'            => array( array( 'title' => '3%', 'text' => 'Комиссия' ) ),
+	'info'             => 'Документы для валютного контроля',
+	'experience'       => array( 'value' => '5 лет', 'label' => 'На рынке' ),
+	'registry'         => array( 'title' => 'В реестре ЦБ РФ' ),
+	'association'      => array( 'title' => 'В Ассоциации' ),
+) : $global;
+add_filter( 'platejka_section_global_data', $internal_hero_global, 10, 2 );
+$internal_hero = platejka_resolve_section_data(
+	array(
+		'slug' => 'hero',
+		'row'  => array(
+			'shared_content_only' => 1,
+			'overrides'           => array(
+				'hero' => array(
+					'background_color' => '#25252a',
+					'background_image' => 'theme://sections/hero/img/hero-bg.png',
+					'blur_image'       => 'theme://sections/hero/img/hero-blur.png',
+					'title'            => array( 'primary' => 'Локальный заголовок', 'secondary' => '' ),
+					'subtitle'         => '',
+				),
+			),
+		),
+	)
+);
+remove_filter( 'platejka_section_global_data', $internal_hero_global, 10 );
+$assert( '#25252a' === ( $internal_hero['background_color'] ?? null ), 'Internal Hero keeps its local background color.' );
+$assert( 'theme://sections/hero/img/hero-bg.png' === ( $internal_hero['background_image'] ?? null ), 'Internal Hero keeps its local background image.' );
+$assert( 'Локальный заголовок' === ( $internal_hero['title']['primary'] ?? null ), 'Internal Hero keeps its local primary title.' );
+$assert( '' === ( $internal_hero['title']['secondary'] ?? null ), 'Internal Hero does not inherit the China secondary title.' );
+$assert( '' === ( $internal_hero['subtitle'] ?? null ), 'Internal Hero preserves an intentionally empty subtitle.' );
+$assert( 'Юридическим лицам' === ( $internal_hero['badge'] ?? null ), 'Internal Hero inherits the shared badge.' );
+$assert( '3%' === ( $internal_hero['items'][0]['title'] ?? null ), 'Internal Hero inherits shared indicators.' );
+$assert( 'Документы для валютного контроля' === ( $internal_hero['info'] ?? null ), 'Internal Hero inherits shared information.' );
+$assert( '5 лет' === ( $internal_hero['experience']['value'] ?? null ), 'Internal Hero inherits shared experience.' );
+$assert( 'В реестре ЦБ РФ' === ( $internal_hero['registry']['title'] ?? null ), 'Internal Hero inherits shared registry data.' );
+$assert( 'В Ассоциации' === ( $internal_hero['association']['title'] ?? null ), 'Internal Hero inherits shared association data.' );
+
 $description_global = static fn( $global, $content_slug ) => in_array( $content_slug, array( 'shipments', 'cases' ), true )
 	? array( 'description' => '<p>Сквозное описание</p>' )
 	: $global;

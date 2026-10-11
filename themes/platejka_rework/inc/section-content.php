@@ -109,6 +109,12 @@ function platejka_resolve_section_data( array $config, int $post_id = 0 ): array
 	}
 
 	$row   = platejka_section_array( $config['row'] ?? array() );
+	if ( 'hero' === $slug && ! empty( $row['shared_content_only'] ) ) {
+		$global = array_intersect_key(
+			$global,
+			array_fill_keys( array( 'badge', 'items', 'info', 'experience', 'registry', 'association' ), true )
+		);
+	}
 	$variant_override_key = 'main' === $mode ? 'overrides_main' : 'overrides_default';
 	$local = platejka_section_array( $row[ $variant_override_key ] ?? ( $row['overrides'] ?? array() ) );
 	// ACF clone fields may wrap the cloned group depending on their display settings.

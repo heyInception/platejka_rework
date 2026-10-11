@@ -23,6 +23,7 @@ if ( ! class_exists( $class ) ) {
 $seed = $class::get();
 $assert( 1 === ( $seed['schema_version'] ?? null ), 'Default-page seed uses schema version 1.' );
 $assert( array( 'hero', 'protection' ) === array_keys( $seed['sections'] ?? array() ), 'Only hero and protection receive new canonical defaults.' );
+$assert( '#ae0000' === ( $seed['sections']['hero']['background_color'] ?? null ), 'Default-page hero seed keeps the existing red background.' );
 
 $expected_order = array( 'hero', 'about', 'shipments', 'guarantees', 'documents', 'protection', 'review', 'work', 'problems', 'calculator', 'seo', 'faq', 'call' );
 $rows           = $seed['page_rows'] ?? array();

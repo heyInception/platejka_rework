@@ -1493,6 +1493,25 @@
                             "placeholder": "bez-reshetki"
                         },
                         {
+                            "key": "field_platejka_row_hero_shared_content_only_v1",
+                            "label": "Наследовать общие данные China",
+                            "name": "shared_content_only",
+                            "type": "true_false",
+                            "instructions": "Наследует надпись, показатели, информацию, опыт, реестр и ассоциацию; фон и тексты остаются локальными.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
                             "key": "field_platejka_row_hero_overrides_v1",
                             "label": "Переопределения",
                             "name": "overrides",

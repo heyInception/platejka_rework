@@ -115,6 +115,10 @@ foreach ( array( 'shipments' => $shipments_layout_fields, 'cases' => $cases_layo
 
 $default_fields = array_column( (array) ( $defaults['fields'] ?? array() ), null, 'name' );
 $shipments      = $default_fields['shipments'] ?? array();
+$hero           = $default_fields['hero'] ?? array();
+$hero_fields    = array_column( (array) ( $hero['sub_fields'] ?? array() ), null, 'name' );
+$assert( 'color_picker' === ( $hero_fields['background_color']['type'] ?? null ), 'Internal hero exposes a background color picker.' );
+$assert( '#ae0000' === ( $hero_fields['background_color']['default_value'] ?? null ), 'Internal hero background color defaults to the existing red.' );
 $variants       = array_column( (array) ( $shipments['sub_fields'] ?? array() ), null, 'name' );
 $main_items     = array_column( (array) ( $variants['main']['sub_fields'] ?? array() ), null, 'name' )['items'] ?? array();
 $default_items  = array_column( (array) ( $variants['default']['sub_fields'] ?? array() ), null, 'name' )['items'] ?? array();

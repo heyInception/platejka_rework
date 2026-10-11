@@ -7,9 +7,10 @@ defined( 'ABSPATH' ) || exit;
 /** Hide migrated legacy editor controls only after their data has been verified. */
 final class LegacyFieldVisibility {
 	public const VERSION_OPTION = 'platejka_legacy_sections_migration_version';
+	public const HERO_VERSION_OPTION = 'platejka_internal_hero_migration_version';
 
 	public static function register(): void {
-		if ( 1 !== (int) get_option( self::VERSION_OPTION, 0 ) ) {
+		if ( 1 !== (int) get_option( self::VERSION_OPTION, 0 ) && 1 !== (int) get_option( self::HERO_VERSION_OPTION, 0 ) ) {
 			return;
 		}
 		add_filter( 'acf/prepare_field', array( self::class, 'prepareField' ) );
@@ -20,7 +21,14 @@ final class LegacyFieldVisibility {
 		if ( ! is_array( $field ) ) {
 			return $field;
 		}
-		return in_array( (string) ( $field['key'] ?? '' ), self::legacyFieldKeys(), true ) ? false : $field;
+		$key = (string) ( $field['key'] ?? '' );
+		if ( 1 === (int) get_option( self::VERSION_OPTION, 0 ) && in_array( $key, self::legacyFieldKeys(), true ) ) {
+			return false;
+		}
+		if ( 1 === (int) get_option( self::HERO_VERSION_OPTION, 0 ) && in_array( $key, self::legacyHeroFieldKeys(), true ) ) {
+			return false;
+		}
+		return $field;
 	}
 
 	/** @return array<int,string> */
@@ -40,6 +48,21 @@ final class LegacyFieldVisibility {
 			'field_6605213da31ef',
 			'field_66052155a31f0',
 			'field_66052169a31f1',
+		);
+	}
+
+	/** @return array<int,string> */
+	public static function legacyHeroFieldKeys(): array {
+		return array(
+			'field_66009656a1c12',
+			'field_66051d3d9621e',
+			'field_66c7356f59226',
+			'field_660097aea1c13',
+			'field_6790c6855c315',
+			'field_6790c6ee5c316',
+			'field_6790c7105c317',
+			'field_6790c7205c318',
+			'field_660097eda1c14',
 		);
 	}
 }

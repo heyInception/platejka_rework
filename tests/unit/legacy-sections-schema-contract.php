@@ -18,6 +18,9 @@ $assert( 'text' === ( $items['price']['type'] ?? null ), 'Main shipment price fi
 
 $section_field = array_column( $builder['fields'] ?? array(), null, 'name' )['platejka_sections'] ?? array();
 $layouts       = array_column( array_values( $section_field['layouts'] ?? array() ), null, 'name' );
+$hero_fields   = array_column( $layouts['hero']['sub_fields'] ?? array(), null, 'name' );
+$assert( 'true_false' === ( $hero_fields['shared_content_only']['type'] ?? null ), 'Internal Hero shared-only inheritance control is missing.' );
+$assert( 0 === ( $hero_fields['shared_content_only']['default_value'] ?? null ), 'Shared-only inheritance must be opt-in.' );
 foreach ( array( 'shipments', 'cases' ) as $layout_name ) {
 	$layout_fields = array_column( $layouts[ $layout_name ]['sub_fields'] ?? array(), null, 'name' );
 	$assert( array( 'inherit' => 'Наследовать', 'hide' => 'Скрыть' ) === ( $layout_fields['description_mode']['choices'] ?? null ), 'Description mode is missing for ' . $layout_name . '.' );

@@ -4631,6 +4631,23 @@
             "layout": "block",
             "sub_fields": [
                 {
+                    "key": "field_platejka_hero_background_color_v1",
+                    "label": "Цвет фона",
+                    "name": "background_color",
+                    "type": "color_picker",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "#ae0000",
+                    "enable_opacity": 0,
+                    "return_format": "string"
+                },
+                {
                     "key": "field_platejka_hero_background_image_v1",
                     "label": "Фоновое изображение",
                     "name": "background_image",
@@ -5269,5 +5286,5 @@
     "active": true,
     "description": "Канонический контент секций, наследуемый страницами.",
     "show_in_rest": 0,
-    "modified": 1791403951
+    "modified": 1791712679
 }
