@@ -268,6 +268,38 @@ function platejka_get_cross_block_rows( int $post_id ): array {
 	return is_array( $rows ) ? array_values( array_filter( $rows, 'is_array' ) ) : array();
 }
 
+/** @return array<string,string> Builder slug to legacy layout. */
+function platejka_cross_block_builder_map(): array {
+	return array(
+		'cross-exchange'          => 'wtt',
+		'cross-company-metrics'   => 'company_metrics',
+		'cross-external-ratings'  => 'external_ratings',
+		'cross-key-facts'         => 'key_facts',
+		'cross-transfer-goals'    => 'transfer_goals',
+		'cross-swift-problems'    => 'swift_problems',
+		'cross-audience'          => 'audience',
+	);
+}
+
+/**
+ * @param array<int,array<string,mixed>> $rows Legacy ACF rows.
+ * @return array<string,mixed>|null
+ */
+function platejka_find_cross_block_row( array $rows, string $layout ): ?array {
+	foreach ( $rows as $row ) {
+		if ( $layout === ( $row['acf_fc_layout'] ?? '' ) && platejka_cross_block_is_enabled( $row ) ) {
+			return $row;
+		}
+	}
+
+	return null;
+}
+
+/** @return array<string,mixed>|null */
+function platejka_get_cross_block_row( int $post_id, string $layout ): ?array {
+	return platejka_find_cross_block_row( platejka_get_cross_block_rows( $post_id ), $layout );
+}
+
 /** @param mixed $section */
 function platejka_cross_block_section_slug( $section ): string {
 	if ( is_string( $section ) ) {
@@ -295,62 +327,59 @@ function platejka_enrich_section_with_cross_block( $section, array $row, string 
 	return $config;
 }
 
+/** Resolve the legacy layout represented by a current builder section. */
+function platejka_cross_block_layout_for_section( string $slug ): string {
+	$dedicated = platejka_cross_block_builder_map();
+	if ( isset( $dedicated[ $slug ] ) ) {
+		return $dedicated[ $slug ];
+	}
+
+	foreach ( platejka_cross_block_map() as $layout => $mapping ) {
+		if ( $mapping['slug'] === $slug || ( 'client_reviews' === $layout && 'review-main' === $slug ) ) {
+			return $layout;
+		}
+	}
+
+	return '';
+}
+
 /**
- * Compose enabled legacy rows into the current section builder.
+ * Enrich builder-selected sections from legacy content without injecting rows.
  *
  * @param array<int,mixed>               $sections Current page sections.
  * @param array<int,array<string,mixed>> $rows     Legacy ACF rows.
  * @return array<int,mixed>
  */
 function platejka_compose_cross_blocks( array $sections, array $rows, int $post_id ): array {
-	$map       = platejka_cross_block_map();
-	$injected  = array();
-	$processed = array();
+	$map             = platejka_cross_block_map();
+	$dedicated_slugs = array_keys( platejka_cross_block_builder_map() );
+	$seen            = array();
+	$resolved        = array();
 
-	foreach ( $rows as $row_index => $row ) {
-		if ( ! is_array( $row ) ) {
-			continue;
-		}
-
-		$layout = isset( $row['acf_fc_layout'] ) && is_string( $row['acf_fc_layout'] ) ? $row['acf_fc_layout'] : '';
-		if ( ! isset( $map[ $layout ] ) || isset( $processed[ $layout ] ) || ! platejka_cross_block_is_enabled( $row ) ) {
-			continue;
-		}
-
-		$processed[ $layout ] = true;
-		$mapping              = $map[ $layout ];
-		$instance             = sprintf( 'cross-%d-%d-%s', $post_id, $row_index + 1, sanitize_html_class( $layout ) );
-		$existing_index       = null;
-
-		foreach ( $sections as $section_index => $section ) {
-			$section_slug = platejka_cross_block_section_slug( $section );
-			$is_review    = 'client_reviews' === $layout && in_array( $section_slug, array( 'review', 'review-main' ), true );
-			if ( $mapping['slug'] === $section_slug || $is_review ) {
-				$existing_index = $section_index;
-				break;
-			}
-		}
-
-		if ( null !== $existing_index ) {
-			$sections[ $existing_index ] = platejka_enrich_section_with_cross_block( $sections[ $existing_index ], $row, $layout, $mapping, $instance );
-			continue;
-		}
-
-		$injected[] = platejka_enrich_section_with_cross_block( array( 'slug' => $mapping['slug'] ), $row, $layout, $mapping, $instance );
-	}
-
-	if ( array() === $injected ) {
-		return $sections;
-	}
-
-	$boundary = count( $sections );
 	foreach ( $sections as $section_index => $section ) {
-		if ( in_array( platejka_cross_block_section_slug( $section ), array( 'faq', 'call' ), true ) ) {
-			$boundary = $section_index;
-			break;
+		$slug   = platejka_cross_block_section_slug( $section );
+		$layout = platejka_cross_block_layout_for_section( $slug );
+		if ( '' === $layout ) {
+			$resolved[] = $section;
+			continue;
 		}
+
+		$is_dedicated = in_array( $slug, $dedicated_slugs, true );
+		$row          = platejka_find_cross_block_row( $rows, $layout );
+		if ( $is_dedicated && ( null === $row || isset( $seen[ $layout ] ) ) ) {
+			continue;
+		}
+		if ( null === $row ) {
+			$resolved[] = $section;
+			continue;
+		}
+
+		$seen[ $layout ] = true;
+		$instance        = is_array( $section ) && ! empty( $section['instance'] )
+			? (string) $section['instance']
+			: sprintf( 'cross-%d-%d-%s', $post_id, $section_index + 1, sanitize_html_class( $layout ) );
+		$resolved[]      = platejka_enrich_section_with_cross_block( $section, $row, $layout, $map[ $layout ], $instance );
 	}
 
-	array_splice( $sections, $boundary, 0, $injected );
-	return $sections;
+	return $resolved;
 }

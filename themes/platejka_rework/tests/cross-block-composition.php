@@ -1,15 +1,7 @@
 <?php
-/**
- * Cross-block composition regression checks.
- *
- * Run with:
- * studio wp --path <site-root> eval-file <worktree>/themes/platejka_rework/tests/cross-block-composition.php
- */
+/** Builder-owned cross-block composition regression checks. */
 
-$integration = dirname( __DIR__ ) . '/inc/cross-blocks.php';
-if ( is_file( $integration ) ) {
-	require_once $integration;
-}
+require_once dirname( __DIR__ ) . '/inc/cross-blocks.php';
 
 function platejka_cross_block_test_assert( bool $condition, string $message ): void {
 	if ( ! $condition ) {
@@ -17,78 +9,45 @@ function platejka_cross_block_test_assert( bool $condition, string $message ): v
 	}
 }
 
-platejka_cross_block_test_assert( function_exists( 'platejka_cross_block_map' ), 'Cross-block map is missing.' );
+platejka_cross_block_test_assert( function_exists( 'platejka_get_cross_block_row' ), 'Cross-block source lookup is missing.' );
 platejka_cross_block_test_assert( function_exists( 'platejka_compose_cross_blocks' ), 'Cross-block composer is missing.' );
 
-$expected_layouts = array(
-	'destinations',
-	'wtt',
-	'company_metrics',
-	'problems_solved',
-	'client_reviews',
-	'external_ratings',
-	'documents',
-	'key_facts',
-	'transfer_goals',
-	'swift_problems',
-	'guarantees',
-	'audience',
-	'data_table',
+$rows = array(
+	array( 'acf_fc_layout' => 'destinations', 'vklyuchit_blok' => 1, 'destination_title' => 'Направления' ),
+	array( 'acf_fc_layout' => 'wtt', 'show_block' => 1, 'title' => 'Обмен' ),
+	array( 'acf_fc_layout' => 'company_metrics', 'show_block' => 0 ),
+	array( 'acf_fc_layout' => 'swift_problems', 'show_block' => 1, 'title' => 'SWIFT' ),
 );
-$map              = platejka_cross_block_map();
 
-platejka_cross_block_test_assert( $expected_layouts === array_keys( $map ), 'Included layout allowlist changed.' );
-foreach ( array( 'transfer_calculator', 'work', 'reviews', 'tariff' ) as $excluded ) {
-	platejka_cross_block_test_assert( ! isset( $map[ $excluded ] ), 'Excluded layout is present: ' . $excluded );
-}
-
-platejka_cross_block_test_assert( platejka_cross_block_is_enabled( array() ), 'Rows without a visibility field must remain enabled.' );
-platejka_cross_block_test_assert( ! platejka_cross_block_is_enabled( array( 'show_block' => 0 ) ), 'show_block=0 must disable a row.' );
-platejka_cross_block_test_assert( ! platejka_cross_block_is_enabled( array( 'vklyuchit_blok' => '0' ) ), 'vklyuchit_blok=0 must disable a row.' );
-
-$existing = platejka_compose_cross_blocks(
-	array( 'hero', 'destinations', 'faq', 'call' ),
+$sections = platejka_compose_cross_blocks(
 	array(
-		array( 'acf_fc_layout' => 'unknown' ),
-		array( 'acf_fc_layout' => 'destinations', 'vklyuchit_blok' => 1, 'destination_title' => 'Направления' ),
-		array( 'acf_fc_layout' => 'wtt', 'vklyuchit_blok' => 0 ),
+		'hero',
+		array( 'slug' => 'cross-exchange', 'row' => array( 'enabled' => 1 ), 'instance' => 'section-77-2' ),
+		array( 'slug' => 'destinations', 'row' => array( 'enabled' => 1 ), 'instance' => 'section-77-3' ),
+		array( 'slug' => 'cross-company-metrics', 'row' => array( 'enabled' => 1 ), 'instance' => 'section-77-4' ),
+		array( 'slug' => 'cross-swift-problems', 'row' => array( 'enabled' => 1 ), 'instance' => 'section-77-5' ),
+		array( 'slug' => 'cross-exchange', 'row' => array( 'enabled' => 1 ), 'instance' => 'section-77-6' ),
+		'faq',
 	),
+	$rows,
 	77
 );
 
-platejka_cross_block_test_assert( 4 === count( $existing ), 'Existing mapped sections must not be duplicated.' );
-platejka_cross_block_test_assert( is_array( $existing[1] ), 'Existing string section must become an enriched config.' );
-platejka_cross_block_test_assert( 'destinations' === $existing[1]['slug'], 'Existing mapped slug changed.' );
-platejka_cross_block_test_assert( 'destinations' === $existing[1]['legacy_layout'], 'Legacy layout metadata is missing.' );
-platejka_cross_block_test_assert( 'Направления' === $existing[1]['cross_block_row']['destination_title'], 'Original cross-block row is not attached.' );
-
-$inserted = platejka_compose_cross_blocks(
-	array( 'hero', 'faq', 'call' ),
-	array(
-		array( 'acf_fc_layout' => 'wtt', 'show_block' => 1 ),
-		array( 'acf_fc_layout' => 'company_metrics', 'show_block' => 1 ),
-		array( 'acf_fc_layout' => 'transfer_goals', 'show_block' => 1 ),
-		array( 'acf_fc_layout' => 'swift_problems', 'show_block' => 1 ),
-	),
-	91
-);
-$inserted_slugs = array_map(
-	static fn( $section ) => is_array( $section ) ? $section['slug'] : $section,
-	$inserted
-);
-
+$slugs = array_map( 'platejka_cross_block_section_slug', $sections );
 platejka_cross_block_test_assert(
-	array( 'hero', 'cross-exchange', 'cross-company-metrics', 'cross-transfer-goals', 'cross-swift-problems', 'faq', 'call' ) === $inserted_slugs,
-	'Injected cross-blocks must retain ACF order before FAQ/call.'
+	array( 'hero', 'cross-exchange', 'destinations', 'cross-swift-problems', 'faq' ) === $slugs,
+	'Builder order, missing/disabled source filtering, or duplicate prevention changed.'
 );
-platejka_cross_block_test_assert( 'cross-91-1-wtt' === $inserted[1]['instance'], 'Injected instance must be deterministic.' );
-platejka_cross_block_test_assert( $inserted[3]['slug'] !== $inserted[4]['slug'], 'Distinct card-grid layouts must remain distinct sections.' );
+platejka_cross_block_test_assert( 'wtt' === $sections[1]['legacy_layout'], 'Dedicated builder row did not resolve its source layout.' );
+platejka_cross_block_test_assert( 'Обмен' === $sections[1]['cross_block_row']['title'], 'Dedicated builder row did not receive source data.' );
+platejka_cross_block_test_assert( 'destinations' === $sections[2]['legacy_layout'], 'Reusable builder section was not enriched.' );
+platejka_cross_block_test_assert( 'section-77-3' === $sections[2]['instance'], 'Reusable section instance/order changed.' );
 
-$appended = platejka_compose_cross_blocks(
-	array( 'hero', 'seo' ),
+$no_injection = platejka_compose_cross_blocks(
+	array( 'hero', 'faq' ),
 	array( array( 'acf_fc_layout' => 'key_facts', 'show_block' => 1 ) ),
 	12
 );
-platejka_cross_block_test_assert( 'cross-key-facts' === $appended[2]['slug'], 'Cross-block must append when FAQ/call is absent.' );
+platejka_cross_block_test_assert( array( 'hero', 'faq' ) === $no_injection, 'Legacy rows must not inject sections absent from the builder.' );
 
 WP_CLI::success( 'Cross-block composition checks passed.' );
