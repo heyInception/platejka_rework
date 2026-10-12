@@ -79,10 +79,55 @@ foreach ( $templates as $relative => $expectation ) {
 	$assert( str_contains( $html, $expectation['hook'] ), $relative . ' retains its stable JavaScript/DOM hook.' );
 }
 
+$render_process = static function ( array $data, string $anchor = 'payment-process' ): string {
+	$template = get_theme_file_path( 'sections/process/process.php' );
+	if ( ! is_file( $template ) ) {
+		return '';
+	}
+	$section_data     = $data;
+	$section_instance = 'section-2098-5';
+	$section_anchor   = $anchor;
+	ob_start();
+	include $template;
+	return (string) ob_get_clean();
+};
+$process_items = array();
+for ( $step = 1; $step <= 6; ++$step ) {
+	$process_items[] = array( 'title' => 'Этап ' . $step, 'text' => '<p>Описание этапа ' . $step . '</p>' );
+}
+$process_html = $render_process(
+	array(
+		'title'       => 'Fixture <процесс>',
+		'items'       => $process_items,
+		'description' => '<p>Итоговое описание<script>alert(1)</script></p>',
+	)
+);
+$assert( str_contains( $process_html, 'id="payment-process"' ), 'Process applies the supplied public anchor.' );
+$assert( str_contains( $process_html, '<ol') && 6 === substr_count( $process_html, '<li'), 'Process renders six steps as an ordered list.' );
+$assert( str_contains( $process_html, 'Fixture &lt;процесс&gt;' ) && str_contains( $process_html, 'Описание этапа 6' ), 'Process escapes its title and renders step descriptions.' );
+$assert( str_contains( $process_html, 'Итоговое описание' ) && ! str_contains( $process_html, '<script>' ), 'Process sanitizes its optional trailing description.' );
+$assert( ! str_contains( $process_html, 'Получаем реквизиты' ), 'Process contains no seed or legacy editorial fallback.' );
+
+$filtered_process_html = $render_process(
+	array(
+		'title' => 'Фильтрация',
+		'items' => array(
+			array( 'title' => 'Полный шаг', 'text' => '<p>Полный текст</p>' ),
+			array( 'title' => 'Без текста', 'text' => '' ),
+			array( 'title' => '', 'text' => '<p>Без заголовка</p>' ),
+			'corrupt',
+		),
+	)
+);
+$assert( 1 === substr_count( $filtered_process_html, '<li' ) && ! str_contains( $filtered_process_html, 'Без текста' ) && ! str_contains( $filtered_process_html, 'Без заголовка' ), 'Process filters incomplete and corrupt steps.' );
+$assert( '' === $render_process( array( 'title' => '', 'items' => $process_items ) ), 'Process fails closed when its title is empty.' );
+$assert( '' === $render_process( array( 'title' => 'Без шагов', 'items' => array( array( 'title' => 'Неполный', 'text' => '' ) ) ) ), 'Process fails closed when it has no complete steps.' );
+
 $section_instance = 'section-1873-1';
 $section_anchor   = 'china-hero';
 $section_data     = array(
 	'background_image' => $image_id,
+	'background_color' => '#123456',
 	'blur_image'       => $image_id,
 	'badge'            => 'Fixture hero badge',
 	'title'            => array( 'primary' => 'Fixture China', 'secondary' => 'Fixture legal entities' ),
@@ -98,6 +143,7 @@ include get_theme_file_path( 'sections/hero/hero.php' );
 $internal_hero = (string) ob_get_clean();
 $assert( str_contains( $internal_hero, 'id="china-hero"' ) && str_contains( $internal_hero, 'Fixture China' ) && str_contains( $internal_hero, 'Fixture hero subtitle' ), 'Internal hero renders resolved fixture content and its public anchor.' );
 $assert( str_contains( $internal_hero, 'data-hero-panel' ) && str_contains( $internal_hero, 'data-hero-calculator' ) && str_contains( $internal_hero, 'hero__trust-card_registry' ), 'Internal hero preserves layout and behavior hooks.' );
+$assert( str_contains( $internal_hero, 'class="hero__wrap hero__wrap_top" style="background-color:#123456;"' ), 'Internal hero applies its selected background color as an inline style.' );
 $assert( str_contains( $internal_hero, 'id="section-1873-1-hero-amount"' ) && str_contains( $internal_hero, 'aria-labelledby="section-1873-1-contact-dialog-title"' ), 'Internal hero emits instance-safe form and dialog IDs.' );
 $assert( str_contains( $internal_hero, 'loading="eager"' ) && str_contains( $internal_hero, 'fetchpriority="high"' ) && str_contains( $internal_hero, 'srcset="' ), 'Internal hero renders a responsive high-priority attachment.' );
 $assert( ! str_contains( $internal_hero, 'href="#"' ) && ! str_contains( $internal_hero, '12.3' ) && ! str_contains( $internal_hero, 'Форма будет подключена' ), 'Internal hero removes demo links, rates, and fake dialog copy.' );
@@ -148,6 +194,21 @@ $internal_review = (string) ob_get_clean();
 $assert( str_contains( $internal_review, 'id="client-reviews"' ) && str_contains( $internal_review, 'Fixture reviews<br>second line' ) && str_contains( $internal_review, 'Fixture video' ) && str_contains( $internal_review, 'Fixture author' ), 'Internal review renders canonical review-main-shaped data.' );
 $assert( str_contains( $internal_review, 'id="section-1873-7-review-video-tab"' ) && str_contains( $internal_review, 'data-review-dialog' ) && str_contains( $internal_review, 'loading="lazy"' ), 'Internal review preserves hooks, unique IDs, and lazy responsive media.' );
 $assert( ! str_contains( $internal_review, 'theme://' ) && ! str_contains( $internal_review, 'Елена С.' ), 'Internal review contains no seed path or static review fallback.' );
+
+$section_instance = 'section-24-3';
+$section_anchor   = 'shipments-price';
+$mode             = 'main';
+$section_data     = array(
+	'title'       => 'Направления платежей',
+	'description' => '',
+	'items'       => array(
+		array( 'title' => 'Платежи в Китай', 'price' => 'от 5%', 'text' => '', 'image' => 0, 'link' => array(), 'tags' => array() ),
+	),
+);
+ob_start();
+include get_theme_file_path( 'sections/shipments/shipments.php' );
+$shipment_price_html = (string) ob_get_clean();
+$assert( 1 === preg_match( '~<h3 class="shipment-card__title">[^<]*Платежи в Китай\s*<span class="shipment-card__price">от 5%</span></h3>~u', $shipment_price_html ), 'Shipment price renders inside the shipment-card title.' );
 
 $behavior_hooks = array(
 	'about/about.php'             => array( 'data-about-dialog-open', 'data-about-dialog', 'data-about-dialog-close' ),

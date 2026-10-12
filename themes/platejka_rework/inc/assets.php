@@ -10,9 +10,13 @@ function platejka_normalize_section( $section ): ?array {
 	}
 
 	$aliases = array(
-		'hero-main' => array( 'directory' => 'hero', 'template' => 'hero-main' ),
-		'call-about' => array( 'directory' => 'call', 'template' => 'call-about' ),
+		'hero-main'        => array( 'directory' => 'hero', 'template' => 'hero-main' ),
+		'call-about'       => array( 'directory' => 'call', 'template' => 'call-about' ),
+		'services-section' => array( 'directory' => 'service-sections', 'template' => 'services-section' ),
 	);
+	if ( function_exists( 'platejka_cross_block_aliases' ) ) {
+		$aliases = array_merge( $aliases, platejka_cross_block_aliases() );
+	}
 	$resolved = $aliases[ $slug ] ?? array( 'directory' => $slug, 'template' => $slug );
 
 	$normalized = array(
@@ -21,7 +25,7 @@ function platejka_normalize_section( $section ): ?array {
 		'template'  => $resolved['template'],
 		'mode'      => isset( $config['mode'] ) && 'main' === $config['mode'] ? 'main' : 'default',
 	);
-	foreach ( array( 'content_slug', 'row', 'instance', 'anchor' ) as $key ) {
+	foreach ( array( 'content_slug', 'row', 'instance', 'anchor', 'legacy_layout', 'cross_block_row', 'cross_block_adapter' ) as $key ) {
 		if ( array_key_exists( $key, $config ) ) {
 			$normalized[ $key ] = $config[ $key ];
 		}

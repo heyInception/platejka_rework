@@ -34,17 +34,19 @@ $sections = platejka_use_sections(
 			'mode' => 'main',
 		),
 		'cases',
+		'process',
 		'../footer',
 		'call-about',
 	)
 );
 
-$assert( 4 === count( $sections ), 'Traversal-like section slugs are rejected.' );
+$assert( 5 === count( $sections ), 'Traversal-like section slugs are rejected.' );
 $assert( 'hero' === $sections[0]['directory'] && 'hero-main' === $sections[0]['template'], 'hero-main resolves to the hero directory and hero-main template.' );
 $assert( 'main' === $sections[1]['mode'], 'The main render mode is preserved.' );
-$assert( 'call' === $sections[3]['directory'] && 'call-about' === $sections[3]['template'], 'call-about resolves to the call directory and call-about template.' );
+$assert( 'process' === $sections[3]['directory'] && 'process' === $sections[3]['template'], 'Process resolves to sections/process/process.php.' );
+$assert( 'call' === $sections[4]['directory'] && 'call-about' === $sections[4]['template'], 'call-about resolves to the call directory and call-about template.' );
 
-foreach ( array( 'hero', 'shipments', 'cases', 'call', 'faq' ) as $slug ) {
+foreach ( array( 'hero', 'shipments', 'cases', 'process', 'call', 'faq' ) as $slug ) {
 	wp_dequeue_style( 'platejka-rework-section-' . $slug );
 	wp_dequeue_script( 'platejka-rework-section-' . $slug );
 }
@@ -54,8 +56,16 @@ $assert( wp_style_is( 'platejka-rework-section-hero', 'enqueued' ), 'A declared 
 $assert( wp_script_is( 'platejka-rework-section-hero', 'enqueued' ), 'A declared section enqueues its JavaScript.' );
 $assert( wp_style_is( 'platejka-rework-section-cases', 'enqueued' ), 'A CSS-only section enqueues its CSS.' );
 $assert( ! wp_script_is( 'platejka-rework-section-cases', 'enqueued' ), 'A missing optional section JavaScript file is ignored.' );
+$assert( wp_style_is( 'platejka-rework-section-process', 'enqueued' ), 'A declared Process section enqueues its stylesheet.' );
+$assert( ! wp_script_is( 'platejka-rework-section-process', 'enqueued' ), 'Process has no JavaScript asset.' );
 $assert( ! wp_style_is( 'platejka-rework-section-faq', 'enqueued' ), 'An undeclared section does not enqueue its CSS.' );
 $assert( ! wp_script_is( 'platejka-rework-section-faq', 'enqueued' ), 'An undeclared section does not enqueue its JavaScript.' );
+
+wp_dequeue_style( 'platejka-rework-section-process' );
+platejka_use_sections( array( 'hero-main', 'cases' ) );
+platejka_rework_assets();
+$assert( ! wp_style_is( 'platejka-rework-section-process', 'enqueued' ), 'A page without Process does not enqueue the Process stylesheet.' );
+$assert( ! is_file( get_theme_file_path( 'sections/process/process.js' ) ), 'Process ships without a JavaScript file.' );
 
 ob_start();
 platejka_render_section(
@@ -107,7 +117,7 @@ $assert_page_order(
 );
 $assert_page_order(
 	'/china/',
-	array( 'data-hero', 'data-about', 'shipments--default', 'guarantees--default', 'documents--default', 'class="protection', 'class="review', 'class="work', 'class="problems', 'data-transfer-calculator-section', 'data-seo', 'data-faq', 'data-call' ),
+	array( 'data-hero', 'shipments--default', 'class="cases', 'data-about', 'guarantees--default', 'documents--default', 'class="protection', 'class="review', 'class="work', 'class="problems', 'data-transfer-calculator-section', 'data-seo', 'data-faq', 'data-call' ),
 	'Default page'
 );
 

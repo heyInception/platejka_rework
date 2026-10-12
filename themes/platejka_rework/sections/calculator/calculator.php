@@ -138,7 +138,7 @@ $countries = array(
 							</span>
 						</label>
 					</div>
-					<label class="calculator__field calculator__amount-field"><span class="calculator__field-label"><?php echo esc_html($label('amount')); ?></span><span class="calculator__amount-wrap"><input name="amount" type="text" inputmode="decimal" autocomplete="off" value="100 000" data-role="amount" required><span data-role="currency-symbol" aria-hidden="true">¥</span></span></label>
+					<label class="calculator__field calculator__amount-field"><span class="calculator__field-label"><?php echo esc_html($label('amount')); ?></span><span class="calculator__amount-wrap"><input name="amount" type="number" inputmode="decimal" autocomplete="off" value="100000" data-role="amount" required><span data-role="currency-symbol" aria-hidden="true">¥</span></span></label>
 					<p class="calculator__rate-note">
 						<img src="img/svg/cb.svg" width="20" height="20" alt="">Расчёты проводим по курсу ЦБ РФ
 					</p>

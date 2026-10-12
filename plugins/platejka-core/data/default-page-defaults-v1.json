@@ -2,6 +2,7 @@
     "schema_version": 1,
     "sections": {
         "hero": {
+            "background_color": "#ae0000",
             "background_image": "theme://sections/hero/img/china-hero-bg.png",
             "blur_image": "theme://sections/hero/img/china-hero-blur.png",
             "badge": "Юридическим лицам",

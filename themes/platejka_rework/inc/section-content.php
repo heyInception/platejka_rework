@@ -109,6 +109,12 @@ function platejka_resolve_section_data( array $config, int $post_id = 0 ): array
 	}
 
 	$row   = platejka_section_array( $config['row'] ?? array() );
+	if ( 'hero' === $slug && ! empty( $row['shared_content_only'] ) ) {
+		$global = array_intersect_key(
+			$global,
+			array_fill_keys( array( 'badge', 'items', 'info', 'experience', 'registry', 'association' ), true )
+		);
+	}
 	$variant_override_key = 'main' === $mode ? 'overrides_main' : 'overrides_default';
 	$local = platejka_section_array( $row[ $variant_override_key ] ?? ( $row['overrides'] ?? array() ) );
 	// ACF clone fields may wrap the cloned group depending on their display settings.
@@ -118,8 +124,28 @@ function platejka_resolve_section_data( array $config, int $post_id = 0 ): array
 	if ( $variant && isset( $local[ $mode ] ) && is_array( $local[ $mode ] ) ) {
 		$local = $local[ $mode ];
 	}
+	if ( 'shipments' === $slug && 'default' === $mode && isset( $local['items'] ) && is_array( $local['items'] ) ) {
+		$global_items = isset( $global['items'] ) && is_array( $global['items'] ) ? $global['items'] : array();
+		foreach ( $local['items'] as $index => &$item ) {
+			if ( ! is_array( $item ) || ! empty( $item['image'] ) || ! is_array( $global_items[ $index ] ?? null ) ) {
+				continue;
+			}
+			$item['image'] = $global_items[ $index ]['image'] ?? 0;
+		}
+		unset( $item );
+	}
 
-	return platejka_section_array( platejka_merge_section_data( $local, $global ) );
+	$resolved          = platejka_section_array( platejka_merge_section_data( $local, $global ) );
+	$local_description = isset( $local['description'] ) ? trim( wp_strip_all_tags( (string) $local['description'] ) ) : '';
+	if ( 'hide' === ( $row['description_mode'] ?? 'inherit' ) && '' === $local_description ) {
+		$resolved['description'] = '';
+	}
+	if ( isset( $config['legacy_layout'], $config['cross_block_row'] ) && is_string( $config['legacy_layout'] ) && is_array( $config['cross_block_row'] ) && function_exists( 'platejka_adapt_cross_block_data' ) ) {
+		$cross_data = platejka_adapt_cross_block_data( $config['legacy_layout'], $config['cross_block_row'] );
+		$resolved   = platejka_section_array( platejka_merge_cross_block_data( $cross_data, $resolved ) );
+	}
+
+	return $resolved;
 }
 
 function platejka_section_dom_id( string $instance, string $local_id ): string {

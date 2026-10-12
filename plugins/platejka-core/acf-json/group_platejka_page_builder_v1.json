@@ -214,6 +214,31 @@
                             "placeholder": "bez-reshetki"
                         },
                         {
+                            "key": "field_platejka_row_shipments_description_mode_v1",
+                            "label": "Сквозное описание",
+                            "name": "description_mode",
+                            "type": "select",
+                            "instructions": "Определяет, показывать ли сквозное описание, когда локальное описание не заполнено.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "inherit": "Наследовать",
+                                "hide": "Скрыть"
+                            },
+                            "default_value": "inherit",
+                            "return_format": "value",
+                            "multiple": 0,
+                            "allow_null": 0,
+                            "ui": 0,
+                            "ajax": 0,
+                            "placeholder": ""
+                        },
+                        {
                             "key": "field_platejka_row_shipments_variant_v1",
                             "label": "Вариант оформления",
                             "name": "variant",
@@ -817,6 +842,71 @@
                     "min": "",
                     "max": ""
                 },
+                "layout_platejka_process_v1": {
+                    "key": "layout_platejka_process_v1",
+                    "name": "process",
+                    "label": "Процесс",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_platejka_row_process_enabled_v1",
+                            "label": "Показывать секцию",
+                            "name": "enabled",
+                            "type": "true_false",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_platejka_row_process_anchor_v1",
+                            "label": "Якорь секции",
+                            "name": "anchor",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_row_process_overrides_v1",
+                            "label": "Данные секции",
+                            "name": "overrides",
+                            "type": "clone",
+                            "instructions": "Заполните локальные данные для этой страницы.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "clone": [
+                                "field_platejka_defaults_process_v1"
+                            ],
+                            "display": "group",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
                 "layout_platejka_with_us_v1": {
                     "key": "layout_platejka_with_us_v1",
                     "name": "with-us",
@@ -1183,6 +1273,31 @@
                             "placeholder": "bez-reshetki"
                         },
                         {
+                            "key": "field_platejka_row_cases_description_mode_v1",
+                            "label": "Сквозное описание",
+                            "name": "description_mode",
+                            "type": "select",
+                            "instructions": "Определяет, показывать ли сквозное описание, когда локальное описание не заполнено.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "inherit": "Наследовать",
+                                "hide": "Скрыть"
+                            },
+                            "default_value": "inherit",
+                            "return_format": "value",
+                            "multiple": 0,
+                            "allow_null": 0,
+                            "ui": 0,
+                            "ajax": 0,
+                            "placeholder": ""
+                        },
+                        {
                             "key": "field_platejka_row_cases_overrides_v1",
                             "label": "Переопределения",
                             "name": "overrides",
@@ -1441,6 +1556,25 @@
                                 "id": ""
                             },
                             "placeholder": "bez-reshetki"
+                        },
+                        {
+                            "key": "field_platejka_row_hero_shared_content_only_v1",
+                            "label": "Наследовать общие данные China",
+                            "name": "shared_content_only",
+                            "type": "true_false",
+                            "instructions": "Наследует надпись, показатели, информацию, опыт, реестр и ассоциацию; фон и тексты остаются локальными.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
                         },
                         {
                             "key": "field_platejka_row_hero_overrides_v1",

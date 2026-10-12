@@ -11,9 +11,10 @@
             <span class="footer__contact-icon" aria-hidden="true"></span>
             <span><strong>a@platejka.com</strong><small>Поддержка</small></span>
           </a>
-
           <p class="footer__address">127204, Россия, Москва, Долгопрудненское шоссе, 3</p>
+          <div class="footer__h2">Реквизиты и ИНН</div>
           <p class="footer__details">
+
             Расчётный счёт 40702810700000033434<br>
             ПАО «РосДорБанк»<br>
             Корреспондентский счёт 30101810945250000666<br>
@@ -24,6 +25,18 @@
             <span class="footer__registry-label">Внесён в реестр ЦБ</span>
             <img src="img/svg/right-icon.svg" width="20" height="20" alt="">
           </a>
+          <div id="consentBox" class="open">
+            <div id="consentContent">
+              <p>
+                Мы используем cookies для оптимизации работы сайта и повышения его эффективности. Подробности в нашей <a href="https://platejka.com/privacy-policy">политике конфиденциальности</a>.
+              </p>
+              <div class="buttons">
+                <button class="consentButton btn-reset ui-button">
+                  Хорошо
+                </button>
+              </div>
+            </div>
+          </div>
         </address>
 
         <div class="footer__navigation">

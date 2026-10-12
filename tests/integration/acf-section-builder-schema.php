@@ -69,8 +69,13 @@ $assert(
 
 $builder = $schemas['group_platejka_page_builder_v1'] ?? array();
 $assert(
-	array( array( array( 'param' => 'post_type', 'operator' => '==', 'value' => 'page' ) ) ) === ( $builder['location'] ?? null ),
-	'Builder group targets every page.'
+	array(
+		array(
+			array( 'param' => 'post_type', 'operator' => '==', 'value' => 'page' ),
+			array( 'param' => 'post', 'operator' => '!=', 'value' => '22' ),
+		),
+	) === ( $builder['location'] ?? null ),
+	'Builder group targets every page except the dedicated About builder.'
 );
 $assert( 'acf_after_title' === ( $builder['position'] ?? null ), 'Builder group appears immediately after the page title.' );
 
@@ -87,7 +92,7 @@ foreach ( (array) ( $builder['fields'] ?? array() ) as $field ) {
 $assert( 'field_platejka_page_builder_v1' === ( $builder_toggle['key'] ?? null ) && 'true_false' === ( $builder_toggle['type'] ?? null ), 'Builder toggle uses its stable key and boolean type.' );
 $assert( 'field_platejka_sections_v1' === ( $sections_field['key'] ?? null ) && 'flexible_content' === ( $sections_field['type'] ?? null ), 'Sections field uses its stable key and flexible-content type.' );
 
-$expected_layouts = array( 'hero-main', 'about', 'shipments', 'guarantees', 'documents', 'compliance', 'review-main', 'work', 'calculator', 'with-us', 'destinations', 'seo', 'problems', 'serves', 'cases', 'table', 'faq', 'call', 'hero', 'protection', 'review' );
+$expected_layouts = array( 'hero-main', 'about', 'shipments', 'guarantees', 'documents', 'compliance', 'review-main', 'work', 'calculator', 'process', 'with-us', 'destinations', 'seo', 'problems', 'serves', 'cases', 'table', 'faq', 'call', 'hero', 'protection', 'review' );
 $layouts = array_values( (array) ( $sections_field['layouts'] ?? array() ) );
 $assert( $expected_layouts === array_column( $layouts, 'name' ), 'Builder keeps the original layouts and appends the three approved internal-page layouts.' );
 foreach ( $layouts as $layout ) {
@@ -105,6 +110,43 @@ foreach ( $layouts as $layout ) {
 }
 
 $layouts_by_name = array_column( $layouts, null, 'name' );
+$process_layout_fields = array_column( (array) ( $layouts_by_name['process']['sub_fields'] ?? array() ), null, 'name' );
+$assert( 'layout_platejka_process_v1' === ( $layouts_by_name['process']['key'] ?? null ), 'Process layout uses its stable key.' );
+$assert( array( 'field_platejka_defaults_process_v1' ) === ( $process_layout_fields['overrides']['clone'] ?? null ), 'Process layout clones the canonical Process group.' );
+$shipments_layout_fields = array_column( (array) ( $layouts_by_name['shipments']['sub_fields'] ?? array() ), null, 'name' );
+$cases_layout_fields     = array_column( (array) ( $layouts_by_name['cases']['sub_fields'] ?? array() ), null, 'name' );
+foreach ( array( 'shipments' => $shipments_layout_fields, 'cases' => $cases_layout_fields ) as $layout_name => $layout_fields ) {
+	$assert( 'select' === ( $layout_fields['description_mode']['type'] ?? null ), 'Description mode is a select: ' . $layout_name );
+	$assert( array( 'inherit' => 'Наследовать', 'hide' => 'Скрыть' ) === ( $layout_fields['description_mode']['choices'] ?? null ), 'Description mode choices are stable: ' . $layout_name );
+	$assert( 'inherit' === ( $layout_fields['description_mode']['default_value'] ?? null ), 'Description mode defaults to inherit: ' . $layout_name );
+}
+
+$default_fields = array_column( (array) ( $defaults['fields'] ?? array() ), null, 'name' );
+$process        = $default_fields['process'] ?? array();
+$process_fields = array_column( (array) ( $process['sub_fields'] ?? array() ), null, 'name' );
+$process_items  = $process_fields['items'] ?? array();
+$process_item_fields = array_column( (array) ( $process_items['sub_fields'] ?? array() ), null, 'name' );
+$assert( 'field_platejka_defaults_process_v1' === ( $process['key'] ?? null ) && 0 === ( $process['required'] ?? null ), 'Process defaults use the stable optional group key.' );
+$assert( array( 'title', 'items', 'description' ) === array_keys( $process_fields ), 'Process exposes exactly title, items, and description.' );
+$assert( 'field_platejka_process_title_v1' === ( $process_fields['title']['key'] ?? null ) && 0 === ( $process_fields['title']['required'] ?? null ), 'Process title uses its stable optional field key.' );
+$assert( 'field_platejka_process_items_v1' === ( $process_items['key'] ?? null ) && 'repeater' === ( $process_items['type'] ?? null ) && 0 === ( $process_items['min'] ?? null ), 'Process items use the stable optional repeater key.' );
+$assert( array( 'title', 'text' ) === array_keys( $process_item_fields ), 'Process steps expose exactly title and text.' );
+$assert( 'field_platejka_process_item_title_v1' === ( $process_item_fields['title']['key'] ?? null ) && 0 === ( $process_item_fields['title']['required'] ?? null ), 'Process step title uses its stable optional field key.' );
+$assert( 'field_platejka_process_item_text_v1' === ( $process_item_fields['text']['key'] ?? null ) && 0 === ( $process_item_fields['text']['required'] ?? null ), 'Process step text uses its stable optional field key.' );
+$assert( 'field_platejka_process_description_v1' === ( $process_fields['description']['key'] ?? null ) && 0 === ( $process_fields['description']['required'] ?? null ), 'Process description uses its stable optional field key.' );
+$shipments      = $default_fields['shipments'] ?? array();
+$hero           = $default_fields['hero'] ?? array();
+$hero_fields    = array_column( (array) ( $hero['sub_fields'] ?? array() ), null, 'name' );
+$assert( 'color_picker' === ( $hero_fields['background_color']['type'] ?? null ), 'Internal hero exposes a background color picker.' );
+$assert( '#ae0000' === ( $hero_fields['background_color']['default_value'] ?? null ), 'Internal hero background color defaults to the existing red.' );
+$variants       = array_column( (array) ( $shipments['sub_fields'] ?? array() ), null, 'name' );
+$main_items     = array_column( (array) ( $variants['main']['sub_fields'] ?? array() ), null, 'name' )['items'] ?? array();
+$default_items  = array_column( (array) ( $variants['default']['sub_fields'] ?? array() ), null, 'name' )['items'] ?? array();
+$main_item_fields    = array_column( (array) ( $main_items['sub_fields'] ?? array() ), null, 'name' );
+$default_item_fields = array_column( (array) ( $default_items['sub_fields'] ?? array() ), null, 'name' );
+$assert( 'text' === ( $main_item_fields['price']['type'] ?? null ), 'Main shipment cards expose the price text field.' );
+$assert( ! isset( $default_item_fields['price'] ), 'Internal shipment cards do not expose a price field.' );
+
 foreach (
 	array(
 		'hero'       => 'field_platejka_defaults_hero_v1',

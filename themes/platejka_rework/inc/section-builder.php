@@ -16,6 +16,7 @@ function platejka_section_builder_registry(): array {
 		'review',
 		'work',
 		'calculator',
+		'process',
 		'with-us',
 		'destinations',
 		'seo',
@@ -33,6 +34,13 @@ function platejka_section_builder_registry(): array {
 		'exhibitions',
 		'developing',
 		'call-about',
+		'cross-exchange',
+		'cross-company-metrics',
+		'cross-external-ratings',
+		'cross-key-facts',
+		'cross-transfer-goals',
+		'cross-swift-problems',
+		'cross-audience',
 	);
 
 	$registry = array();
@@ -88,6 +96,16 @@ function platejka_get_page_sections( int $post_id, array $fallback ): array {
 }
 
 /**
+ * Keep the mandatory Services navigation first while preserving builder order.
+ *
+ * @param array<int,mixed> $builder_sections Enabled page-builder sections.
+ * @return array<int,mixed>
+ */
+function platejka_compose_services_page_sections( array $builder_sections ): array {
+	return array_merge( array( 'services-section' ), $builder_sections );
+}
+
+/**
  * Resolve the dedicated section collection used only by the About page.
  *
  * @return array<int,mixed>
@@ -112,6 +130,9 @@ function platejka_validate_builder_rows( array $rows ) {
 
 	foreach ( $rows as $row ) {
 		$slug = isset( $row['acf_fc_layout'] ) && is_string( $row['acf_fc_layout'] ) ? $row['acf_fc_layout'] : '';
+		if ( 'process' === $slug && platejka_process_builder_row_is_enabled( $row ) && ! platejka_process_builder_row_is_complete( $row ) ) {
+			return new WP_Error( 'invalid_process_section', __( 'Для включенной секции «Процесс» заполните заголовок и хотя бы один шаг с заголовком и текстом.', 'platejka_rework' ) );
+		}
 		if ( in_array( $slug, array( 'hero-main', 'hero', 'about-hero' ), true ) ) {
 			++$hero_count;
 		}
@@ -144,6 +165,43 @@ function platejka_validate_builder_rows( array $rows ) {
 	}
 
 	return true;
+}
+
+/** @param array<string,mixed> $row */
+function platejka_process_builder_row_is_enabled( array $row ): bool {
+	return ! empty( $row['enabled'] ) || ! empty( $row['field_platejka_row_process_enabled_v1'] );
+}
+
+/** @param array<string,mixed> $row */
+function platejka_process_builder_row_is_complete( array $row ): bool {
+	$overrides = $row['overrides'] ?? ( $row['field_platejka_row_process_overrides_v1'] ?? array() );
+	if ( ! is_array( $overrides ) ) {
+		return false;
+	}
+
+	$process = $overrides['process'] ?? ( $overrides['field_platejka_defaults_process_v1'] ?? $overrides );
+	if ( ! is_array( $process ) ) {
+		return false;
+	}
+
+	$title = $process['title'] ?? ( $process['field_platejka_process_title_v1'] ?? '' );
+	$items = $process['items'] ?? ( $process['field_platejka_process_items_v1'] ?? array() );
+	if ( '' === trim( wp_strip_all_tags( is_scalar( $title ) ? (string) $title : '' ) ) || ! is_array( $items ) ) {
+		return false;
+	}
+
+	foreach ( $items as $item ) {
+		if ( ! is_array( $item ) ) {
+			continue;
+		}
+		$item_title = $item['title'] ?? ( $item['field_platejka_process_item_title_v1'] ?? '' );
+		$item_text  = $item['text'] ?? ( $item['field_platejka_process_item_text_v1'] ?? '' );
+		if ( '' !== trim( wp_strip_all_tags( is_scalar( $item_title ) ? (string) $item_title : '' ) ) && '' !== trim( wp_strip_all_tags( is_scalar( $item_text ) ? (string) $item_text : '' ) ) ) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 /**

@@ -7,6 +7,7 @@ $title             = is_array( $section_data['title'] ?? null ) ? $section_data[
 $experience        = is_array( $section_data['experience'] ?? null ) ? $section_data['experience'] : array();
 $registry          = is_array( $section_data['registry'] ?? null ) ? $section_data['registry'] : array();
 $association       = is_array( $section_data['association'] ?? null ) ? $section_data['association'] : array();
+$background_color  = sanitize_hex_color( $section_data['background_color'] ?? '' );
 $calculator_data   = platejka_resolve_section_data( array( 'slug' => 'calculator', 'mode' => 'default', 'row' => array() ), (int) get_queried_object_id() );
 $calculator_labels = platejka_section_label_map( $calculator_data['labels'] ?? array() );
 $calculator_rates  = function_exists( 'platejka_core_get_exchange_rates' ) ? platejka_core_get_exchange_rates() : array();
@@ -15,7 +16,7 @@ $calculator_rates  = function_exists( 'platejka_core_get_exchange_rates' ) ? pla
   <div class="container">
     <div class="hero__layout">
       <div class="hero__content">
-        <div class="hero__wrap hero__wrap_top" data-hero-panel>
+        <div class="hero__wrap hero__wrap_top"<?php if ( $background_color ) : ?> style="background-color:<?php echo esc_attr( $background_color ); ?>;"<?php endif; ?> data-hero-panel>
           <?php echo platejka_section_image( $section_data['background_image'] ?? 0, 'large', array( 'class' => 'hero__image', 'alt' => '', 'loading' => 'eager', 'decoding' => 'async', 'fetchpriority' => 'high', 'sizes' => '(max-width: 767px) 100vw, 864px', 'style' => 'height:100%;object-fit:cover', 'data-hero-image' => '' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
           <?php echo platejka_section_image( $section_data['blur_image'] ?? 0, 'large', array( 'class' => 'hero__blur', 'alt' => '', 'loading' => 'eager', 'decoding' => 'async', 'sizes' => '(max-width: 767px) 100vw, 864px', 'style' => 'object-fit:cover', 'data-hero-blur' => '' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
           <?php if ( ! empty( $section_data['badge'] ) ) : ?><p class="hero__badge" data-hero-copy><?php echo esc_html( $section_data['badge'] ); ?></p><?php endif; ?>
