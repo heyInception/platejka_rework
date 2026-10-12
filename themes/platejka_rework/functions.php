@@ -161,6 +161,9 @@ require get_template_directory() . '/inc/section-builder.php';
 /** Inherited ACF content and safe section-rendering helpers. */
 require get_template_directory() . '/inc/section-content.php';
 
+/** Approved cross-block ACF layouts and editor labels. */
+require get_template_directory() . '/inc/cross-block-schema.php';
+
 /** Legacy cross-block composition and data bridge. */
 require get_template_directory() . '/inc/cross-blocks.php';
 
