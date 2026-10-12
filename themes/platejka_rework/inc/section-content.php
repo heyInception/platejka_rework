@@ -140,6 +140,10 @@ function platejka_resolve_section_data( array $config, int $post_id = 0 ): array
 	if ( 'hide' === ( $row['description_mode'] ?? 'inherit' ) && '' === $local_description ) {
 		$resolved['description'] = '';
 	}
+	if ( isset( $config['legacy_layout'], $config['cross_block_row'] ) && is_string( $config['legacy_layout'] ) && is_array( $config['cross_block_row'] ) && function_exists( 'platejka_adapt_cross_block_data' ) ) {
+		$cross_data = platejka_adapt_cross_block_data( $config['legacy_layout'], $config['cross_block_row'] );
+		$resolved   = platejka_section_array( platejka_merge_cross_block_data( $cross_data, $resolved ) );
+	}
 
 	return $resolved;
 }

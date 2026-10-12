@@ -41,6 +41,194 @@ function platejka_cross_block_is_enabled( array $row ): bool {
 	return true;
 }
 
+/** @param mixed $media */
+function platejka_cross_block_media_id( $media ): int {
+	if ( is_array( $media ) ) {
+		$media = $media['ID'] ?? ( $media['id'] ?? 0 );
+	}
+
+	return absint( $media );
+}
+
+/** @param mixed $items @return array<int,array<string,mixed>> */
+function platejka_cross_block_card_items( $items ): array {
+	$adapted = array();
+	foreach ( is_array( $items ) ? $items : array() as $item ) {
+		if ( ! is_array( $item ) ) {
+			continue;
+		}
+
+		$title = trim( (string) ( $item['title'] ?? '' ) );
+		$text  = trim( (string) ( $item['text'] ?? '' ) );
+		if ( '' === $title && '' === wp_strip_all_tags( $text ) ) {
+			continue;
+		}
+
+		$adapted[] = array(
+			'image' => platejka_cross_block_media_id( $item['icon'] ?? ( $item['image'] ?? 0 ) ),
+			'title' => $title,
+			'text'  => $text,
+			'value' => trim( (string) ( $item['value'] ?? '' ) ),
+		);
+	}
+
+	return $adapted;
+}
+
+/** @param mixed $cell */
+function platejka_cross_block_table_cell( $cell ): string {
+	return trim( (string) ( is_array( $cell ) ? ( $cell['c'] ?? '' ) : $cell ) );
+}
+
+/**
+ * Convert one approved legacy row to the target section data shape.
+ *
+ * @param array<string,mixed> $row Legacy ACF row.
+ * @return array<string,mixed>
+ */
+function platejka_adapt_cross_block_data( string $layout, array $row ): array {
+	switch ( $layout ) {
+		case 'destinations':
+			$items = array();
+			foreach ( is_array( $row['destination_items'] ?? null ) ? $row['destination_items'] : array() as $item ) {
+				if ( ! is_array( $item ) ) {
+					continue;
+				}
+				$title = trim( (string) ( $item['name'] ?? ( $item['nazvanie'] ?? '' ) ) );
+				if ( '' === $title ) {
+					continue;
+				}
+				$items[] = array(
+					'image' => platejka_cross_block_media_id( $item['image'] ?? ( $item['izobrazhenie'] ?? 0 ) ),
+					'title' => $title,
+					'text'  => '',
+					'link'  => is_array( $item['link'] ?? null ) ? $item['link'] : ( is_array( $item['ssylka'] ?? null ) ? $item['ssylka'] : array() ),
+				);
+			}
+			return array(
+				'title'       => trim( (string) ( $row['destination_title'] ?? '' ) ),
+				'description' => (string) ( $row['destination_subtitle'] ?? '' ),
+				'items'       => $items,
+			);
+
+		case 'problems_solved':
+		case 'guarantees':
+			return array(
+				'title'       => trim( (string) ( $row['title'] ?? '' ) ),
+				'description' => (string) ( $row['intro'] ?? '' ),
+				'items'       => platejka_cross_block_card_items( $row['items'] ?? array() ),
+			);
+
+		case 'client_reviews':
+			$items = array();
+			foreach ( is_array( $row['reviews'] ?? null ) ? $row['reviews'] : array() as $review ) {
+				if ( ! is_array( $review ) ) {
+					continue;
+				}
+				$name = trim( (string) ( $review['name'] ?? '' ) );
+				$text = trim( (string) ( $review['text'] ?? '' ) );
+				if ( '' === $name || '' === wp_strip_all_tags( $text ) ) {
+					continue;
+				}
+				$rating  = max( 1, min( 5, absint( $review['rating'] ?? 5 ) ) );
+				$caption = trim( (string) ( $review['role'] ?? '' ) );
+				if ( '' === $caption ) {
+					$caption = trim( (string) ( $review['source'] ?? '' ) );
+				}
+				$items[] = array(
+					'image'   => platejka_cross_block_media_id( $review['photo'] ?? 0 ),
+					'title'   => $name,
+					'text'    => $text,
+					'value'   => str_repeat( '★', $rating ),
+					'caption' => $caption,
+					'date'    => trim( (string) ( $review['date'] ?? '' ) ),
+					'source'  => trim( (string) ( $review['source'] ?? '' ) ),
+				);
+			}
+			return array(
+				'title' => trim( (string) ( $row['title'] ?? '' ) ),
+				'items' => $items,
+			);
+
+		case 'documents':
+			$items = array();
+			foreach ( is_array( $row['documents'] ?? null ) ? $row['documents'] : array() as $document ) {
+				if ( ! is_array( $document ) || empty( $document['file'] ) ) {
+					continue;
+				}
+				$file    = $document['file'];
+				$file_id = platejka_cross_block_media_id( $file );
+				$url     = is_array( $file ) ? (string) ( $file['url'] ?? '' ) : '';
+				if ( ! $file_id && '' === $url ) {
+					continue;
+				}
+				$caption = '';
+				if ( is_array( $file ) && ! empty( $file['filesize'] ) && function_exists( 'size_format' ) ) {
+					$caption = 'PDF, ' . size_format( (int) $file['filesize'], 1 );
+				}
+				$items[] = array(
+					'title'   => trim( (string) ( $document['title'] ?? '' ) ),
+					'text'    => (string) ( $document['description'] ?? '' ),
+					'file'    => $file_id,
+					'caption' => $caption,
+					'link'    => array( 'url' => $url, 'title' => __( 'Скачать', 'platejka_rework' ) ),
+				);
+			}
+			return array(
+				'title'       => trim( (string) ( $row['title'] ?? '' ) ),
+				'description' => (string) ( $row['intro'] ?? '' ),
+				'items'       => $items,
+			);
+
+		case 'data_table':
+			$items = array();
+			$table = is_array( $row['table_data'] ?? null ) ? $row['table_data'] : array();
+			foreach ( is_array( $table['body'] ?? null ) ? $table['body'] : array() as $table_row ) {
+				if ( ! is_array( $table_row ) ) {
+					continue;
+				}
+				$cells = array_map( 'platejka_cross_block_table_cell', array_values( $table_row ) );
+				if ( '' === implode( '', $cells ) ) {
+					continue;
+				}
+				$items[] = array(
+					'title'         => $cells[0] ?? '',
+					'value'         => $cells[1] ?? '',
+					'text'          => '',
+					'partner_value' => $cells[2] ?? '',
+					'partner_text'  => '',
+					'bank_value'    => $cells[3] ?? '',
+					'bank_text'     => '',
+				);
+			}
+			return array(
+				'title'       => trim( (string) ( $row['title'] ?? '' ) ),
+				'description' => (string) ( $row['intro'] ?? '' ),
+				'items'       => $items,
+			);
+	}
+
+	return $row;
+}
+
+/**
+ * Merge meaningful cross-block values over resolved current-theme data.
+ *
+ * @param array<string,mixed> $cross_data Adapted legacy data.
+ * @param array<string,mixed> $resolved   Current section data.
+ * @return array<string,mixed>
+ */
+function platejka_merge_cross_block_data( array $cross_data, array $resolved ): array {
+	$cross_data = array_filter(
+		$cross_data,
+		static fn( $value ): bool => ! ( null === $value || false === $value || '' === $value || array() === $value )
+	);
+
+	return function_exists( 'platejka_merge_section_data' )
+		? (array) platejka_merge_section_data( $cross_data, $resolved )
+		: array_replace( $resolved, $cross_data );
+}
+
 /**
  * Read formatted legacy rows without changing stored postmeta.
  *
