@@ -306,4 +306,3 @@ function platejka_extend_cross_blocks_field( array $field ): array {
 	return $field;
 }
 add_filter( 'acf/load_field/key=field_67924d166072f', 'platejka_extend_cross_blocks_field' );
-

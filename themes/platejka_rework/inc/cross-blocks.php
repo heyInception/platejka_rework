@@ -354,4 +354,3 @@ function platejka_compose_cross_blocks( array $sections, array $rows, int $post_
 	array_splice( $sections, $boundary, 0, $injected );
 	return $sections;
 }
-
