@@ -68,19 +68,28 @@ $render = static function ( array $config ) use ( $theme_dir, $page ): string {
 };
 
 $target_html = array();
+$exchange_config = null;
 foreach ( $sections as $section ) {
 	$config = is_array( $section ) ? $section : array( 'slug' => $section );
+	if ( 'cross-exchange' === platejka_cross_block_section_slug( $config ) ) {
+		$exchange_config = $config;
+	}
 	if ( in_array( platejka_cross_block_section_slug( $config ), array( 'destinations', 'cross-exchange', 'problems' ), true ) ) {
 		$target_html[] = $render( $config );
 	}
 }
 $html = implode( "\n", $target_html );
 
+ob_start();
+platejka_render_section( $exchange_config );
+$integrated_exchange = (string) ob_get_clean();
+
 restore_error_handler();
 
 platejka_cross_runtime_assert( 1 === substr_count( $html, 'class="destinations"' ), 'Rendered destinations count changed.' );
 platejka_cross_runtime_assert( 1 === substr_count( $html, 'cross-blocks--exchange' ), 'Rendered static exchange count changed.' );
 platejka_cross_runtime_assert( 1 === substr_count( $html, 'class="problems"' ), 'Rendered problems count changed.' );
+platejka_cross_runtime_assert( str_contains( $integrated_exchange, 'cross-blocks--exchange' ), 'Integrated section renderer lost legacy_layout metadata.' );
 platejka_cross_runtime_assert( ! str_contains( $html, 'data-cb-exchange-calculator' ) && ! str_contains( $html, 'type="range"' ), 'Exchange unexpectedly exposes calculator behavior.' );
 platejka_cross_runtime_assert( array() === $warnings, 'Runtime emitted PHP warnings/notices: ' . implode( ' | ', $warnings ) );
 

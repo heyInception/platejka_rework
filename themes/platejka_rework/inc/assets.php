@@ -136,6 +136,7 @@ function platejka_render_section( $section ): void {
 	$section_data     = function_exists( 'platejka_resolve_section_data' ) ? platejka_resolve_section_data( $config, (int) get_queried_object_id() ) : array();
 	$section_instance = isset( $config['instance'] ) && is_string( $config['instance'] ) ? $config['instance'] : $config['slug'];
 	$section_anchor   = isset( $config['anchor'] ) && is_string( $config['anchor'] ) ? $config['anchor'] : '';
+	$legacy_layout    = isset( $config['legacy_layout'] ) && is_string( $config['legacy_layout'] ) ? $config['legacy_layout'] : '';
 	ob_start();
 	include $template;
 	$output = (string) ob_get_clean();
