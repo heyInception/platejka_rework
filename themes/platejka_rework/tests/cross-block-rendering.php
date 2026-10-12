@@ -42,8 +42,8 @@ $exchange = platejka_cross_render_fixture( $template, 'wtt', array( 'title' => '
 platejka_cross_render_assert( str_contains( $exchange, 'id="cross-exchange-test"' ), 'Exchange section ID is missing.' );
 platejka_cross_render_assert( str_contains( $exchange, 'Курсы валют' ) && str_contains( $exchange, 'Обменять валюту' ), 'Exchange heading/CTA is missing.' );
 platejka_cross_render_assert( str_contains( $exchange, 'USD' ) && str_contains( $exchange, 'EUR' ) && str_contains( $exchange, 'CNY' ), 'Server exchange values are missing.' );
-foreach ( array( 'data-cb-exchange-calculator', 'type="range"', 'data-action="buy"', 'data-action="sell"', 'data-exchange-rates' ) as $forbidden ) {
-	platejka_cross_render_assert( ! str_contains( $exchange, $forbidden ), 'Static exchange output advertises calculator behavior: ' . $forbidden );
+foreach ( array( 'class="cross-block cb-exchange calculate"', 'data-cb-exchange-calculator', 'type="range"', 'data-action="buy"', 'data-action="sell"', 'data-exchange-rates', 'data-role="exchange-total"' ) as $required ) {
+	platejka_cross_render_assert( str_contains( $exchange, $required ), 'Exchange source structure is missing: ' . $required );
 }
 
 $metrics = platejka_cross_render_fixture(
@@ -61,6 +61,7 @@ $metrics = platejka_cross_render_fixture(
 	'cross-metrics-test'
 );
 platejka_cross_render_assert( str_contains( $metrics, 'id="cross-metrics-test"' ) && str_contains( $metrics, '100' ) && str_contains( $metrics, 'О компании' ), 'Company metrics content is incomplete.' );
+platejka_cross_render_assert( str_contains( $metrics, 'class="cross-block cb-metrics"' ) && str_contains( $metrics, 'data-cb-count="100"' ), 'Company metrics source structure changed.' );
 platejka_cross_render_assert( '' === platejka_cross_render_fixture( $template, 'company_metrics', array( 'metrics' => array( array( 'value' => 1, 'label' => 'один' ) ) ), 'bad-metrics' ), 'Incomplete metrics must be omitted.' );
 
 $ratings = platejka_cross_render_fixture(
@@ -73,6 +74,7 @@ $ratings = platejka_cross_render_fixture(
 	'cross-ratings-test'
 );
 platejka_cross_render_assert( str_contains( $ratings, 'Нас оценивают' ) && str_contains( $ratings, 'Яндекс' ) && str_contains( $ratings, '4,9' ), 'External ratings content is incomplete.' );
+platejka_cross_render_assert( str_contains( $ratings, 'class="cross-block cb-ratings"' ) && str_contains( $ratings, 'class="cb-rating-card"' ), 'External ratings source structure changed.' );
 
 $facts = platejka_cross_render_fixture(
 	$template,
@@ -87,6 +89,7 @@ $facts = platejka_cross_render_fixture(
 	'cross-facts-test'
 );
 platejka_cross_render_assert( str_contains( $facts, 'id="cross-facts-test"' ) && str_contains( $facts, 'от 1%' ), 'Key facts content is incomplete.' );
+platejka_cross_render_assert( str_contains( $facts, 'class="cross-block cb-facts"' ) && str_contains( $facts, 'class="cb-facts__grid"' ), 'Key facts source structure changed.' );
 platejka_cross_render_assert( '' === platejka_cross_render_fixture( $template, 'key_facts', array( 'facts' => array() ), 'bad-facts' ), 'Incomplete key facts must be omitted.' );
 
 foreach ( array( 'transfer_goals' => 'Частые цели переводов', 'swift_problems' => 'Почему SWIFT не работает', 'audience' => 'Кому подходит' ) as $layout => $title ) {
@@ -97,6 +100,7 @@ foreach ( array( 'transfer_goals' => 'Частые цели переводов',
 		'cross-' . $layout . '-test'
 	);
 	platejka_cross_render_assert( str_contains( $html, $title ) && str_contains( $html, 'Карточка' ) && str_contains( $html, 'Связаться' ), 'Card-grid layout is incomplete: ' . $layout );
+	platejka_cross_render_assert( str_contains( $html, 'cb-card-section--' . $layout ) && str_contains( $html, 'class="cb-card-grid"' ), 'Card-grid source structure changed: ' . $layout );
 }
 
 $assets_source = (string) file_get_contents( $theme_dir . '/inc/assets.php' );

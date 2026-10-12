@@ -71,6 +71,46 @@ function platejka_cross_block_media_id( $media ): int {
 	return absint( $media );
 }
 
+/** @param array<string,mixed>|int|string $image */
+function platejka_cross_block_icon( $image, string $alt = '' ): string {
+	$image_id = platejka_cross_block_media_id( $image );
+	if ( $image_id && function_exists( 'platejka_section_image' ) ) {
+		return platejka_section_image( $image_id, 'thumbnail', array( 'class' => 'cb-card__icon-image', 'alt' => $alt, 'loading' => 'lazy' ) );
+	}
+
+	$url = is_array( $image ) ? (string) ( $image['url'] ?? '' ) : ( is_string( $image ) ? $image : '' );
+	if ( '' === $url ) {
+		return '';
+	}
+
+	return sprintf(
+		'<img class="cb-card__icon-image" src="%1$s" alt="%2$s" loading="lazy" decoding="async">',
+		esc_url( $url ),
+		esc_attr( is_array( $image ) ? (string) ( $image['alt'] ?? $alt ) : $alt )
+	);
+}
+
+function platejka_cross_block_fallback_icon(): string {
+	return '<svg class="cb-card__icon-fallback" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M24 4 7 11v11c0 10.8 7.3 18.6 17 22 9.7-3.4 17-11.2 17-22V11L24 4Zm-2.2 26.3-7-7 3-3 4 4 8.5-8.5 3 3-11.5 11.5Z"/></svg>';
+}
+
+/** @param array<string,mixed>|null $link */
+function platejka_cross_block_cta( ?array $link, string $class = '' ): string {
+	if ( empty( $link['url'] ) || empty( $link['title'] ) ) {
+		return '';
+	}
+
+	$target = '_blank' === ( $link['target'] ?? '' ) ? '_blank' : '_self';
+	return sprintf(
+		'<a class="cb-button %1$s" href="%2$s" target="%3$s"%4$s>%5$s</a>',
+		esc_attr( $class ),
+		esc_url( $link['url'] ),
+		esc_attr( $target ),
+		'_blank' === $target ? ' rel="noopener noreferrer"' : '',
+		esc_html( $link['title'] )
+	);
+}
+
 /** @param mixed $items @return array<int,array<string,mixed>> */
 function platejka_cross_block_card_items( $items ): array {
 	$adapted = array();
