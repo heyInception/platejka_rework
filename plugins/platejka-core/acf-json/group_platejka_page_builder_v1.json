@@ -1730,6 +1730,90 @@
                     ],
                     "min": "",
                     "max": ""
+                },
+                "layout_platejka_cross_exchange_v1": {
+                    "key": "layout_platejka_cross_exchange_v1",
+                    "name": "cross-exchange",
+                    "label": "Кросс-блок — Обмен валют",
+                    "display": "block",
+                    "sub_fields": [
+                        {"key":"field_platejka_row_cross_exchange_enabled_v1","label":"Показывать секцию","name":"enabled","type":"true_false","default_value":0,"ui":1},
+                        {"key":"field_platejka_row_cross_exchange_anchor_v1","label":"Якорь секции","name":"anchor","type":"text","placeholder":"bez-reshetki"}
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_cross_company_metrics_v1": {
+                    "key": "layout_platejka_cross_company_metrics_v1",
+                    "name": "cross-company-metrics",
+                    "label": "Кросс-блок — Показатели компании",
+                    "display": "block",
+                    "sub_fields": [
+                        {"key":"field_platejka_row_cross_company_metrics_enabled_v1","label":"Показывать секцию","name":"enabled","type":"true_false","default_value":0,"ui":1},
+                        {"key":"field_platejka_row_cross_company_metrics_anchor_v1","label":"Якорь секции","name":"anchor","type":"text","placeholder":"bez-reshetki"}
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_cross_external_ratings_v1": {
+                    "key": "layout_platejka_cross_external_ratings_v1",
+                    "name": "cross-external-ratings",
+                    "label": "Кросс-блок — Рейтинги на внешних площадках",
+                    "display": "block",
+                    "sub_fields": [
+                        {"key":"field_platejka_row_cross_external_ratings_enabled_v1","label":"Показывать секцию","name":"enabled","type":"true_false","default_value":0,"ui":1},
+                        {"key":"field_platejka_row_cross_external_ratings_anchor_v1","label":"Якорь секции","name":"anchor","type":"text","placeholder":"bez-reshetki"}
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_cross_key_facts_v1": {
+                    "key": "layout_platejka_cross_key_facts_v1",
+                    "name": "cross-key-facts",
+                    "label": "Кросс-блок — Конкретные цифры и условия",
+                    "display": "block",
+                    "sub_fields": [
+                        {"key":"field_platejka_row_cross_key_facts_enabled_v1","label":"Показывать секцию","name":"enabled","type":"true_false","default_value":0,"ui":1},
+                        {"key":"field_platejka_row_cross_key_facts_anchor_v1","label":"Якорь секции","name":"anchor","type":"text","placeholder":"bez-reshetki"}
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_cross_transfer_goals_v1": {
+                    "key": "layout_platejka_cross_transfer_goals_v1",
+                    "name": "cross-transfer-goals",
+                    "label": "Кросс-блок — Частые цели переводов",
+                    "display": "block",
+                    "sub_fields": [
+                        {"key":"field_platejka_row_cross_transfer_goals_enabled_v1","label":"Показывать секцию","name":"enabled","type":"true_false","default_value":0,"ui":1},
+                        {"key":"field_platejka_row_cross_transfer_goals_anchor_v1","label":"Якорь секции","name":"anchor","type":"text","placeholder":"bez-reshetki"}
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_cross_swift_problems_v1": {
+                    "key": "layout_platejka_cross_swift_problems_v1",
+                    "name": "cross-swift-problems",
+                    "label": "Кросс-блок — Почему прямой SWIFT не работает",
+                    "display": "block",
+                    "sub_fields": [
+                        {"key":"field_platejka_row_cross_swift_problems_enabled_v1","label":"Показывать секцию","name":"enabled","type":"true_false","default_value":0,"ui":1},
+                        {"key":"field_platejka_row_cross_swift_problems_anchor_v1","label":"Якорь секции","name":"anchor","type":"text","placeholder":"bez-reshetki"}
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_platejka_cross_audience_v1": {
+                    "key": "layout_platejka_cross_audience_v1",
+                    "name": "cross-audience",
+                    "label": "Кросс-блок — Кому подходит",
+                    "display": "block",
+                    "sub_fields": [
+                        {"key":"field_platejka_row_cross_audience_enabled_v1","label":"Показывать секцию","name":"enabled","type":"true_false","default_value":0,"ui":1},
+                        {"key":"field_platejka_row_cross_audience_anchor_v1","label":"Якорь секции","name":"anchor","type":"text","placeholder":"bez-reshetki"}
+                    ],
+                    "min": "",
+                    "max": ""
                 }
             },
             "min": "",

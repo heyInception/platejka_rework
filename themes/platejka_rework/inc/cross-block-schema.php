@@ -306,3 +306,83 @@ function platejka_extend_cross_blocks_field( array $field ): array {
 	return $field;
 }
 add_filter( 'acf/load_field/key=field_67924d166072f', 'platejka_extend_cross_blocks_field' );
+
+/**
+ * Builder-only controls for a cross-block whose content stays in the legacy field.
+ *
+ * @return array<string,mixed>
+ */
+function platejka_cross_block_builder_layout( string $slug, string $label ): array {
+	$key_scope = str_replace( '-', '_', $slug );
+
+	return array(
+		'key'        => 'layout_platejka_' . $key_scope . '_v1',
+		'name'       => $slug,
+		'label'      => 'Кросс-блок — ' . $label,
+		'display'    => 'block',
+		'sub_fields' => array(
+			array(
+				'key'           => 'field_platejka_row_' . $key_scope . '_enabled_v1',
+				'label'         => 'Показывать секцию',
+				'name'          => 'enabled',
+				'type'          => 'true_false',
+				'default_value' => 0,
+				'ui'            => 1,
+			),
+			array(
+				'key'         => 'field_platejka_row_' . $key_scope . '_anchor_v1',
+				'label'       => 'Якорь секции',
+				'name'        => 'anchor',
+				'type'        => 'text',
+				'placeholder' => 'bez-reshetki',
+			),
+		),
+		'min'        => '',
+		'max'        => '',
+	);
+}
+
+/** @return array<int,array<string,mixed>> */
+function platejka_cross_block_builder_layouts(): array {
+	return array(
+		platejka_cross_block_builder_layout( 'cross-exchange', 'Обмен валют' ),
+		platejka_cross_block_builder_layout( 'cross-company-metrics', 'Показатели компании' ),
+		platejka_cross_block_builder_layout( 'cross-external-ratings', 'Рейтинги на внешних площадках' ),
+		platejka_cross_block_builder_layout( 'cross-key-facts', 'Конкретные цифры и условия' ),
+		platejka_cross_block_builder_layout( 'cross-transfer-goals', 'Частые цели переводов' ),
+		platejka_cross_block_builder_layout( 'cross-swift-problems', 'Почему прямой SWIFT не работает' ),
+		platejka_cross_block_builder_layout( 'cross-audience', 'Кому подходит' ),
+	);
+}
+
+/** @param array<string,mixed> $field @return array<string,mixed> */
+function platejka_extend_section_builder_with_cross_blocks( array $field ): array {
+	$field['layouts'] = is_array( $field['layouts'] ?? null ) ? $field['layouts'] : array();
+	$existing         = array();
+	foreach ( $field['layouts'] as $layout ) {
+		if ( is_array( $layout ) && isset( $layout['name'] ) ) {
+			$existing[] = (string) $layout['name'];
+		}
+	}
+
+	foreach ( platejka_cross_block_builder_layouts() as $layout ) {
+		if ( ! in_array( $layout['name'], $existing, true ) ) {
+			$field['layouts'][ $layout['key'] ] = $layout;
+		}
+	}
+
+	return $field;
+}
+add_filter( 'acf/load_field/key=field_platejka_sections_v1', 'platejka_extend_section_builder_with_cross_blocks' );
+
+/**
+ * Keep legacy definitions available to ACF value formatting without showing
+ * a second flexible-content editor alongside the page builder.
+ *
+ * @param array<string,mixed> $field ACF field.
+ * @return false
+ */
+function platejka_hide_legacy_cross_blocks_field( array $field ) {
+	return false;
+}
+add_filter( 'acf/prepare_field/key=field_67924d166072f', 'platejka_hide_legacy_cross_blocks_field' );

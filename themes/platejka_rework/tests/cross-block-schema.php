@@ -1,11 +1,9 @@
 <?php
-/** Cross-block ACF schema regression checks. */
+/** Cross-block builder ownership regression checks. */
 
 $theme_root = dirname( __DIR__ );
 require_once $theme_root . '/inc/cross-blocks.php';
-if ( is_file( $theme_root . '/inc/cross-block-schema.php' ) ) {
-	require_once $theme_root . '/inc/cross-block-schema.php';
-}
+require_once $theme_root . '/inc/cross-block-schema.php';
 
 function platejka_cross_block_schema_assert( bool $condition, string $message ): void {
 	if ( ! $condition ) {
@@ -13,39 +11,41 @@ function platejka_cross_block_schema_assert( bool $condition, string $message ):
 	}
 }
 
-platejka_cross_block_schema_assert( function_exists( 'platejka_extend_cross_blocks_field' ), 'Cross-block schema extension is missing.' );
+$expected = array(
+	'cross-exchange',
+	'cross-company-metrics',
+	'cross-external-ratings',
+	'cross-key-facts',
+	'cross-transfer-goals',
+	'cross-swift-problems',
+	'cross-audience',
+);
 
-$group = acf_get_field_group( 'group_67923f17e9f73' );
-$field = acf_get_field( 'field_67924d166072f' );
-platejka_cross_block_schema_assert( is_array( $group ) && is_array( $field ), 'Existing ACF group or field is unavailable.' );
+platejka_cross_block_schema_assert( function_exists( 'platejka_extend_section_builder_with_cross_blocks' ), 'Section-builder cross-block extension is missing.' );
+platejka_cross_block_schema_assert( false === has_filter( 'acf/load_field_group', 'platejka_extend_cross_blocks_group' ), 'Legacy cross-block group locations are still extended.' );
+platejka_cross_block_schema_assert( false !== has_filter( 'acf/prepare_field/key=field_67924d166072f', 'platejka_hide_legacy_cross_blocks_field' ), 'Legacy cross-block editor field is not hidden.' );
+
+$builder = acf_get_field( 'field_platejka_sections_v1' );
+platejka_cross_block_schema_assert( is_array( $builder ), 'Page section builder field is unavailable.' );
 
 $layouts = array();
-foreach ( $field['layouts'] ?? array() as $layout ) {
+foreach ( $builder['layouts'] ?? array() as $layout ) {
 	if ( is_array( $layout ) && ! empty( $layout['name'] ) ) {
 		$layouts[ $layout['name'] ] = $layout;
 	}
 }
 
-platejka_cross_block_schema_assert( array_keys( platejka_cross_block_map() ) === array_keys( $layouts ), 'ACF choices must equal the approved layout allowlist.' );
-foreach ( $layouts as $layout ) {
-	platejka_cross_block_schema_assert( str_starts_with( (string) $layout['label'], 'Кросс-блок — ' ), 'Layout label is missing the cross-block prefix: ' . $layout['name'] );
-}
-foreach ( array( 'work', 'reviews', 'tariff', 'transfer_calculator' ) as $excluded ) {
-	platejka_cross_block_schema_assert( ! isset( $layouts[ $excluded ] ), 'Excluded layout remains available: ' . $excluded );
+foreach ( $expected as $name ) {
+	platejka_cross_block_schema_assert( isset( $layouts[ $name ] ), 'Builder layout is missing: ' . $name );
+	platejka_cross_block_schema_assert( str_starts_with( (string) $layouts[ $name ]['label'], 'Кросс-блок — ' ), 'Builder label is missing the cross-block prefix: ' . $name );
+	platejka_cross_block_schema_assert( array( 'enabled', 'anchor' ) === array_column( $layouts[ $name ]['sub_fields'] ?? array(), 'name' ), 'Builder layout must contain only enabled and anchor controls: ' . $name );
 }
 
-$destination_fields = array_column( $layouts['destinations']['sub_fields'] ?? array(), 'name' );
-platejka_cross_block_schema_assert( in_array( 'vklyuchit_blok', $destination_fields, true ), 'Destination visibility field was removed.' );
-platejka_cross_block_schema_assert( in_array( 'destination_items', $destination_fields, true ), 'Destination content fields were not added.' );
-
-$metrics_fields = array_column( $layouts['company_metrics']['sub_fields'] ?? array(), 'name' );
-platejka_cross_block_schema_assert( array( 'show_block', 'title', 'metrics', 'cta' ) === $metrics_fields, 'Company metrics field structure changed.' );
-
+$group = acf_get_field_group( 'group_67923f17e9f73' );
 $expected_location = array(
 	array( array( 'param' => 'page_template', 'operator' => '==', 'value' => 'default' ) ),
 	array( array( 'param' => 'page_template', 'operator' => '==', 'value' => 'page-cryptocurrency.php' ) ),
 );
-platejka_cross_block_schema_assert( $expected_location === ( $group['location'] ?? array() ), 'Cross-block group location rules changed.' );
-platejka_cross_block_schema_assert( false === has_action( 'acf/init', 'platejka_seed_cross_block_defaults' ), 'Schema must not register database seed writes.' );
+platejka_cross_block_schema_assert( is_array( $group ) && $expected_location === ( $group['location'] ?? array() ), 'Legacy cross-block group location rules changed.' );
 
-WP_CLI::success( 'Cross-block schema checks passed.' );
+WP_CLI::success( 'Cross-block builder schema checks passed.' );
