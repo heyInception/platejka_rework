@@ -30,6 +30,27 @@ function platejka_cross_block_map(): array {
 	);
 }
 
+/** @return array<string,array{directory:string,template:string}> */
+function platejka_cross_block_aliases(): array {
+	$alias = array( 'directory' => 'cross-blocks', 'template' => 'cross-blocks' );
+	return array_fill_keys(
+		array( 'cross-exchange', 'cross-company-metrics', 'cross-external-ratings', 'cross-key-facts', 'cross-transfer-goals', 'cross-swift-problems', 'cross-audience' ),
+		$alias
+	);
+}
+
+/** @return array<string,float> */
+function platejka_cross_block_exchange_rates(): array {
+	$rates   = function_exists( 'platejka_core_get_exchange_rates' ) ? platejka_core_get_exchange_rates() : array();
+	$default = array( 'USD' => 81.0929, 'EUR' => 96.75, 'CNY' => 12.16 );
+	$result  = array();
+	foreach ( $default as $currency => $fallback ) {
+		$value               = $rates[ $currency ] ?? $fallback;
+		$result[ $currency ] = is_numeric( $value ) && is_finite( (float) $value ) && (float) $value > 0 ? (float) $value : $fallback;
+	}
+	return $result;
+}
+
 /** @param array<string,mixed> $row Legacy ACF row. */
 function platejka_cross_block_is_enabled( array $row ): bool {
 	foreach ( array( 'show_block', 'vklyuchit_blok' ) as $field ) {

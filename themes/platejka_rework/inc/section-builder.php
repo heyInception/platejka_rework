@@ -34,6 +34,13 @@ function platejka_section_builder_registry(): array {
 		'exhibitions',
 		'developing',
 		'call-about',
+		'cross-exchange',
+		'cross-company-metrics',
+		'cross-external-ratings',
+		'cross-key-facts',
+		'cross-transfer-goals',
+		'cross-swift-problems',
+		'cross-audience',
 	);
 
 	$registry = array();
