@@ -13,8 +13,11 @@
  * @package platejka
  */
 
-$builder_sections = platejka_get_page_sections( get_queried_object_id(), array() );
-$sections         = platejka_use_sections( platejka_compose_services_page_sections( $builder_sections ) );
+$post_id          = get_queried_object_id();
+$builder_sections = platejka_get_page_sections( $post_id, array() );
+$sections         = platejka_compose_services_page_sections( $builder_sections );
+$sections         = platejka_compose_cross_blocks( $sections, platejka_get_cross_block_rows( $post_id ), $post_id );
+$sections         = platejka_use_sections( $sections );
 
 get_header();
 ?>
