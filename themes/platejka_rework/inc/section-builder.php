@@ -89,6 +89,16 @@ function platejka_get_page_sections( int $post_id, array $fallback ): array {
 }
 
 /**
+ * Keep the mandatory Services navigation first while preserving builder order.
+ *
+ * @param array<int,mixed> $builder_sections Enabled page-builder sections.
+ * @return array<int,mixed>
+ */
+function platejka_compose_services_page_sections( array $builder_sections ): array {
+	return array_merge( array( 'services-section' ), $builder_sections );
+}
+
+/**
  * Resolve the dedicated section collection used only by the About page.
  *
  * @return array<int,mixed>

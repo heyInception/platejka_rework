@@ -10,8 +10,9 @@ function platejka_normalize_section( $section ): ?array {
 	}
 
 	$aliases = array(
-		'hero-main' => array( 'directory' => 'hero', 'template' => 'hero-main' ),
-		'call-about' => array( 'directory' => 'call', 'template' => 'call-about' ),
+		'hero-main'        => array( 'directory' => 'hero', 'template' => 'hero-main' ),
+		'call-about'       => array( 'directory' => 'call', 'template' => 'call-about' ),
+		'services-section' => array( 'directory' => 'service-sections', 'template' => 'services-section' ),
 	);
 	$resolved = $aliases[ $slug ] ?? array( 'directory' => $slug, 'template' => $slug );
 
