@@ -79,6 +79,73 @@ function platejka_cross_sync_row_enabled( array $row ): bool {
 	return true;
 }
 
+function platejka_cross_sync_builder_subfield_key( string $slug, string $name ): string {
+	return 'field_platejka_row_' . str_replace( '-', '_', $slug ) . '_' . $name . '_v1';
+}
+
+/** @param array<string,mixed> $row */
+function platejka_cross_sync_builder_row_enabled( array $row, string $slug ): bool {
+	if ( array_key_exists( 'enabled', $row ) ) {
+		return (bool) $row['enabled'];
+	}
+	$key = platejka_cross_sync_builder_subfield_key( $slug, 'enabled' );
+	return ! array_key_exists( $key, $row ) || (bool) $row[ $key ];
+}
+
+/**
+ * Resolve null raw ACF leaves to the concrete postmeta names ACF would otherwise normalize to empty strings.
+ *
+ * @param array<int,array<string,mixed>> $rows
+ * @param callable|null                  $resolve_name Receives a field key and returns its field name.
+ * @return array<int,string>
+ */
+function platejka_cross_sync_null_meta_paths( array $rows, ?callable $resolve_name = null ): array {
+	$resolve_name = $resolve_name ?? static function ( string $field_key ): string {
+		$field = function_exists( 'acf_get_field' ) ? acf_get_field( $field_key ) : null;
+		return is_array( $field ) ? (string) ( $field['name'] ?? '' ) : '';
+	};
+	$paths = array();
+	$walk  = static function ( $value, string $prefix ) use ( &$walk, &$paths, $resolve_name ): void {
+		if ( ! is_array( $value ) ) {
+			return;
+		}
+		if ( array_is_list( $value ) ) {
+			foreach ( $value as $index => $item ) {
+				$walk( $item, $prefix . '_' . $index );
+			}
+			return;
+		}
+		foreach ( $value as $field_key => $field_value ) {
+			if ( 'acf_fc_layout' === $field_key || ! is_string( $field_key ) ) {
+				continue;
+			}
+			$field_name = $resolve_name( $field_key );
+			if ( '' === $field_name ) {
+				continue;
+			}
+			$meta_name = $prefix . '_' . $field_name;
+			if ( null === $field_value ) {
+				$paths[] = $meta_name;
+				continue;
+			}
+			$walk( $field_value, $meta_name );
+		}
+	};
+
+	foreach ( $rows as $index => $row ) {
+		$walk( $row, 'platejka_sections_' . $index );
+	}
+	return $paths;
+}
+
+/** @param array<int,array<string,mixed>> $rows */
+function platejka_cross_sync_restore_null_meta( int $post_id, array $rows ): void {
+	foreach ( platejka_cross_sync_null_meta_paths( $rows ) as $meta_name ) {
+		delete_post_meta( $post_id, $meta_name );
+		delete_post_meta( $post_id, '_' . $meta_name );
+	}
+}
+
 /**
  * Preserve existing rows and insert only missing production associations before FAQ/call.
  *
@@ -104,8 +171,9 @@ function platejka_cross_sync_merge_builder_rows( array $rows, array $production_
 	}
 
 	foreach ( $targets as $slug ) {
-		if ( isset( $present[ $slug ] ) && empty( $rows[ $present[ $slug ] ]['enabled'] ) ) {
-			$rows[ $present[ $slug ] ]['enabled'] = 1;
+		if ( isset( $present[ $slug ] ) && ! platejka_cross_sync_builder_row_enabled( $rows[ $present[ $slug ] ], $slug ) ) {
+			$enabled_key = array_key_exists( 'enabled', $rows[ $present[ $slug ] ] ) ? 'enabled' : platejka_cross_sync_builder_subfield_key( $slug, 'enabled' );
+			$rows[ $present[ $slug ] ][ $enabled_key ] = 1;
 		}
 	}
 
@@ -122,7 +190,11 @@ function platejka_cross_sync_merge_builder_rows( array $rows, array $production_
 		}
 	}
 	$new_rows = array_map(
-		static fn( string $slug ): array => array( 'acf_fc_layout' => $slug, 'enabled' => 1, 'anchor' => '' ),
+		static fn( string $slug ): array => array(
+			'acf_fc_layout' => $slug,
+			platejka_cross_sync_builder_subfield_key( $slug, 'enabled' ) => 1,
+			platejka_cross_sync_builder_subfield_key( $slug, 'anchor' )  => '',
+		),
 		$missing
 	);
 
@@ -135,7 +207,7 @@ function platejka_cross_sync_merge_builder_rows( array $rows, array $production_
  * @param array<int,array<string,mixed>> $source_rows
  * @return array<string,mixed>
  */
-function platejka_cross_sync_plan_page( string $slug, int $post_id, array $production_layouts, array $builder_rows, array $source_rows ): array {
+function platejka_cross_sync_plan_page( string $slug, int $post_id, array $production_layouts, array $builder_rows, array $source_rows, bool $builder_enabled = true ): array {
 	$source_by_layout = array();
 	foreach ( $source_rows as $row ) {
 		if ( is_array( $row ) && is_string( $row['acf_fc_layout'] ?? null ) ) {
@@ -161,10 +233,11 @@ function platejka_cross_sync_plan_page( string $slug, int $post_id, array $produ
 	$enabled        = array();
 	foreach ( $builder_rows as $row ) {
 		$target = (string) ( $row['acf_fc_layout'] ?? '' );
-		if ( in_array( $target, $production_targets, true ) && ! platejka_cross_sync_row_enabled( $row ) ) {
+		if ( in_array( $target, $production_targets, true ) && ! platejka_cross_sync_builder_row_enabled( $row, $target ) ) {
 			$enabled[] = $target;
 		}
 	}
+	$proposed_builder_enabled = ! empty( $production_layouts ) || $builder_enabled;
 
 	return array(
 		'slug'                   => $slug,
@@ -176,7 +249,9 @@ function platejka_cross_sync_plan_page( string $slug, int $post_id, array $produ
 		'enable_builder_rows'    => $enabled,
 		'resolvable_source_rows' => $resolvable,
 		'unresolved_source_rows' => $unresolved,
-		'would_change'           => $builder_rows !== $proposed,
+		'current_builder_enabled' => $builder_enabled,
+		'proposed_builder_enabled' => $proposed_builder_enabled,
+		'would_change'           => $builder_rows !== $proposed || $builder_enabled !== $proposed_builder_enabled,
 		'current_builder_rows'   => $builder_rows,
 		'proposed_builder_rows'  => $proposed,
 	);
@@ -233,9 +308,10 @@ function platejka_cross_sync_build_manifest( string $base_url, array $only_slugs
 
 		$local       = get_page_by_path( $production_page['slug'], OBJECT, 'page' );
 		$post_id     = $local instanceof WP_Post ? (int) $local->ID : 0;
-		$builder     = $post_id && function_exists( 'get_field' ) ? get_field( 'field_platejka_sections_v1', $post_id ) : array();
+		$builder     = $post_id && function_exists( 'get_field' ) ? get_field( 'field_platejka_sections_v1', $post_id, false ) : array();
+		$builder_enabled = $post_id && function_exists( 'get_field' ) ? (bool) get_field( 'field_platejka_page_builder_v1', $post_id, false ) : false;
 		$source      = $post_id && function_exists( 'get_field' ) ? get_field( 'field_67924d166072f', $post_id ) : array();
-		$page_plan   = platejka_cross_sync_plan_page( $production_page['slug'], $post_id, $layouts, is_array( $builder ) ? $builder : array(), is_array( $source ) ? $source : array() );
+		$page_plan   = platejka_cross_sync_plan_page( $production_page['slug'], $post_id, $layouts, is_array( $builder ) ? $builder : array(), is_array( $source ) ? $source : array(), $builder_enabled );
 		$page_plan['production_url'] = $production_page['link'];
 		$page_plan['local_missing']  = 0 === $post_id;
 		$manifest[] = $page_plan;
@@ -261,9 +337,10 @@ function platejka_cross_sync_build_imported_manifest( array $associations, array
 		}
 		$local       = get_page_by_path( $slug, OBJECT, 'page' );
 		$post_id     = $local instanceof WP_Post ? (int) $local->ID : 0;
-		$builder     = $post_id && function_exists( 'get_field' ) ? get_field( 'field_platejka_sections_v1', $post_id ) : array();
+		$builder     = $post_id && function_exists( 'get_field' ) ? get_field( 'field_platejka_sections_v1', $post_id, false ) : array();
+		$builder_enabled = $post_id && function_exists( 'get_field' ) ? (bool) get_field( 'field_platejka_page_builder_v1', $post_id, false ) : false;
 		$source      = $post_id && function_exists( 'get_field' ) ? get_field( 'field_67924d166072f', $post_id ) : array();
-		$page_plan   = platejka_cross_sync_plan_page( $slug, $post_id, $layouts, is_array( $builder ) ? $builder : array(), is_array( $source ) ? $source : array() );
+		$page_plan   = platejka_cross_sync_plan_page( $slug, $post_id, $layouts, is_array( $builder ) ? $builder : array(), is_array( $source ) ? $source : array(), $builder_enabled );
 		$page_plan['production_url'] = esc_url_raw( (string) ( $association['url'] ?? '' ) );
 		$page_plan['local_missing']  = 0 === $post_id;
 		$manifest[] = $page_plan;
@@ -319,7 +396,7 @@ function platejka_cross_sync_apply_manifest( array $manifest, string $backup_pat
 		if ( ! $local instanceof WP_Post || (int) $local->ID !== $post_id ) {
 			WP_CLI::error( 'Approved manifest page identity no longer matches for post ' . $post_id . '.' );
 		}
-		$current = get_field( 'field_platejka_sections_v1', $post_id );
+		$current = get_field( 'field_platejka_sections_v1', $post_id, false );
 		$current = is_array( $current ) ? $current : array();
 		if ( $current !== $page['current_builder_rows'] ) {
 			WP_CLI::error( 'Builder rows changed after dry-run for post ' . $post_id . '; generate a new manifest.' );
@@ -328,14 +405,26 @@ function platejka_cross_sync_apply_manifest( array $manifest, string $backup_pat
 		if ( $expected !== $page['proposed_builder_rows'] ) {
 			WP_CLI::error( 'Approved manifest target is invalid for post ' . $post_id . '.' );
 		}
-		$validated[] = array( 'post_id' => $post_id, 'rows' => $expected );
+		$current_enabled = (bool) get_field( 'field_platejka_page_builder_v1', $post_id, false );
+		if ( $current_enabled !== (bool) $page['current_builder_enabled'] ) {
+			WP_CLI::error( 'Builder enable state changed after dry-run for post ' . $post_id . '; generate a new manifest.' );
+		}
+		if ( true !== (bool) $page['proposed_builder_enabled'] ) {
+			WP_CLI::error( 'Approved builder enable target is invalid for post ' . $post_id . '.' );
+		}
+		$validated[] = array( 'post_id' => $post_id, 'rows' => $expected, 'current_rows' => $current, 'enabled' => true, 'current_enabled' => $current_enabled );
 	}
 
 	platejka_cross_sync_write_backup( $manifest, $backup_path );
 	foreach ( $validated as $change ) {
 		$post_id = $change['post_id'];
-		update_field( 'field_platejka_page_builder_v1', 1, $post_id );
-		update_field( 'field_platejka_sections_v1', $change['rows'], $post_id );
+		if ( $change['current_enabled'] !== $change['enabled'] ) {
+			update_field( 'field_platejka_page_builder_v1', $change['enabled'] ? 1 : 0, $post_id );
+		}
+		if ( $change['current_rows'] !== $change['rows'] ) {
+			update_field( 'field_platejka_sections_v1', $change['rows'], $post_id );
+			platejka_cross_sync_restore_null_meta( $post_id, $change['rows'] );
+		}
 	}
 	return count( $validated );
 }

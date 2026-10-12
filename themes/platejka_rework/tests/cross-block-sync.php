@@ -34,10 +34,10 @@ platejka_cross_sync_assert(
 );
 
 $original = array(
-	array( 'acf_fc_layout' => 'hero', 'enabled' => 1, 'custom' => array( 'keep' => true ) ),
-	array( 'acf_fc_layout' => 'destinations', 'enabled' => 1, 'anchor' => 'countries' ),
-	array( 'acf_fc_layout' => 'faq', 'enabled' => 1 ),
-	array( 'acf_fc_layout' => 'call', 'enabled' => 1 ),
+	array( 'acf_fc_layout' => 'hero', 'field_platejka_row_hero_enabled_v1' => '1', 'custom' => array( 'keep' => "line one\nline two [shortcode]" ) ),
+	array( 'acf_fc_layout' => 'destinations', 'field_platejka_row_destinations_enabled_v1' => '1', 'field_platejka_row_destinations_anchor_v1' => 'countries' ),
+	array( 'acf_fc_layout' => 'faq', 'field_platejka_row_faq_enabled_v1' => '1' ),
+	array( 'acf_fc_layout' => 'call', 'field_platejka_row_call_enabled_v1' => '1' ),
 );
 $merged = platejka_cross_sync_merge_builder_rows( $original, array( 'destinations', 'swift_problems', 'audience' ) );
 
@@ -46,7 +46,7 @@ platejka_cross_sync_assert(
 	'Production associations were not mapped into builder order.'
 );
 platejka_cross_sync_assert( $original[0] === $merged[0] && $original[1] === $merged[1] && $original[2] === $merged[4] && $original[3] === $merged[5], 'Unrelated builder rows were modified.' );
-platejka_cross_sync_assert( array( 'acf_fc_layout' => 'cross-swift-problems', 'enabled' => 1, 'anchor' => '' ) === $merged[2], 'New dedicated row shape changed.' );
+platejka_cross_sync_assert( array( 'acf_fc_layout' => 'cross-swift-problems', 'field_platejka_row_cross_swift_problems_enabled_v1' => 1, 'field_platejka_row_cross_swift_problems_anchor_v1' => '' ) === $merged[2], 'New dedicated raw row shape changed.' );
 platejka_cross_sync_assert( $merged === platejka_cross_sync_merge_builder_rows( $merged, array( 'destinations', 'swift_problems', 'audience' ) ), 'Builder merge is not idempotent.' );
 
 $plan = platejka_cross_sync_plan_page(
@@ -79,14 +79,29 @@ platejka_cross_sync_assert( false === $second['would_change'] && array() === $se
 
 $disabled = platejka_cross_sync_merge_builder_rows(
 	array(
-		array( 'acf_fc_layout' => 'destinations', 'enabled' => 0, 'custom' => 'keep' ),
-		array( 'acf_fc_layout' => 'seo', 'enabled' => 0, 'custom' => 'untouched' ),
+		array( 'acf_fc_layout' => 'destinations', 'field_platejka_row_destinations_enabled_v1' => '0', 'custom' => 'keep' ),
+		array( 'acf_fc_layout' => 'seo', 'field_platejka_row_seo_enabled_v1' => '0', 'custom' => 'untouched' ),
 	),
 	array( 'destinations' )
 );
-platejka_cross_sync_assert( 1 === $disabled[0]['enabled'], 'Production-associated existing section must be enabled.' );
-platejka_cross_sync_assert( array( 'acf_fc_layout' => 'seo', 'enabled' => 0, 'custom' => 'untouched' ) === $disabled[1], 'Unrelated disabled section must remain byte-for-byte unchanged.' );
-$disabled_plan = platejka_cross_sync_plan_page( 'test', 1, array( 'destinations' ), array( array( 'acf_fc_layout' => 'destinations', 'enabled' => 0 ), array( 'acf_fc_layout' => 'seo', 'enabled' => 0 ) ), array() );
+platejka_cross_sync_assert( 1 === $disabled[0]['field_platejka_row_destinations_enabled_v1'], 'Production-associated existing section must be enabled in raw ACF data.' );
+platejka_cross_sync_assert( array( 'acf_fc_layout' => 'seo', 'field_platejka_row_seo_enabled_v1' => '0', 'custom' => 'untouched' ) === $disabled[1], 'Unrelated disabled section must remain byte-for-byte unchanged.' );
+$disabled_plan = platejka_cross_sync_plan_page( 'test', 1, array( 'destinations' ), array( array( 'acf_fc_layout' => 'destinations', 'field_platejka_row_destinations_enabled_v1' => '0' ), array( 'acf_fc_layout' => 'seo', 'field_platejka_row_seo_enabled_v1' => '0' ) ), array(), false );
 platejka_cross_sync_assert( array( 'destinations' ) === $disabled_plan['enable_builder_rows'], 'Dry-run must report only production-associated rows as enabled.' );
+platejka_cross_sync_assert( false === $disabled_plan['current_builder_enabled'] && true === $disabled_plan['proposed_builder_enabled'] && true === $disabled_plan['would_change'], 'Dry-run must explicitly plan enabling the page builder.' );
+
+$null_paths = platejka_cross_sync_null_meta_paths(
+	array(
+		array(
+			'acf_fc_layout' => 'hero',
+			'field_group'   => array(
+				'field_image' => null,
+				'field_items' => array( array( 'field_icon' => null ) ),
+			),
+		),
+	),
+	static fn( string $key ): string => array( 'field_group' => 'content', 'field_image' => 'image', 'field_items' => 'items', 'field_icon' => 'icon' )[ $key ] ?? ''
+);
+platejka_cross_sync_assert( array( 'platejka_sections_0_content_image', 'platejka_sections_0_content_items_0_icon' ) === $null_paths, 'Null raw ACF leaves must map to their exact postmeta paths.' );
 
 WP_CLI::success( 'Cross-block synchronization checks passed.' );
