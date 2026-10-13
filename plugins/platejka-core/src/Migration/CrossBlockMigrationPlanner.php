@@ -125,12 +125,14 @@ final class CrossBlockMigrationPlanner {
 		$conflicts     = array();
 		$warnings      = is_array( $production['warnings'] ?? null ) ? array_values( $production['warnings'] ) : array();
 		$local_defaults = is_array( $local_state['defaults'] ?? null ) ? $local_state['defaults'] : array();
+		$effective_defaults = $local_defaults;
 
 		$global_attachments = is_array( $local_state['attachments'] ?? null ) ? $local_state['attachments'] : array();
 		foreach ( is_array( $production['defaults'] ?? null ) ? $production['defaults'] : array() as $slug => $value ) {
 			$current = is_array( $local_defaults[ $slug ] ?? null ) ? $local_defaults[ $slug ] : array();
 			if ( self::isEmpty( $current ) ) {
 				$value = self::resolveMedia( $value, '', $global_attachments, 'defaults', (string) $slug, $warnings );
+				$effective_defaults[ $slug ] = $value;
 				$default_plans[] = array(
 					'slug'        => $slug,
 					'action'      => 'seed',
@@ -159,9 +161,7 @@ final class CrossBlockMigrationPlanner {
 				if ( ! self::isAllowedTarget( (string) $target_slug ) || ! is_array( $source_layout ) ) {
 					continue;
 				}
-				$defaults = is_array( $production['defaults'][ $target_slug ] ?? null )
-					? $production['defaults'][ $target_slug ]
-					: ( is_array( $local_defaults[ $target_slug ] ?? null ) ? $local_defaults[ $target_slug ] : array() );
+				$defaults = is_array( $effective_defaults[ $target_slug ] ?? null ) ? $effective_defaults[ $target_slug ] : array();
 				if ( 'guarantees' === $target_slug && is_array( $defaults['default'] ?? null ) ) {
 					$defaults = $defaults['default'];
 				}
@@ -335,10 +335,10 @@ final class CrossBlockMigrationPlanner {
 	private static function buildOverrides( string $page, string $slug, array $values, array $defaults, array $local, array $attachments, array &$conflicts, array &$warnings ): array {
 		$result = array();
 		foreach ( $values as $key => $value ) {
+			$value = self::resolveMedia( $value, (string) $key, $attachments, $page, $slug, $warnings );
 			if ( self::equivalent( $value, $defaults[ $key ] ?? null ) ) {
 				continue;
 			}
-			$value = self::resolveMedia( $value, (string) $key, $attachments, $page, $slug, $warnings );
 			if ( array_key_exists( $key, $local ) && ! self::isEmpty( $local[ $key ] ) && ! self::equivalent( $local[ $key ], $value ) ) {
 				$conflicts[] = array( 'type' => 'local_override_conflict', 'slug' => $page, 'section' => $slug, 'field' => $key );
 				$result[ $key ] = $local[ $key ];

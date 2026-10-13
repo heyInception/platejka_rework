@@ -386,6 +386,9 @@ add_filter( 'acf/load_field/key=field_67924d166072f', 'platejka_extend_cross_blo
  */
 function platejka_cross_block_local_override_field( array $field ): array {
 	unset( $field['default_value'] );
+	if ( 'repeater' === ( $field['type'] ?? '' ) ) {
+		$field['min'] = 0;
+	}
 	if ( isset( $field['sub_fields'] ) && is_array( $field['sub_fields'] ) ) {
 		$field['sub_fields'] = array_map( 'platejka_cross_block_local_override_field', $field['sub_fields'] );
 	}

@@ -23,6 +23,18 @@ function platejka_cross_block_schema_has_default( array $fields ): bool {
 	return false;
 }
 
+function platejka_cross_block_schema_repeaters_allow_empty( array $fields ): bool {
+	foreach ( $fields as $field ) {
+		if ( 'repeater' === ( $field['type'] ?? '' ) && 0 !== (int) ( $field['min'] ?? 0 ) ) {
+			return false;
+		}
+		if ( ! empty( $field['sub_fields'] ) && ! platejka_cross_block_schema_repeaters_allow_empty( $field['sub_fields'] ) ) {
+			return false;
+		}
+	}
+	return true;
+}
+
 $expected = array(
 	'cross-exchange'         => 'Обмен валют',
 	'cross-company-metrics'  => 'Показатели компании',
@@ -60,6 +72,7 @@ foreach ( $expected as $name => $label ) {
 	platejka_cross_block_schema_assert( ! empty( $fields['overrides']['sub_fields'] ), 'Builder clone must expose its nested schema for programmatic reads and writes: ' . $name );
 	platejka_cross_block_schema_assert( ! empty( $fields['overrides']['sub_fields'][0]['__name'] ), 'Builder clone child must expose its cloned ACF name: ' . $name );
 	platejka_cross_block_schema_assert( ! platejka_cross_block_schema_has_default( $fields['overrides']['sub_fields'] ), 'Local clone schema must not materialize global default values: ' . $name );
+	platejka_cross_block_schema_assert( platejka_cross_block_schema_repeaters_allow_empty( $fields['overrides']['sub_fields'] ), 'Local clone repeaters must allow zero rows for inheritance: ' . $name );
 }
 
 $default_groups = platejka_cross_block_default_groups();

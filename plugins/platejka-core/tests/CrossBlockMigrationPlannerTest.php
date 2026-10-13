@@ -235,6 +235,99 @@ final class CrossBlockMigrationPlannerTest extends TestCase {
 		self::assertFalse( $equivalent->invoke( null, array( 'title' => 'Есть данные' ), false ) );
 	}
 
+	public function test_plan_compares_page_values_with_existing_local_defaults_when_seed_is_skipped(): void {
+		$this->assertPlannerExists();
+		$production_values = array(
+			'title' => 'Production title',
+			'facts' => array( array( 'value' => '10', 'label' => 'Production fact' ) ),
+		);
+		$production = array(
+			'defaults' => array( 'cross-key-facts' => $production_values ),
+			'warnings' => array(),
+			'pages' => array(
+				'turkey' => array(
+					'production_id' => 10,
+					'layouts' => array(
+						'cross-key-facts' => array( 'values' => $production_values ),
+					),
+				),
+			),
+		);
+		$local = array(
+			'defaults' => array(
+				'cross-key-facts' => array(
+					'title' => 'Existing local title',
+					'facts' => array( array( 'value' => '20', 'label' => 'Local fact' ) ),
+				),
+			),
+			'attachments' => array(),
+			'pages' => array(
+				'turkey' => array(
+					'id' => 20,
+					'status' => 'publish',
+					'builder_enabled' => true,
+					'attachments' => array(),
+					'rows' => array(
+						array( 'acf_fc_layout' => 'hero', 'enabled' => 1 ),
+						array( 'acf_fc_layout' => 'faq', 'enabled' => 1 ),
+					),
+				),
+			),
+		);
+
+		$plan = self::PLANNER::plan( $production, $local );
+
+		self::assertSame( array(), $plan['defaults'] );
+		self::assertSame( 1, $plan['totals']['page_writes'] );
+		$override = $plan['pages'][0]['target_rows'][1]['overrides']['cross_key_facts'];
+		self::assertSame( 'Production title', $override['title'] );
+		self::assertSame( 'Production fact', $override['facts'][0]['label'] );
+	}
+
+	public function test_plan_resolves_page_media_before_comparing_with_effective_defaults(): void {
+		$this->assertPlannerExists();
+		$production_values = array(
+			'items' => array( array( 'title' => 'Bank', 'text' => 'Text', 'icon' => '91' ) ),
+		);
+		$production = array(
+			'defaults' => array( 'cross-swift-problems' => $production_values ),
+			'warnings' => array(),
+			'pages' => array(
+				'europe' => array(
+					'layouts' => array(
+						'cross-swift-problems' => array( 'values' => $production_values ),
+					),
+				),
+			),
+		);
+		$local = array(
+			'defaults' => array(
+				'cross-swift-problems' => array(
+					'items' => array( array( 'title' => 'Bank', 'text' => 'Text', 'icon' => 191 ) ),
+				),
+			),
+			'attachments' => array(),
+			'pages' => array(
+				'europe' => array(
+					'id' => 77,
+					'status' => 'publish',
+					'builder_enabled' => true,
+					'attachments' => array( 91 => 191 ),
+					'rows' => array(
+						array( 'acf_fc_layout' => 'hero', 'enabled' => 1 ),
+						array( 'acf_fc_layout' => 'faq', 'enabled' => 1 ),
+					),
+				),
+			),
+		);
+
+		$plan = self::PLANNER::plan( $production, $local );
+
+		$override = $plan['pages'][0]['target_rows'][1]['overrides']['cross_swift_problems'];
+		self::assertSame( array(), $override );
+		self::assertSame( array(), $plan['warnings'] );
+	}
+
 	public function test_plan_rejects_missing_pages_and_empty_or_malformed_builders(): void {
 		$this->assertPlannerExists();
 		$production = array(
