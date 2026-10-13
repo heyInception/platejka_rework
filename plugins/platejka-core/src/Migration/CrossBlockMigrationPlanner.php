@@ -98,7 +98,7 @@ final class CrossBlockMigrationPlanner {
 				$approved[ $target ] = array(
 					'source_layout' => $legacy,
 					'visibility'    => true,
-					'values'        => self::extractValues( $meta, $prefix, $legacy, true ),
+					'values'        => self::adaptReusableValues( $target, self::extractValues( $meta, $prefix, $legacy, true ) ),
 				);
 			}
 			if ( $approved ) {
@@ -162,6 +162,9 @@ final class CrossBlockMigrationPlanner {
 				$defaults = is_array( $production['defaults'][ $target_slug ] ?? null )
 					? $production['defaults'][ $target_slug ]
 					: ( is_array( $local_defaults[ $target_slug ] ?? null ) ? $local_defaults[ $target_slug ] : array() );
+				if ( 'guarantees' === $target_slug && is_array( $defaults['default'] ?? null ) ) {
+					$defaults = $defaults['default'];
+				}
 				$existing = self::firstTargetRow( $rows, (string) $target_slug );
 				$local_overrides = self::rowOverrides( $existing, (string) $target_slug );
 				$targets[ $target_slug ] = self::buildOverrides(
@@ -294,6 +297,13 @@ final class CrossBlockMigrationPlanner {
 		}
 		$row['enabled'] = 1;
 		$row['anchor'] ??= '';
+		if ( 'guarantees' === $slug ) {
+			$row['variant'] ??= 'default';
+			$row['overrides_default'] = is_array( $row['overrides_default'] ?? null ) ? $row['overrides_default'] : array();
+			$current = is_array( $row['overrides_default']['default'] ?? null ) ? $row['overrides_default']['default'] : array();
+			$row['overrides_default']['default'] = self::fillEmpty( $current, $overrides );
+			return $row;
+		}
 		$row['overrides'] = is_array( $row['overrides'] ?? null ) ? $row['overrides'] : array();
 		$group = str_replace( '-', '_', $slug );
 		$current = is_array( $row['overrides'][ $group ] ?? null ) ? $row['overrides'][ $group ] : array();
@@ -452,9 +462,43 @@ final class CrossBlockMigrationPlanner {
 
 	/** @param array<string,mixed> $row @return array<string,mixed> */
 	private static function rowOverrides( array $row, string $slug ): array {
+		if ( 'guarantees' === $slug ) {
+			$container = is_array( $row['overrides_default'] ?? null ) ? $row['overrides_default'] : array();
+			return is_array( $container['default'] ?? null ) ? $container['default'] : array();
+		}
 		$overrides = is_array( $row['overrides'] ?? null ) ? $row['overrides'] : array();
 		$group = str_replace( '-', '_', $slug );
 		return is_array( $overrides[ $group ] ?? null ) ? $overrides[ $group ] : $overrides;
+	}
+
+	/** @param array<string,mixed> $values @return array<string,mixed> */
+	private static function adaptReusableValues( string $target, array $values ): array {
+		if ( ! in_array( $target, array( 'problems', 'guarantees' ), true ) ) {
+			return $values;
+		}
+		$adapted = array();
+		if ( array_key_exists( 'title', $values ) ) {
+			$adapted['title'] = $values['title'];
+		}
+		if ( array_key_exists( 'intro', $values ) ) {
+			$adapted['description'] = $values['intro'];
+		}
+		if ( is_array( $values['items'] ?? null ) ) {
+			$adapted['items'] = array_map(
+				static function ( $item ): array {
+					if ( ! is_array( $item ) ) {
+						return array();
+					}
+					return array(
+						'title' => (string) ( $item['title'] ?? '' ),
+						'text'  => (string) ( $item['text'] ?? '' ),
+						'image' => $item['icon'] ?? '',
+					);
+				},
+				$values['items']
+			);
+		}
+		return $adapted;
 	}
 
 	/** @param array<int,array<string,mixed>> $rows */

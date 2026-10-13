@@ -6,6 +6,7 @@ INSERT INTO `wp_options` (`option_id`, `option_name`, `option_value`, `autoload`
 (1,'options_skvoznye_bloki','a:2:{i:0;s:14:"swift_problems";i:1;s:8:"audience";}','yes'),
 (2,'options_skvoznye_bloki_0_title','Первый заголовок','yes'),
 (3, 'options_skvoznye_bloki_0_title', 'Последний заголовок', 'yes'),
+(9, 'options_skvoznye_bloki_0_show_block', '1', 'yes'),
 (4,'siteurl','https://ignored.example','yes'),
 (5,'options_skvoznye_bloki_0_intro','Строка с \'кавычкой\', слешем C:\\Temp и переносом\nниже','yes'),
 (6,'options_skvoznye_bloki_broken');
@@ -24,6 +25,7 @@ INSERT INTO `wp_postmeta` (`meta_id`, `post_id`, `meta_key`, `meta_value`) VALUE
 (10,2182,'skvoznye_bloki','a:2:{i:0;s:14:"swift_problems";i:1;s:8:"audience";}'),
 (11,2182,'skvoznye_bloki_0_title','Старый SWIFT'),
 (12, 2182, 'skvoznye_bloki_0_title', 'Почему прямой SWIFT не работает'),
+(16, 2182, 'skvoznye_bloki_0_show_block', '1'),
 (13,2182,'_skvoznye_bloki_0_title','field_title'),
 (14,2182,'unrelated_meta','ignore'),
 (15,2183,'skvoznye_bloki','a:0:{}');

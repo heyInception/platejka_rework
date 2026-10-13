@@ -99,6 +99,29 @@ final class CrossBlockMigrationPlannerTest extends TestCase {
 		self::assertNotContains( 'documents', array_column( $result['rows'], 'acf_fc_layout' ) );
 	}
 
+	public function test_guarantees_use_the_existing_default_variant_override_shape(): void {
+		$this->assertPlannerExists();
+		$rows = array(
+			array(
+				'acf_fc_layout' => 'guarantees',
+				'enabled' => 0,
+				'variant' => 'inherit',
+				'overrides_default' => array( 'default' => array( 'title' => '' ) ),
+			),
+			array( 'acf_fc_layout' => 'faq', 'enabled' => 1 ),
+		);
+
+		$result = self::PLANNER::mergeBuilderRows(
+			$rows,
+			array( 'guarantees' => array( 'title' => 'Гарантии', 'description' => 'Текст' ) )
+		);
+
+		self::assertSame( 'Гарантии', $result['rows'][0]['overrides_default']['default']['title'] );
+		self::assertSame( 'Текст', $result['rows'][0]['overrides_default']['default']['description'] );
+		self::assertArrayNotHasKey( 'overrides', $result['rows'][0] );
+		self::assertSame( 'inherit', $result['rows'][0]['variant'] );
+	}
+
 	public function test_plan_inherits_equal_values_preserves_conflicts_and_replaces_repeaters_wholesale(): void {
 		$this->assertPlannerExists();
 		$production = array(
