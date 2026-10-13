@@ -47,6 +47,13 @@ $expected = array(
 	array( 'field_platejka_defaults_call_v1', 'Форма заявки', 'call' ),
 	array( 'field_platejka_defaults_hero_v1', 'Hero — Внутренняя страница', 'hero' ),
 	array( 'field_platejka_defaults_protection_v1', 'Защита платежа', 'protection' ),
+	array( 'field_platejka_defaults_cross_exchange_v1', 'Кросс-блок — Обмен валют', 'cross_exchange' ),
+	array( 'field_platejka_defaults_cross_company_metrics_v1', 'Кросс-блок — Показатели компании', 'cross_company_metrics' ),
+	array( 'field_platejka_defaults_cross_external_ratings_v1', 'Кросс-блок — Рейтинги на внешних площадках', 'cross_external_ratings' ),
+	array( 'field_platejka_defaults_cross_key_facts_v1', 'Кросс-блок — Конкретные цифры и условия', 'cross_key_facts' ),
+	array( 'field_platejka_defaults_cross_transfer_goals_v1', 'Кросс-блок — Частые цели переводов', 'cross_transfer_goals' ),
+	array( 'field_platejka_defaults_cross_swift_problems_v1', 'Кросс-блок — Почему прямой SWIFT не работает', 'cross_swift_problems' ),
+	array( 'field_platejka_defaults_cross_audience_v1', 'Кросс-блок — Кому подходит', 'cross_audience' ),
 );
 $fields = $group['fields'] ?? array();
 $actual = array(); $valid_tabs = true; $keys = array();
@@ -63,7 +70,7 @@ $assert( $valid_tabs, 'Every navigation field is a left tab followed by the unch
 $assert( ! in_array( '', $keys, true ) && count( $keys ) === count( array_unique( $keys ) ), 'Top-level ACF field keys are non-empty and unique.' );
 $live_fields = function_exists( 'acf_get_fields' ) ? acf_get_fields( 'group_platejka_section_defaults_v1' ) : array();
 $live_tabs = array_filter( is_array( $live_fields ) ? $live_fields : array(), static fn( $field ) => 'tab' === ( $field['type'] ?? '' ) && 'left' === ( $field['placement'] ?? '' ) );
-$assert( 42 === count( is_array( $live_fields ) ? $live_fields : array() ) && 21 === count( $live_tabs ), 'Live ACF loads all 21 left tabs and 21 section groups.' );
+$assert( 56 === count( is_array( $live_fields ) ? $live_fields : array() ) && 28 === count( $live_tabs ), 'Live ACF loads all 28 left tabs and 28 section groups.' );
 
 WP_CLI::log( sprintf( 'Shared section tabs: %d checks, %d failures.', $checks, count( $failures ) ) );
 if ( $failures ) { WP_CLI::halt( 1 ); }

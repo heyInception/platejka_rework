@@ -264,6 +264,78 @@ function platejka_cross_block_layout_definitions(): array {
 	);
 }
 
+/** Return the canonical defaults field key for a dedicated cross-block. */
+function platejka_cross_block_default_field_key( string $slug ): string {
+	return 'field_platejka_defaults_' . str_replace( '-', '_', $slug ) . '_v1';
+}
+
+/**
+ * Give copied legacy content fields unique canonical keys.
+ *
+ * @param array<int,array<string,mixed>> $fields Fields to re-key.
+ * @return array<int,array<string,mixed>>
+ */
+function platejka_cross_block_default_sub_fields( array $fields, string $scope ): array {
+	$result = array();
+	foreach ( $fields as $field ) {
+		if ( ! is_array( $field ) || in_array( $field['name'] ?? '', array( 'show_block', 'vklyuchit_blok' ), true ) ) {
+			continue;
+		}
+
+		$name         = sanitize_key( (string) ( $field['name'] ?? 'field' ) );
+		$field['key'] = 'field_platejka_defaults_' . $scope . '_' . $name . '_v1';
+		if ( 'image' === ( $field['type'] ?? '' ) ) {
+			$field['return_format'] = 'id';
+		}
+		if ( isset( $field['sub_fields'] ) && is_array( $field['sub_fields'] ) ) {
+			$field['sub_fields'] = platejka_cross_block_default_sub_fields( $field['sub_fields'], $scope . '_' . $name );
+		}
+		$result[] = $field;
+	}
+
+	return $result;
+}
+
+/**
+ * Canonical shared content groups for the seven dedicated cross-blocks.
+ *
+ * @return array<string,array<string,mixed>>
+ */
+function platejka_cross_block_default_groups(): array {
+	$layouts = array_column( platejka_cross_block_layout_definitions(), null, 'name' );
+	$config  = array(
+		'cross-exchange'         => array( 'label' => 'Обмен валют', 'legacy' => 'wtt' ),
+		'cross-company-metrics'  => array( 'label' => 'Показатели компании', 'legacy' => 'company_metrics' ),
+		'cross-external-ratings' => array( 'label' => 'Рейтинги на внешних площадках', 'legacy' => 'external_ratings' ),
+		'cross-key-facts'        => array( 'label' => 'Конкретные цифры и условия', 'legacy' => 'key_facts' ),
+		'cross-transfer-goals'   => array( 'label' => 'Частые цели переводов', 'legacy' => 'transfer_goals' ),
+		'cross-swift-problems'   => array( 'label' => 'Почему прямой SWIFT не работает', 'legacy' => 'swift_problems' ),
+		'cross-audience'         => array( 'label' => 'Кому подходит', 'legacy' => 'audience' ),
+	);
+	$groups  = array();
+
+	foreach ( $config as $slug => $definition ) {
+		$scope      = str_replace( '-', '_', $slug );
+		$sub_fields = 'wtt' === $definition['legacy']
+			? array( platejka_cross_block_field( 'exchange', 'title', 'Заголовок', 'text' ) )
+			: (array) ( $layouts[ $definition['legacy'] ]['sub_fields'] ?? array() );
+		$groups[ $slug ] = array(
+			'key'               => platejka_cross_block_default_field_key( $slug ),
+			'label'             => 'Кросс-блок — ' . $definition['label'],
+			'name'              => $scope,
+			'type'              => 'group',
+			'instructions'      => '',
+			'required'          => 0,
+			'conditional_logic' => 0,
+			'wrapper'           => array( 'width' => '', 'class' => '', 'id' => '' ),
+			'layout'            => 'block',
+			'sub_fields'        => platejka_cross_block_default_sub_fields( $sub_fields, $scope ),
+		);
+	}
+
+	return $groups;
+}
+
 /** @param array<string,mixed> $field @return array<string,mixed> */
 function platejka_extend_cross_blocks_field( array $field ): array {
 	$approved = platejka_cross_block_map();
@@ -312,7 +384,7 @@ add_filter( 'acf/load_field/key=field_67924d166072f', 'platejka_extend_cross_blo
  *
  * @return array<string,mixed>
  */
-function platejka_cross_block_builder_layout( string $slug, string $label ): array {
+function platejka_cross_block_builder_layout( string $slug, string $label, string $default_field_key ): array {
 	$key_scope = str_replace( '-', '_', $slug );
 
 	return array(
@@ -336,6 +408,17 @@ function platejka_cross_block_builder_layout( string $slug, string $label ): arr
 				'type'        => 'text',
 				'placeholder' => 'bez-reshetki',
 			),
+			array(
+				'key'         => 'field_platejka_row_' . $key_scope . '_overrides_v1',
+				'label'       => 'Локальные изменения',
+				'name'        => 'overrides',
+				'type'        => 'clone',
+				'clone'       => array( $default_field_key ),
+				'display'     => 'group',
+				'layout'      => 'block',
+				'prefix_label' => 0,
+				'prefix_name' => 0,
+			),
 		),
 		'min'        => '',
 		'max'        => '',
@@ -345,30 +428,31 @@ function platejka_cross_block_builder_layout( string $slug, string $label ): arr
 /** @return array<int,array<string,mixed>> */
 function platejka_cross_block_builder_layouts(): array {
 	return array(
-		platejka_cross_block_builder_layout( 'cross-exchange', 'Обмен валют' ),
-		platejka_cross_block_builder_layout( 'cross-company-metrics', 'Показатели компании' ),
-		platejka_cross_block_builder_layout( 'cross-external-ratings', 'Рейтинги на внешних площадках' ),
-		platejka_cross_block_builder_layout( 'cross-key-facts', 'Конкретные цифры и условия' ),
-		platejka_cross_block_builder_layout( 'cross-transfer-goals', 'Частые цели переводов' ),
-		platejka_cross_block_builder_layout( 'cross-swift-problems', 'Почему прямой SWIFT не работает' ),
-		platejka_cross_block_builder_layout( 'cross-audience', 'Кому подходит' ),
+		platejka_cross_block_builder_layout( 'cross-exchange', 'Обмен валют', platejka_cross_block_default_field_key( 'cross-exchange' ) ),
+		platejka_cross_block_builder_layout( 'cross-company-metrics', 'Показатели компании', platejka_cross_block_default_field_key( 'cross-company-metrics' ) ),
+		platejka_cross_block_builder_layout( 'cross-external-ratings', 'Рейтинги на внешних площадках', platejka_cross_block_default_field_key( 'cross-external-ratings' ) ),
+		platejka_cross_block_builder_layout( 'cross-key-facts', 'Конкретные цифры и условия', platejka_cross_block_default_field_key( 'cross-key-facts' ) ),
+		platejka_cross_block_builder_layout( 'cross-transfer-goals', 'Частые цели переводов', platejka_cross_block_default_field_key( 'cross-transfer-goals' ) ),
+		platejka_cross_block_builder_layout( 'cross-swift-problems', 'Почему прямой SWIFT не работает', platejka_cross_block_default_field_key( 'cross-swift-problems' ) ),
+		platejka_cross_block_builder_layout( 'cross-audience', 'Кому подходит', platejka_cross_block_default_field_key( 'cross-audience' ) ),
 	);
 }
 
 /** @param array<string,mixed> $field @return array<string,mixed> */
 function platejka_extend_section_builder_with_cross_blocks( array $field ): array {
 	$field['layouts'] = is_array( $field['layouts'] ?? null ) ? $field['layouts'] : array();
-	$existing         = array();
-	foreach ( $field['layouts'] as $layout ) {
-		if ( is_array( $layout ) && isset( $layout['name'] ) ) {
-			$existing[] = (string) $layout['name'];
+	$approved         = array_column( platejka_cross_block_builder_layouts(), null, 'name' );
+
+	foreach ( $field['layouts'] as $key => $layout ) {
+		$name = is_array( $layout ) ? (string) ( $layout['name'] ?? '' ) : '';
+		if ( isset( $approved[ $name ] ) ) {
+			$field['layouts'][ $key ] = $approved[ $name ];
+			unset( $approved[ $name ] );
 		}
 	}
 
-	foreach ( platejka_cross_block_builder_layouts() as $layout ) {
-		if ( ! in_array( $layout['name'], $existing, true ) ) {
-			$field['layouts'][ $layout['key'] ] = $layout;
-		}
+	foreach ( $approved as $layout ) {
+		$field['layouts'][ $layout['key'] ] = $layout;
 	}
 
 	return $field;

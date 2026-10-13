@@ -1738,7 +1738,8 @@
                     "display": "block",
                     "sub_fields": [
                         {"key":"field_platejka_row_cross_exchange_enabled_v1","label":"Показывать секцию","name":"enabled","type":"true_false","default_value":0,"ui":1},
-                        {"key":"field_platejka_row_cross_exchange_anchor_v1","label":"Якорь секции","name":"anchor","type":"text","placeholder":"bez-reshetki"}
+                        {"key":"field_platejka_row_cross_exchange_anchor_v1","label":"Якорь секции","name":"anchor","type":"text","placeholder":"bez-reshetki"},
+                        {"key":"field_platejka_row_cross_exchange_overrides_v1","label":"Локальные изменения","name":"overrides","type":"clone","clone":["field_platejka_defaults_cross_exchange_v1"],"display":"group","layout":"block","prefix_label":0,"prefix_name":0}
                     ],
                     "min": "",
                     "max": ""
@@ -1750,7 +1751,8 @@
                     "display": "block",
                     "sub_fields": [
                         {"key":"field_platejka_row_cross_company_metrics_enabled_v1","label":"Показывать секцию","name":"enabled","type":"true_false","default_value":0,"ui":1},
-                        {"key":"field_platejka_row_cross_company_metrics_anchor_v1","label":"Якорь секции","name":"anchor","type":"text","placeholder":"bez-reshetki"}
+                        {"key":"field_platejka_row_cross_company_metrics_anchor_v1","label":"Якорь секции","name":"anchor","type":"text","placeholder":"bez-reshetki"},
+                        {"key":"field_platejka_row_cross_company_metrics_overrides_v1","label":"Локальные изменения","name":"overrides","type":"clone","clone":["field_platejka_defaults_cross_company_metrics_v1"],"display":"group","layout":"block","prefix_label":0,"prefix_name":0}
                     ],
                     "min": "",
                     "max": ""
@@ -1762,7 +1764,8 @@
                     "display": "block",
                     "sub_fields": [
                         {"key":"field_platejka_row_cross_external_ratings_enabled_v1","label":"Показывать секцию","name":"enabled","type":"true_false","default_value":0,"ui":1},
-                        {"key":"field_platejka_row_cross_external_ratings_anchor_v1","label":"Якорь секции","name":"anchor","type":"text","placeholder":"bez-reshetki"}
+                        {"key":"field_platejka_row_cross_external_ratings_anchor_v1","label":"Якорь секции","name":"anchor","type":"text","placeholder":"bez-reshetki"},
+                        {"key":"field_platejka_row_cross_external_ratings_overrides_v1","label":"Локальные изменения","name":"overrides","type":"clone","clone":["field_platejka_defaults_cross_external_ratings_v1"],"display":"group","layout":"block","prefix_label":0,"prefix_name":0}
                     ],
                     "min": "",
                     "max": ""
@@ -1774,7 +1777,8 @@
                     "display": "block",
                     "sub_fields": [
                         {"key":"field_platejka_row_cross_key_facts_enabled_v1","label":"Показывать секцию","name":"enabled","type":"true_false","default_value":0,"ui":1},
-                        {"key":"field_platejka_row_cross_key_facts_anchor_v1","label":"Якорь секции","name":"anchor","type":"text","placeholder":"bez-reshetki"}
+                        {"key":"field_platejka_row_cross_key_facts_anchor_v1","label":"Якорь секции","name":"anchor","type":"text","placeholder":"bez-reshetki"},
+                        {"key":"field_platejka_row_cross_key_facts_overrides_v1","label":"Локальные изменения","name":"overrides","type":"clone","clone":["field_platejka_defaults_cross_key_facts_v1"],"display":"group","layout":"block","prefix_label":0,"prefix_name":0}
                     ],
                     "min": "",
                     "max": ""
@@ -1786,7 +1790,8 @@
                     "display": "block",
                     "sub_fields": [
                         {"key":"field_platejka_row_cross_transfer_goals_enabled_v1","label":"Показывать секцию","name":"enabled","type":"true_false","default_value":0,"ui":1},
-                        {"key":"field_platejka_row_cross_transfer_goals_anchor_v1","label":"Якорь секции","name":"anchor","type":"text","placeholder":"bez-reshetki"}
+                        {"key":"field_platejka_row_cross_transfer_goals_anchor_v1","label":"Якорь секции","name":"anchor","type":"text","placeholder":"bez-reshetki"},
+                        {"key":"field_platejka_row_cross_transfer_goals_overrides_v1","label":"Локальные изменения","name":"overrides","type":"clone","clone":["field_platejka_defaults_cross_transfer_goals_v1"],"display":"group","layout":"block","prefix_label":0,"prefix_name":0}
                     ],
                     "min": "",
                     "max": ""
@@ -1798,7 +1803,8 @@
                     "display": "block",
                     "sub_fields": [
                         {"key":"field_platejka_row_cross_swift_problems_enabled_v1","label":"Показывать секцию","name":"enabled","type":"true_false","default_value":0,"ui":1},
-                        {"key":"field_platejka_row_cross_swift_problems_anchor_v1","label":"Якорь секции","name":"anchor","type":"text","placeholder":"bez-reshetki"}
+                        {"key":"field_platejka_row_cross_swift_problems_anchor_v1","label":"Якорь секции","name":"anchor","type":"text","placeholder":"bez-reshetki"},
+                        {"key":"field_platejka_row_cross_swift_problems_overrides_v1","label":"Локальные изменения","name":"overrides","type":"clone","clone":["field_platejka_defaults_cross_swift_problems_v1"],"display":"group","layout":"block","prefix_label":0,"prefix_name":0}
                     ],
                     "min": "",
                     "max": ""
@@ -1810,7 +1816,8 @@
                     "display": "block",
                     "sub_fields": [
                         {"key":"field_platejka_row_cross_audience_enabled_v1","label":"Показывать секцию","name":"enabled","type":"true_false","default_value":0,"ui":1},
-                        {"key":"field_platejka_row_cross_audience_anchor_v1","label":"Якорь секции","name":"anchor","type":"text","placeholder":"bez-reshetki"}
+                        {"key":"field_platejka_row_cross_audience_anchor_v1","label":"Якорь секции","name":"anchor","type":"text","placeholder":"bez-reshetki"},
+                        {"key":"field_platejka_row_cross_audience_overrides_v1","label":"Локальные изменения","name":"overrides","type":"clone","clone":["field_platejka_defaults_cross_audience_v1"],"display":"group","layout":"block","prefix_label":0,"prefix_name":0}
                     ],
                     "min": "",
                     "max": ""

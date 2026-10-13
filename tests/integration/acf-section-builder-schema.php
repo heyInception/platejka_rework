@@ -92,9 +92,9 @@ foreach ( (array) ( $builder['fields'] ?? array() ) as $field ) {
 $assert( 'field_platejka_page_builder_v1' === ( $builder_toggle['key'] ?? null ) && 'true_false' === ( $builder_toggle['type'] ?? null ), 'Builder toggle uses its stable key and boolean type.' );
 $assert( 'field_platejka_sections_v1' === ( $sections_field['key'] ?? null ) && 'flexible_content' === ( $sections_field['type'] ?? null ), 'Sections field uses its stable key and flexible-content type.' );
 
-$expected_layouts = array( 'hero-main', 'about', 'shipments', 'guarantees', 'documents', 'compliance', 'review-main', 'work', 'calculator', 'process', 'with-us', 'destinations', 'seo', 'problems', 'serves', 'cases', 'table', 'faq', 'call', 'hero', 'protection', 'review' );
+$expected_layouts = array( 'hero-main', 'about', 'shipments', 'guarantees', 'documents', 'compliance', 'review-main', 'work', 'calculator', 'process', 'with-us', 'destinations', 'seo', 'problems', 'serves', 'cases', 'table', 'faq', 'call', 'hero', 'protection', 'review', 'cross-exchange', 'cross-company-metrics', 'cross-external-ratings', 'cross-key-facts', 'cross-transfer-goals', 'cross-swift-problems', 'cross-audience' );
 $layouts = array_values( (array) ( $sections_field['layouts'] ?? array() ) );
-$assert( $expected_layouts === array_column( $layouts, 'name' ), 'Builder keeps the original layouts and appends the three approved internal-page layouts.' );
+$assert( $expected_layouts === array_column( $layouts, 'name' ), 'Builder keeps the original layouts and appends the approved internal-page and cross-block layouts.' );
 foreach ( $layouts as $layout ) {
 	$by_name = array();
 	foreach ( (array) ( $layout['sub_fields'] ?? array() ) as $field ) {
@@ -110,6 +110,24 @@ foreach ( $layouts as $layout ) {
 }
 
 $layouts_by_name = array_column( $layouts, null, 'name' );
+$cross_layouts = array(
+	'cross-exchange'         => array( 'Кросс-блок — Обмен валют', 'field_platejka_defaults_cross_exchange_v1' ),
+	'cross-company-metrics'  => array( 'Кросс-блок — Показатели компании', 'field_platejka_defaults_cross_company_metrics_v1' ),
+	'cross-external-ratings' => array( 'Кросс-блок — Рейтинги на внешних площадках', 'field_platejka_defaults_cross_external_ratings_v1' ),
+	'cross-key-facts'        => array( 'Кросс-блок — Конкретные цифры и условия', 'field_platejka_defaults_cross_key_facts_v1' ),
+	'cross-transfer-goals'   => array( 'Кросс-блок — Частые цели переводов', 'field_platejka_defaults_cross_transfer_goals_v1' ),
+	'cross-swift-problems'   => array( 'Кросс-блок — Почему прямой SWIFT не работает', 'field_platejka_defaults_cross_swift_problems_v1' ),
+	'cross-audience'         => array( 'Кросс-блок — Кому подходит', 'field_platejka_defaults_cross_audience_v1' ),
+);
+foreach ( $cross_layouts as $layout_name => $contract ) {
+	list( $label, $clone_key ) = $contract;
+	$layout        = $layouts_by_name[ $layout_name ] ?? array();
+	$layout_fields = array_column( (array) ( $layout['sub_fields'] ?? array() ), null, 'name' );
+	$assert( $label === ( $layout['label'] ?? null ), 'Cross-block layout uses the approved editor label: ' . $layout_name );
+	$assert( array( 'enabled', 'anchor', 'overrides' ) === array_keys( $layout_fields ), 'Cross-block layout exposes exactly enabled, anchor, and overrides: ' . $layout_name );
+	$assert( 'clone' === ( $layout_fields['overrides']['type'] ?? null ) && array( $clone_key ) === ( $layout_fields['overrides']['clone'] ?? null ), 'Cross-block override clones its canonical defaults: ' . $layout_name );
+	$assert( 'group' === ( $layout_fields['overrides']['display'] ?? null ) && 0 === ( $layout_fields['overrides']['prefix_name'] ?? null ), 'Cross-block override uses unprefixed group display: ' . $layout_name );
+}
 $process_layout_fields = array_column( (array) ( $layouts_by_name['process']['sub_fields'] ?? array() ), null, 'name' );
 $assert( 'layout_platejka_process_v1' === ( $layouts_by_name['process']['key'] ?? null ), 'Process layout uses its stable key.' );
 $assert( array( 'field_platejka_defaults_process_v1' ) === ( $process_layout_fields['overrides']['clone'] ?? null ), 'Process layout clones the canonical Process group.' );
@@ -122,6 +140,12 @@ foreach ( array( 'shipments' => $shipments_layout_fields, 'cases' => $cases_layo
 }
 
 $default_fields = array_column( (array) ( $defaults['fields'] ?? array() ), null, 'name' );
+foreach ( $cross_layouts as $layout_name => $contract ) {
+	$default_name = str_replace( '-', '_', $layout_name );
+	$field        = $default_fields[ $default_name ] ?? array();
+	$assert( $contract[1] === ( $field['key'] ?? null ) && 'group' === ( $field['type'] ?? null ), 'Cross-block defaults group is canonical: ' . $layout_name );
+	$assert( ! in_array( 'show_block', array_column( (array) ( $field['sub_fields'] ?? array() ), 'name' ), true ), 'Cross-block defaults exclude legacy visibility: ' . $layout_name );
+}
 $process        = $default_fields['process'] ?? array();
 $process_fields = array_column( (array) ( $process['sub_fields'] ?? array() ), null, 'name' );
 $process_items  = $process_fields['items'] ?? array();
