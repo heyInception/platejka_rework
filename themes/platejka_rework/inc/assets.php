@@ -25,7 +25,7 @@ function platejka_normalize_section( $section ): ?array {
 		'template'  => $resolved['template'],
 		'mode'      => isset( $config['mode'] ) && 'main' === $config['mode'] ? 'main' : 'default',
 	);
-	foreach ( array( 'content_slug', 'row', 'instance', 'anchor', 'legacy_layout', 'cross_block_row', 'cross_block_adapter' ) as $key ) {
+	foreach ( array( 'content_slug', 'row', 'instance', 'anchor' ) as $key ) {
 		if ( array_key_exists( $key, $config ) ) {
 			$normalized[ $key ] = $config[ $key ];
 		}
@@ -136,7 +136,7 @@ function platejka_render_section( $section ): void {
 	$section_data     = function_exists( 'platejka_resolve_section_data' ) ? platejka_resolve_section_data( $config, (int) get_queried_object_id() ) : array();
 	$section_instance = isset( $config['instance'] ) && is_string( $config['instance'] ) ? $config['instance'] : $config['slug'];
 	$section_anchor   = isset( $config['anchor'] ) && is_string( $config['anchor'] ) ? $config['anchor'] : '';
-	$legacy_layout    = isset( $config['legacy_layout'] ) && is_string( $config['legacy_layout'] ) ? $config['legacy_layout'] : '';
+	$legacy_layout    = function_exists( 'platejka_cross_block_layout_for_section' ) ? platejka_cross_block_layout_for_section( $config['slug'] ) : '';
 	ob_start();
 	include $template;
 	$output = (string) ob_get_clean();

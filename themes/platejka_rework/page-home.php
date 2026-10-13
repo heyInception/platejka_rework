@@ -35,7 +35,6 @@ $fallback_sections = array(
 	);
 $post_id  = get_queried_object_id();
 $sections = platejka_get_page_sections( $post_id, $fallback_sections );
-$sections = platejka_compose_cross_blocks( $sections, platejka_get_cross_block_rows( $post_id ), $post_id );
 $sections = platejka_use_sections( $sections );
 get_header();
 ?>

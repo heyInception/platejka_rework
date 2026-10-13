@@ -42,7 +42,7 @@ $exchange = platejka_cross_render_fixture( $template, 'wtt', array( 'title' => '
 platejka_cross_render_assert( str_contains( $exchange, 'id="cross-exchange-test"' ), 'Exchange section ID is missing.' );
 platejka_cross_render_assert( str_contains( $exchange, 'Курсы валют' ) && str_contains( $exchange, 'Обменять валюту' ), 'Exchange heading/CTA is missing.' );
 platejka_cross_render_assert( str_contains( $exchange, 'USD' ) && str_contains( $exchange, 'EUR' ) && str_contains( $exchange, 'CNY' ), 'Server exchange values are missing.' );
-foreach ( array( 'class="cross-block cb-exchange calculate"', 'data-cb-exchange-calculator', 'type="range"', 'data-action="buy"', 'data-action="sell"', 'data-exchange-rates', 'data-role="exchange-total"' ) as $required ) {
+foreach ( array( 'class="cross-block cb-exchange calculate"', 'data-cb-exchange-calculator', 'class="calculate__buttons"', 'type="range"', 'class="calculate__range slider-progress"', 'data-action="buy"', 'data-action="sell"', 'data-exchange-rates', 'data-role="exchange-prompt"', 'data-role="exchange-value"', 'data-role="exchange-total"', 'Сколько вы хотите купить?', 'Сумма сделки' ) as $required ) {
 	platejka_cross_render_assert( str_contains( $exchange, $required ), 'Exchange source structure is missing: ' . $required );
 }
 
@@ -75,6 +75,19 @@ $ratings = platejka_cross_render_fixture(
 );
 platejka_cross_render_assert( str_contains( $ratings, 'Нас оценивают' ) && str_contains( $ratings, 'Яндекс' ) && str_contains( $ratings, '4,9' ), 'External ratings content is incomplete.' );
 platejka_cross_render_assert( str_contains( $ratings, 'class="cross-block cb-ratings"' ) && str_contains( $ratings, 'class="cb-rating-card"' ), 'External ratings source structure changed.' );
+$rating_warnings = array();
+set_error_handler(
+	static function ( int $severity, string $message ) use ( &$rating_warnings ): bool {
+		if ( E_WARNING === $severity || E_NOTICE === $severity ) {
+			$rating_warnings[] = $message;
+			return true;
+		}
+		return false;
+	}
+);
+platejka_cross_render_fixture( $template, 'external_ratings', array( 'overall_rating' => 5 ), 'cross-ratings-no-title' );
+restore_error_handler();
+platejka_cross_render_assert( array() === $rating_warnings, 'External ratings without a custom title emitted a PHP warning.' );
 
 $facts = platejka_cross_render_fixture(
 	$template,
