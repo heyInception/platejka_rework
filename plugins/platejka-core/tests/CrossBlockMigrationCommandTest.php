@@ -22,8 +22,14 @@ if ( ! function_exists( 'get_field' ) ) {
 if ( ! function_exists( 'update_field' ) ) {
 	function update_field( string $field, $value, $context = false ): bool {
 		$GLOBALS['platejka_cross_command_updates'][] = array( $field, $value, $context );
+		if ( str_starts_with( $field, 'field_platejka_defaults_' ) && is_array( $value ) && ! array_is_list( $value ) ) {
+			$value = array_reverse( $value, true );
+		}
+		if ( 'field_platejka_sections_v1' === $field && ! empty( $GLOBALS['platejka_cross_command_adds_empty_schema_fields'] ) && is_array( $value[0] ?? null ) ) {
+			$value[0]['schema_default'] = '';
+		}
 		$GLOBALS['platejka_cross_command_fields'][ (string) $context ][ $field ] = $value;
-		return true;
+		return empty( $GLOBALS['platejka_cross_command_update_returns_false'] );
 	}
 }
 if ( ! function_exists( 'get_post_status' ) ) {
@@ -34,6 +40,19 @@ if ( ! function_exists( 'get_post_status' ) ) {
 if ( ! function_exists( 'get_post_field' ) ) {
 	function get_post_field( string $field, int $post_id ): string {
 		return 'post_name' === $field ? ( $GLOBALS['platejka_cross_command_slugs'][ $post_id ] ?? '' ) : '';
+	}
+}
+if ( ! function_exists( 'acf_get_field' ) ) {
+	function acf_get_field( string $key ) {
+		return $GLOBALS['platejka_cross_command_acf_fields'][ $key ] ?? null;
+	}
+}
+if ( ! function_exists( 'acf_update_value' ) ) {
+	function acf_update_value( $value, $context, array $field ): bool {
+		$GLOBALS['platejka_cross_command_acf_value_updates'][] = array( $value, $context, $field );
+		$key = (string) ( $field['key'] ?? '' );
+		$GLOBALS['platejka_cross_command_fields'][ (string) $context ][ $key ] = $value;
+		return empty( $GLOBALS['platejka_cross_command_update_returns_false'] );
 	}
 }
 
@@ -51,6 +70,10 @@ final class CrossBlockMigrationCommandTest extends TestCase {
 
 	protected function setUp(): void {
 		$GLOBALS['platejka_cross_command_updates'] = array();
+		$GLOBALS['platejka_cross_command_update_returns_false'] = false;
+		$GLOBALS['platejka_cross_command_adds_empty_schema_fields'] = false;
+		$GLOBALS['platejka_cross_command_acf_fields'] = array();
+		$GLOBALS['platejka_cross_command_acf_value_updates'] = array();
 		$GLOBALS['platejka_cross_command_pages'] = array(
 			'perevody-v-evropu-dlya-yurlicz' => (object) array( 'ID' => 77, 'post_name' => 'perevody-v-evropu-dlya-yurlicz', 'post_status' => 'publish' ),
 		);
@@ -125,6 +148,138 @@ final class CrossBlockMigrationCommandTest extends TestCase {
 		$manifest = self::COMMAND::sealManifest( $manifest );
 		$this->assertRejected( $manifest, $backup, 'excluded' );
 		self::assertSame( array(), $GLOBALS['platejka_cross_command_updates'] );
+	}
+
+	public function test_apply_creates_backup_writes_and_verifies_the_approved_manifest(): void {
+		$this->assertCommandExists();
+		$manifest = self::COMMAND::preview( $this->fixturePath() );
+		$backup = sys_get_temp_dir() . '/cross-block-command-valid-backup.json';
+		if ( is_file( $backup ) ) {
+			unlink( $backup );
+		}
+
+		try {
+			$result = self::COMMAND::applyManifest( $manifest, $backup );
+			self::assertTrue( $result['verified'] );
+			self::assertSame( count( $manifest['plan']['defaults'] ), $result['writes']['defaults'] );
+			self::assertSame( count( $manifest['plan']['pages'] ), $result['writes']['pages'] );
+			self::assertFileExists( $backup );
+			self::assertNotEmpty( $GLOBALS['platejka_cross_command_updates'] );
+		} finally {
+			if ( is_file( $backup ) ) {
+				unlink( $backup );
+			}
+		}
+	}
+
+	public function test_apply_uses_reread_verification_when_acf_returns_false_for_an_identical_value(): void {
+		$this->assertCommandExists();
+		$manifest = self::COMMAND::preview( $this->fixturePath() );
+		$backup = sys_get_temp_dir() . '/cross-block-command-false-return-backup.json';
+		if ( is_file( $backup ) ) {
+			unlink( $backup );
+		}
+		$GLOBALS['platejka_cross_command_update_returns_false'] = true;
+
+		try {
+			$result = self::COMMAND::applyManifest( $manifest, $backup );
+			self::assertTrue( $result['verified'] );
+			self::assertSame( count( $manifest['plan']['pages'] ), $result['writes']['pages'] );
+		} finally {
+			if ( is_file( $backup ) ) {
+				unlink( $backup );
+			}
+		}
+	}
+
+	public function test_apply_verification_accepts_empty_fields_materialized_by_acf_schema(): void {
+		$this->assertCommandExists();
+		$manifest = self::COMMAND::preview( $this->fixturePath() );
+		$backup = sys_get_temp_dir() . '/cross-block-command-schema-default-backup.json';
+		if ( is_file( $backup ) ) {
+			unlink( $backup );
+		}
+		$GLOBALS['platejka_cross_command_adds_empty_schema_fields'] = true;
+
+		try {
+			$result = self::COMMAND::applyManifest( $manifest, $backup );
+			self::assertTrue( $result['verified'] );
+		} finally {
+			if ( is_file( $backup ) ) {
+				unlink( $backup );
+			}
+		}
+	}
+
+	public function test_verification_treats_a_materialized_empty_clone_as_null_but_rejects_content(): void {
+		$this->assertCommandExists();
+		$equivalent = new ReflectionMethod( self::COMMAND, 'equivalentValue' );
+		$empty_clone = array(
+			'cross_company_metrics' => array(
+				'title' => null,
+				'metrics' => false,
+				'cta' => null,
+			),
+		);
+		self::assertTrue( $equivalent->invoke( null, $empty_clone, null ) );
+		$empty_clone['cross_company_metrics']['title'] = 'Локальный заголовок';
+		self::assertFalse( $equivalent->invoke( null, $empty_clone, null ) );
+	}
+
+	public function test_apply_writes_clone_overrides_with_acf_field_keys(): void {
+		$this->assertCommandExists();
+		$GLOBALS['platejka_cross_command_acf_fields'] = array(
+			'field_platejka_sections_v1' => array(
+				'key' => 'field_platejka_sections_v1',
+				'name' => 'platejka_sections',
+				'type' => 'flexible_content',
+				'layouts' => array(
+					array(
+						'name' => 'cross-swift-problems',
+						'sub_fields' => array(
+							array( 'key' => 'field_swift_enabled', 'name' => 'enabled', 'type' => 'true_false' ),
+							array( 'key' => 'field_swift_anchor', 'name' => 'anchor', 'type' => 'text' ),
+							array( 'key' => 'field_swift_overrides', 'name' => 'overrides', 'type' => 'clone', 'clone' => array( 'field_swift_group' ), 'display' => 'group' ),
+						),
+					),
+				),
+			),
+			'field_swift_enabled' => array( 'key' => 'field_swift_enabled', 'name' => 'enabled', 'type' => 'true_false' ),
+			'field_swift_anchor' => array( 'key' => 'field_swift_anchor', 'name' => 'anchor', 'type' => 'text' ),
+			'field_swift_overrides' => array(
+				'key' => 'field_swift_overrides',
+				'name' => 'overrides',
+				'_name' => 'overrides',
+				'type' => 'clone',
+				'clone' => array( 'field_swift_group' ),
+				'display' => 'group',
+				'sub_fields' => array( array( 'key' => 'field_swift_group', 'name' => 'cross_swift_problems', 'type' => 'group', 'sub_fields' => array( array( 'key' => 'field_swift_title', 'name' => 'title', 'type' => 'text' ) ) ) ),
+			),
+			'field_swift_group' => array( 'key' => 'field_swift_group', 'name' => 'cross_swift_problems', 'type' => 'group', 'sub_fields' => array( array( 'key' => 'field_swift_title', 'name' => 'title', 'type' => 'text' ) ) ),
+			'field_swift_title' => array( 'key' => 'field_swift_title', 'name' => 'title', 'type' => 'text' ),
+		);
+		$manifest = self::COMMAND::preview( $this->fixturePath() );
+		$backup = sys_get_temp_dir() . '/cross-block-command-field-key-backup.json';
+		if ( is_file( $backup ) ) {
+			unlink( $backup );
+		}
+
+		try {
+			$result = self::COMMAND::applyManifest( $manifest, $backup );
+			self::assertTrue( $result['verified'] );
+			$acf_write = current( array_filter( $GLOBALS['platejka_cross_command_acf_value_updates'], static fn( array $write ): bool => 'field_platejka_sections_v1' === ( $write[2]['key'] ?? '' ) ) );
+			self::assertNotFalse( $acf_write );
+			$swift = current( array_filter( $acf_write[0], static fn( array $row ): bool => 'cross-swift-problems' === ( $row['acf_fc_layout'] ?? '' ) ) );
+			self::assertArrayHasKey( 'field_swift_overrides', $swift );
+			self::assertSame( 'Почему прямой SWIFT не работает', $swift['field_swift_overrides']['field_swift_group']['field_swift_title'] );
+			$hydrated_layout = current( array_filter( $acf_write[2]['layouts'], static fn( array $layout ): bool => 'cross-swift-problems' === ( $layout['name'] ?? '' ) ) );
+			$hydrated_clone = current( array_filter( $hydrated_layout['sub_fields'], static fn( array $field ): bool => 'overrides' === ( $field['name'] ?? '' ) ) );
+			self::assertNotEmpty( $hydrated_clone['sub_fields'] ?? array(), 'Nested clone schema must be hydrated before ACF updates the flexible content value.' );
+		} finally {
+			if ( is_file( $backup ) ) {
+				unlink( $backup );
+			}
+		}
 	}
 
 	private function assertRejected( array $manifest, string $backup, string $message ): void {

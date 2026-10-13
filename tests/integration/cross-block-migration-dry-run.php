@@ -11,7 +11,7 @@ global $wpdb;
 $sql_path = WP_CONTENT_DIR . '/a0856023_app_wordpress_20.sql';
 $hash_state = static function () use ( $wpdb ): string {
 	$options = $wpdb->get_results(
-		"SELECT option_name, option_value FROM {$wpdb->options} WHERE option_name LIKE 'options_cross_%' OR option_name LIKE '_options_cross_%' OR option_name IN ('options_problems', '_options_problems', 'options_guarantees', '_options_guarantees', 'options_table', '_options_table') OR option_name LIKE 'options_problems_%' OR option_name LIKE '_options_problems_%' OR option_name LIKE 'options_guarantees_%' OR option_name LIKE '_options_guarantees_%' OR option_name LIKE 'options_table_%' OR option_name LIKE '_options_table_%' ORDER BY option_name",
+		"SELECT option_name, option_value FROM {$wpdb->options} WHERE option_name LIKE 'platejka_section_defaults_cross_%' OR option_name LIKE '_platejka_section_defaults_cross_%' OR option_name LIKE 'platejka_section_defaults_problems%' OR option_name LIKE '_platejka_section_defaults_problems%' OR option_name LIKE 'platejka_section_defaults_guarantees%' OR option_name LIKE '_platejka_section_defaults_guarantees%' OR option_name LIKE 'platejka_section_defaults_table%' OR option_name LIKE '_platejka_section_defaults_table%' ORDER BY option_name",
 		ARRAY_A
 	);
 	$postmeta = $wpdb->get_results(

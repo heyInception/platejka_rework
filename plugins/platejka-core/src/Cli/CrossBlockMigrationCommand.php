@@ -99,11 +99,9 @@ final class CrossBlockMigrationCommand {
 		foreach ( is_array( $plan['defaults'] ?? null ) ? $plan['defaults'] : array() as $change ) {
 			$slug = (string) ( $change['slug'] ?? '' );
 			$key  = 'field_platejka_defaults_' . str_replace( '-', '_', $slug ) . '_v1';
-			if ( ! update_field( $key, $change['target'] ?? array(), self::DEFAULT_CONTEXT ) ) {
-				throw new RuntimeException( 'Failed to write defaults for ' . $slug . '.' );
-			}
+			update_field( $key, $change['target'] ?? array(), self::DEFAULT_CONTEXT );
 			$actual = self::normalizeRawValue( get_field( $key, self::DEFAULT_CONTEXT, false ) );
-			if ( self::stable( $actual ) !== self::stable( $change['target'] ?? array() ) ) {
+			if ( ! self::equivalentValue( $actual, $change['target'] ?? array() ) ) {
 				throw new RuntimeException( 'Defaults verification failed for ' . $slug . '.' );
 			}
 			++$writes['defaults'];
@@ -111,15 +109,23 @@ final class CrossBlockMigrationCommand {
 
 		foreach ( is_array( $plan['pages'] ?? null ) ? $plan['pages'] : array() as $change ) {
 			$post_id = (int) ( $change['post_id'] ?? 0 );
-			if ( ! update_field( self::BUILDER_ROWS, $change['target_rows'] ?? array(), $post_id ) ) {
-				throw new RuntimeException( 'Failed to write builder rows for page ' . $post_id . '.' );
+			// ACF returns false both on failure and when the stored value is already
+			// identical. The mandatory reread below is the authoritative result.
+			$target_rows = is_array( $change['target_rows'] ?? null ) ? $change['target_rows'] : array();
+			$builder_field = self::builderFieldForUpdate();
+			$prepared_rows = self::prepareRowsForUpdate( $target_rows, $builder_field );
+			if ( is_array( $builder_field ) && function_exists( 'acf_update_value' ) ) {
+				// update_field() reloads the flexible-content schema by key. ACF leaves
+				// nested clone fields unexpanded on that path, so their local values are
+				// silently discarded. Passing the hydrated schema preserves sub_fields.
+				acf_update_value( $prepared_rows, $post_id, $builder_field );
+			} else {
+				update_field( self::BUILDER_ROWS, $prepared_rows, $post_id );
 			}
-			if ( ! update_field( self::BUILDER_ENABLED, 1, $post_id ) ) {
-				throw new RuntimeException( 'Failed to enable builder for page ' . $post_id . '.' );
-			}
+			update_field( self::BUILDER_ENABLED, 1, $post_id );
 			$actual_rows = self::normalizeRawValue( get_field( self::BUILDER_ROWS, $post_id, false ) );
 			$actual_enabled = (bool) get_field( self::BUILDER_ENABLED, $post_id, false );
-			if ( ! $actual_enabled || self::stable( $actual_rows ) !== self::stable( $change['target_rows'] ?? array() ) ) {
+			if ( ! $actual_enabled || ! self::equivalentValue( $actual_rows, $change['target_rows'] ?? array() ) ) {
 				throw new RuntimeException( 'Page verification failed for ' . $post_id . '.' );
 			}
 			++$writes['pages'];
@@ -185,6 +191,114 @@ final class CrossBlockMigrationCommand {
 		return $result;
 	}
 
+	/** @param array<int,array<string,mixed>> $rows @return array<int,array<string,mixed>> */
+	private static function prepareRowsForUpdate( array $rows, ?array $field = null ): array {
+		if ( ! function_exists( 'acf_get_field' ) ) {
+			return $rows;
+		}
+		$field = $field ?? self::builderFieldForUpdate();
+		if ( ! is_array( $field ) || 'flexible_content' !== ( $field['type'] ?? '' ) ) {
+			return $rows;
+		}
+		$layouts = array();
+		foreach ( is_array( $field['layouts'] ?? null ) ? $field['layouts'] : array() as $layout ) {
+			if ( is_array( $layout ) && is_string( $layout['name'] ?? null ) ) {
+				$layouts[ $layout['name'] ] = $layout;
+			}
+		}
+		$result = array();
+		foreach ( $rows as $row ) {
+			$slug = (string) ( $row['acf_fc_layout'] ?? '' );
+			if ( ! isset( $layouts[ $slug ] ) ) {
+				$result[] = $row;
+				continue;
+			}
+			$encoded = array( 'acf_fc_layout' => $slug );
+			foreach ( is_array( $layouts[ $slug ]['sub_fields'] ?? null ) ? $layouts[ $slug ]['sub_fields'] : array() as $sub_field ) {
+				if ( ! is_array( $sub_field ) ) {
+					continue;
+				}
+				$name = (string) ( $sub_field['name'] ?? '' );
+				$key  = (string) ( $sub_field['key'] ?? '' );
+				if ( '' !== $name && '' !== $key && array_key_exists( $name, $row ) ) {
+					$encoded[ $key ] = self::prepareFieldValue( $row[ $name ], $sub_field );
+				}
+			}
+			$result[] = $encoded;
+		}
+		return $result;
+	}
+
+	/** @return array<string,mixed>|null */
+	private static function builderFieldForUpdate(): ?array {
+		if ( ! function_exists( 'acf_get_field' ) ) {
+			return null;
+		}
+		$field = acf_get_field( self::BUILDER_ROWS );
+		if ( ! is_array( $field ) ) {
+			return null;
+		}
+		foreach ( is_array( $field['layouts'] ?? null ) ? $field['layouts'] : array() as $layout_index => $layout ) {
+			if ( ! is_array( $layout ) ) {
+				continue;
+			}
+			foreach ( is_array( $layout['sub_fields'] ?? null ) ? $layout['sub_fields'] : array() as $field_index => $sub_field ) {
+				$key = is_array( $sub_field ) ? (string) ( $sub_field['key'] ?? '' ) : '';
+				$loaded = is_array( $sub_field ) && ! empty( $sub_field['sub_fields'] )
+					? $sub_field
+					: ( '' !== $key ? acf_get_field( $key ) : null );
+				if ( is_array( $loaded ) ) {
+					$field['layouts'][ $layout_index ]['sub_fields'][ $field_index ] = $loaded;
+				}
+			}
+		}
+		return $field;
+	}
+
+	/** @param mixed $value @param array<string,mixed> $field @return mixed */
+	private static function prepareFieldValue( $value, array $field ) {
+		$type = (string) ( $field['type'] ?? '' );
+		if ( 'clone' === $type && is_array( $value ) ) {
+			$result = array();
+			foreach ( is_array( $field['clone'] ?? null ) ? $field['clone'] : array() as $clone_key ) {
+				$clone = function_exists( 'acf_get_field' ) ? acf_get_field( $clone_key ) : null;
+				if ( ! is_array( $clone ) ) {
+					continue;
+				}
+				$name   = (string) ( $clone['name'] ?? '' );
+				$source = '' !== $name && array_key_exists( $name, $value ) ? $value[ $name ] : $value;
+				$result[ (string) $clone['key'] ] = self::prepareFieldValue( $source, $clone );
+			}
+			return $result;
+		}
+		if ( 'group' === $type && is_array( $value ) ) {
+			return self::prepareSubFields( $value, is_array( $field['sub_fields'] ?? null ) ? $field['sub_fields'] : array() );
+		}
+		if ( 'repeater' === $type && is_array( $value ) ) {
+			$result = array();
+			foreach ( $value as $row ) {
+				$result[] = is_array( $row )
+					? self::prepareSubFields( $row, is_array( $field['sub_fields'] ?? null ) ? $field['sub_fields'] : array() )
+					: $row;
+			}
+			return $result;
+		}
+		return $value;
+	}
+
+	/** @param array<string,mixed> $value @param array<int,array<string,mixed>> $fields @return array<string,mixed> */
+	private static function prepareSubFields( array $value, array $fields ): array {
+		$result = array();
+		foreach ( $fields as $sub_field ) {
+			$name = (string) ( $sub_field['name'] ?? '' );
+			$key  = (string) ( $sub_field['key'] ?? '' );
+			if ( '' !== $name && '' !== $key && array_key_exists( $name, $value ) ) {
+				$result[ $key ] = self::prepareFieldValue( $value[ $name ], $sub_field );
+			}
+		}
+		return $result;
+	}
+
 	/** @param array<string,mixed> $manifest */
 	private static function validateIntegrity( array $manifest ): void {
 		$integrity = (string) ( $manifest['integrity'] ?? '' );
@@ -242,13 +356,14 @@ final class CrossBlockMigrationCommand {
 			$field_name = str_replace( '-', '_', $slug );
 			$backup['defaults'][ $slug ] = get_field( $field_name, self::DEFAULT_CONTEXT, false );
 			if ( isset( $wpdb->options ) ) {
-				$like_value = $wpdb->esc_like( 'options_' . $field_name . '_' ) . '%';
-				$like_ref   = $wpdb->esc_like( '_options_' . $field_name . '_' ) . '%';
+				$prefix     = self::DEFAULT_CONTEXT . '_' . $field_name;
+				$like_value = $wpdb->esc_like( $prefix . '_' ) . '%';
+				$like_ref   = $wpdb->esc_like( '_' . $prefix . '_' ) . '%';
 				$backup['option_records'][ $slug ] = $wpdb->get_results(
 					$wpdb->prepare(
 						"SELECT option_id, option_name, option_value, autoload FROM {$wpdb->options} WHERE option_name IN (%s, %s) OR option_name LIKE %s OR option_name LIKE %s ORDER BY option_id",
-						'options_' . $field_name,
-						'_options_' . $field_name,
+						$prefix,
+						'_' . $prefix,
 						$like_value,
 						$like_ref
 					),
@@ -278,6 +393,67 @@ final class CrossBlockMigrationCommand {
 
 	private static function isAbsolutePath( string $path ): bool {
 		return 1 === preg_match( '/^[A-Za-z]:[\\\\\/]/', $path ) || str_starts_with( $path, '/' );
+	}
+
+	/** @param mixed $actual @param mixed $expected */
+	private static function equivalentValue( $actual, $expected ): bool {
+		if ( $actual === $expected || ( self::semanticallyEmpty( $actual ) && self::semanticallyEmpty( $expected ) ) ) {
+			return true;
+		}
+		if ( is_array( $actual ) && is_array( $expected ) ) {
+			$actual_is_list   = array_is_list( $actual );
+			$expected_is_list = array_is_list( $expected );
+			if ( $actual_is_list !== $expected_is_list || ( $actual_is_list && count( $actual ) !== count( $expected ) ) ) {
+				return false;
+			}
+			if ( ! $actual_is_list ) {
+				foreach ( $actual as $key => $value ) {
+					if ( ! array_key_exists( $key, $expected ) && ! self::semanticallyEmpty( $value ) ) {
+						return false;
+					}
+				}
+				foreach ( $expected as $key => $value ) {
+					if ( ! array_key_exists( $key, $actual ) && ! self::semanticallyEmpty( $value ) ) {
+						return false;
+					}
+				}
+			}
+			foreach ( $expected as $key => $value ) {
+				if ( ! array_key_exists( $key, $actual ) ) {
+					if ( self::semanticallyEmpty( $value ) ) {
+						continue;
+					}
+					return false;
+				}
+				if ( ! self::equivalentValue( $actual[ $key ], $value ) ) {
+					return false;
+				}
+			}
+			return true;
+		}
+		if ( in_array( $actual, array( null, false, '' ), true ) && in_array( $expected, array( null, false, '' ), true ) ) {
+			return true;
+		}
+		if ( is_numeric( $actual ) && is_numeric( $expected ) ) {
+			return (string) (float) $actual === (string) (float) $expected;
+		}
+		return $actual === $expected;
+	}
+
+	/** @param mixed $value */
+	private static function semanticallyEmpty( $value ): bool {
+		if ( in_array( $value, array( null, false, '' ), true ) || array() === $value ) {
+			return true;
+		}
+		if ( is_array( $value ) ) {
+			foreach ( $value as $child ) {
+				if ( ! self::semanticallyEmpty( $child ) ) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 
 	/** @param array<int,array<string,mixed>> $rows @return array<string,array<int,array<string,mixed>>> */

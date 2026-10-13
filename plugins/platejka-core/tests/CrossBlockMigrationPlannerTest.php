@@ -76,6 +76,7 @@ final class CrossBlockMigrationPlannerTest extends TestCase {
 			array( 'acf_fc_layout' => 'faq', 'enabled' => 1 ),
 			array( 'acf_fc_layout' => 'cross-swift-problems', 'enabled' => 0, 'anchor' => 'swift' ),
 			array( 'acf_fc_layout' => 'cross-audience', 'enabled' => 1, 'anchor' => 'duplicate' ),
+			array( 'acf_fc_layout' => 'cross-company-metrics', 'enabled' => 0, 'anchor' => 'untargeted' ),
 			array( 'acf_fc_layout' => 'call', 'enabled' => 1 ),
 		);
 
@@ -89,12 +90,14 @@ final class CrossBlockMigrationPlannerTest extends TestCase {
 			)
 		);
 
-		self::assertSame( array( 'hero', 'cross-audience', 'cross-swift-problems', 'cross-key-facts', 'faq', 'call' ), array_column( $result['rows'], 'acf_fc_layout' ) );
+		self::assertSame( array( 'hero', 'cross-audience', 'cross-swift-problems', 'cross-key-facts', 'cross-company-metrics', 'faq', 'call' ), array_column( $result['rows'], 'acf_fc_layout' ) );
 		self::assertSame( 'keep', $result['rows'][1]['anchor'] );
 		self::assertSame( 'Local', $result['rows'][1]['overrides']['cross_audience']['title'] );
 		self::assertSame( 1, $result['rows'][1]['enabled'] );
 		self::assertSame( array( 'cross-key-facts' ), $result['added'] );
 		self::assertContains( 'cross-swift-problems', $result['moved_before_faq'] );
+		self::assertContains( 'cross-company-metrics', $result['moved_before_faq'] );
+		self::assertSame( 0, $result['rows'][4]['enabled'], 'Untargeted cross-block visibility must be preserved while relocating it.' );
 		self::assertSame( array( 'cross-audience' ), $result['removed_duplicates'] );
 		self::assertNotContains( 'documents', array_column( $result['rows'], 'acf_fc_layout' ) );
 	}
@@ -177,6 +180,59 @@ final class CrossBlockMigrationPlannerTest extends TestCase {
 		self::assertContains( 'local_override_conflict', array_column( $plan['conflicts'], 'type' ) );
 		self::assertContains( 'unresolved_attachment', array_column( $plan['warnings'], 'type' ) );
 		self::assertNotSame( '', $plan['pages'][0]['fingerprint'] );
+	}
+
+	public function test_plan_is_idempotent_after_acf_materializes_empty_fields_and_scalar_types(): void {
+		$this->assertPlannerExists();
+		$production = array(
+			'defaults' => array(),
+			'warnings' => array(),
+			'pages' => array(
+				'china' => array(
+					'production_id' => 1873,
+					'layouts' => array(
+						'problems' => array(
+							'values' => array(
+								'items' => array( array( 'title' => 'Карточка', 'text' => 'Текст', 'image' => '' ) ),
+							),
+						),
+					),
+				),
+			),
+		);
+		$local = array(
+			'defaults' => array(),
+			'attachments' => array(),
+			'pages' => array(
+				'china' => array(
+					'id' => 1873,
+					'status' => 'publish',
+					'builder_enabled' => true,
+					'attachments' => array(),
+					'rows' => array(
+						array(
+							'acf_fc_layout' => 'problems',
+							'enabled' => '1',
+							'anchor' => '',
+							'overrides' => array(
+								'items' => array( array( 'title' => 'Карточка', 'text' => 'Текст', 'image' => false, 'link' => null ) ),
+								'problems' => array(
+									'items' => array( array( 'title' => 'Карточка', 'text' => 'Текст', 'image' => false, 'link' => null ) ),
+								),
+							),
+						),
+						array( 'acf_fc_layout' => 'faq', 'enabled' => '1' ),
+					),
+				),
+			),
+		);
+
+		$plan = self::PLANNER::plan( $production, $local );
+		self::assertSame( array(), $plan['conflicts'] );
+		self::assertSame( array(), $plan['pages'] );
+		self::assertSame( 0, $plan['totals']['page_writes'] );
+		$equivalent = new ReflectionMethod( self::PLANNER, 'equivalent' );
+		self::assertFalse( $equivalent->invoke( null, array( 'title' => 'Есть данные' ), false ) );
 	}
 
 	public function test_plan_rejects_missing_pages_and_empty_or_malformed_builders(): void {

@@ -181,7 +181,7 @@ final class CrossBlockMigrationPlanner {
 
 			$merged = self::mergeBuilderRows( $rows, $targets );
 			$current_enabled = ! empty( $local['builder_enabled'] );
-			$changed = self::stable( $rows ) !== self::stable( $merged['rows'] ) || ! $current_enabled;
+			$changed = ! self::equivalent( $rows, $merged['rows'] ) || ! $current_enabled;
 			if ( ! $changed ) {
 				continue;
 			}
@@ -243,6 +243,16 @@ final class CrossBlockMigrationPlanner {
 		$added  = array();
 		$enabled = array();
 		$target_rows = array();
+		$relocated_rows = array();
+		foreach ( $after as $index => $row ) {
+			$slug = (string) ( $row['acf_fc_layout'] ?? '' );
+			if ( str_starts_with( $slug, 'cross-' ) && self::isAllowedTarget( $slug ) && ! isset( $targets[ $slug ] ) ) {
+				$relocated_rows[] = $row;
+				$moved[] = $slug;
+				unset( $after[ $index ] );
+			}
+		}
+		$after = array_values( $after );
 
 		foreach ( $targets as $slug => $overrides ) {
 			$found_index = null;
@@ -282,7 +292,7 @@ final class CrossBlockMigrationPlanner {
 		}
 
 		return array(
-			'rows'               => array_values( array_merge( $before, $target_rows, $after ) ),
+			'rows'               => array_values( array_merge( $before, $target_rows, $relocated_rows, $after ) ),
 			'added'              => array_values( array_unique( $added ) ),
 			'enabled'            => array_values( array_unique( $enabled ) ),
 			'removed_duplicates' => array_values( array_unique( $duplicates ) ),
@@ -522,13 +532,57 @@ final class CrossBlockMigrationPlanner {
 
 	/** @param mixed $left @param mixed $right */
 	private static function equivalent( $left, $right ): bool {
+		if ( $left === $right || ( self::semanticallyEmpty( $left ) && self::semanticallyEmpty( $right ) ) ) {
+			return true;
+		}
+		if ( is_array( $left ) && is_array( $right ) ) {
+			$left_is_list  = array_is_list( $left );
+			$right_is_list = array_is_list( $right );
+			if ( $left_is_list !== $right_is_list || ( $left_is_list && count( $left ) !== count( $right ) ) ) {
+				return false;
+			}
+			if ( ! $left_is_list ) {
+				foreach ( $left as $key => $value ) {
+					if ( ! array_key_exists( $key, $right ) && ! self::semanticallyEmpty( $value ) ) {
+						return false;
+					}
+				}
+				foreach ( $right as $key => $value ) {
+					if ( ! array_key_exists( $key, $left ) && ! self::semanticallyEmpty( $value ) ) {
+						return false;
+					}
+				}
+			}
+			foreach ( $right as $key => $value ) {
+				if ( array_key_exists( $key, $left ) && ! self::equivalent( $left[ $key ], $value ) ) {
+					return false;
+				}
+			}
+			return true;
+		}
 		if ( is_array( $left ) || is_array( $right ) ) {
-			return self::stable( $left ) === self::stable( $right );
+			return false;
 		}
 		if ( is_bool( $left ) || is_bool( $right ) || is_numeric( $left ) && is_numeric( $right ) ) {
 			return (string) (float) $left === (string) (float) $right;
 		}
 		return $left === $right;
+	}
+
+	/** @param mixed $value */
+	private static function semanticallyEmpty( $value ): bool {
+		if ( in_array( $value, array( null, false, '' ), true ) || array() === $value ) {
+			return true;
+		}
+		if ( is_array( $value ) ) {
+			foreach ( $value as $child ) {
+				if ( ! self::semanticallyEmpty( $child ) ) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 
 	/** @param mixed $value */

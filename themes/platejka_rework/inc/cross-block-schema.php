@@ -384,8 +384,26 @@ add_filter( 'acf/load_field/key=field_67924d166072f', 'platejka_extend_cross_blo
  *
  * @return array<string,mixed>
  */
+function platejka_cross_block_local_override_field( array $field ): array {
+	unset( $field['default_value'] );
+	if ( isset( $field['sub_fields'] ) && is_array( $field['sub_fields'] ) ) {
+		$field['sub_fields'] = array_map( 'platejka_cross_block_local_override_field', $field['sub_fields'] );
+	}
+	return $field;
+}
+
 function platejka_cross_block_builder_layout( string $slug, string $label, string $default_field_key ): array {
 	$key_scope = str_replace( '-', '_', $slug );
+	$default_groups = platejka_cross_block_default_groups();
+	$cloned_group = is_array( $default_groups[ $slug ] ?? null ) ? $default_groups[ $slug ] : array();
+	if ( $cloned_group ) {
+		$cloned_group = platejka_cross_block_local_override_field( $cloned_group );
+		$cloned_group['_name'] = (string) ( $cloned_group['name'] ?? '' );
+		$cloned_group['_clone'] = 'field_platejka_row_' . $key_scope . '_overrides_v1';
+		$cloned_group['__key'] = (string) ( $cloned_group['key'] ?? '' );
+		$cloned_group['__name'] = (string) ( $cloned_group['name'] ?? '' );
+		$cloned_group['__label'] = (string) ( $cloned_group['label'] ?? '' );
+	}
 
 	return array(
 		'key'        => 'layout_platejka_' . $key_scope . '_v1',
@@ -397,6 +415,7 @@ function platejka_cross_block_builder_layout( string $slug, string $label, strin
 				'key'           => 'field_platejka_row_' . $key_scope . '_enabled_v1',
 				'label'         => 'Показывать секцию',
 				'name'          => 'enabled',
+				'_name'         => 'enabled',
 				'type'          => 'true_false',
 				'default_value' => 0,
 				'ui'            => 1,
@@ -405,6 +424,7 @@ function platejka_cross_block_builder_layout( string $slug, string $label, strin
 				'key'         => 'field_platejka_row_' . $key_scope . '_anchor_v1',
 				'label'       => 'Якорь секции',
 				'name'        => 'anchor',
+				'_name'       => 'anchor',
 				'type'        => 'text',
 				'placeholder' => 'bez-reshetki',
 			),
@@ -412,12 +432,17 @@ function platejka_cross_block_builder_layout( string $slug, string $label, strin
 				'key'         => 'field_platejka_row_' . $key_scope . '_overrides_v1',
 				'label'       => 'Локальные изменения',
 				'name'        => 'overrides',
+				'_name'       => 'overrides',
 				'type'        => 'clone',
 				'clone'       => array( $default_field_key ),
 				'display'     => 'group',
 				'layout'      => 'block',
 				'prefix_label' => 0,
 				'prefix_name' => 0,
+				// Local nested clone fields are not expanded when ACF loads their
+				// flexible-content parent by key. Keep the cloned group inline so
+				// get_field()/acf_update_value() can read and write page overrides.
+				'sub_fields'  => $cloned_group ? array( $cloned_group ) : array(),
 			),
 		),
 		'min'        => '',

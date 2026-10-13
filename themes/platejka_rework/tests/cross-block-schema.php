@@ -11,6 +11,18 @@ function platejka_cross_block_schema_assert( bool $condition, string $message ):
 	}
 }
 
+function platejka_cross_block_schema_has_default( array $fields ): bool {
+	foreach ( $fields as $field ) {
+		if ( array_key_exists( 'default_value', $field ) ) {
+			return true;
+		}
+		if ( ! empty( $field['sub_fields'] ) && platejka_cross_block_schema_has_default( $field['sub_fields'] ) ) {
+			return true;
+		}
+	}
+	return false;
+}
+
 $expected = array(
 	'cross-exchange'         => 'Обмен валют',
 	'cross-company-metrics'  => 'Показатели компании',
@@ -42,8 +54,12 @@ foreach ( $expected as $name => $label ) {
 	platejka_cross_block_schema_assert( 'Кросс-блок — ' . $label === (string) ( $layouts[ $name ]['label'] ?? '' ), 'Builder label is not exact: ' . $name );
 	$fields = array_column( $layouts[ $name ]['sub_fields'] ?? array(), null, 'name' );
 	platejka_cross_block_schema_assert( array( 'enabled', 'anchor', 'overrides' ) === array_keys( $fields ), 'Builder layout must expose enabled, anchor, and overrides: ' . $name );
+	platejka_cross_block_schema_assert( 'enabled' === ( $fields['enabled']['_name'] ?? null ) && 'anchor' === ( $fields['anchor']['_name'] ?? null ) && 'overrides' === ( $fields['overrides']['_name'] ?? null ), 'Builder sub-fields must expose ACF internal names: ' . $name );
 	platejka_cross_block_schema_assert( array( platejka_cross_block_default_field_key( $name ) ) === ( $fields['overrides']['clone'] ?? null ), 'Builder clone points at the wrong defaults group: ' . $name );
 	platejka_cross_block_schema_assert( 'group' === ( $fields['overrides']['display'] ?? null ) && 0 === ( $fields['overrides']['prefix_name'] ?? null ), 'Builder clone must use unprefixed group display: ' . $name );
+	platejka_cross_block_schema_assert( ! empty( $fields['overrides']['sub_fields'] ), 'Builder clone must expose its nested schema for programmatic reads and writes: ' . $name );
+	platejka_cross_block_schema_assert( ! empty( $fields['overrides']['sub_fields'][0]['__name'] ), 'Builder clone child must expose its cloned ACF name: ' . $name );
+	platejka_cross_block_schema_assert( ! platejka_cross_block_schema_has_default( $fields['overrides']['sub_fields'] ), 'Local clone schema must not materialize global default values: ' . $name );
 }
 
 $default_groups = platejka_cross_block_default_groups();
