@@ -189,3 +189,6 @@ require get_template_directory() . '/inc/template-functions.php';
  * Customizer additions.
  */
 require get_template_directory() . '/inc/customizer.php';
+
+
+add_filter('wpcf7_autop_or_not', '__return_false');

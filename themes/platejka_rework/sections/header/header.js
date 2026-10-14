@@ -1,1 +1,380 @@
-"use strict";(self.webpackChunkgulp_builder=self.webpackChunkgulp_builder||[]).push([[19],{717:(e,t,a)=>{var o=a(358);const n=document.querySelector(".header");if(n){const e=n.querySelector(".header__logo-link"),t=n.querySelector(".header__top"),a=n.querySelector(".header__bottom"),r=n.querySelectorAll(".header__logo-mark > path"),i=n.querySelectorAll(".header__logo-word > path"),s=[...n.querySelectorAll(".nav__toggle")],l=[],c=o.p8.matchMedia(),d="(prefers-reduced-motion: reduce)",u=window.matchMedia(d).matches,p=()=>"true"===document.documentElement.dataset.pageReady||!document.querySelector("[data-preloader]");if(t&&a){let e,r=!1;const i=()=>{const i=t.getBoundingClientRect().bottom<=0;n.style.setProperty("--header-sticky-height",String(a.offsetHeight)+"px"),i!==r&&(r=i,e?.kill(),n.classList.toggle("header--sticky",r),a.classList.toggle("header__bottom--fixed",r),r?u||document.documentElement.classList.contains("menu-open")?o.p8.set(a,{autoAlpha:1,clearProps:"transform"}):e=o.p8.fromTo(a,{autoAlpha:0,y:-12},{autoAlpha:1,y:0,duration:.28,ease:"power2.out",overwrite:"auto",onComplete:()=>o.p8.set(a,{clearProps:"opacity,visibility,transform"})}):o.p8.set(a,{clearProps:"opacity,visibility,transform"}))};i(),window.addEventListener("scroll",i,{passive:!0}),window.addEventListener("resize",i)}const m=e=>{let t=1,a=e.closest("ul");for(;a?.classList.contains("nav__submenu");)t+=1,a=a.parentElement.closest("ul");return t},h=function(e){let t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1];const{item:a,toggle:o,label:n,title:r,timeline:i}=e;t&&l.filter((t=>t!==e&&a.contains(t.item))).forEach((e=>h(e,!1))),o.setAttribute("aria-expanded","false"),n.textContent=`Открыть подменю «${r}»`,a.classList.remove("nav__item--open"),i.reverse()},g=e=>{l.filter((t=>t!==e&&t.item.parentElement===e.item.parentElement)).forEach((e=>h(e)));const{item:t,toggle:a,label:o,title:n,timeline:r}=e;a.setAttribute("aria-expanded","true"),o.textContent=`Закрыть подменю «${n}»`,t.classList.add("nav__item--open"),r.play()};s.forEach(((e,t)=>{const a=m(e);if(a>2)return;const n=e.parentElement,r=n.closest("li"),i=n.nextElementSibling;if(!r||!i?.classList.contains("nav__submenu"))return;i.id||(i.id=`nav-submenu-${t+1}`),e.setAttribute("aria-controls",i.id);const s=e.querySelector(".visually-hidden"),c=n.querySelector("a").textContent.trim(),d=i.querySelectorAll(":scope > li > .nav__sublink, :scope > li > .nav__subheading"),p=2===a,v=u?0:.28;o.p8.set(i,{autoAlpha:0,height:window.matchMedia("(max-width: 1024px)").matches?0:"auto",x:p&&!u?-10:0,y:p||u?0:-10}),o.p8.set(d,{autoAlpha:0,y:u?0:-6});const y=o.p8.timeline({paused:!0,defaults:{ease:"power2.out"},onStart:()=>o.p8.set(i,{pointerEvents:"auto"}),onReverseComplete:()=>o.p8.set(i,{pointerEvents:"none"})}).to(i,{autoAlpha:1,height:"auto",x:0,y:0,duration:v}).to(d,{autoAlpha:1,y:0,duration:u?0:.2,stagger:u?0:.035,onComplete:()=>o.p8.set(d,{clearProps:"opacity"})},"<0.06"),f={item:r,toggle:e,submenu:i,label:s,title:c,timeline:y};l.push(f),e.addEventListener("click",(()=>{"true"===e.getAttribute("aria-expanded")?h(f):g(f)})),r.addEventListener("pointerenter",(e=>{"touch"!==e.pointerType&&window.matchMedia("(min-width: 1025px)").matches&&g(f)})),r.addEventListener("pointerleave",(e=>{"touch"!==e.pointerType&&window.matchMedia("(min-width: 1025px)").matches&&h(f)})),r.addEventListener("focusin",(()=>{window.matchMedia("(min-width: 1025px)").matches&&g(f)})),r.addEventListener("focusout",(e=>{window.matchMedia("(min-width: 1025px)").matches&&!r.contains(e.relatedTarget)&&h(f)})),r.addEventListener("keydown",(t=>{"Escape"===t.key&&window.matchMedia("(min-width: 1025px)").matches&&(t.stopPropagation(),h(f),e.focus())}))})),document.addEventListener("pointerdown",(e=>{n.contains(e.target)||l.forEach((e=>h(e)))})),c.add({motion:"(prefers-reduced-motion: no-preference)",reduceMotion:d},(t=>{if(t.conditions.reduceMotion){const t=()=>o.p8.set(e,{autoAlpha:1});return p()?t():document.addEventListener("platejka:ready",t,{once:!0}),()=>document.removeEventListener("platejka:ready",t)}let a;const n=()=>{a?.kill(),a=(()=>{const t=o.p8.timeline({defaults:{ease:"power3.out"}});return t.set(e,{autoAlpha:1}).from(r,{autoAlpha:0,scale:.8,transformOrigin:"50% 50%",duration:.25,stagger:.035}).from(i,{autoAlpha:0,y:8,duration:.22,stagger:.06},.18),t})()};p()?n():document.addEventListener("platejka:ready",n,{once:!0});const s=o.p8.timeline({paused:!0,defaults:{duration:.24,ease:"power2.out"}}).to(r,{scale:1.06,stagger:{each:.035,from:"center"},transformOrigin:"50% 50%"}).to(r,{scale:1,stagger:.025},">"),l=()=>s.restart();return e.addEventListener("pointerenter",l),()=>{document.removeEventListener("platejka:ready",n),e.removeEventListener("pointerenter",l),a?.kill(),s.kill()}}))}},524:(e,t,a)=>{var o=a(358);const n=document.querySelector(".header"),r=n?.querySelector("[data-burger]"),i=n?.querySelector("[data-menu]"),s=i?.querySelector("[data-menu-content]"),l=n?.querySelector(".header__bottom"),c=window.matchMedia("(max-width: 1024px)"),d=window.matchMedia("(prefers-reduced-motion: reduce)");if(n&&r&&i&&s){let e,t=!1;const a=()=>{const e=l?.getBoundingClientRect().bottom??n.getBoundingClientRect().bottom;i.style.setProperty("--mobile-menu-top",String(e)+"px")},s=()=>{i.querySelectorAll('[data-nav-toggle][aria-expanded="true"]').forEach((e=>{e.click()}))},u=function(n){let u=arguments.length>1&&void 0!==arguments[1]&&arguments[1];!c.matches&&n||(t=n,e?.kill(),r.classList.toggle("burger__active",t),r.setAttribute("aria-expanded",String(t)),r.setAttribute("aria-label",t?"Закрыть меню":"Открыть меню"),document.documentElement.classList.toggle("menu-open",t),t?(l&&(o.p8.killTweensOf(l),o.p8.set(l,{clearProps:"opacity,visibility,transform"})),a(),i.classList.add("header__navigation--open"),e=o.p8.fromTo(i,{autoAlpha:0,y:d.matches?0:-12},{autoAlpha:1,y:0,duration:d.matches?0:.3,ease:"power2.out",overwrite:"auto"})):(s(),e=o.p8.to(i,{autoAlpha:0,y:d.matches?0:-12,duration:d.matches?0:.22,ease:"power2.in",overwrite:"auto",onComplete:()=>i.classList.remove("header__navigation--open")}),u&&r.focus()))};r.addEventListener("click",(()=>u(!t))),i.addEventListener("click",(e=>{c.matches&&e.target.closest("a")&&u(!1)})),document.addEventListener("keydown",(e=>{"Escape"===e.key&&t&&u(!1,!0)}));const p=a=>{a.matches||(t=!1,e?.kill(),s(),r.classList.remove("burger__active"),r.setAttribute("aria-expanded","false"),r.setAttribute("aria-label","Открыть меню"),document.documentElement.classList.remove("menu-open"),i.classList.remove("header__navigation--open"),o.p8.set(i,{clearProps:"opacity,visibility,transform"}))};c.addEventListener("change",p),window.addEventListener("resize",(()=>{t&&a()}))}}},e=>{var t=t=>e(e.s=t);t(717),t(524)}]);
+"use strict";
+(self["webpackChunkgulp_builder"] = self["webpackChunkgulp_builder"] || []).push([["header"],{
+
+/***/ "./src/js/components/header.js":
+/***/ ((__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) => {
+
+/* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./node_modules/gsap/index.js");
+
+const header = document.querySelector('.header');
+if (header) {
+  const logo = header.querySelector('.header__logo-link');
+  const headerTop = header.querySelector('.header__top');
+  const headerBottom = header.querySelector('.header__bottom');
+  const logoMarkParts = header.querySelectorAll('.header__logo-mark > path');
+  const logoLetters = header.querySelectorAll('.header__logo-word > path');
+  const menuToggles = [...header.querySelectorAll('.nav__toggle')];
+  const menuControllers = [];
+  const media = gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.matchMedia();
+  const reduceMotionQuery = '(prefers-reduced-motion: reduce)';
+  const prefersReducedMotion = window.matchMedia(reduceMotionQuery).matches;
+  const pageIsReady = () => document.documentElement.dataset.pageReady === 'true' || !document.querySelector('[data-preloader]');
+  if (headerTop && headerBottom) {
+    let isSticky = false;
+    let stickyTween;
+    const syncStickyHeader = () => {
+      const shouldStick = headerTop.getBoundingClientRect().bottom <= 0;
+      header.style.setProperty('--header-sticky-height', String(headerBottom.offsetHeight) + 'px');
+      if (shouldStick === isSticky) return;
+      isSticky = shouldStick;
+      stickyTween?.kill();
+      header.classList.toggle('header--sticky', isSticky);
+      headerBottom.classList.toggle('header__bottom--fixed', isSticky);
+      if (!isSticky) {
+        gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.set(headerBottom, {
+          clearProps: 'opacity,visibility,transform'
+        });
+        return;
+      }
+      const skipMotion = prefersReducedMotion || document.documentElement.classList.contains('menu-open');
+      if (skipMotion) {
+        gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.set(headerBottom, {
+          autoAlpha: 1,
+          clearProps: 'transform'
+        });
+        return;
+      }
+      stickyTween = gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.fromTo(headerBottom, {
+        autoAlpha: 0,
+        y: -12
+      }, {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.28,
+        ease: 'power2.out',
+        overwrite: 'auto',
+        onComplete: () => gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.set(headerBottom, {
+          clearProps: 'opacity,visibility,transform'
+        })
+      });
+    };
+    syncStickyHeader();
+    window.addEventListener('scroll', syncStickyHeader, {
+      passive: true
+    });
+    window.addEventListener('resize', syncStickyHeader);
+  }
+  const getMenuDepth = toggle => {
+    let depth = 1;
+    let list = toggle.closest('ul');
+    while (list?.classList.contains('nav__submenu')) {
+      depth += 1;
+      list = list.parentElement.closest('ul');
+    }
+    return depth;
+  };
+  const closeMenu = function (controller) {
+    let closeDescendants = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+    const {
+      item,
+      toggle,
+      label,
+      title,
+      timeline
+    } = controller;
+    if (closeDescendants) {
+      menuControllers.filter(other => other !== controller && item.contains(other.item)).forEach(other => closeMenu(other, false));
+    }
+    toggle.setAttribute('aria-expanded', 'false');
+    label.textContent = `Открыть подменю «${title}»`;
+    item.classList.remove('nav__item--open');
+    timeline.reverse();
+  };
+  const openMenu = controller => {
+    menuControllers.filter(other => other !== controller && other.item.parentElement === controller.item.parentElement).forEach(other => closeMenu(other));
+    const {
+      item,
+      toggle,
+      label,
+      title,
+      timeline
+    } = controller;
+    toggle.setAttribute('aria-expanded', 'true');
+    label.textContent = `Закрыть подменю «${title}»`;
+    item.classList.add('nav__item--open');
+    timeline.play();
+  };
+  menuToggles.forEach((toggle, index) => {
+    const menuDepth = getMenuDepth(toggle);
+    if (menuDepth > 2) return;
+    const heading = toggle.parentElement;
+    const item = heading.closest('li');
+    const submenu = heading.nextElementSibling;
+    if (!item || !submenu?.classList.contains('nav__submenu')) return;
+    if (!submenu.id) submenu.id = `nav-submenu-${index + 1}`;
+    toggle.setAttribute('aria-controls', submenu.id);
+    const label = toggle.querySelector('.visually-hidden');
+    const title = heading.querySelector('a').textContent.trim();
+    const entries = submenu.querySelectorAll(':scope > li > .nav__sublink, :scope > li > .nav__subheading');
+    const isNested = menuDepth === 2;
+    const duration = prefersReducedMotion ? 0 : 0.28;
+    gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.set(submenu, {
+      autoAlpha: 0,
+      height: window.matchMedia('(max-width: 1024px)').matches ? 0 : 'auto',
+      x: isNested && !prefersReducedMotion ? -10 : 0,
+      y: !isNested && !prefersReducedMotion ? -10 : 0
+    });
+    gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.set(entries, {
+      autoAlpha: 0,
+      y: prefersReducedMotion ? 0 : -6
+    });
+    const timeline = gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.timeline({
+      paused: true,
+      defaults: {
+        ease: 'power2.out'
+      },
+      onStart: () => gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.set(submenu, {
+        pointerEvents: 'auto'
+      }),
+      onReverseComplete: () => gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.set(submenu, {
+        pointerEvents: 'none'
+      })
+    }).to(submenu, {
+      autoAlpha: 1,
+      height: 'auto',
+      x: 0,
+      y: 0,
+      duration
+    }).to(entries, {
+      autoAlpha: 1,
+      y: 0,
+      duration: prefersReducedMotion ? 0 : 0.2,
+      stagger: prefersReducedMotion ? 0 : 0.035,
+      onComplete: () => gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.set(entries, {
+        clearProps: 'opacity'
+      })
+    }, '<0.06');
+    const controller = {
+      item,
+      toggle,
+      submenu,
+      label,
+      title,
+      timeline
+    };
+    menuControllers.push(controller);
+    toggle.addEventListener('click', () => {
+      const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+      isOpen ? closeMenu(controller) : openMenu(controller);
+    });
+    item.addEventListener('pointerenter', event => {
+      if (event.pointerType !== 'touch' && window.matchMedia('(min-width: 1025px)').matches) {
+        openMenu(controller);
+      }
+    });
+    item.addEventListener('pointerleave', event => {
+      if (event.pointerType !== 'touch' && window.matchMedia('(min-width: 1025px)').matches) {
+        closeMenu(controller);
+      }
+    });
+    item.addEventListener('focusin', () => {
+      if (window.matchMedia('(min-width: 1025px)').matches) {
+        openMenu(controller);
+      }
+    });
+    item.addEventListener('focusout', event => {
+      if (window.matchMedia('(min-width: 1025px)').matches && !item.contains(event.relatedTarget)) {
+        closeMenu(controller);
+      }
+    });
+    item.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && window.matchMedia('(min-width: 1025px)').matches) {
+        event.stopPropagation();
+        closeMenu(controller);
+        toggle.focus();
+      }
+    });
+  });
+  document.addEventListener('pointerdown', event => {
+    if (!header.contains(event.target)) {
+      menuControllers.forEach(controller => closeMenu(controller));
+    }
+  });
+  media.add({
+    motion: '(prefers-reduced-motion: no-preference)',
+    reduceMotion: reduceMotionQuery
+  }, context => {
+    if (context.conditions.reduceMotion) {
+      const showLogo = () => gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.set(logo, {
+        autoAlpha: 1
+      });
+      if (pageIsReady()) showLogo();else document.addEventListener('platejka:ready', showLogo, {
+        once: true
+      });
+      return () => document.removeEventListener('platejka:ready', showLogo);
+    }
+    const playLogoIntro = () => {
+      const intro = gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.timeline({
+        defaults: {
+          ease: 'power3.out'
+        }
+      });
+      intro.set(logo, {
+        autoAlpha: 1
+      }).from(logoMarkParts, {
+        autoAlpha: 0,
+        scale: 0.8,
+        transformOrigin: '50% 50%',
+        duration: 0.25,
+        stagger: 0.035
+      }).from(logoLetters, {
+        autoAlpha: 0,
+        y: 8,
+        duration: 0.22,
+        stagger: 0.06
+      }, 0.18);
+      return intro;
+    };
+    let intro;
+    const startLogoIntro = () => {
+      intro?.kill();
+      intro = playLogoIntro();
+    };
+    if (pageIsReady()) startLogoIntro();else document.addEventListener('platejka:ready', startLogoIntro, {
+      once: true
+    });
+    const hover = gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.timeline({
+      paused: true,
+      defaults: {
+        duration: 0.24,
+        ease: 'power2.out'
+      }
+    }).to(logoMarkParts, {
+      scale: 1.06,
+      stagger: {
+        each: 0.035,
+        from: 'center'
+      },
+      transformOrigin: '50% 50%'
+    }).to(logoMarkParts, {
+      scale: 1,
+      stagger: 0.025
+    }, '>');
+    const playLogoHover = () => hover.restart();
+    logo.addEventListener('pointerenter', playLogoHover);
+    return () => {
+      document.removeEventListener('platejka:ready', startLogoIntro);
+      logo.removeEventListener('pointerenter', playLogoHover);
+      intro?.kill();
+      hover.kill();
+    };
+  });
+}
+
+/***/ }),
+
+/***/ "./src/js/functions/burger.js":
+/***/ ((__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) => {
+
+/* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./node_modules/gsap/index.js");
+
+const header = document.querySelector('.header');
+const burger = header?.querySelector('[data-burger]');
+const menu = header?.querySelector('[data-menu]');
+const menuContent = menu?.querySelector('[data-menu-content]');
+const headerBottom = header?.querySelector('.header__bottom');
+const mobileQuery = window.matchMedia('(max-width: 1024px)');
+const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+if (header && burger && menu && menuContent) {
+  let isOpen = false;
+  let menuTween;
+  const setMenuOffset = () => {
+    const visibleBottom = headerBottom?.getBoundingClientRect().bottom ?? header.getBoundingClientRect().bottom;
+    menu.style.setProperty('--mobile-menu-top', String(visibleBottom) + 'px');
+  };
+  const closeSubmenus = () => {
+    menu.querySelectorAll('[data-nav-toggle][aria-expanded="true"]').forEach(toggle => {
+      toggle.click();
+    });
+  };
+  const setOpenState = function (nextOpen) {
+    let returnFocus = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+    if (!mobileQuery.matches && nextOpen) return;
+    isOpen = nextOpen;
+    menuTween?.kill();
+    burger.classList.toggle('burger__active', isOpen);
+    burger.setAttribute('aria-expanded', String(isOpen));
+    burger.setAttribute('aria-label', isOpen ? 'Закрыть меню' : 'Открыть меню');
+    document.documentElement.classList.toggle('menu-open', isOpen);
+    if (isOpen) {
+      if (headerBottom) {
+        gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.killTweensOf(headerBottom);
+        gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.set(headerBottom, {
+          clearProps: 'opacity,visibility,transform'
+        });
+      }
+      setMenuOffset();
+      menu.classList.add('header__navigation--open');
+      menuTween = gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.fromTo(menu, {
+        autoAlpha: 0,
+        y: reduceMotionQuery.matches ? 0 : -12
+      }, {
+        autoAlpha: 1,
+        y: 0,
+        duration: reduceMotionQuery.matches ? 0 : 0.3,
+        ease: 'power2.out',
+        overwrite: 'auto'
+      });
+    } else {
+      closeSubmenus();
+      menuTween = gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.to(menu, {
+        autoAlpha: 0,
+        y: reduceMotionQuery.matches ? 0 : -12,
+        duration: reduceMotionQuery.matches ? 0 : 0.22,
+        ease: 'power2.in',
+        overwrite: 'auto',
+        onComplete: () => menu.classList.remove('header__navigation--open')
+      });
+      if (returnFocus) burger.focus();
+    }
+  };
+  burger.addEventListener('click', () => setOpenState(!isOpen));
+  menu.addEventListener('click', event => {
+    if (!mobileQuery.matches) return;
+    const link = event.target.closest('a');
+    if (link) setOpenState(false);
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && isOpen) {
+      setOpenState(false, true);
+    }
+  });
+  const resetForDesktop = event => {
+    if (!event.matches) {
+      isOpen = false;
+      menuTween?.kill();
+      closeSubmenus();
+      burger.classList.remove('burger__active');
+      burger.setAttribute('aria-expanded', 'false');
+      burger.setAttribute('aria-label', 'Открыть меню');
+      document.documentElement.classList.remove('menu-open');
+      menu.classList.remove('header__navigation--open');
+      gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.set(menu, {
+        clearProps: 'opacity,visibility,transform'
+      });
+    }
+  };
+  mobileQuery.addEventListener('change', resetForDesktop);
+  window.addEventListener('resize', () => {
+    if (isOpen) setMenuOffset();
+  });
+}
+
+/***/ })
+
+},
+/******/ __webpack_require__ => { // webpackRuntimeModules
+/******/ var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
+/******/ var __webpack_exports__ = (__webpack_exec__("./src/js/components/header.js"), __webpack_exec__("./src/js/functions/burger.js"));
+/******/ }
+]);

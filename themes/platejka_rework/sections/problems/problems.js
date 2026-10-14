@@ -1,1 +1,98 @@
-"use strict";(self.webpackChunkgulp_builder=self.webpackChunkgulp_builder||[]).push([[808],{488:(e,t,r)=>{var n=r(358);document.querySelectorAll("[data-problems-slider]").forEach((e=>{const t=e.querySelector(".problems__track"),r=[...t.children];if(r.length<2)return;const o=window.matchMedia("(max-width: 1024px)"),s=window.matchMedia("(prefers-reduced-motion: reduce)");let l=0,i=null,a=0,c=0,d=!1;const p=n=>{const o=Math.max(0,t.scrollWidth-e.clientWidth);return-Math.min(r[n].offsetLeft-r[0].offsetLeft,o)},u=e=>{l=n.p8.utils.clamp(0,r.length-1,e),n.p8.to(t,{x:p(l),duration:s.matches?0:.4,ease:"power2.out",overwrite:!0})};e.addEventListener("pointerdown",(r=>{!o.matches||"mouse"===r.pointerType&&0!==r.button||(i=r.pointerId,a=r.clientX,c=Number(n.p8.getProperty(t,"x")),d=!1,n.p8.killTweensOf(t),e.setPointerCapture(i))})),e.addEventListener("pointermove",(e=>{if(e.pointerId!==i)return;const o=e.clientX-a;if(Math.abs(o)>5&&(d=!0),!d)return;const s=p(r.length-1);n.p8.set(t,{x:n.p8.utils.clamp(s,0,c+o)})}));const h=t=>{if(t.pointerId!==i)return;e.hasPointerCapture(i)&&e.releasePointerCapture(i),i=null;const r=t.clientX-a;u(d&&Math.abs(r)>40?l+(r<0?1:-1):l)};e.addEventListener("pointerup",h),e.addEventListener("pointercancel",h),e.addEventListener("keydown",(e=>{o.matches&&["ArrowLeft","ArrowRight"].includes(e.key)&&(e.preventDefault(),u(l+("ArrowRight"===e.key?1:-1)))}));const m=()=>{n.p8.killTweensOf(t),n.p8.set(t,{x:o.matches?p(l):0})};window.addEventListener("resize",m),m()})),document.querySelectorAll(".problems").forEach((e=>{const t=e.querySelector("[data-problems-dialog]"),r=e.querySelector("[data-problems-dialog-open]"),n=e.querySelector("[data-problems-dialog-close]");t&&r&&(r.addEventListener("click",(()=>{t.open||t.showModal()})),n?.addEventListener("click",(()=>t.close())),t.addEventListener("click",(e=>{e.target===t&&t.close()})),t.addEventListener("close",(()=>r.focus())))}))}},e=>{e(e.s=488)}]);
+"use strict";
+(self["webpackChunkgulp_builder"] = self["webpackChunkgulp_builder"] || []).push([["problems"],{
+
+/***/ "./src/js/components/problems.js":
+/***/ ((__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) => {
+
+/* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./node_modules/gsap/index.js");
+
+document.querySelectorAll('[data-problems-slider]').forEach(viewport => {
+  const track = viewport.querySelector('.problems__track');
+  const cards = [...track.children];
+  if (cards.length < 2) return;
+  const tablet = window.matchMedia('(max-width: 1024px)');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let index = 0;
+  let pointerId = null;
+  let startX = 0;
+  let startPosition = 0;
+  let moved = false;
+  const positionFor = target => {
+    const maximum = Math.max(0, track.scrollWidth - viewport.clientWidth);
+    return -Math.min(cards[target].offsetLeft - cards[0].offsetLeft, maximum);
+  };
+  const goTo = target => {
+    index = gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.utils.clamp(0, cards.length - 1, target);
+    gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.to(track, {
+      x: positionFor(index),
+      duration: reducedMotion.matches ? 0 : 0.4,
+      ease: 'power2.out',
+      overwrite: true
+    });
+  };
+  viewport.addEventListener('pointerdown', event => {
+    if (!tablet.matches || event.pointerType === 'mouse' && event.button !== 0) return;
+    pointerId = event.pointerId;
+    startX = event.clientX;
+    startPosition = Number(gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.getProperty(track, 'x'));
+    moved = false;
+    gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.killTweensOf(track);
+    viewport.setPointerCapture(pointerId);
+  });
+  viewport.addEventListener('pointermove', event => {
+    if (event.pointerId !== pointerId) return;
+    const delta = event.clientX - startX;
+    if (Math.abs(delta) > 5) moved = true;
+    if (!moved) return;
+    const minimum = positionFor(cards.length - 1);
+    gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.set(track, {
+      x: gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.utils.clamp(minimum, 0, startPosition + delta)
+    });
+  });
+  const release = event => {
+    if (event.pointerId !== pointerId) return;
+    if (viewport.hasPointerCapture(pointerId)) viewport.releasePointerCapture(pointerId);
+    pointerId = null;
+    const delta = event.clientX - startX;
+    goTo(moved && Math.abs(delta) > 40 ? index + (delta < 0 ? 1 : -1) : index);
+  };
+  viewport.addEventListener('pointerup', release);
+  viewport.addEventListener('pointercancel', release);
+  viewport.addEventListener('keydown', event => {
+    if (!tablet.matches || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+    event.preventDefault();
+    goTo(index + (event.key === 'ArrowRight' ? 1 : -1));
+  });
+  const onResize = () => {
+    gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.killTweensOf(track);
+    gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.set(track, {
+      x: tablet.matches ? positionFor(index) : 0
+    });
+  };
+  window.addEventListener('resize', onResize);
+  onResize();
+});
+document.querySelectorAll('.problems').forEach(root => {
+  const dialog = root.querySelector('[data-problems-dialog]');
+  const openButton = root.querySelector('[data-problems-dialog-open]');
+  const closeButton = root.querySelector('[data-problems-dialog-close]');
+  if (!dialog || !openButton) return;
+  openButton.addEventListener('click', () => {
+    if (dialog.open) return;
+    dialog.showModal();
+  });
+  closeButton?.addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', event => {
+    if (event.target === dialog) dialog.close();
+  });
+  dialog.addEventListener('close', () => openButton.focus());
+});
+
+/***/ })
+
+},
+/******/ __webpack_require__ => { // webpackRuntimeModules
+/******/ var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
+/******/ var __webpack_exports__ = (__webpack_exec__("./src/js/components/problems.js"));
+/******/ }
+]);

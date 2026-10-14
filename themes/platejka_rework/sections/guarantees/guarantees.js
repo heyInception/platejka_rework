@@ -1,1 +1,80 @@
-(self.webpackChunkgulp_builder=self.webpackChunkgulp_builder||[]).push([[400],{958:(e,t,n)=>{"use strict";var r=n(358);const{getClosestSlideIndex:i}=n(132);document.querySelectorAll("[data-guarantees-slider]").forEach((e=>{const t=[...e.children];if(!t.length)return;let n=null,o=0,l=0;const s=()=>window.matchMedia("(max-width: 1024px)").matches,a=function(){let n=arguments.length>0&&void 0!==arguments[0]?arguments[0]:0;if(!s())return;const o=t[1]?t[1].offsetLeft-t[0].offsetLeft:288,l=i(e.scrollLeft,o,t.length),a=Math.min(t.length-1,Math.max(0,l+n));r.p8.to(e,{scrollLeft:a*o,duration:window.matchMedia("(prefers-reduced-motion: reduce)").matches?0:.45,ease:"power3.out",overwrite:"auto"})};e.addEventListener("pointerdown",(t=>{0===t.button&&s()&&(n=t.pointerId,o=t.clientX,l=e.scrollLeft,e.setPointerCapture(n),r.p8.killTweensOf(e))})),e.addEventListener("pointermove",(t=>{t.pointerId===n&&(e.scrollLeft=l-(t.clientX-o))}));const d=t=>{t.pointerId===n&&(e.hasPointerCapture(n)&&e.releasePointerCapture(n),n=null,a())};e.addEventListener("pointerup",d),e.addEventListener("pointercancel",d),e.addEventListener("keydown",(e=>{"ArrowLeft"!==e.key&&"ArrowRight"!==e.key||(e.preventDefault(),a("ArrowRight"===e.key?1:-1))}))}))},132:e=>{e.exports={getClosestSlideIndex:function(e,t,n){return!Number.isFinite(t)||t<=0||!Number.isFinite(n)||n<=0?0:Math.min(n-1,Math.max(0,Math.round(e/t)))}}}},e=>{e(e.s=958)}]);
+(self["webpackChunkgulp_builder"] = self["webpackChunkgulp_builder"] || []).push([["guarantees"],{
+
+/***/ "./src/js/components/guarantees.js":
+/***/ ((__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./node_modules/gsap/index.js");
+
+const {
+  getClosestSlideIndex
+} = __webpack_require__("./src/js/components/shipments-slider.cjs");
+document.querySelectorAll('[data-guarantees-slider]').forEach(slider => {
+  const cards = [...slider.children];
+  if (!cards.length) return;
+  let pointerId = null;
+  let startX = 0;
+  let startScrollLeft = 0;
+  const isMobile = () => window.matchMedia('(max-width: 1024px)').matches;
+  const getStep = () => cards[1] ? cards[1].offsetLeft - cards[0].offsetLeft : 288;
+  const snap = function () {
+    let direction = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+    if (!isMobile()) return;
+    const step = getStep();
+    const current = getClosestSlideIndex(slider.scrollLeft, step, cards.length);
+    const index = Math.min(cards.length - 1, Math.max(0, current + direction));
+    gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.to(slider, {
+      scrollLeft: index * step,
+      duration: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 0.45,
+      ease: 'power3.out',
+      overwrite: 'auto'
+    });
+  };
+  slider.addEventListener('pointerdown', event => {
+    if (event.button !== 0 || !isMobile()) return;
+    pointerId = event.pointerId;
+    startX = event.clientX;
+    startScrollLeft = slider.scrollLeft;
+    slider.setPointerCapture(pointerId);
+    gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.killTweensOf(slider);
+  });
+  slider.addEventListener('pointermove', event => {
+    if (event.pointerId !== pointerId) return;
+    slider.scrollLeft = startScrollLeft - (event.clientX - startX);
+  });
+  const release = event => {
+    if (event.pointerId !== pointerId) return;
+    if (slider.hasPointerCapture(pointerId)) slider.releasePointerCapture(pointerId);
+    pointerId = null;
+    snap();
+  };
+  slider.addEventListener('pointerup', release);
+  slider.addEventListener('pointercancel', release);
+  slider.addEventListener('keydown', event => {
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+    event.preventDefault();
+    snap(event.key === 'ArrowRight' ? 1 : -1);
+  });
+});
+
+/***/ }),
+
+/***/ "./src/js/components/shipments-slider.cjs":
+/***/ ((module) => {
+
+function getClosestSlideIndex(scrollLeft, step, count) {
+  if (!Number.isFinite(step) || step <= 0 || !Number.isFinite(count) || count <= 0) return 0;
+  return Math.min(count - 1, Math.max(0, Math.round(scrollLeft / step)));
+}
+
+module.exports = { getClosestSlideIndex };
+
+
+/***/ })
+
+},
+/******/ __webpack_require__ => { // webpackRuntimeModules
+/******/ var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
+/******/ var __webpack_exports__ = (__webpack_exec__("./src/js/components/guarantees.js"));
+/******/ }
+]);

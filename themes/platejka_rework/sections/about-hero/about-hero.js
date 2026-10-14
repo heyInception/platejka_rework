@@ -1,1 +1,99 @@
-"use strict";(self.webpackChunkgulp_builder=self.webpackChunkgulp_builder||[]).push([[455],{851:(e,t,a)=>{var o=a(358);document.querySelectorAll("[data-about-hero]").forEach((e=>{if("true"===e.dataset.aboutHeroMotionReady)return;e.dataset.aboutHeroMotionReady="true";const t=e.querySelector("[data-about-hero-visual]"),a=[e.querySelector(".about-hero__eyebrow"),e.querySelector(".about-hero__title"),e.querySelector(".about-hero__lead")].filter(Boolean),r=e.querySelector("[data-about-hero-signature-reveal]"),u=[...e.querySelectorAll("[data-about-hero-proof]")],l=[...e.querySelectorAll("[data-about-hero-metric]")],n=[t,...a,...u,...l].filter(Boolean),i=()=>{if("true"===e.dataset.aboutHeroMotionPlayed)return;if(e.dataset.aboutHeroMotionPlayed="true",window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;o.p8.set(n,{willChange:"transform,opacity"}),r&&o.p8.set(r,{scaleX:0,transformOrigin:"left center",willChange:"transform"});const i=o.p8.timeline({defaults:{ease:"power3.out"},onComplete:()=>{o.p8.set(n,{clearProps:"opacity,transform,visibility,willChange"}),r&&o.p8.set(r,{clearProps:"transform,willChange"})}});t&&i.fromTo(t,{autoAlpha:.01},{autoAlpha:1,duration:.55,ease:"power1.out"},0),i.from(a,{autoAlpha:0,y:24,stagger:.08,duration:.58},.12),r&&i.to(r,{scaleX:1,duration:1.15,ease:"power1.inOut"},.45),i.from(u,{autoAlpha:0,y:28,stagger:.12,duration:.68},.55),i.from(l,{autoAlpha:0,x:32,stagger:.08,duration:.55},.32)};"true"!==document.documentElement.dataset.pageReady&&document.querySelector("[data-preloader]")?document.addEventListener("platejka:ready",i,{once:!0}):i()}))}},e=>{e(e.s=851)}]);
+"use strict";
+(self["webpackChunkgulp_builder"] = self["webpackChunkgulp_builder"] || []).push([["about-hero"],{
+
+/***/ "./src/js/components/about-hero.js":
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* unused harmony export initAboutHeroMotion */
+/* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./node_modules/gsap/index.js");
+
+const initAboutHeroMotion = root => {
+  if (root.dataset.aboutHeroMotionReady === 'true') return;
+  root.dataset.aboutHeroMotionReady = 'true';
+  const visual = root.querySelector('[data-about-hero-visual]');
+  const copy = [root.querySelector('.about-hero__eyebrow'), root.querySelector('.about-hero__title'), root.querySelector('.about-hero__lead')].filter(Boolean);
+  const signatureReveal = root.querySelector('[data-about-hero-signature-reveal]');
+  const proofs = [...root.querySelectorAll('[data-about-hero-proof]')];
+  const metrics = [...root.querySelectorAll('[data-about-hero-metric]')];
+  const animatedElements = [visual, ...copy, ...proofs, ...metrics].filter(Boolean);
+  const play = () => {
+    if (root.dataset.aboutHeroMotionPlayed === 'true') return;
+    root.dataset.aboutHeroMotionPlayed = 'true';
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.set(animatedElements, {
+      willChange: 'transform,opacity'
+    });
+    if (signatureReveal) {
+      gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.set(signatureReveal, {
+        scaleX: 0,
+        transformOrigin: 'left center',
+        willChange: 'transform'
+      });
+    }
+    const timeline = gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.timeline({
+      defaults: {
+        ease: 'power3.out'
+      },
+      onComplete: () => {
+        gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.set(animatedElements, {
+          clearProps: 'opacity,transform,visibility,willChange'
+        });
+        if (signatureReveal) gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.set(signatureReveal, {
+          clearProps: 'transform,willChange'
+        });
+      }
+    });
+    if (visual) {
+      timeline.fromTo(visual, {
+        autoAlpha: 0.01
+      }, {
+        autoAlpha: 1,
+        duration: 0.55,
+        ease: 'power1.out'
+      }, 0);
+    }
+    timeline.from(copy, {
+      autoAlpha: 0,
+      y: 24,
+      stagger: 0.08,
+      duration: 0.58
+    }, 0.12);
+    if (signatureReveal) {
+      timeline.to(signatureReveal, {
+        scaleX: 1,
+        duration: 1.15,
+        ease: 'power1.inOut'
+      }, 0.45);
+    }
+    timeline.from(proofs, {
+      autoAlpha: 0,
+      y: 28,
+      stagger: 0.12,
+      duration: 0.68
+    }, 0.55);
+    timeline.from(metrics, {
+      autoAlpha: 0,
+      x: 32,
+      stagger: 0.08,
+      duration: 0.55
+    }, 0.32);
+  };
+  if (document.documentElement.dataset.pageReady === 'true' || !document.querySelector('[data-preloader]')) {
+    play();
+  } else {
+    document.addEventListener('platejka:ready', play, {
+      once: true
+    });
+  }
+};
+document.querySelectorAll('[data-about-hero]').forEach(initAboutHeroMotion);
+
+
+/***/ })
+
+},
+/******/ __webpack_require__ => { // webpackRuntimeModules
+/******/ var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
+/******/ var __webpack_exports__ = (__webpack_exec__("./src/js/components/about-hero.js"));
+/******/ }
+]);

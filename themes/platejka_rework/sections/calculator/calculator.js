@@ -1,1 +1,477 @@
-(self.webpackChunkgulp_builder=self.webpackChunkgulp_builder||[]).push([[954,279],{619:(e,t,r)=>{"use strict";var a=r(755),o=r.n(a);const n="Поиск страны";function c(e){const t=e.closest(".calculator__select-wrap"),r=t?.querySelector("[data-select-flag]");if(!t||!r)return;const a=e.selectedOptions[0]?.dataset.flag;r.hidden=!a,t.classList.toggle("has-no-flag",!a),a&&(r.src=a)}document.querySelectorAll("[data-calculator-select]").forEach((function(e){if(!e||"function"!=typeof o().fn.select2)return;const t=o()(e);if(t.data("select2"))return;const r="true"===e.dataset.searchEnabled,a=t.closest(".calculator__select-wrap");t.select2({dropdownParent:a,minimumResultsForSearch:r?0:1/0,width:"100%",language:{noResults:()=>"Страна не найдена"}}),t.on("change.calculatorSelect",(()=>c(e))),t.on("select2:open.calculatorSelect",(()=>{r&&a.find(".select2-search__field").attr("placeholder",n).attr("aria-label",n)})),c(e)}))},644:(e,t,r)=>{"use strict";var a=r(358);const{buildTelegramUrl:o,buildTransferMessage:n,calculateTransfer:c,formatMoney:l,formatRate:u,parseAmount:s}=r(796),{getHeroImageOffset:i}=r(740),d={CNY:"¥",USD:"$",EUR:"€"};function f(e,t){e.forEach((e=>{const r=e===t;e.classList.toggle("is-active",r),e.setAttribute("aria-pressed",r?"true":"false")}))}function m(e,t){let r=arguments.length>2&&void 0!==arguments[2]&&arguments[2];const o=e.querySelector("[data-currency-indicator]"),n=e.querySelector("[data-currency]");if(!o||!n||!t)return;const c=t.offsetLeft-n.offsetLeft;r||window.matchMedia("(prefers-reduced-motion: reduce)").matches?a.p8.set(o,{x:c,scaleX:1}):a.p8.timeline({defaults:{overwrite:"auto"}}).to(o,{x:c,scaleX:1.08,transformOrigin:c>Number(a.p8.getProperty(o,"x"))?"right center":"left center",duration:.42,ease:"power3.inOut"}).to(o,{scaleX:1,duration:.18,ease:"power2.out"},"-=0.08")}function p(e,t,r){if(!e||e.open)return;const a=e.querySelector("[data-dialog-summary]");a&&(a.textContent=t||"Расчёт не выбран.");const o=e.querySelector("[data-cf7-summary]");o&&(o.value=t||""),e.dialogOpener=r||document.activeElement,e.showModal()}const y=document.querySelector("[data-hero]"),g=y?.querySelector("[data-contact-dialog]");document.querySelectorAll("[data-hero-calculator], [data-transfer-calculator]").forEach((e=>{const t=e.closest("[data-hero], [data-transfer-calculator-section]"),r=t?.querySelector("[data-contact-dialog]");!function(e){e&&"true"!==e.dataset.dialogReady&&(e.dataset.dialogReady="true",e.querySelector("[data-dialog-close]")?.addEventListener("click",(()=>e.close())),e.addEventListener("click",(t=>{t.target===e&&e.close()})),e.addEventListener("close",(()=>{e.dialogOpener?.focus?.(),e.dialogOpener=null})))}(r),function(e,t){if(!e||"true"===e.dataset.calculatorReady)return;e.dataset.calculatorReady="true";const r=function(e){try{const t=JSON.parse(e.getAttribute("data-currency-rates")||"{}");return t&&"object"==typeof t?t:{}}catch(e){return{}}}(e),a=[...e.querySelectorAll("[data-currency]")],i=e.querySelector('[data-role="amount"]'),y=e.querySelector('[data-role="currency-symbol"]'),g=e.querySelector('[data-role="country-from"]'),h=e.querySelector('[data-role="country-to"]'),v=e.querySelector('[data-role="country-flag"]'),b=e.querySelector('[data-action="telegram"]'),S=e.hasAttribute("data-transfer-calculator");let q=a.find((e=>e.classList.contains("is-active")))?.dataset.currency,E=null;q&&r[q]||(q=Object.keys(r)[0]||"");const w=()=>(E=c(i?.value,r[q]),function(e,t){const r={"official-rate":u(t?.officialRate),"conversion-rate":u(t?.conversionRate),commission:l(t?.commission),"grand-total":l(t?.total)};Object.entries(r).forEach((t=>{let[r,a]=t;const o=e.querySelector(`[data-role="${r}"]`);o&&(o.textContent=a)}))}(e,E),y&&(y.textContent=d[q]||q),E&&e.dispatchEvent(new CustomEvent(S?"calculator:calculated":"hero:calculated",{bubbles:!0,detail:{amount:s(i.value),currency:q,...E}})),E);a.forEach((t=>{t.addEventListener("click",(()=>{r[t.dataset.currency]&&(q=t.dataset.currency,f(a,t),m(e,t),w())}))})),i?.addEventListener("input",(()=>{i.removeAttribute("aria-invalid"),w()})),h?.addEventListener("change",(()=>{if(!v)return;const e=h.selectedOptions[0]?.dataset.flag;v.hidden=!e,v.parentElement.classList.toggle("has-no-flag",!e),e&&(v.src=e)}));const L=e=>S?n({currency:q,amount:s(i.value),countryFrom:g?.selectedOptions[0]?.textContent?.trim()||"Россия",countryTo:h?.selectedOptions[0]?.textContent?.trim()||"",result:e}):function(e,t,r){return[`Валюта платежа: ${t}`,`Сумма: ${new Intl.NumberFormat("ru-RU").format(e)} ${t}`,`Комиссия агента: ${l(r.commission)}`,`Итого в рублях: ${l(r.total)}`].join("\n")}(s(i.value),q,e),k=()=>{const e=w();return e||(i?.setAttribute("aria-invalid","true"),i?.focus()),e};e.addEventListener("submit",(e=>{e.preventDefault();const r=k();r&&p(t,L(r),e.submitter)})),b?.addEventListener("click",(()=>{const e=k();e&&window.open(o(L(e)),"_blank","noopener")}));const N=a.find((e=>e.dataset.currency===q));f(a,N),m(e,N,!0),window.addEventListener("resize",(()=>{const t=a.find((e=>"true"===e.getAttribute("aria-pressed")));m(e,t,!0)})),w()}(e,r)})),y&&(function(e){if(!e||"true"===e.dataset.motionReady)return;e.dataset.motionReady="true";const t=e.querySelector("[data-hero-panel]"),r=e.querySelector("[data-hero-image]"),o=e.querySelector("[data-hero-blur]"),n=e.querySelectorAll("[data-hero-copy]"),c=e.querySelector("[data-hero-calculator]"),l=e.querySelectorAll("[data-hero-cards] > *"),u=a.p8.matchMedia();let s=!1;const d=()=>{s||(s=!0,u.add({reduceMotion:"(prefers-reduced-motion: reduce)",desktop:"(min-width: 1025px) and (pointer: fine)"},(e=>{const{reduceMotion:u,desktop:s}=e.conditions,d=[t,r,o,...n,c,...l].filter(Boolean);if(u)return void a.p8.set(d,{clearProps:"all"});const f=a.p8.timeline({defaults:{ease:"power3.out"}});f.from(t,{clipPath:"inset(0 100% 0 0 round 32px)",duration:s?.9:.65}).from(r,{autoAlpha:0,scale:1.12,xPercent:8,duration:1.1},.08).from(o,{autoAlpha:0,scale:1.16,yPercent:16,duration:1},.12).from(n,{autoAlpha:0,y:24,stagger:s?.08:.055,duration:.55},.28).from([c,...l],{autoAlpha:0,y:32,stagger:.1,duration:.65},.42);const m=a.p8.to(o,{scale:1.045,yPercent:-2,duration:5.5,ease:"sine.inOut",repeat:-1,yoyo:!0,paused:!0});let p,y;if(f.eventCallback("onComplete",(()=>m.play())),s&&r){const e=a.p8.quickTo(r,"x",{duration:.7,ease:"power3.out"}),o=a.p8.quickTo(r,"y",{duration:.7,ease:"power3.out"});p=r=>{const a=t.getBoundingClientRect(),n=(r.clientX-a.left)/a.width-.5,c=(r.clientY-a.top)/a.height-.5;e(i(n)),o(12*c)},y=()=>{e(0),o(0)},t.addEventListener("pointermove",p),t.addEventListener("pointerleave",y)}return()=>{p&&t.removeEventListener("pointermove",p),y&&t.removeEventListener("pointerleave",y),f.kill(),m.kill(),a.p8.killTweensOf([r,o])}}),e))};"true"!==document.documentElement.dataset.pageReady&&document.querySelector("[data-preloader]")?document.addEventListener("platejka:ready",d,{once:!0}):d()}(y),document.querySelectorAll('[data-graph-path="call"]').forEach((e=>{e.addEventListener("click",(()=>p(g,"",e)))})))},796:e=>{"use strict";const t=new Intl.NumberFormat("ru-RU",{maximumFractionDigits:2});function r(e){return Math.round(100*(Number(e)+Number.EPSILON))/100}function a(e){const t=o(e);return!Number.isFinite(t)||t<=0?0:t>=3e3?.005*t:275}function o(e){if("number"==typeof e)return e;if("string"!=typeof e)return NaN;const t=e.replace(/[\s\u00a0\u202f]/g,"").replace(",",".");return/^\d+(?:\.\d+)?$/.test(t)?Number(t):NaN}function n(e){return`${t.format(Number(e)||0)} ₽`}e.exports={buildTelegramUrl:function(e){return`https://t.me/platejka_com?text=${encodeURIComponent(e)}`},buildTransferMessage:function({currency:e,amount:r,countryFrom:a,countryTo:c,result:l}){return[`Валюта платежа: ${e}`,`Маршрут: ${a} → ${c}`,`Сумма: ${t.format(o(r))} ${e}`,`Комиссия агента: ${n(l.commission)}`,`Итого в рублях: ${n(l.total)}`].join("\n")},calculateTransfer:function(e,t){const n=o(e),c=Number(t);if(!Number.isFinite(n)||!Number.isFinite(c)||n<=0||c<=0)return null;const l=r(1.01*c),u=r(n*c*1.01),s=r(a(n)*c*1.01);return{officialRate:c,conversionRate:l,commission:s,base:u,total:r(u+s)}},commissionFor:a,formatMoney:n,formatRate:function(e){return`${t.format(Number(e)||0)} ₽`},parseAmount:o,roundMoney:r}},740:e=>{e.exports={getHeroImageOffset:function(e){const t=Math.max(-.5,Math.min(.5,Number(e)||0));return t<0?6*t:16*t}}}},e=>{var t=t=>e(e.s=t);t(644),t(619)}]);
+(self["webpackChunkgulp_builder"] = self["webpackChunkgulp_builder"] || []).push([["calculator","hero"],{
+
+/***/ "./src/js/components/calculator-select.js":
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* unused harmony exports initCalculatorSelect, syncCountryFlag */
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+
+const SEARCH_PLACEHOLDER = 'Поиск страны';
+function syncCountryFlag(select) {
+  const wrap = select.closest('.calculator__select-wrap');
+  const flagElement = wrap?.querySelector('[data-select-flag]');
+  if (!wrap || !flagElement) return;
+  const flag = select.selectedOptions[0]?.dataset.flag;
+  flagElement.hidden = !flag;
+  wrap.classList.toggle('has-no-flag', !flag);
+  if (flag) flagElement.src = flag;
+}
+function initCalculatorSelect(select) {
+  if (!select || typeof (jquery__WEBPACK_IMPORTED_MODULE_0___default().fn).select2 !== 'function') return;
+  const $select = jquery__WEBPACK_IMPORTED_MODULE_0___default()(select);
+  if ($select.data('select2')) return;
+  const searchEnabled = select.dataset.searchEnabled === 'true';
+  const $wrap = $select.closest('.calculator__select-wrap');
+  $select.select2({
+    dropdownParent: $wrap,
+    minimumResultsForSearch: searchEnabled ? 0 : Infinity,
+    width: '100%',
+    language: {
+      noResults: () => 'Страна не найдена'
+    }
+  });
+  $select.on('change.calculatorSelect', () => syncCountryFlag(select));
+  $select.on('select2:open.calculatorSelect', () => {
+    if (!searchEnabled) return;
+    $wrap.find('.select2-search__field').attr('placeholder', SEARCH_PLACEHOLDER).attr('aria-label', SEARCH_PLACEHOLDER);
+  });
+  syncCountryFlag(select);
+}
+document.querySelectorAll('[data-calculator-select]').forEach(initCalculatorSelect);
+
+
+/***/ }),
+
+/***/ "./src/js/components/hero.js":
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* unused harmony exports buildSummary, initContactDialog, initHeroCalculator, initHeroMotion, openContactDialog, parseRates */
+/* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./node_modules/gsap/index.js");
+
+const {
+  buildTelegramUrl,
+  buildTransferMessage,
+  calculateTransfer,
+  formatMoney,
+  formatRate,
+  parseAmount
+} = __webpack_require__("./src/js/components/hero-calculator.cjs");
+const {
+  getHeroImageOffset
+} = __webpack_require__("./src/js/components/hero-motion.cjs");
+const currencySymbols = {
+  CNY: '¥',
+  USD: '$',
+  EUR: '€'
+};
+function parseRates(root) {
+  try {
+    const rates = JSON.parse(root.getAttribute('data-currency-rates') || '{}');
+    return rates && typeof rates === 'object' ? rates : {};
+  } catch (error) {
+    return {};
+  }
+}
+function setCurrency(buttons, activeButton) {
+  buttons.forEach(button => {
+    const isActive = button === activeButton;
+    button.classList.toggle('is-active', isActive);
+    button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+  });
+}
+function animateCurrencyIndicator(root, activeButton) {
+  let immediate = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+  const indicator = root.querySelector('[data-currency-indicator]');
+  const firstButton = root.querySelector('[data-currency]');
+  if (!indicator || !firstButton || !activeButton) return;
+  const x = activeButton.offsetLeft - firstButton.offsetLeft;
+  if (immediate || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.set(indicator, {
+      x,
+      scaleX: 1
+    });
+    return;
+  }
+  gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.timeline({
+    defaults: {
+      overwrite: 'auto'
+    }
+  }).to(indicator, {
+    x,
+    scaleX: 1.08,
+    transformOrigin: x > Number(gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.getProperty(indicator, 'x')) ? 'right center' : 'left center',
+    duration: 0.42,
+    ease: 'power3.inOut'
+  }).to(indicator, {
+    scaleX: 1,
+    duration: 0.18,
+    ease: 'power2.out'
+  }, '-=0.08');
+}
+function writeResult(root, result) {
+  const values = {
+    'official-rate': formatRate(result?.officialRate),
+    'conversion-rate': formatRate(result?.conversionRate),
+    commission: formatMoney(result?.commission),
+    'grand-total': formatMoney(result?.total)
+  };
+  Object.entries(values).forEach(_ref => {
+    let [role, value] = _ref;
+    const output = root.querySelector(`[data-role="${role}"]`);
+    if (output) output.textContent = value;
+  });
+}
+function buildSummary(amount, currency, result) {
+  return [`Валюта платежа: ${currency}`, `Сумма: ${new Intl.NumberFormat('ru-RU').format(amount)} ${currency}`, `Комиссия агента: ${formatMoney(result.commission)}`, `Итого в рублях: ${formatMoney(result.total)}`].join('\n');
+}
+function openContactDialog(dialog, summary, opener) {
+  if (!dialog || dialog.open) return;
+  const summaryElement = dialog.querySelector('[data-dialog-summary]');
+  if (summaryElement) summaryElement.textContent = summary || 'Расчёт не выбран.';
+  const cf7Summary = dialog.querySelector('[data-cf7-summary]');
+  if (cf7Summary) cf7Summary.value = summary || '';
+  dialog.dialogOpener = opener || document.activeElement;
+  dialog.showModal();
+}
+function initContactDialog(dialog) {
+  if (!dialog || dialog.dataset.dialogReady === 'true') return;
+  dialog.dataset.dialogReady = 'true';
+  dialog.querySelector('[data-dialog-close]')?.addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', event => {
+    if (event.target === dialog) dialog.close();
+  });
+  dialog.addEventListener('close', () => {
+    dialog.dialogOpener?.focus?.();
+    dialog.dialogOpener = null;
+  });
+}
+function initHeroCalculator(root, dialog) {
+  if (!root || root.dataset.calculatorReady === 'true') return;
+  root.dataset.calculatorReady = 'true';
+  const rates = parseRates(root);
+  const buttons = [...root.querySelectorAll('[data-currency]')];
+  const input = root.querySelector('[data-role="amount"]');
+  const symbol = root.querySelector('[data-role="currency-symbol"]');
+  const countryFrom = root.querySelector('[data-role="country-from"]');
+  const countryTo = root.querySelector('[data-role="country-to"]');
+  const countryFlag = root.querySelector('[data-role="country-flag"]');
+  const telegramButton = root.querySelector('[data-action="telegram"]');
+  const isTransfer = root.hasAttribute('data-transfer-calculator');
+  let currency = buttons.find(button => button.classList.contains('is-active'))?.dataset.currency;
+  let currentResult = null;
+  if (!currency || !rates[currency]) currency = Object.keys(rates)[0] || '';
+  const calculate = () => {
+    currentResult = calculateTransfer(input?.value, rates[currency]);
+    writeResult(root, currentResult);
+    if (symbol) symbol.textContent = currencySymbols[currency] || currency;
+    if (currentResult) {
+      root.dispatchEvent(new CustomEvent(isTransfer ? 'calculator:calculated' : 'hero:calculated', {
+        bubbles: true,
+        detail: {
+          amount: parseAmount(input.value),
+          currency,
+          ...currentResult
+        }
+      }));
+    }
+    return currentResult;
+  };
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      if (!rates[button.dataset.currency]) return;
+      currency = button.dataset.currency;
+      setCurrency(buttons, button);
+      animateCurrencyIndicator(root, button);
+      calculate();
+    });
+  });
+  input?.addEventListener('input', () => {
+    input.removeAttribute('aria-invalid');
+    calculate();
+  });
+  countryTo?.addEventListener('change', () => {
+    if (!countryFlag) return;
+    const flag = countryTo.selectedOptions[0]?.dataset.flag;
+    countryFlag.hidden = !flag;
+    countryFlag.parentElement.classList.toggle('has-no-flag', !flag);
+    if (flag) countryFlag.src = flag;
+  });
+  const summary = result => {
+    if (!isTransfer) return buildSummary(parseAmount(input.value), currency, result);
+    return buildTransferMessage({
+      currency,
+      amount: parseAmount(input.value),
+      countryFrom: countryFrom?.selectedOptions[0]?.textContent?.trim() || 'Россия',
+      countryTo: countryTo?.selectedOptions[0]?.textContent?.trim() || '',
+      result
+    });
+  };
+  const validResult = () => {
+    const result = calculate();
+    if (!result) {
+      input?.setAttribute('aria-invalid', 'true');
+      input?.focus();
+    }
+    return result;
+  };
+  root.addEventListener('submit', event => {
+    event.preventDefault();
+    const result = validResult();
+    if (result) openContactDialog(dialog, summary(result), event.submitter);
+  });
+  telegramButton?.addEventListener('click', () => {
+    const result = validResult();
+    if (result) window.open(buildTelegramUrl(summary(result)), '_blank', 'noopener');
+  });
+  const activeButton = buttons.find(button => button.dataset.currency === currency);
+  setCurrency(buttons, activeButton);
+  animateCurrencyIndicator(root, activeButton, true);
+  window.addEventListener('resize', () => {
+    const selectedButton = buttons.find(button => button.getAttribute('aria-pressed') === 'true');
+    animateCurrencyIndicator(root, selectedButton, true);
+  });
+  calculate();
+}
+function initHeroMotion(root) {
+  if (!root || root.dataset.motionReady === 'true') return;
+  root.dataset.motionReady = 'true';
+  const panel = root.querySelector('[data-hero-panel]');
+  const image = root.querySelector('[data-hero-image]');
+  const blur = root.querySelector('[data-hero-blur]');
+  const copyTargets = root.querySelectorAll('[data-hero-copy]');
+  const calculator = root.querySelector('[data-hero-calculator]');
+  const cards = root.querySelectorAll('[data-hero-cards] > *');
+  const media = gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.matchMedia();
+  let hasPlayed = false;
+  const play = () => {
+    if (hasPlayed) return;
+    hasPlayed = true;
+    media.add({
+      reduceMotion: '(prefers-reduced-motion: reduce)',
+      desktop: '(min-width: 1025px) and (pointer: fine)'
+    }, context => {
+      const {
+        reduceMotion,
+        desktop
+      } = context.conditions;
+      const targets = [panel, image, blur, ...copyTargets, calculator, ...cards].filter(Boolean);
+      if (reduceMotion) {
+        gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.set(targets, {
+          clearProps: 'all'
+        });
+        return undefined;
+      }
+      const intro = gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.timeline({
+        defaults: {
+          ease: 'power3.out'
+        }
+      });
+      intro.from(panel, {
+        clipPath: 'inset(0 100% 0 0 round 32px)',
+        duration: desktop ? 0.9 : 0.65
+      }).from(image, {
+        autoAlpha: 0,
+        scale: 1.12,
+        xPercent: 8,
+        duration: 1.1
+      }, 0.08).from(blur, {
+        autoAlpha: 0,
+        scale: 1.16,
+        yPercent: 16,
+        duration: 1
+      }, 0.12).from(copyTargets, {
+        autoAlpha: 0,
+        y: 24,
+        stagger: desktop ? 0.08 : 0.055,
+        duration: 0.55
+      }, 0.28).from([calculator, ...cards], {
+        autoAlpha: 0,
+        y: 32,
+        stagger: 0.1,
+        duration: 0.65
+      }, 0.42);
+      const ambient = gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.to(blur, {
+        scale: 1.045,
+        yPercent: -2,
+        duration: 5.5,
+        ease: 'sine.inOut',
+        repeat: -1,
+        yoyo: true,
+        paused: true
+      });
+      intro.eventCallback('onComplete', () => ambient.play());
+      let handlePointerMove;
+      let handlePointerLeave;
+      if (desktop && image) {
+        const moveX = gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.quickTo(image, 'x', {
+          duration: 0.7,
+          ease: 'power3.out'
+        });
+        const moveY = gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.quickTo(image, 'y', {
+          duration: 0.7,
+          ease: 'power3.out'
+        });
+        handlePointerMove = event => {
+          const bounds = panel.getBoundingClientRect();
+          const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+          const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+          moveX(getHeroImageOffset(x));
+          moveY(y * 12);
+        };
+        handlePointerLeave = () => {
+          moveX(0);
+          moveY(0);
+        };
+        panel.addEventListener('pointermove', handlePointerMove);
+        panel.addEventListener('pointerleave', handlePointerLeave);
+      }
+      return () => {
+        if (handlePointerMove) panel.removeEventListener('pointermove', handlePointerMove);
+        if (handlePointerLeave) panel.removeEventListener('pointerleave', handlePointerLeave);
+        intro.kill();
+        ambient.kill();
+        gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.killTweensOf([image, blur]);
+      };
+    }, root);
+  };
+  if (document.documentElement.dataset.pageReady === 'true' || !document.querySelector('[data-preloader]')) {
+    play();
+  } else {
+    document.addEventListener('platejka:ready', play, {
+      once: true
+    });
+  }
+}
+const hero = document.querySelector('[data-hero]');
+const dialog = hero?.querySelector('[data-contact-dialog]');
+document.querySelectorAll('[data-hero-calculator], [data-transfer-calculator]').forEach(calculator => {
+  const section = calculator.closest('[data-hero], [data-transfer-calculator-section]');
+  const localDialog = section?.querySelector('[data-contact-dialog]');
+  initContactDialog(localDialog);
+  initHeroCalculator(calculator, localDialog);
+});
+if (hero) {
+  initHeroMotion(hero);
+  document.querySelectorAll('[data-graph-path="call"]').forEach(button => {
+    button.addEventListener('click', () => openContactDialog(dialog, '', button));
+  });
+}
+
+
+/***/ }),
+
+/***/ "./src/js/components/hero-calculator.cjs":
+/***/ ((module) => {
+
+"use strict";
+
+
+const numberFormatter = new Intl.NumberFormat('ru-RU', {
+  maximumFractionDigits: 2,
+});
+
+function roundMoney(value) {
+  return Math.round((Number(value) + Number.EPSILON) * 100) / 100;
+}
+
+function commissionFor(amount) {
+  const value = parseAmount(amount);
+
+  if (!Number.isFinite(value) || value <= 0) {
+    return 0;
+  }
+
+  return value >= 3000 ? value * 0.005 : 275;
+}
+
+function parseAmount(value) {
+  if (typeof value === 'number') return value;
+  if (typeof value !== 'string') return NaN;
+  const normalized = value.replace(/[\s\u00a0\u202f]/g, '').replace(',', '.');
+  return /^\d+(?:\.\d+)?$/.test(normalized) ? Number(normalized) : NaN;
+}
+
+function calculateTransfer(amount, rate) {
+  const numericAmount = parseAmount(amount);
+  const officialRate = Number(rate);
+
+  if (
+    !Number.isFinite(numericAmount)
+    || !Number.isFinite(officialRate)
+    || numericAmount <= 0
+    || officialRate <= 0
+  ) {
+    return null;
+  }
+
+  const conversionRate = roundMoney(officialRate * 1.01);
+  const base = roundMoney(numericAmount * officialRate * 1.01);
+  const commission = roundMoney(commissionFor(numericAmount) * officialRate * 1.01);
+
+  return {
+    officialRate,
+    conversionRate,
+    commission,
+    base,
+    total: roundMoney(base + commission),
+  };
+}
+
+function formatMoney(value) {
+  return `${numberFormatter.format(Number(value) || 0)} ₽`;
+}
+
+function formatRate(value) {
+  return `${numberFormatter.format(Number(value) || 0)} ₽`;
+}
+
+function buildTransferMessage({ currency, amount, countryFrom, countryTo, result }) {
+  return [
+    `Валюта платежа: ${currency}`,
+    `Маршрут: ${countryFrom} → ${countryTo}`,
+    `Сумма: ${numberFormatter.format(parseAmount(amount))} ${currency}`,
+    `Комиссия агента: ${formatMoney(result.commission)}`,
+    `Итого в рублях: ${formatMoney(result.total)}`,
+  ].join('\n');
+}
+
+function buildTelegramUrl(message) {
+  return `https://t.me/platejka_com?text=${encodeURIComponent(message)}`;
+}
+
+module.exports = {
+  buildTelegramUrl,
+  buildTransferMessage,
+  calculateTransfer,
+  commissionFor,
+  formatMoney,
+  formatRate,
+  parseAmount,
+  roundMoney,
+};
+
+
+/***/ }),
+
+/***/ "./src/js/components/hero-motion.cjs":
+/***/ ((module) => {
+
+function getHeroImageOffset(normalizedX) {
+  const position = Math.max(-0.5, Math.min(0.5, Number(normalizedX) || 0));
+  return position < 0 ? position * 6 : position * 16;
+}
+
+module.exports = { getHeroImageOffset };
+
+
+/***/ })
+
+},
+/******/ __webpack_require__ => { // webpackRuntimeModules
+/******/ var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
+/******/ var __webpack_exports__ = (__webpack_exec__("./src/js/components/hero.js"), __webpack_exec__("./src/js/components/calculator-select.js"));
+/******/ }
+]);

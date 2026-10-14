@@ -1,1 +1,122 @@
-(self.webpackChunkgulp_builder=self.webpackChunkgulp_builder||[]).push([[571],{650:(e,t,r)=>{"use strict";var n=r(358),i=r(92);const{getClosestSlideIndex:o}=r(132);n.p8.registerPlugin(i.i),document.querySelectorAll("[data-shipments]").forEach((function(e){"true"!==e.dataset.shipmentsReady&&(e.dataset.shipmentsReady="true",function(e){const t=[...e.querySelectorAll("[data-shipments-image]")];if(!t.length)return;const r=n.p8.matchMedia();r.add("(prefers-reduced-motion: reduce)",(()=>{n.p8.set(t,{clearProps:"all"})})),r.add("(prefers-reduced-motion: no-preference)",(()=>{const r=n.p8.from(t,{autoAlpha:0,xPercent:18,yPercent:16,scale:.88,duration:.85,stagger:.1,ease:"power3.out",scrollTrigger:{trigger:e,start:"top 72%",once:!0}});return()=>r.kill()}))}(e),function(e){const t=e.querySelector("[data-shipments-slider]"),r=t?[...t.children]:[];if(!t||!r.length)return;let i=!1,s=null,a=0,d=0;const l=function(){let e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:0;if(!window.matchMedia("(max-width: 1024px)").matches)return;const i=r[1]?r[1].offsetLeft-r[0].offsetLeft:r[0].getBoundingClientRect().width+8,s=o(t.scrollLeft,i,r.length),a=Math.min(r.length-1,Math.max(0,s+e));n.p8.to(t,{scrollLeft:a*i,duration:window.matchMedia("(prefers-reduced-motion: reduce)").matches?0:.45,ease:"power3.out",overwrite:"auto"})};t.addEventListener("pointerdown",(e=>{0===e.button&&window.matchMedia("(max-width: 1024px)").matches&&(i=!0,s=e.pointerId,a=e.clientX,d=t.scrollLeft,t.setPointerCapture(s),n.p8.killTweensOf(t))})),t.addEventListener("pointermove",(e=>{i&&e.pointerId===s&&(t.scrollLeft=d-(e.clientX-a))}));const c=e=>{i&&e.pointerId===s&&(i=!1,t.hasPointerCapture(s)&&t.releasePointerCapture(s),s=null,l())};t.addEventListener("pointerup",c),t.addEventListener("pointercancel",c),t.addEventListener("keydown",(e=>{"ArrowLeft"!==e.key&&"ArrowRight"!==e.key||(e.preventDefault(),l("ArrowRight"===e.key?1:-1))}))}(e))}))},132:e=>{e.exports={getClosestSlideIndex:function(e,t,r){return!Number.isFinite(t)||t<=0||!Number.isFinite(r)||r<=0?0:Math.min(r-1,Math.max(0,Math.round(e/t)))}}}},e=>{e(e.s=650)}]);
+(self["webpackChunkgulp_builder"] = self["webpackChunkgulp_builder"] || []).push([["shipments"],{
+
+/***/ "./src/js/components/shipments.js":
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* unused harmony exports initShipments, initShipmentsMotion, initShipmentsSlider */
+/* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./node_modules/gsap/index.js");
+/* harmony import */ var gsap_ScrollTrigger__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("./node_modules/gsap/ScrollTrigger.js");
+
+
+const {
+  getClosestSlideIndex
+} = __webpack_require__("./src/js/components/shipments-slider.cjs");
+gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.registerPlugin(gsap_ScrollTrigger__WEBPACK_IMPORTED_MODULE_1__.ScrollTrigger);
+function initShipmentsMotion(root) {
+  const images = [...root.querySelectorAll('[data-shipments-image]')];
+  if (!images.length) return;
+  const media = gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.matchMedia();
+  media.add('(prefers-reduced-motion: reduce)', () => {
+    gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.set(images, {
+      clearProps: 'all'
+    });
+  });
+  media.add('(prefers-reduced-motion: no-preference)', () => {
+    const animation = gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.from(images, {
+      autoAlpha: 0,
+      xPercent: 18,
+      yPercent: 16,
+      scale: 0.88,
+      duration: 0.85,
+      stagger: 0.1,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: root,
+        start: 'top 72%',
+        once: true
+      }
+    });
+    return () => animation.kill();
+  });
+}
+function initShipmentsSlider(root) {
+  const slider = root.querySelector('[data-shipments-slider]');
+  const cards = slider ? [...slider.children] : [];
+  if (!slider || !cards.length) return;
+  let dragging = false;
+  let pointerId = null;
+  let startX = 0;
+  let startScrollLeft = 0;
+  const getStep = () => cards[1] ? cards[1].offsetLeft - cards[0].offsetLeft : cards[0].getBoundingClientRect().width + 8;
+  const snap = function () {
+    let direction = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+    if (!window.matchMedia('(max-width: 1024px)').matches) return;
+    const step = getStep();
+    const current = getClosestSlideIndex(slider.scrollLeft, step, cards.length);
+    const index = Math.min(cards.length - 1, Math.max(0, current + direction));
+    gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.to(slider, {
+      scrollLeft: index * step,
+      duration: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 0.45,
+      ease: 'power3.out',
+      overwrite: 'auto'
+    });
+  };
+  slider.addEventListener('pointerdown', event => {
+    if (event.button !== 0 || !window.matchMedia('(max-width: 1024px)').matches) return;
+    dragging = true;
+    pointerId = event.pointerId;
+    startX = event.clientX;
+    startScrollLeft = slider.scrollLeft;
+    slider.setPointerCapture(pointerId);
+    gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.killTweensOf(slider);
+  });
+  slider.addEventListener('pointermove', event => {
+    if (!dragging || event.pointerId !== pointerId) return;
+    slider.scrollLeft = startScrollLeft - (event.clientX - startX);
+  });
+  const release = event => {
+    if (!dragging || event.pointerId !== pointerId) return;
+    dragging = false;
+    if (slider.hasPointerCapture(pointerId)) slider.releasePointerCapture(pointerId);
+    pointerId = null;
+    snap();
+  };
+  slider.addEventListener('pointerup', release);
+  slider.addEventListener('pointercancel', release);
+  slider.addEventListener('keydown', event => {
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+    event.preventDefault();
+    snap(event.key === 'ArrowRight' ? 1 : -1);
+  });
+}
+function initShipments(root) {
+  if (root.dataset.shipmentsReady === 'true') return;
+  root.dataset.shipmentsReady = 'true';
+  initShipmentsMotion(root);
+  initShipmentsSlider(root);
+}
+document.querySelectorAll('[data-shipments]').forEach(initShipments);
+
+
+/***/ }),
+
+/***/ "./src/js/components/shipments-slider.cjs":
+/***/ ((module) => {
+
+function getClosestSlideIndex(scrollLeft, step, count) {
+  if (!Number.isFinite(step) || step <= 0 || !Number.isFinite(count) || count <= 0) return 0;
+  return Math.min(count - 1, Math.max(0, Math.round(scrollLeft / step)));
+}
+
+module.exports = { getClosestSlideIndex };
+
+
+/***/ })
+
+},
+/******/ __webpack_require__ => { // webpackRuntimeModules
+/******/ var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
+/******/ var __webpack_exports__ = (__webpack_exec__("./src/js/components/shipments.js"));
+/******/ }
+]);

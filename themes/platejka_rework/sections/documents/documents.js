@@ -1,1 +1,71 @@
-"use strict";(self.webpackChunkgulp_builder=self.webpackChunkgulp_builder||[]).push([[981],{540:(e,t,n)=>{var r=n(358);document.querySelectorAll("[data-documents-slider]").forEach((e=>{const t=[...e.querySelectorAll(".document-card")];if(t.length<2)return;const n=window.matchMedia("(max-width: 1024px)"),o=window.matchMedia("(prefers-reduced-motion: reduce)");let i=null,l=0,a=0,d=!1;const s=()=>t[1].offsetLeft-t[0].offsetLeft,c=()=>Math.round(e.scrollLeft/s()),u=n=>{const i=Math.max(0,Math.min(n,t.length-1))*s();r.p8.to(e,{scrollLeft:i,duration:o.matches?0:.4,ease:"power3.out",overwrite:"auto"})};e.addEventListener("keydown",(e=>{n.matches&&["ArrowLeft","ArrowRight"].includes(e.key)&&(e.preventDefault(),u(c()+("ArrowRight"===e.key?1:-1)))})),e.addEventListener("pointerdown",(t=>{n.matches&&"touch"!==t.pointerType&&0===t.button&&(i=t.pointerId,l=t.clientX,a=e.scrollLeft,d=!1,r.p8.killTweensOf(e),e.setPointerCapture(i))})),e.addEventListener("pointermove",(t=>{if(t.pointerId!==i)return;const n=t.clientX-l;Math.abs(n)>5&&(d=!0),d&&(e.scrollLeft=a-n)}));const p=t=>{t.pointerId===i&&(e.releasePointerCapture(i),i=null,d&&u(c()))};e.addEventListener("pointerup",p),e.addEventListener("pointercancel",p),e.addEventListener("click",(e=>{d&&(e.preventDefault(),d=!1)}),!0)}))}},e=>{e(e.s=540)}]);
+"use strict";
+(self["webpackChunkgulp_builder"] = self["webpackChunkgulp_builder"] || []).push([["documents"],{
+
+/***/ "./src/js/components/documents.js":
+/***/ ((__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) => {
+
+/* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./node_modules/gsap/index.js");
+
+document.querySelectorAll('[data-documents-slider]').forEach(slider => {
+  const cards = [...slider.querySelectorAll('.document-card')];
+  if (cards.length < 2) return;
+  const mobile = window.matchMedia('(max-width: 1024px)');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let pointerId = null;
+  let startX = 0;
+  let startScrollLeft = 0;
+  let dragged = false;
+  const getStep = () => cards[1].offsetLeft - cards[0].offsetLeft;
+  const getIndex = () => Math.round(slider.scrollLeft / getStep());
+  const goTo = index => {
+    const target = Math.max(0, Math.min(index, cards.length - 1)) * getStep();
+    gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.to(slider, {
+      scrollLeft: target,
+      duration: reducedMotion.matches ? 0 : 0.4,
+      ease: 'power3.out',
+      overwrite: 'auto'
+    });
+  };
+  slider.addEventListener('keydown', event => {
+    if (!mobile.matches || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+    event.preventDefault();
+    goTo(getIndex() + (event.key === 'ArrowRight' ? 1 : -1));
+  });
+  slider.addEventListener('pointerdown', event => {
+    if (!mobile.matches || event.pointerType === 'touch' || event.button !== 0) return;
+    pointerId = event.pointerId;
+    startX = event.clientX;
+    startScrollLeft = slider.scrollLeft;
+    dragged = false;
+    gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.killTweensOf(slider);
+    slider.setPointerCapture(pointerId);
+  });
+  slider.addEventListener('pointermove', event => {
+    if (event.pointerId !== pointerId) return;
+    const distance = event.clientX - startX;
+    if (Math.abs(distance) > 5) dragged = true;
+    if (dragged) slider.scrollLeft = startScrollLeft - distance;
+  });
+  const release = event => {
+    if (event.pointerId !== pointerId) return;
+    slider.releasePointerCapture(pointerId);
+    pointerId = null;
+    if (dragged) goTo(getIndex());
+  };
+  slider.addEventListener('pointerup', release);
+  slider.addEventListener('pointercancel', release);
+  slider.addEventListener('click', event => {
+    if (!dragged) return;
+    event.preventDefault();
+    dragged = false;
+  }, true);
+});
+
+/***/ })
+
+},
+/******/ __webpack_require__ => { // webpackRuntimeModules
+/******/ var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
+/******/ var __webpack_exports__ = (__webpack_exec__("./src/js/components/documents.js"));
+/******/ }
+]);
