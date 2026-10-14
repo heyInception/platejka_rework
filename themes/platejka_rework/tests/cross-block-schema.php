@@ -42,6 +42,7 @@ $expected = array(
 	'cross-key-facts'        => 'Конкретные цифры и условия',
 	'cross-transfer-goals'   => 'Частые цели переводов',
 	'cross-swift-problems'   => 'Почему прямой SWIFT не работает',
+	'cross-guarantees'       => 'Гарантии',
 	'cross-audience'         => 'Кому подходит',
 );
 
@@ -76,7 +77,7 @@ foreach ( $expected as $name => $label ) {
 }
 
 $default_groups = platejka_cross_block_default_groups();
-platejka_cross_block_schema_assert( array_keys( $expected ) === array_keys( $default_groups ), 'Canonical defaults expose exactly the seven approved cross-blocks.' );
+platejka_cross_block_schema_assert( array_keys( $expected ) === array_keys( $default_groups ), 'Canonical defaults expose exactly the eight approved cross-blocks.' );
 foreach ( $default_groups as $slug => $field ) {
 	platejka_cross_block_schema_assert( platejka_cross_block_default_field_key( $slug ) === ( $field['key'] ?? null ), 'Default group uses the stable key: ' . $slug );
 	platejka_cross_block_schema_assert( 'group' === ( $field['type'] ?? null ) && ! empty( $field['sub_fields'] ), 'Default group contains editable content fields: ' . $slug );

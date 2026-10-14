@@ -32,7 +32,7 @@ platejka_cross_render_assert( ! is_file( $script ), 'Cross-block JavaScript must
 platejka_cross_render_assert( function_exists( 'platejka_cross_block_aliases' ), 'Cross-block aliases are missing.' );
 
 $aliases = platejka_cross_block_aliases();
-$slugs   = array( 'cross-exchange', 'cross-company-metrics', 'cross-external-ratings', 'cross-key-facts', 'cross-transfer-goals', 'cross-swift-problems', 'cross-audience' );
+$slugs   = array( 'cross-exchange', 'cross-company-metrics', 'cross-external-ratings', 'cross-key-facts', 'cross-transfer-goals', 'cross-swift-problems', 'cross-guarantees', 'cross-audience' );
 platejka_cross_render_assert( $slugs === array_keys( $aliases ), 'Dedicated cross-block slugs changed.' );
 foreach ( $aliases as $alias ) {
 	platejka_cross_render_assert( array( 'directory' => 'cross-blocks', 'template' => 'cross-blocks' ) === $alias, 'Every dedicated slug must use the shared renderer/assets.' );
@@ -115,6 +115,23 @@ foreach ( array( 'transfer_goals' => 'Частые цели переводов',
 	platejka_cross_render_assert( str_contains( $html, $title ) && str_contains( $html, 'Карточка' ) && str_contains( $html, 'Связаться' ), 'Card-grid layout is incomplete: ' . $layout );
 	platejka_cross_render_assert( str_contains( $html, 'cb-card-section--' . $layout ) && str_contains( $html, 'class="cb-card-grid"' ), 'Card-grid source structure changed: ' . $layout );
 }
+
+$guarantees = platejka_cross_render_fixture(
+	$template,
+	'guarantees',
+	array(
+		'title' => 'Гарантии и безопасность',
+		'intro' => '<p>Отвечаем за результат перевода.</p>',
+		'items' => array(
+			array( 'title' => 'Минимальные риски', 'text' => '<p>Контролируем каждый этап.</p>' ),
+			array( 'title' => 'Юридическая безопасность', 'text' => '<p>Закрепляем обязательства договором.</p>' ),
+		),
+	),
+	'cross-guarantees-test'
+);
+platejka_cross_render_assert( str_contains( $guarantees, 'id="cross-guarantees-test"' ) && str_contains( $guarantees, 'Гарантии и безопасность' ), 'Cross-guarantees heading/ID is incomplete.' );
+platejka_cross_render_assert( str_contains( $guarantees, 'class="cross-block cb-guarantees"' ) && str_contains( $guarantees, 'class="cb-guarantees__panel"' ), 'Cross-guarantees adapted source structure is missing.' );
+platejka_cross_render_assert( 2 === substr_count( $guarantees, 'class="cb-guarantee"' ), 'Cross-guarantees cards changed.' );
 
 $assets_source = (string) file_get_contents( $theme_dir . '/inc/assets.php' );
 platejka_cross_render_assert( str_contains( $assets_source, 'platejka_cross_block_aliases' ), 'Asset normalization does not consume shared aliases.' );

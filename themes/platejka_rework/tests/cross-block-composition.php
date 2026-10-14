@@ -19,6 +19,7 @@ $sections = platejka_resolve_page_section_rows(
 		array( 'acf_fc_layout' => 'cross-exchange', 'enabled' => 1, 'anchor' => 'exchange' ),
 		array( 'acf_fc_layout' => 'destinations', 'enabled' => 1 ),
 		array( 'acf_fc_layout' => 'cross-swift-problems', 'enabled' => 1 ),
+		array( 'acf_fc_layout' => 'cross-guarantees', 'enabled' => 1 ),
 		array( 'acf_fc_layout' => 'cross-company-metrics', 'enabled' => 0 ),
 		array( 'acf_fc_layout' => 'faq', 'enabled' => 1 ),
 	),
@@ -27,7 +28,7 @@ $sections = platejka_resolve_page_section_rows(
 );
 
 platejka_cross_block_test_assert(
-	array( 'hero', 'cross-exchange', 'destinations', 'cross-swift-problems', 'faq' ) === array_column( $sections, 'slug' ),
+	array( 'hero', 'cross-exchange', 'destinations', 'cross-swift-problems', 'cross-guarantees', 'faq' ) === array_column( $sections, 'slug' ),
 	'Enabled dedicated builder rows must survive without legacy source data.'
 );
 platejka_cross_block_test_assert( 'exchange' === ( $sections[1]['anchor'] ?? '' ), 'Dedicated builder anchor was not preserved.' );

@@ -62,7 +62,7 @@ $plan = platejka_cross_sync_plan_page(
 
 platejka_cross_sync_assert( array( 'destinations' ) === $plan['resolvable_source_rows'], 'Resolvable source rows changed.' );
 platejka_cross_sync_assert( array( 'swift_problems', 'guarantees', 'problems_solved' ) === $plan['unresolved_source_rows'], 'Missing or disabled source rows must be unresolved.' );
-platejka_cross_sync_assert( array( 'cross-swift-problems', 'guarantees', 'problems' ) === $plan['add_builder_rows'], 'Exact proposed builder additions changed.' );
+platejka_cross_sync_assert( array( 'cross-swift-problems', 'cross-guarantees', 'problems' ) === $plan['add_builder_rows'], 'Exact proposed builder additions changed.' );
 platejka_cross_sync_assert( true === $plan['would_change'], 'Manifest failed to report a builder change.' );
 
 $second = platejka_cross_sync_plan_page(

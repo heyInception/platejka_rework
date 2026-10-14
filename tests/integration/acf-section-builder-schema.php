@@ -92,7 +92,7 @@ foreach ( (array) ( $builder['fields'] ?? array() ) as $field ) {
 $assert( 'field_platejka_page_builder_v1' === ( $builder_toggle['key'] ?? null ) && 'true_false' === ( $builder_toggle['type'] ?? null ), 'Builder toggle uses its stable key and boolean type.' );
 $assert( 'field_platejka_sections_v1' === ( $sections_field['key'] ?? null ) && 'flexible_content' === ( $sections_field['type'] ?? null ), 'Sections field uses its stable key and flexible-content type.' );
 
-$expected_layouts = array( 'hero-main', 'about', 'shipments', 'guarantees', 'documents', 'compliance', 'review-main', 'work', 'calculator', 'process', 'with-us', 'destinations', 'seo', 'problems', 'serves', 'cases', 'table', 'faq', 'call', 'hero', 'protection', 'review', 'cross-exchange', 'cross-company-metrics', 'cross-external-ratings', 'cross-key-facts', 'cross-transfer-goals', 'cross-swift-problems', 'cross-audience' );
+$expected_layouts = array( 'hero-main', 'about', 'shipments', 'guarantees', 'documents', 'compliance', 'review-main', 'work', 'calculator', 'process', 'with-us', 'destinations', 'seo', 'problems', 'serves', 'cases', 'table', 'faq', 'call', 'hero', 'protection', 'review', 'cross-exchange', 'cross-company-metrics', 'cross-external-ratings', 'cross-key-facts', 'cross-transfer-goals', 'cross-swift-problems', 'cross-guarantees', 'cross-audience' );
 $layouts = array_values( (array) ( $sections_field['layouts'] ?? array() ) );
 $assert( $expected_layouts === array_column( $layouts, 'name' ), 'Builder keeps the original layouts and appends the approved internal-page and cross-block layouts.' );
 foreach ( $layouts as $layout ) {
@@ -117,6 +117,7 @@ $cross_layouts = array(
 	'cross-key-facts'        => array( 'Кросс-блок — Конкретные цифры и условия', 'field_platejka_defaults_cross_key_facts_v1' ),
 	'cross-transfer-goals'   => array( 'Кросс-блок — Частые цели переводов', 'field_platejka_defaults_cross_transfer_goals_v1' ),
 	'cross-swift-problems'   => array( 'Кросс-блок — Почему прямой SWIFT не работает', 'field_platejka_defaults_cross_swift_problems_v1' ),
+	'cross-guarantees'       => array( 'Кросс-блок — Гарантии', 'field_platejka_defaults_cross_guarantees_v1' ),
 	'cross-audience'         => array( 'Кросс-блок — Кому подходит', 'field_platejka_defaults_cross_audience_v1' ),
 );
 foreach ( $cross_layouts as $layout_name => $contract ) {

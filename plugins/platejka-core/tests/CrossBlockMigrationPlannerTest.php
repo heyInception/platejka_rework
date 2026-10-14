@@ -45,7 +45,12 @@ final class CrossBlockMigrationPlannerTest extends TestCase {
 					'skvoznye_bloki_0_items_0_text'        => 'Причина',
 					'skvoznye_bloki_1_vklyuchit_blok'     => '1',
 					'skvoznye_bloki_2_vklyuchit_blok'     => '1',
-					'skvoznye_bloki_3_show_block'          => '0',
+					'skvoznye_bloki_3_show_block'          => '1',
+					'skvoznye_bloki_3_title'               => 'Гарантии перевода',
+					'skvoznye_bloki_3_intro'               => 'Отвечаем за результат',
+					'skvoznye_bloki_3_items'               => '1',
+					'skvoznye_bloki_3_items_0_title'       => 'Договор',
+					'skvoznye_bloki_3_items_0_text'        => 'Фиксируем обязательства',
 					'skvoznye_bloki_4_show_block'          => '1',
 					'skvoznye_bloki_4_title'               => 'Что можно оплатить',
 				),
@@ -60,9 +65,10 @@ final class CrossBlockMigrationPlannerTest extends TestCase {
 		self::assertArrayNotHasKey( 'cross-external-ratings', $production['defaults'] );
 		self::assertSame( 'Банки', $production['defaults']['cross-swift-problems']['items'][0]['title'] );
 		self::assertSame(
-			array( 'cross-swift-problems', 'problems' ),
+			array( 'cross-swift-problems', 'cross-guarantees', 'problems' ),
 			array_keys( $production['pages']['perevody-v-evropu-dlya-yurlicz']['layouts'] )
 		);
+		self::assertSame( 'Отвечаем за результат', $production['pages']['perevody-v-evropu-dlya-yurlicz']['layouts']['cross-guarantees']['values']['intro'] );
 		self::assertArrayNotHasKey( 'intro', $production['pages']['perevody-v-evropu-dlya-yurlicz']['layouts']['cross-swift-problems']['values'] );
 		self::assertArrayNotHasKey( 'draft-page', $production['pages'] );
 		self::assertContains( 'disabled_layout', array_column( $production['warnings'], 'type' ) );
@@ -102,7 +108,7 @@ final class CrossBlockMigrationPlannerTest extends TestCase {
 		self::assertNotContains( 'documents', array_column( $result['rows'], 'acf_fc_layout' ) );
 	}
 
-	public function test_guarantees_use_the_existing_default_variant_override_shape(): void {
+	public function test_cross_guarantees_are_added_without_changing_standard_guarantees(): void {
 		$this->assertPlannerExists();
 		$rows = array(
 			array(
@@ -116,13 +122,69 @@ final class CrossBlockMigrationPlannerTest extends TestCase {
 
 		$result = self::PLANNER::mergeBuilderRows(
 			$rows,
-			array( 'guarantees' => array( 'title' => 'Гарантии', 'description' => 'Текст' ) )
+			array( 'cross-guarantees' => array( 'title' => 'Гарантии', 'intro' => 'Текст' ) )
 		);
 
-		self::assertSame( 'Гарантии', $result['rows'][0]['overrides_default']['default']['title'] );
-		self::assertSame( 'Текст', $result['rows'][0]['overrides_default']['default']['description'] );
+		self::assertSame( array( 'guarantees', 'cross-guarantees', 'faq' ), array_column( $result['rows'], 'acf_fc_layout' ) );
+		self::assertSame( array( 'default' => array( 'title' => '' ) ), $result['rows'][0]['overrides_default'] );
 		self::assertArrayNotHasKey( 'overrides', $result['rows'][0] );
 		self::assertSame( 'inherit', $result['rows'][0]['variant'] );
+		self::assertSame( 'Гарантии', $result['rows'][1]['overrides']['cross_guarantees']['title'] );
+		self::assertSame( 'Текст', $result['rows'][1]['overrides']['cross_guarantees']['intro'] );
+	}
+
+	public function test_plan_splits_migrated_guarantees_into_standard_and_cross_rows(): void {
+		$this->assertPlannerExists();
+		$values = array(
+			'title' => 'Гарантии и ответственность',
+			'intro' => 'Отвечаем за результат',
+			'items' => array( array( 'title' => 'Доставим точно', 'text' => 'Контролируем платёж', 'icon' => '' ) ),
+		);
+		$production = array(
+			'defaults' => array(),
+			'warnings' => array(),
+			'pages' => array(
+				'korea' => array(
+					'layouts' => array( 'cross-guarantees' => array( 'source_layout' => 'guarantees', 'values' => $values ) ),
+				),
+			),
+		);
+		$local = array(
+			'defaults' => array( 'cross-guarantees' => array() ),
+			'attachments' => array(),
+			'pages' => array(
+				'korea' => array(
+					'id' => 4309,
+					'status' => 'publish',
+					'builder_enabled' => true,
+					'attachments' => array(),
+					'rows' => array(
+						array( 'acf_fc_layout' => 'hero', 'enabled' => 1 ),
+						array(
+							'acf_fc_layout' => 'guarantees',
+							'enabled' => 1,
+							'variant' => 'inherit',
+							'overrides_default' => array(
+								'default' => array(
+									'title' => 'Гарантии и ответственность',
+									'description' => 'Отвечаем за результат',
+									'items' => array( array( 'title' => 'Доставим точно', 'text' => 'Контролируем платёж', 'image' => '' ) ),
+								),
+							),
+						),
+						array( 'acf_fc_layout' => 'faq', 'enabled' => 1 ),
+					),
+				),
+			),
+		);
+
+		$plan = self::PLANNER::plan( $production, $local );
+		$rows = $plan['pages'][0]['target_rows'];
+
+		self::assertSame( array( 'hero', 'guarantees', 'cross-guarantees', 'faq' ), array_column( $rows, 'acf_fc_layout' ) );
+		self::assertSame( array(), $rows[1]['overrides_default']['default'] );
+		self::assertSame( 'Гарантии и ответственность', $rows[2]['overrides']['cross_guarantees']['title'] );
+		self::assertSame( 'Доставим точно', $rows[2]['overrides']['cross_guarantees']['items'][0]['title'] );
 	}
 
 	public function test_plan_inherits_equal_values_preserves_conflicts_and_replaces_repeaters_wholesale(): void {

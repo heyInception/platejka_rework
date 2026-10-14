@@ -24,7 +24,7 @@ function platejka_cross_block_map(): array {
 		'key_facts'         => array( 'slug' => 'cross-key-facts', 'adapter' => 'key_facts' ),
 		'transfer_goals'    => array( 'slug' => 'cross-transfer-goals', 'adapter' => 'card_grid' ),
 		'swift_problems'    => array( 'slug' => 'cross-swift-problems', 'adapter' => 'card_grid' ),
-		'guarantees'        => array( 'slug' => 'guarantees', 'adapter' => 'guarantees' ),
+		'guarantees'        => array( 'slug' => 'cross-guarantees', 'adapter' => 'guarantees' ),
 		'audience'          => array( 'slug' => 'cross-audience', 'adapter' => 'card_grid' ),
 		'data_table'        => array( 'slug' => 'table', 'adapter' => 'table' ),
 	);
@@ -34,7 +34,7 @@ function platejka_cross_block_map(): array {
 function platejka_cross_block_aliases(): array {
 	$alias = array( 'directory' => 'cross-blocks', 'template' => 'cross-blocks' );
 	return array_fill_keys(
-		array( 'cross-exchange', 'cross-company-metrics', 'cross-external-ratings', 'cross-key-facts', 'cross-transfer-goals', 'cross-swift-problems', 'cross-audience' ),
+		array( 'cross-exchange', 'cross-company-metrics', 'cross-external-ratings', 'cross-key-facts', 'cross-transfer-goals', 'cross-swift-problems', 'cross-guarantees', 'cross-audience' ),
 		$alias
 	);
 }
@@ -299,6 +299,7 @@ function platejka_cross_block_builder_map(): array {
 		'cross-key-facts'         => 'key_facts',
 		'cross-transfer-goals'    => 'transfer_goals',
 		'cross-swift-problems'    => 'swift_problems',
+		'cross-guarantees'        => 'guarantees',
 		'cross-audience'          => 'audience',
 	);
 }

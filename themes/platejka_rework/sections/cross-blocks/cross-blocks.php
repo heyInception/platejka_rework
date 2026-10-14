@@ -78,6 +78,37 @@ if ( 'key_facts' === $layout ) {
 	return;
 }
 
+if ( 'guarantees' === $layout ) {
+	$items = array_values( array_filter( is_array( $row['items'] ?? null ) ? $row['items'] : array(), static fn( $item ) => is_array( $item ) && ( ! empty( $item['title'] ) || ! empty( $item['text'] ) ) ) );
+	if ( empty( $items ) ) {
+		return;
+	}
+	?>
+	<section id="<?php echo esc_attr( $instance ); ?>" class="cross-block cb-guarantees"><div class="container">
+		<div class="cb-guarantees__panel">
+			<div class="cb-guarantees__header">
+				<div class="cb-guarantees__shield"><?php echo platejka_cross_block_fallback_icon(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
+				<div class="cb-guarantees__heading">
+					<?php if ( ! empty( $row['title'] ) ) : ?><h2 class="cb-heading"><?php echo esc_html( $row['title'] ); ?></h2><?php endif; ?>
+					<?php if ( ! empty( $row['intro'] ) ) : ?><div class="cb-intro"><?php echo wp_kses_post( $row['intro'] ); ?></div><?php endif; ?>
+				</div>
+			</div>
+			<div class="cb-guarantees__items">
+				<?php foreach ( $items as $item ) : ?>
+					<article class="cb-guarantee">
+						<div class="cb-guarantee__icon"><?php $icon = platejka_cross_block_icon( $item['icon'] ?? 0, (string) ( $item['title'] ?? '' ) ); echo '' !== $icon ? $icon : platejka_cross_block_fallback_icon(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
+						<?php if ( ! empty( $item['title'] ) ) : ?><h3><?php echo esc_html( $item['title'] ); ?></h3><?php endif; ?>
+						<?php if ( ! empty( $item['text'] ) ) : ?><div class="cb-guarantee__text"><?php echo wp_kses_post( $item['text'] ); ?></div><?php endif; ?>
+					</article>
+				<?php endforeach; ?>
+			</div>
+			<?php echo platejka_cross_block_cta( is_array( $row['cta'] ?? null ) ? $row['cta'] : null ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+		</div>
+	</div></section>
+	<?php
+	return;
+}
+
 if ( in_array( $layout, array( 'transfer_goals', 'swift_problems', 'audience' ), true ) ) {
 	$items = array_values( array_filter( is_array( $row['items'] ?? null ) ? $row['items'] : array(), static fn( $item ) => is_array( $item ) && ( ! empty( $item['title'] ) || ! empty( $item['text'] ) ) ) );
 	if ( empty( $items ) ) {

@@ -169,28 +169,6 @@ function platejka_cross_block_layout_definitions(): array {
 	);
 
 	$guarantees = platejka_cross_block_card_fields( 'guarantees' );
-	array_splice(
-		$guarantees,
-		1,
-		0,
-		array(
-			platejka_cross_block_field(
-				'guarantees',
-				'style',
-				'Вариант оформления',
-				'select',
-				array(
-					'choices'       => array( 'cards' => 'Карточки', 'shield' => 'Акцентный блок со щитом' ),
-					'default_value' => 'cards',
-					'return_format' => 'value',
-					'allow_null'    => 0,
-					'multiple'      => 0,
-					'ui'            => 0,
-					'ajax'          => 0,
-				),
-			),
-		)
-	);
 
 	return array(
 		platejka_cross_block_layout(
@@ -310,6 +288,7 @@ function platejka_cross_block_default_groups(): array {
 		'cross-key-facts'        => array( 'label' => 'Конкретные цифры и условия', 'legacy' => 'key_facts' ),
 		'cross-transfer-goals'   => array( 'label' => 'Частые цели переводов', 'legacy' => 'transfer_goals' ),
 		'cross-swift-problems'   => array( 'label' => 'Почему прямой SWIFT не работает', 'legacy' => 'swift_problems' ),
+		'cross-guarantees'       => array( 'label' => 'Гарантии', 'legacy' => 'guarantees' ),
 		'cross-audience'         => array( 'label' => 'Кому подходит', 'legacy' => 'audience' ),
 	);
 	$groups  = array();
@@ -462,6 +441,7 @@ function platejka_cross_block_builder_layouts(): array {
 		platejka_cross_block_builder_layout( 'cross-key-facts', 'Конкретные цифры и условия', platejka_cross_block_default_field_key( 'cross-key-facts' ) ),
 		platejka_cross_block_builder_layout( 'cross-transfer-goals', 'Частые цели переводов', platejka_cross_block_default_field_key( 'cross-transfer-goals' ) ),
 		platejka_cross_block_builder_layout( 'cross-swift-problems', 'Почему прямой SWIFT не работает', platejka_cross_block_default_field_key( 'cross-swift-problems' ) ),
+		platejka_cross_block_builder_layout( 'cross-guarantees', 'Гарантии', platejka_cross_block_default_field_key( 'cross-guarantees' ) ),
 		platejka_cross_block_builder_layout( 'cross-audience', 'Кому подходит', platejka_cross_block_default_field_key( 'cross-audience' ) ),
 	);
 }

@@ -15,12 +15,12 @@ final class CrossBlockMigrationPlanner {
 		'key_facts'        => 'cross-key-facts',
 		'transfer_goals'   => 'cross-transfer-goals',
 		'swift_problems'   => 'cross-swift-problems',
+		'guarantees'       => 'cross-guarantees',
 		'audience'         => 'cross-audience',
 	);
 
 	private const REUSABLE = array(
 		'problems_solved' => 'problems',
-		'guarantees'      => 'guarantees',
 		'data_table'      => 'table',
 	);
 
@@ -50,7 +50,7 @@ final class CrossBlockMigrationPlanner {
 		$layouts  = self::serializedList( $options['options_skvoznye_bloki'] ?? '' );
 
 		foreach ( $layouts as $index => $legacy ) {
-			if ( ! isset( self::DEDICATED[ $legacy ] ) ) {
+			if ( 'guarantees' === $legacy || ! isset( self::DEDICATED[ $legacy ] ) ) {
 				continue;
 			}
 			$prefix     = 'options_skvoznye_bloki_' . $index . '_';
@@ -155,9 +155,17 @@ final class CrossBlockMigrationPlanner {
 				$conflicts[] = array( 'type' => 'unsafe_builder', 'slug' => $slug, 'post_id' => (int) ( $local['id'] ?? 0 ) );
 				continue;
 			}
+			$current_rows = $rows;
+			$source_layouts = is_array( $source_page['layouts'] ?? null ) ? $source_page['layouts'] : array();
+			if ( is_array( $source_layouts['cross-guarantees'] ?? null ) ) {
+				$rows = self::splitMigratedGuaranteeRows(
+					$rows,
+					is_array( $source_layouts['cross-guarantees']['values'] ?? null ) ? $source_layouts['cross-guarantees']['values'] : array()
+				);
+			}
 
 			$targets = array();
-			foreach ( is_array( $source_page['layouts'] ?? null ) ? $source_page['layouts'] : array() as $target_slug => $source_layout ) {
+			foreach ( $source_layouts as $target_slug => $source_layout ) {
 				if ( ! self::isAllowedTarget( (string) $target_slug ) || ! is_array( $source_layout ) ) {
 					continue;
 				}
@@ -181,7 +189,7 @@ final class CrossBlockMigrationPlanner {
 
 			$merged = self::mergeBuilderRows( $rows, $targets );
 			$current_enabled = ! empty( $local['builder_enabled'] );
-			$changed = ! self::equivalent( $rows, $merged['rows'] ) || ! $current_enabled;
+			$changed = ! self::equivalent( $current_rows, $merged['rows'] ) || ! $current_enabled;
 			if ( ! $changed ) {
 				continue;
 			}
@@ -191,10 +199,10 @@ final class CrossBlockMigrationPlanner {
 				'production_id'          => (int) ( $source_page['production_id'] ?? 0 ),
 				'current_builder_enabled'=> $current_enabled,
 				'target_builder_enabled' => true,
-				'current_rows'           => $rows,
+				'current_rows'           => $current_rows,
 				'target_rows'            => $merged['rows'],
 				'changes'                => array_diff_key( $merged, array( 'rows' => true ) ),
-				'fingerprint'            => self::fingerprint( array( 'builder_enabled' => $current_enabled, 'rows' => $rows ) ),
+				'fingerprint'            => self::fingerprint( array( 'builder_enabled' => $current_enabled, 'rows' => $current_rows ) ),
 			);
 		}
 
@@ -329,6 +337,89 @@ final class CrossBlockMigrationPlanner {
 			}
 		}
 		return $source;
+	}
+
+	/**
+	 * Convert an earlier migration's filled standard guarantee row into the
+	 * dedicated cross-block while preserving one inherited standard row.
+	 *
+	 * @param array<int,array<string,mixed>> $rows Existing builder rows.
+	 * @param array<string,mixed>            $values Legacy cross-block values.
+	 * @return array<int,array<string,mixed>>
+	 */
+	private static function splitMigratedGuaranteeRows( array $rows, array $values ): array {
+		$standard_values = self::adaptLegacyGuaranteesToStandard( $values );
+		$result          = array();
+		$converted       = false;
+		$standard_count  = 0;
+
+		foreach ( $rows as $row ) {
+			if ( 'guarantees' !== ( $row['acf_fc_layout'] ?? '' ) ) {
+				$result[] = $row;
+				continue;
+			}
+
+			$overrides = self::rowOverrides( $row, 'guarantees' );
+			if ( ! $converted && ! self::semanticallyEmpty( $overrides ) && self::equivalent( $overrides, $standard_values ) ) {
+				$result[] = array(
+					'acf_fc_layout' => 'cross-guarantees',
+					'enabled'       => ! empty( $row['enabled'] ) ? 1 : 0,
+					'anchor'        => (string) ( $row['anchor'] ?? '' ),
+					'overrides'     => array( 'cross_guarantees' => $values ),
+				);
+				$converted = true;
+				continue;
+			}
+
+			++$standard_count;
+			$result[] = $row;
+		}
+
+		if ( ! $converted || $standard_count > 0 ) {
+			return $result;
+		}
+
+		$standard = array(
+			'acf_fc_layout'     => 'guarantees',
+			'enabled'           => 1,
+			'anchor'            => '',
+			'variant'           => 'inherit',
+			'overrides_main'    => array( 'main' => array() ),
+			'overrides_default' => array( 'default' => array() ),
+		);
+		foreach ( $result as $index => $row ) {
+			if ( 'cross-guarantees' === ( $row['acf_fc_layout'] ?? '' ) ) {
+				array_splice( $result, $index, 0, array( $standard ) );
+				break;
+			}
+		}
+		return $result;
+	}
+
+	/** @param array<string,mixed> $values @return array<string,mixed> */
+	private static function adaptLegacyGuaranteesToStandard( array $values ): array {
+		$adapted = array();
+		if ( array_key_exists( 'title', $values ) ) {
+			$adapted['title'] = $values['title'];
+		}
+		if ( array_key_exists( 'intro', $values ) ) {
+			$adapted['description'] = $values['intro'];
+		}
+		if ( is_array( $values['items'] ?? null ) ) {
+			$adapted['items'] = array_map(
+				static function ( $item ): array {
+					return is_array( $item )
+						? array(
+							'title' => (string) ( $item['title'] ?? '' ),
+							'text'  => (string) ( $item['text'] ?? '' ),
+							'image' => $item['icon'] ?? '',
+						)
+						: array();
+				},
+				$values['items']
+			);
+		}
+		return $adapted;
 	}
 
 	/** @param array<string,mixed> $values @param array<string,mixed> $defaults @param array<string,mixed> $local @param array<int,int|string> $attachments @param array<int,array<string,mixed>> $conflicts @param array<int,array<string,mixed>> $warnings @return array<string,mixed> */
@@ -483,7 +574,11 @@ final class CrossBlockMigrationPlanner {
 
 	/** @param array<string,mixed> $values @return array<string,mixed> */
 	private static function adaptReusableValues( string $target, array $values ): array {
-		if ( ! in_array( $target, array( 'problems', 'guarantees' ), true ) ) {
+		if ( 'cross-guarantees' === $target ) {
+			unset( $values['style'] );
+			return $values;
+		}
+		if ( 'problems' !== $target ) {
 			return $values;
 		}
 		$adapted = array();

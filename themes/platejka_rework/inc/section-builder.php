@@ -40,6 +40,7 @@ function platejka_section_builder_registry(): array {
 		'cross-key-facts',
 		'cross-transfer-goals',
 		'cross-swift-problems',
+		'cross-guarantees',
 		'cross-audience',
 	);
 

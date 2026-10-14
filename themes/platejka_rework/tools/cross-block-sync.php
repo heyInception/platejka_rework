@@ -23,7 +23,7 @@ function platejka_cross_sync_layout_map(): array {
 		'key_facts'        => 'cross-key-facts',
 		'transfer_goals'   => 'cross-transfer-goals',
 		'swift_problems'   => 'cross-swift-problems',
-		'guarantees'       => 'guarantees',
+		'guarantees'       => 'cross-guarantees',
 		'audience'         => 'cross-audience',
 		'data_table'       => 'table',
 	);

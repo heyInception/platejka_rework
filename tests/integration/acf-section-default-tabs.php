@@ -53,6 +53,7 @@ $expected = array(
 	array( 'field_platejka_defaults_cross_key_facts_v1', 'Кросс-блок — Конкретные цифры и условия', 'cross_key_facts' ),
 	array( 'field_platejka_defaults_cross_transfer_goals_v1', 'Кросс-блок — Частые цели переводов', 'cross_transfer_goals' ),
 	array( 'field_platejka_defaults_cross_swift_problems_v1', 'Кросс-блок — Почему прямой SWIFT не работает', 'cross_swift_problems' ),
+	array( 'field_platejka_defaults_cross_guarantees_v1', 'Кросс-блок — Гарантии', 'cross_guarantees' ),
 	array( 'field_platejka_defaults_cross_audience_v1', 'Кросс-блок — Кому подходит', 'cross_audience' ),
 );
 $fields = $group['fields'] ?? array();
@@ -70,7 +71,7 @@ $assert( $valid_tabs, 'Every navigation field is a left tab followed by the unch
 $assert( ! in_array( '', $keys, true ) && count( $keys ) === count( array_unique( $keys ) ), 'Top-level ACF field keys are non-empty and unique.' );
 $live_fields = function_exists( 'acf_get_fields' ) ? acf_get_fields( 'group_platejka_section_defaults_v1' ) : array();
 $live_tabs = array_filter( is_array( $live_fields ) ? $live_fields : array(), static fn( $field ) => 'tab' === ( $field['type'] ?? '' ) && 'left' === ( $field['placement'] ?? '' ) );
-$assert( 56 === count( is_array( $live_fields ) ? $live_fields : array() ) && 28 === count( $live_tabs ), 'Live ACF loads all 28 left tabs and 28 section groups.' );
+$assert( 58 === count( is_array( $live_fields ) ? $live_fields : array() ) && 29 === count( $live_tabs ), 'Live ACF loads all 29 left tabs and 29 section groups.' );
 
 WP_CLI::log( sprintf( 'Shared section tabs: %d checks, %d failures.', $checks, count( $failures ) ) );
 if ( $failures ) { WP_CLI::halt( 1 ); }

@@ -1809,6 +1809,19 @@
                     "min": "",
                     "max": ""
                 },
+                "layout_platejka_cross_guarantees_v1": {
+                    "key": "layout_platejka_cross_guarantees_v1",
+                    "name": "cross-guarantees",
+                    "label": "Кросс-блок — Гарантии",
+                    "display": "block",
+                    "sub_fields": [
+                        {"key":"field_platejka_row_cross_guarantees_enabled_v1","label":"Показывать секцию","name":"enabled","type":"true_false","default_value":0,"ui":1},
+                        {"key":"field_platejka_row_cross_guarantees_anchor_v1","label":"Якорь секции","name":"anchor","type":"text","placeholder":"bez-reshetki"},
+                        {"key":"field_platejka_row_cross_guarantees_overrides_v1","label":"Локальные изменения","name":"overrides","type":"clone","clone":["field_platejka_defaults_cross_guarantees_v1"],"display":"group","layout":"block","prefix_label":0,"prefix_name":0}
+                    ],
+                    "min": "",
+                    "max": ""
+                },
                 "layout_platejka_cross_audience_v1": {
                     "key": "layout_platejka_cross_audience_v1",
                     "name": "cross-audience",

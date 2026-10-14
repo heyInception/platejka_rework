@@ -29,6 +29,11 @@ $globals = array(
 		'intro' => '<p>Общее вступление</p>',
 		'items' => array( array( 'title' => 'Глобальная карточка', 'text' => '<p>Глобальный текст</p>' ) ),
 	),
+	'cross_guarantees' => array(
+		'title' => 'Глобальные кросс-гарантии',
+		'intro' => '<p>Общее описание гарантий</p>',
+		'items' => array( array( 'title' => 'Общая гарантия', 'text' => '<p>Общий текст</p>' ) ),
+	),
 );
 $global_filter = static function ( $data, string $content_slug ) use ( $globals ) {
 	return $globals[ str_replace( '-', '_', $content_slug ) ] ?? $data;
@@ -68,6 +73,20 @@ ob_start();
 platejka_render_section( $exchange );
 $exchange_html = (string) ob_get_clean();
 
+$guarantees = array(
+	'slug' => 'cross-guarantees',
+	'row' => array(
+		'enabled' => 1,
+		'overrides' => array(
+			'cross_guarantees' => array( 'title' => 'Локальные кросс-гарантии', 'intro' => '', 'items' => array() ),
+		),
+	),
+	'instance' => 'section-test-cross-guarantees',
+);
+ob_start();
+platejka_render_section( $guarantees );
+$guarantees_html = (string) ob_get_clean();
+
 remove_filter( 'platejka_section_global_data', $global_filter, 10 );
 restore_error_handler();
 
@@ -77,6 +96,7 @@ platejka_cross_runtime_assert( str_contains( $exchange_html, 'id="exchange"' ), 
 platejka_cross_runtime_assert( str_contains( $exchange_html, 'Обмен из общих настроек' ), 'Exchange did not inherit shared defaults.' );
 platejka_cross_runtime_assert( str_contains( $exchange_html, 'data-action="buy"' ) && str_contains( $exchange_html, 'data-action="sell"' ), 'Integrated exchange buy/sell controls are incomplete.' );
 platejka_cross_runtime_assert( str_contains( $exchange_html, 'type="range"' ) && str_contains( $exchange_html, 'data-role="exchange-total"' ), 'Integrated exchange range/result structure is incomplete.' );
+platejka_cross_runtime_assert( str_contains( $guarantees_html, 'Локальные кросс-гарантии' ) && str_contains( $guarantees_html, 'Общая гарантия' ), 'Cross-guarantees did not combine local scalars with inherited content.' );
 platejka_cross_runtime_assert( array() === $warnings, 'Runtime emitted PHP warnings/notices: ' . implode( ' | ', $warnings ) );
 
 WP_CLI::success( 'Builder-controlled cross-block runtime checks passed.' );
