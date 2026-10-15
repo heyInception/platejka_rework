@@ -187,7 +187,7 @@
 
 <body <?php body_class('page__body'); ?>>
 	<?php wp_body_open(); ?>
-	<?php platejka_render_section( 'preloader' ); ?>
+	<?php platejka_render_section('preloader'); ?>
 	<div id="page" class="site">
 		<header class="header">
 			<div class="header__top">
@@ -279,7 +279,7 @@
 							<button class="btn-reset burger" aria-label="Открыть меню" aria-expanded="false" data-burger>
 							</button>
 							<div class="header__navigation" data-menu>
-								<nav class="nav" aria-label="<?php esc_attr_e( 'Основная навигация', 'platejka_rework' ); ?>" data-menu-content>
+								<nav class="nav" aria-label="<?php esc_attr_e('Основная навигация', 'platejka_rework'); ?>" data-menu-content>
 									<?php
 									wp_nav_menu(
 										array(
@@ -316,10 +316,19 @@
 							</div>
 						</div>
 						<div class="header__wrap">
-							<div class="header__tg header__tg_bottom">
-								<a href="#" rel="nofollow noopener" target="_blank" title="Telegram" aria-label="Перейти в телеграм">Перейти
-									в телеграм</a>
-							</div>
+							<?php if (have_rows('socz_seti_header', 'option')) : ?>
+								<?php while (have_rows('socz_seti_header', 'option')) : the_row(); ?>
+									<div class="header__tg header__tg_bottom">
+										<?php $ssylka = get_sub_field('ssylka'); ?>
+										<?php if ($ssylka) : ?>
+											<a href="<?php echo esc_url($ssylka['url']); ?>" target="<?php echo esc_attr($ssylka['target']); ?>" rel="nofollow noopener" title="Telegram" aria-label="<?php echo esc_html($ssylka['title']); ?>"><?php echo esc_html($ssylka['title']); ?></a>
+										<?php endif; ?>
+									</div>
+								<?php endwhile; ?>
+							<?php else : ?>
+								<?php // No rows found 
+								?>
+							<?php endif; ?>
 							<div class="header__button header__button_bottom">
 								<button class="btn-reset header__button_call" data-graph-path="call">Связаться</button>
 							</div>

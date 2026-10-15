@@ -5,6 +5,10 @@ $labels = platejka_section_label_map($section_data['labels'] ?? array());
 $about_title = trim((string) ($section_data['title'] ?? ''));
 $about_accent = trim((string) ($section_data['title_accent'] ?? ''));
 $about_remainder = '' !== $about_accent && str_starts_with($about_title, $about_accent) ? trim(mb_substr($about_title, mb_strlen($about_accent))) : $about_title;
+$about_registry_urls = array(
+  '/wp-content/uploads/2026/02/vypiska_iz_reestra_sro_ooo_platezhka.pdf',
+  'https://cbr.ru/finorg/foinfo/?ogrn=1257700335628',
+);
 ?>
 <section class="about" id="<?php echo esc_attr($root_id); ?>" data-about>
   <div class="container">
@@ -26,7 +30,7 @@ $about_remainder = '' !== $about_accent && str_starts_with($about_title, $about_
                 <div class="about-card__heading"><img class="about-card__logo<?php echo 0 === $index ? ' about-card__logo_sro' : ''; ?>" src="img/svg/<?php echo 0 === $index ? 'about-SRO.svg' : 'about-cb-rf.svg'; ?>" width="25" height="20" alt="">
                   <h3 class="about-card__title"><?php echo esc_html($item['title'] ?? ''); ?></h3>
                 </div>
-                <div><?php echo wp_kses_post($item['text'] ?? ''); ?></div><?php if (! empty($item['link']['url'])) : ?><a class="ui-button ui-button--small about-card__link" href="<?php echo esc_url($item['link']['url']); ?>"  target="<?php echo esc_attr($item['link']['target'] ? $item['link']['target'] : '_self'); ?>"><?php echo esc_html($item['link']['title'] ?? ''); ?></a><?php endif; ?>
+                <div><?php echo wp_kses_post($item['text'] ?? ''); ?></div><?php if (isset($about_registry_urls[$index])) : ?><a class="ui-button ui-button--small about-card__link open-window" href="#" data-url="<?php echo esc_url($about_registry_urls[$index]); ?>" rel="nofollow noopener"><?php echo esc_html($item['link']['title'] ?? ''); ?></a><?php endif; ?>
               </div>
             </article><?php endforeach; ?></div>
       </div>

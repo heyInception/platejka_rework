@@ -15,6 +15,7 @@ $hero_description = preg_replace('/<p>/', '<p class="hero__subtitle" data-hero-c
         <div class="hero__wrap hero__wrap_top" style="<?php echo $hero_image_url ? '--hero-image:url(\'' . esc_url($hero_image_url) . '\');' : ''; ?>--hero-blur:url('img/hero-blur.png');background:var(--surface-inverse)" data-hero-panel>
           <?php echo platejka_section_image($section_data['image'] ?? 0, 'large', array('class' => 'hero__image', 'loading' => 'eager', 'fetchpriority' => 'high', 'sizes' => '(max-width: 767px) 100vw, 553px', 'data-hero-image' => '')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
           ?><span class="hero__blur" aria-hidden="true" data-hero-blur></span>
+          <p class="hero__badge">Юридическим лицам</p>
           <h1 class="hero__title" data-hero-copy><span class="hero__title-primary"><?php echo esc_html($section_data['title'] ?? ''); ?></span><?php if (! empty($section_data['title_accent'])) : ?><span class="hero__title-secondary"><?php echo esc_html($section_data['title_accent']); ?></span><?php endif; ?></h1>
           <?php echo $hero_description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
           ?>
@@ -23,8 +24,9 @@ $hero_description = preg_replace('/<p>/', '<p class="hero__subtitle" data-hero-c
         </div>
         <ul class="list-reset hero__trust" data-hero-cards><?php foreach ($trust as $index => $item) : $trust_variant = array('experience', 'registry', 'association')[$index % 3]; ?><li class="hero__trust-card hero__trust-card_<?php echo esc_attr($trust_variant); ?>"><?php if (0 === $index) : ?><div class="hero__trust-years" aria-label="<?php echo esc_attr($item['value'] ?? ''); ?>"><span aria-hidden="true"><?php echo esc_html($item['value'] ?? ''); ?></span></div>
                 <p class="hero__trust-caption"><?php echo esc_html($item['title'] ?? ''); ?></p><?php else : ?><p class="hero__trust-title"><?php echo esc_html($item['title'] ?? ''); ?></p><?php echo platejka_section_image($item['image'] ?? 0, 'medium', array('class' => 'hero__trust-decor hero__trust-decor_' . $trust_variant, 'loading' => 'lazy', 'sizes' => '161px')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
-                                                                                                                                                                                              ?><?php if (! empty($item['link']['url'])) : ?>
-                <a class="ui-link <?php echo 1 === $index ? 'ui-link--overlay' : 'ui-link--inverse'; ?> hero__trust-link" href="<?php echo esc_url($item['link']['url']); ?>"  target="<?php echo esc_attr($item['link']['target'] ? $item['link']['target'] : '_self'); ?>"><?php echo esc_html($item['link']['title'] ?? ''); ?></a><?php endif; ?><?php endif; ?>
+                                                                                                                                                                                              ?><?php if (1 === $index) : ?>
+                <a class="ui-link ui-link--overlay hero__trust-link open-window" href="#" data-url="<?php echo esc_url('https://cbr.ru/finorg/foinfo/?ogrn=1257700335628'); ?>" rel="nofollow noopener"><?php echo esc_html($item['link']['title'] ?? __('Проверить', 'platejka_rework')); ?></a><?php elseif (! empty($item['link']['url'])) : ?>
+                <a class="ui-link ui-link--inverse hero__trust-link" href="<?php echo esc_url($item['link']['url']); ?>" target="<?php echo esc_attr($item['link']['target'] ? $item['link']['target'] : '_self'); ?>"><?php echo esc_html($item['link']['title'] ?? ''); ?></a><?php endif; ?><?php endif; ?>
             </li><?php endforeach; ?></ul>
       </div>
       <form class="hero-calculator" data-hero-calculator data-currency-rates="<?php echo esc_attr(wp_json_encode($calculator_rates)); ?>" novalidate>

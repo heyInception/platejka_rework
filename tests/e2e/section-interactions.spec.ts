@@ -40,6 +40,118 @@ test("section dialogs keep their public interaction hooks", async ({
   await compliance.locator("[data-compliance-dialog-close]").click();
 });
 
+test("compliance dialog uses the shared modal presentation", async ({
+  page,
+}) => {
+  const styles = await page.evaluate(() => {
+    const read = (selector: string) => {
+      const element = document.querySelector(selector);
+      if (!(element instanceof HTMLDialogElement)) return null;
+      const style = getComputedStyle(element);
+      const close = getComputedStyle(
+        element.querySelector('button[type="button"]') as HTMLElement,
+      );
+      return {
+        borderRadius: style.borderRadius,
+        maxWidth: style.width,
+        boxShadow: style.boxShadow,
+        closeBorderRadius: close.borderRadius,
+        closeWidth: close.width,
+        closeHeight: close.height,
+      };
+    };
+
+    return {
+      about: read("[data-about-dialog]"),
+      compliance: read("[data-compliance-dialog]"),
+    };
+  });
+
+  expect(styles.compliance).toEqual(styles.about);
+});
+
+test("FAQ opens the first question on initial load", async ({ page }) => {
+  const firstItem = page.locator("[data-faq-item]").first();
+  const secondItem = page.locator("[data-faq-item]").nth(1);
+
+  await expect(firstItem).toHaveClass(/\bis-open\b/);
+  await expect(firstItem.locator("[data-faq-trigger]")).toHaveAttribute(
+    "aria-expanded",
+    "true",
+  );
+  await expect(firstItem.locator("[data-faq-panel]")).not.toHaveAttribute(
+    "hidden",
+    "",
+  );
+  await expect(secondItem).not.toHaveClass(/\bis-open\b/);
+});
+
+test("registry links hide their destinations and open centered windows", async ({
+  page,
+}) => {
+  const openedWindows: Array<{
+    url: string;
+    target: string;
+    features: string;
+  }> = [];
+  await page.addInitScript(() => {
+    const calls: Array<{ url: string; target: string; features: string }> = [];
+    Object.defineProperty(window, "__openedRegistryWindows", { value: calls });
+    window.open = ((url?: string | URL, target?: string, features?: string) => {
+      calls.push({
+        url: String(url ?? ""),
+        target: String(target ?? ""),
+        features: String(features ?? ""),
+      });
+      return window;
+    }) as typeof window.open;
+  });
+  await page.reload({ waitUntil: "domcontentloaded" });
+
+  const registryLink = page
+    .locator(".hero__trust-card_registry .open-window")
+    .first();
+  await expect(registryLink).toHaveAttribute("href", "#");
+  await expect(registryLink).toHaveAttribute(
+    "data-url",
+    "https://cbr.ru/finorg/foinfo/?ogrn=1257700335628",
+  );
+  await registryLink.click();
+
+  openedWindows.push(
+    ...(await page.evaluate(
+      () =>
+        (
+          window as typeof window & {
+            __openedRegistryWindows: Array<{
+              url: string;
+              target: string;
+              features: string;
+            }>;
+          }
+        ).__openedRegistryWindows,
+    )),
+  );
+  expect(openedWindows).toHaveLength(1);
+  expect(openedWindows[0].url).toBe(
+    "https://cbr.ru/finorg/foinfo/?ogrn=1257700335628",
+  );
+  expect(openedWindows[0].target).toBe("_blank");
+  expect(openedWindows[0].features).toContain("width=800");
+  expect(openedWindows[0].features).toContain("height=600");
+
+  const aboutLinks = page.locator(".about-card__link.open-window");
+  await expect(aboutLinks).toHaveCount(2);
+  await expect(aboutLinks.nth(0)).toHaveAttribute(
+    "data-url",
+    "/wp-content/uploads/2026/02/vypiska_iz_reestra_sro_ooo_platezhka.pdf",
+  );
+  await expect(aboutLinks.nth(1)).toHaveAttribute(
+    "data-url",
+    "https://cbr.ru/finorg/foinfo/?ogrn=1257700335628",
+  );
+});
+
 test("review tabs and video dialog remain operable", async ({ page }) => {
   const section = page.locator("[data-review]");
   const tabs = section.locator('[role="tab"]');

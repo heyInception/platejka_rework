@@ -1,0 +1,62 @@
+dialog.compliance-dialog {
+  border: 0;
+  border-radius: 24px;
+  padding: 0;
+  width: min(100% - 32px, 480px);
+  box-shadow: 0 24px 80px rgba(37, 37, 42, 0.28);
+  color: var(--text-primary);
+  background: var(--surface-primary);
+}
+
+.compliance-dialog::backdrop {
+  background: rgba(37, 37, 42, 0.64);
+  backdrop-filter: blur(8px);
+}
+
+.compliance-dialog__content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 32px;
+}
+
+.compliance-dialog__content h2,
+.compliance-dialog__content p {
+  margin: 0;
+}
+
+.compliance-dialog__content p {
+  color: var(--text-secondary);
+}
+
+.compliance-dialog .compliance-dialog__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 28px;
+  color: var(--text-primary);
+  background: var(--surface-secondary);
+}
+
+.compliance-dialog .compliance-dialog__close:focus-visible {
+  outline: 2px solid var(--border-brand);
+  outline-offset: 2px;
+}
+
+.compliance-dialog__title {
+  padding-right: 40px;
+  font: 700 28px/32px var(--font-family);
+  letter-spacing: -0.02em;
+}
+
+@media (max-width: 1024px) {
+  .compliance-dialog__content {
+    padding: 24px;
+  }
+}
