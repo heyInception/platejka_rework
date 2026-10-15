@@ -1,40 +1,42 @@
 <?php
-/**
- * The template for displaying all single posts
- *
- * @link https://developer.wordpress.org/themes/basics/template-hierarchy/#single-post
- *
- * @package platejka_rework
- */
-
+/** Single blog post. */
 get_header();
+while ( have_posts() ) :
+	the_post();
+	$post_id  = get_the_ID();
+	$category = platejka_blog_primary_category( $post_id );
+	$views    = platejka_blog_view_count( $post_id );
+	$content  = apply_filters( 'the_content', get_the_content() );
+	$toc      = platejka_blog_table_of_contents( $content );
+	$content  = platejka_blog_add_heading_ids( $content );
+	$related  = platejka_blog_related_query( $post_id );
+	$url      = get_permalink();
+	$title    = get_the_title();
 ?>
-
-	<main id="primary" class="site-main">
-
-		<?php
-		while ( have_posts() ) :
-			the_post();
-
-			get_template_part( 'template-parts/content', get_post_type() );
-
-			the_post_navigation(
-				array(
-					'prev_text' => '<span class="nav-subtitle">' . esc_html__( 'Previous:', 'platejka_rework' ) . '</span> <span class="nav-title">%title</span>',
-					'next_text' => '<span class="nav-subtitle">' . esc_html__( 'Next:', 'platejka_rework' ) . '</span> <span class="nav-title">%title</span>',
-				)
-			);
-
-			// If comments are open or we have at least one comment, load up the comment template.
-			if ( comments_open() || get_comments_number() ) :
-				comments_template();
-			endif;
-
-		endwhile; // End of the loop.
-		?>
-
-	</main><!-- #main -->
-
-<?php
-get_sidebar();
-get_footer();
+<main id="primary" class="site-main blog-single">
+	<div class="container">
+		<?php do_action( 'pretty_breadcrumb' ); ?>
+		<header class="blog-single__header">
+			<?php if ( $category ) : ?><a class="blog-single__category" href="<?php echo esc_url( get_category_link( $category ) ); ?>"><?php echo esc_html( $category->name ); ?></a><?php endif; ?>
+			<h1><?php echo esc_html( $title ); ?></h1>
+			<div class="blog-single__meta"><time datetime="<?php echo esc_attr( get_the_date( DATE_W3C ) ); ?>"><?php echo esc_html( get_the_date( 'j F Y' ) ); ?></time><span><?php echo esc_html( sprintf( '%d мин чтения', platejka_blog_reading_time( $post_id ) ) ); ?></span><?php if ( '' !== $views ) : ?><span><?php echo esc_html( $views ); ?> просмотров</span><?php endif; ?></div>
+		</header>
+		<?php if ( has_post_thumbnail() ) : ?><figure class="blog-single__hero"><?php the_post_thumbnail( 'full', array( 'loading' => 'eager', 'fetchpriority' => 'high', 'decoding' => 'async' ) ); ?></figure><?php endif; ?>
+		<div class="blog-single__layout">
+			<aside class="blog-single__aside">
+				<?php if ( $toc ) : ?><nav class="blog-toc" data-blog-toc aria-label="Оглавление"><button class="blog-toc__toggle" type="button" aria-expanded="false">Оглавление</button><ol><?php foreach ( $toc as $item ) : ?><li class="blog-toc__level-<?php echo esc_attr( (string) $item['level'] ); ?>"><a href="#<?php echo esc_attr( $item['id'] ); ?>"><?php echo esc_html( $item['label'] ); ?></a></li><?php endforeach; ?></ol></nav><?php endif; ?>
+				<div class="blog-share" aria-label="Поделиться статьёй">
+					<span>Поделиться</span>
+					<button type="button" data-blog-share="max" data-url="<?php echo esc_url( $url ); ?>" data-title="<?php echo esc_attr( $title ); ?>"><img src="<?php echo esc_url( get_theme_file_uri( 'sections/call/img/call-about/whatsapp.svg' ) ); ?>" alt="" width="44" height="44"><span class="screen-reader-text">MAX</span></button>
+					<a data-blog-share="telegram" href="<?php echo esc_url( 'https://t.me/share/url?url=' . rawurlencode( $url ) . '&text=' . rawurlencode( $title ) ); ?>" target="_blank" rel="noopener"><img src="<?php echo esc_url( get_theme_file_uri( 'sections/call/img/call-about/telegram.svg' ) ); ?>" alt="" width="44" height="44"><span class="screen-reader-text">Telegram</span></a>
+					<a data-blog-share="vk" href="<?php echo esc_url( 'https://vk.com/share.php?url=' . rawurlencode( $url ) . '&title=' . rawurlencode( $title ) ); ?>" target="_blank" rel="noopener"><img src="<?php echo esc_url( get_theme_file_uri( 'sections/call/img/call-about/vk.svg' ) ); ?>" alt="" width="44" height="44"><span class="screen-reader-text">ВКонтакте</span></a>
+					<p data-blog-share-status role="status" aria-live="polite"></p>
+				</div>
+			</aside>
+			<article class="blog-content article-blog"><?php echo platejka_blog_rendered_content( $content ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Content is filtered by the_content for trusted editors. ?></article>
+		</div>
+		<section class="blog-cta"><div><p class="blog-cta__eyebrow">Есть задача?</p><h2>Обсудим решение для вашего бизнеса</h2><p>Оставьте заявку — команда «Платёжки» свяжется с вами и ответит на вопросы.</p></div><div class="blog-cta__actions"><button class="blog-button" type="button" data-graph-path="call">Обсудить задачу</button><a href="https://t.me/platejka_com" target="_blank" rel="noopener">Написать в Telegram</a></div></section>
+		<?php if ( $related->have_posts() ) : ?><section class="blog-related" data-blog-related><div class="blog-section__heading"><h2>Читайте также</h2></div><div class="blog-grid"><?php while ( $related->have_posts() ) : $related->the_post(); get_template_part( 'template-parts/content-single', 'card' ); endwhile; ?></div></section><?php endif; wp_reset_postdata(); ?>
+	</div>
+</main>
+<?php endwhile; get_footer(); ?>
