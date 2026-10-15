@@ -39,42 +39,39 @@
           </div>
         </address>
 
-        <div class="footer__navigation">
-          <nav class="footer__nav" aria-labelledby="footer-information-title">
-            <h2 id="footer-information-title">Информация</h2>
-            <ul class="list-reset">
-              <li><a href="#">Главная</a></li>
-              <li><a href="#">Цены</a></li>
-              <li><a href="#">О компании</a></li>
-              <li><a href="#">Валютные переводы</a></li>
-              <li><a href="#">Платежи в Китай</a></li>
-              <li><a href="#">Платёжный агент</a></li>
-              <li><a href="#">Оплата инвойса</a></li>
-            </ul>
-          </nav>
-
-          <nav class="footer__nav" aria-labelledby="footer-services-title">
-            <h2 id="footer-services-title">Услуги</h2>
-            <ul class="list-reset">
-              <li><a href="#">Валютные операции между резидентами и нерезидентами</a></li>
-              <li><a href="#">Валютный контроль</a></li>
-              <li><a href="#">Денежные переводы</a></li>
-              <li><a href="#">Переводы из Италии</a></li>
-              <li><a href="#">Переводы за границу</a></li>
-              <li><a href="#">Платежи за границу для юр. лиц</a></li>
-              <li><a href="#">Трансграничные переводы</a></li>
-            </ul>
-          </nav>
-
-          <nav class="footer__nav" aria-labelledby="footer-news-title">
-            <h2 id="footer-news-title">Новости</h2>
-            <ul class="list-reset">
-              <li><a href="#">Блог</a></li>
-              <li><a href="#">Оплата инвойса в Китае</a></li>
-              <li><a href="#">Оплата товаров в Китае</a></li>
-            </ul>
-          </nav>
-        </div>
+        <?php
+        $footer_menus = array_filter(
+          array_map(
+            static fn ( string $field ): array => (array) get_field( $field, 'option' ),
+            array( 'menyu_1', 'menyu_2', 'menyu_3' )
+          ),
+          static fn ( array $menu ): bool => ! empty( $menu['zagolovok'] ) && ! empty( $menu['ssylki'] )
+        );
+        ?>
+        <?php if ( $footer_menus ) : ?>
+          <div class="footer__navigation">
+            <?php foreach ( $footer_menus as $index => $menu ) : ?>
+              <?php $heading_id = 'footer-menu-' . ( $index + 1 ) . '-title'; ?>
+              <nav class="footer__nav" aria-labelledby="<?php echo esc_attr( $heading_id ); ?>">
+                <h2 id="<?php echo esc_attr( $heading_id ); ?>"><?php echo esc_html( $menu['zagolovok'] ); ?></h2>
+                <ul class="list-reset">
+                  <?php foreach ( $menu['ssylki'] as $row ) : ?>
+                    <?php
+                    $link   = is_array( $row['ssylka_footer'] ?? null ) ? $row['ssylka_footer'] : array();
+                    $url    = isset( $link['url'] ) ? esc_url( (string) $link['url'] ) : '';
+                    $title  = isset( $link['title'] ) ? trim( (string) $link['title'] ) : '';
+                    $target = '_blank' === ( $link['target'] ?? '' ) ? '_blank' : '';
+                    if ( '' === $url || '#' === $url || '' === $title ) {
+                      continue;
+                    }
+                    ?>
+                    <li><a href="<?php echo esc_url( $url ); ?>"<?php echo $target ? ' target="_blank" rel="noopener noreferrer"' : ''; ?>><?php echo esc_html( $title ); ?></a></li>
+                  <?php endforeach; ?>
+                </ul>
+              </nav>
+            <?php endforeach; ?>
+          </div>
+        <?php endif; ?>
       </div>
 
       <div class="footer__bottom">
