@@ -159,6 +159,15 @@ function platejka_rework_scripts()
 }
 add_action('wp_enqueue_scripts', 'platejka_rework_scripts');
 
+/** Guests do not need the WordPress admin icon font on the frontend. */
+function platejka_rework_dequeue_guest_dashicons()
+{
+	if (! is_user_logged_in()) {
+		wp_dequeue_style('dashicons');
+	}
+}
+add_action('wp_enqueue_scripts', 'platejka_rework_dequeue_guest_dashicons', 100);
+
 /** Page-builder data must be available before templates declare assets. */
 require get_template_directory() . '/inc/section-builder.php';
 
