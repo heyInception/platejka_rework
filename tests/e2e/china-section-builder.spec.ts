@@ -21,15 +21,16 @@ test("migrated China page keeps its section order, layout hooks, and interaction
   expect(response?.status()).toBe(200);
 
   const sections = page.locator("#primary > section");
-  await expect(sections).toHaveCount(13);
+  await expect(sections).toHaveCount(14);
   expect(
     await sections.evaluateAll((nodes) =>
       nodes.map((node) => node.classList.item(0)),
     ),
   ).toEqual([
     "hero",
-    "about",
     "shipments",
+    "cases",
+    "about",
     "guarantees",
     "documents",
     "protection",

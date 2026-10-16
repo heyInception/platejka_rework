@@ -100,6 +100,35 @@
     toc.classList.toggle('is-open', !expanded);
   });
 
+  if (toc) {
+    const sections = [...toc.querySelectorAll('a[href^="#"]')]
+      .map(link => ({ link, heading: document.getElementById(link.hash.slice(1)) }))
+      .filter(section => section.heading);
+    let scheduled = false;
+    const updateActiveSection = () => {
+      scheduled = false;
+      if (!sections.length) return;
+      const threshold = 160;
+      let current = null;
+      for (const section of sections) {
+        if (section.heading.getBoundingClientRect().top > threshold) break;
+        current = section;
+      }
+      sections.forEach(section => {
+        if (section === current) section.link.setAttribute('aria-current', 'location');
+        else section.link.removeAttribute('aria-current');
+      });
+    };
+    const scheduleUpdate = () => {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(updateActiveSection);
+    };
+    window.addEventListener('scroll', scheduleUpdate, { passive: true });
+    window.addEventListener('resize', scheduleUpdate);
+    scheduleUpdate();
+  }
+
   document.querySelector('[data-blog-share="max"]')?.addEventListener('click', async event => {
     const button = event.currentTarget;
     const shareData = { title: button.dataset.title, url: button.dataset.url };

@@ -67,9 +67,19 @@ function platejka_blog_table_of_contents( string $content ): array {
 	$items = array();
 	if ( ! preg_match_all( '/<h([23])([^>]*)>(.*?)<\/h\1>/isu', $content, $matches, PREG_SET_ORDER ) ) { return $items; }
 	$seen = array();
+	$transliteration = array(
+			'а' => 'a', 'б' => 'b', 'в' => 'v', 'г' => 'g', 'д' => 'd', 'е' => 'e', 'ё' => 'e',
+			'ж' => 'zh', 'з' => 'z', 'и' => 'i', 'й' => 'y', 'к' => 'k', 'л' => 'l', 'м' => 'm',
+			'н' => 'n', 'о' => 'o', 'п' => 'p', 'р' => 'r', 'с' => 's', 'т' => 't', 'у' => 'u',
+			'ф' => 'f', 'х' => 'h', 'ц' => 'ts', 'ч' => 'ch', 'ш' => 'sh', 'щ' => 'shch',
+			'ъ' => '', 'ы' => 'y', 'ь' => '', 'э' => 'e', 'ю' => 'yu', 'я' => 'ya',
+	);
+	$uppercase = preg_split( '//u', 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ', -1, PREG_SPLIT_NO_EMPTY );
+	$lowercase = preg_split( '//u', 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя', -1, PREG_SPLIT_NO_EMPTY );
 	foreach ( $matches as $match ) {
 		$label = trim( wp_strip_all_tags( $match[3] ) );
-		$id = sanitize_title( $label ) ?: 'section';
+		$id = sanitize_title( strtolower( strtr( str_replace( $uppercase, $lowercase, $label ), $transliteration ) ) );
+		$id = trim( (string) preg_replace( '/[^a-z0-9-]+/', '', $id ), '-' ) ?: 'section';
 		$count = ( $seen[ $id ] ?? 0 ) + 1;
 		$seen[ $id ] = $count;
 		$items[] = array( 'level' => (int) $match[1], 'id' => 1 === $count ? $id : $id . '-' . $count, 'label' => $label );

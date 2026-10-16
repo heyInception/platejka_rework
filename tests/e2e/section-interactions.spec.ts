@@ -6,68 +6,51 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-test("section dialogs keep their public interaction hooks", async ({
+test("section contact buttons open the shared dialog with their context", async ({
   page,
 }) => {
   for (const interaction of [
     {
-      open: "[data-about-dialog-open]",
-      dialog: "[data-about-dialog]",
-      close: "[data-about-dialog-close]",
+      open: '[data-about] [data-modal-context="about"]',
+      source: "about-meeting",
     },
     {
-      open: "[data-compliance-dialog-open]",
-      dialog: "[data-compliance-dialog]",
-      close: "[data-compliance-dialog-close]",
+      open: '[data-compliance] [data-modal-context="compliance_contact"]',
+      source: "compliance-contact",
     },
     {
-      open: "[data-problems-dialog-open]",
-      dialog: "[data-problems-dialog]",
-      close: "[data-problems-dialog-close]",
+      open: '.problems [data-modal-context="problems"]',
+      source: "problems-cta",
     },
   ]) {
     await page.locator(interaction.open).first().click();
-    await expect(page.locator(interaction.dialog)).toBeVisible();
-    await page.locator(interaction.close).click();
-    await expect(page.locator(interaction.dialog)).toBeHidden();
+    const dialog = page.locator("[data-consultation-dialog]");
+    await expect(dialog).toBeVisible();
+    await expect(
+      dialog.locator('[name="platejka-request-source"]'),
+    ).toHaveValue(interaction.source);
+    await dialog.locator("[data-contact-modal-close]").click();
+    await expect(dialog).toBeHidden();
   }
 
   const compliance = page.locator("[data-compliance]");
-  const complianceOpeners = compliance.locator("[data-compliance-dialog-open]");
+  const complianceOpeners = compliance.locator("[data-contact-modal-open]");
   await expect(complianceOpeners).toHaveCount(2);
   await complianceOpeners.nth(1).click();
-  await expect(compliance.locator("[data-compliance-dialog]")).toBeVisible();
-  await compliance.locator("[data-compliance-dialog-close]").click();
+  await expect(page.locator("[data-consultation-dialog]")).toBeVisible();
+  await expect(
+    page.locator('[data-consultation-dialog] [name="platejka-request-source"]'),
+  ).toHaveValue("compliance-test-payment");
+  await page.locator("[data-contact-modal-close]").click();
 });
 
-test("compliance dialog uses the shared modal presentation", async ({
+test("consultation dialog uses the shared modal presentation", async ({
   page,
 }) => {
-  const styles = await page.evaluate(() => {
-    const read = (selector: string) => {
-      const element = document.querySelector(selector);
-      if (!(element instanceof HTMLDialogElement)) return null;
-      const style = getComputedStyle(element);
-      const close = getComputedStyle(
-        element.querySelector('button[type="button"]') as HTMLElement,
-      );
-      return {
-        borderRadius: style.borderRadius,
-        maxWidth: style.width,
-        boxShadow: style.boxShadow,
-        closeBorderRadius: close.borderRadius,
-        closeWidth: close.width,
-        closeHeight: close.height,
-      };
-    };
-
-    return {
-      about: read("[data-about-dialog]"),
-      compliance: read("[data-compliance-dialog]"),
-    };
-  });
-
-  expect(styles.compliance).toEqual(styles.about);
+  const dialog = page.locator("[data-consultation-dialog]");
+  await expect(dialog).toHaveCount(1);
+  await expect(dialog.locator("[data-contact-modal-close]")).toHaveCount(1);
+  await expect(dialog.locator("[data-contact-modal-form]")).toHaveCount(1);
 });
 
 test("FAQ opens the first question on initial load", async ({ page }) => {

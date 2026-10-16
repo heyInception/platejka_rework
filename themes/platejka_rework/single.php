@@ -5,7 +5,6 @@ while ( have_posts() ) :
 	the_post();
 	$post_id  = get_the_ID();
 	$category = platejka_blog_primary_category( $post_id );
-	$views    = platejka_blog_view_count( $post_id );
 	$content  = apply_filters( 'the_content', get_the_content() );
 	$toc      = platejka_blog_table_of_contents( $content );
 	$content  = platejka_blog_add_heading_ids( $content );
@@ -16,12 +15,18 @@ while ( have_posts() ) :
 <main id="primary" class="site-main blog-single">
 	<div class="container">
 		<?php do_action( 'pretty_breadcrumb' ); ?>
-		<header class="blog-single__header">
-			<?php if ( $category ) : ?><a class="blog-single__category" href="<?php echo esc_url( get_category_link( $category ) ); ?>"><?php echo esc_html( $category->name ); ?></a><?php endif; ?>
-			<h1><?php echo esc_html( $title ); ?></h1>
-			<div class="blog-single__meta"><time datetime="<?php echo esc_attr( get_the_date( DATE_W3C ) ); ?>"><?php echo esc_html( get_the_date( 'j F Y' ) ); ?></time><span><?php echo esc_html( sprintf( '%d мин чтения', platejka_blog_reading_time( $post_id ) ) ); ?></span><?php if ( '' !== $views ) : ?><span><?php echo esc_html( $views ); ?> просмотров</span><?php endif; ?></div>
+		<header class="blog-single__header<?php echo has_post_thumbnail() ? '' : ' blog-single__header--no-image'; ?>">
+			<div class="blog-single__intro">
+				<div class="blog-single__meta">
+					<span>Дата создания <time datetime="<?php echo esc_attr( get_the_date( DATE_W3C ) ); ?>"><?php echo esc_html( get_the_date( 'd.m.Y' ) ); ?></time></span>
+					<?php if ( get_the_modified_time( 'U' ) > get_the_time( 'U' ) ) : ?><span>Дата обновления <time datetime="<?php echo esc_attr( get_the_modified_date( DATE_W3C ) ); ?>"><?php echo esc_html( get_the_modified_date( 'd.m.Y' ) ); ?></time></span><?php endif; ?>
+					<span><?php echo esc_html( sprintf( '%d мин на чтение', platejka_blog_reading_time( $post_id ) ) ); ?></span>
+				</div>
+				<?php if ( $category ) : ?><a class="blog-single__category" href="<?php echo esc_url( get_category_link( $category ) ); ?>"><?php echo esc_html( $category->name ); ?></a><?php endif; ?>
+				<h1><?php echo esc_html( $title ); ?></h1>
+			</div>
+			<?php if ( has_post_thumbnail() ) : ?><figure class="blog-single__hero"><?php the_post_thumbnail( 'full', array( 'loading' => 'eager', 'fetchpriority' => 'high', 'decoding' => 'async' ) ); ?></figure><?php endif; ?>
 		</header>
-		<?php if ( has_post_thumbnail() ) : ?><figure class="blog-single__hero"><?php the_post_thumbnail( 'full', array( 'loading' => 'eager', 'fetchpriority' => 'high', 'decoding' => 'async' ) ); ?></figure><?php endif; ?>
 		<div class="blog-single__layout">
 			<aside class="blog-single__aside">
 				<?php if ( $toc ) : ?><nav class="blog-toc" data-blog-toc aria-label="Оглавление"><button class="blog-toc__toggle" type="button" aria-expanded="false">Оглавление</button><ol><?php foreach ( $toc as $item ) : ?><li class="blog-toc__level-<?php echo esc_attr( (string) $item['level'] ); ?>"><a href="#<?php echo esc_attr( $item['id'] ); ?>"><?php echo esc_html( $item['label'] ); ?></a></li><?php endforeach; ?></ol></nav><?php endif; ?>
