@@ -146,10 +146,12 @@ function platejka_rework_scripts()
 	wp_enqueue_style('platejka_rework-commoncss', get_stylesheet_directory_uri() . '/assets/common.css', array(), '1.0.0');
 	wp_enqueue_style('platejka_rework-style', get_stylesheet_uri(), array(), _S_VERSION);
 	wp_enqueue_style('platejka_rework-dialog-overrides', get_template_directory_uri() . '/assets/dialog-overrides.css', array('platejka_rework-style'), _S_VERSION);
+	wp_enqueue_style('platejka_rework-contact-modals', get_template_directory_uri() . '/assets/contact-modals.css', array('platejka_rework-commoncss'), platejka_section_asset_version(get_theme_file_path('assets/contact-modals.css')));
 	wp_style_add_data('platejka_rework-style', 'rtl', 'replace');
 
 	wp_enqueue_script('platejka_rework-common', get_template_directory_uri() . '/assets/common.js', array(), _S_VERSION, true);
 	wp_enqueue_script('platejka_rework-window-opener', get_template_directory_uri() . '/assets/window-opener.js', array('platejka_rework-common'), _S_VERSION, true);
+	wp_enqueue_script('platejka_rework-contact-modals', get_template_directory_uri() . '/assets/contact-modals.js', array('platejka_rework-common'), platejka_section_asset_version(get_theme_file_path('assets/contact-modals.js')), true);
 
 	if (is_singular() && comments_open() && get_option('thread_comments')) {
 		wp_enqueue_script('comment-reply');
@@ -162,6 +164,9 @@ require get_template_directory() . '/inc/section-builder.php';
 
 /** Inherited ACF content and safe section-rendering helpers. */
 require get_template_directory() . '/inc/section-content.php';
+
+/** Global Contact Form 7 modals and ACF settings. */
+require get_template_directory() . '/inc/contact-modals.php';
 
 /** Approved cross-block ACF layouts and editor labels. */
 require get_template_directory() . '/inc/cross-block-schema.php';

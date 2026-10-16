@@ -219,7 +219,7 @@
 								<a href="tel:<?php the_field('telefon', 'option'); ?>"><?php the_field('telefon', 'option'); ?></a>
 							</div>
 							<div class="header__button">
-								<button class="btn-reset header__button_call" data-graph-path="call">Связаться</button>
+								<button class="btn-reset header__button_call" data-graph-path="call" data-contact-modal-open data-modal-context="header" data-modal-source="header-desktop">Связаться</button>
 							</div>
 						</div>
 					</div>
@@ -330,7 +330,7 @@
 								?>
 							<?php endif; ?>
 							<div class="header__button header__button_bottom">
-								<button class="btn-reset header__button_call" data-graph-path="call">Связаться</button>
+								<button class="btn-reset header__button_call" data-graph-path="call" data-contact-modal-open data-modal-context="header" data-modal-source="header-mobile">Связаться</button>
 							</div>
 						</div>
 					</div>

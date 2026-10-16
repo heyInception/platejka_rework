@@ -35,7 +35,7 @@ $hero_description = preg_replace('/<p>/', '<p class="hero__subtitle" data-hero-c
           <h2 class="hero-calculator__title"><?php echo esc_html($calculator_labels['summary'] ?? ''); ?></h2>
           <div class="ui-tabs hero-calculator__currencies" aria-label="<?php echo esc_attr($calculator_labels['currency'] ?? ''); ?>"><span class="hero-calculator__indicator" data-currency-indicator aria-hidden="true"></span><?php foreach (array('CNY' => 'cn-flag.png', 'USD' => 'usa-flag.png') as $currency => $flag) : ?><button class="ui-tab hero-calculator__currency<?php echo 'CNY' === $currency ? ' is-active' : ''; ?>" type="button" data-currency="<?php echo esc_attr($currency); ?>" aria-pressed="<?php echo 'CNY' === $currency ? 'true' : 'false'; ?>"><img class="hero-calculator__flag" src="img/<?php echo esc_attr($flag); ?>" width="20" height="20" alt=""><?php echo esc_html($currency); ?></button><?php endforeach; ?></div>
           <div class="hero-calculator__field"><label class="hero-calculator__label" for="hero-amount"><?php echo esc_html($calculator_labels['amount'] ?? ''); ?></label>
-            <div class="hero-calculator__amount-wrap"><input class="ui-amount-input hero-calculator__amount" id="hero-amount" name="amount" type="number" min="1" step="1" inputmode="numeric" value="100000" data-role="amount" required><span class="hero-calculator__symbol" data-role="currency-symbol" aria-hidden="true">¥</span></div>
+            <div class="hero-calculator__amount-wrap"><input class="ui-amount-input hero-calculator__amount" id="hero-amount" name="amount" type="number" min="1" step="1" inputmode="numeric" value="10000" data-role="amount" required><span class="hero-calculator__symbol" data-role="currency-symbol" aria-hidden="true">¥</span></div>
           </div>
           <dl class="hero-calculator__results"><?php foreach (array('official_rate' => 'official-rate', 'conversion_rate' => 'conversion-rate', 'commission' => 'commission', 'total' => 'grand-total') as $label_key => $role) : ?><div class="hero-calculator__result-row<?php echo 'total' === $label_key ? ' hero-calculator__result-row_total' : ''; ?>">
                 <dt><?php echo esc_html($calculator_labels[$label_key] ?? ''); ?></dt>
@@ -51,7 +51,7 @@ $hero_description = preg_replace('/<p>/', '<p class="hero__subtitle" data-hero-c
       <h2 class="contact-dialog__title"><?php echo esc_html($calculator_labels['dialog'] ?? ''); ?></h2>
       <p class="contact-dialog__text"><?php echo esc_html__('Параметры расчёта готовы для заявки.', 'platejka_rework'); ?></p>
       <p class="contact-dialog__summary" data-dialog-summary><?php echo esc_html($calculator_labels['summary_empty'] ?? ''); ?></p>
-      <div data-cf7-mount><?php echo platejka_cf7_form($calculator_data['form'] ?? 0); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+      <div data-cf7-mount><?php echo platejka_contact_modal_form( platejka_contact_modal_form_id( 'calculator', $calculator_data['form'] ?? 0 ), 'hero-calculator' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                           ?></div>
     </div>
   </dialog>

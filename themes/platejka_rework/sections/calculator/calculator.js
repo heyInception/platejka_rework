@@ -128,11 +128,25 @@ function buildSummary(amount, currency, result) {
   return [`Валюта платежа: ${currency}`, `Сумма: ${new Intl.NumberFormat('ru-RU').format(amount)} ${currency}`, `Комиссия агента: ${formatMoney(result.commission)}`, `Итого в рублях: ${formatMoney(result.total)}`].join('\n');
 }
 function openContactDialog(dialog, summary, opener) {
+  let details = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
   if (!dialog || dialog.open) return;
   const summaryElement = dialog.querySelector('[data-dialog-summary]');
   if (summaryElement) summaryElement.textContent = summary || 'Расчёт не выбран.';
   const cf7Summary = dialog.querySelector('[data-cf7-summary]');
   if (cf7Summary) cf7Summary.value = summary || '';
+  const fields = {
+    'platejka-calculator-summary': summary || '',
+    'platejka-calculator-currency': details.currency || '',
+    'platejka-calculator-amount': details.amount || '',
+    'platejka-calculator-rate': details.rate || '',
+    'platejka-calculator-commission': details.commission || '',
+    'platejka-calculator-total': details.total || ''
+  };
+  Object.entries(fields).forEach(_ref2 => {
+    let [name, value] = _ref2;
+    const field = dialog.querySelector(`[name="${name}"]`);
+    if (field) field.value = value;
+  });
   dialog.dialogOpener = opener || document.activeElement;
   dialog.showModal();
 }
@@ -220,7 +234,13 @@ function initHeroCalculator(root, dialog) {
   root.addEventListener('submit', event => {
     event.preventDefault();
     const result = validResult();
-    if (result) openContactDialog(dialog, summary(result), event.submitter);
+    if (result) openContactDialog(dialog, summary(result), event.submitter, {
+      currency,
+      amount: parseAmount(input.value),
+      rate: result.officialRate,
+      commission: result.commission,
+      total: result.total
+    });
   });
   telegramButton?.addEventListener('click', () => {
     const result = validResult();
@@ -355,9 +375,6 @@ document.querySelectorAll('[data-hero-calculator], [data-transfer-calculator]').
 });
 if (hero) {
   initHeroMotion(hero);
-  document.querySelectorAll('[data-graph-path="call"]').forEach(button => {
-    button.addEventListener('click', () => openContactDialog(dialog, '', button));
-  });
 }
 
 

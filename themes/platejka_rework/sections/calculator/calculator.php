@@ -138,7 +138,7 @@ $countries = array(
 							</span>
 						</label>
 					</div>
-					<label class="calculator__field calculator__amount-field"><span class="calculator__field-label"><?php echo esc_html($label('amount')); ?></span><span class="calculator__amount-wrap"><input name="amount" type="number" inputmode="decimal" autocomplete="off" value="100000" data-role="amount" required><span data-role="currency-symbol" aria-hidden="true">¥</span></span></label>
+					<label class="calculator__field calculator__amount-field"><span class="calculator__field-label"><?php echo esc_html($label('amount')); ?></span><span class="calculator__amount-wrap"><input name="amount" type="number" inputmode="decimal" autocomplete="off" value="10000" data-role="amount" required><span data-role="currency-symbol" aria-hidden="true">¥</span></span></label>
 					<p class="calculator__rate-note">
 						<img src="img/svg/cb.svg" width="20" height="20" alt="">Расчёты проводим по курсу ЦБ РФ
 					</p>
@@ -173,7 +173,7 @@ $countries = array(
 	<dialog class="contact-dialog" data-contact-dialog data-empty-label="<?php echo esc_attr($label('summary_empty')); ?>" aria-label="<?php echo esc_attr($label('dialog')); ?>">
 		<div class="contact-dialog__content"><button class="btn-reset contact-dialog__close" type="button" data-dialog-close aria-label="<?php echo esc_attr($close_label); ?>">×</button>
 			<p class="contact-dialog__summary" data-dialog-summary></p>
-			<div data-cf7-mount><?php echo platejka_cf7_form($section_data['form'] ?? 0); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			<div data-cf7-mount><?php echo platejka_contact_modal_form( platejka_contact_modal_form_id( 'calculator', $section_data['form'] ?? 0 ), 'transfer-calculator' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 								?></div>
 		</div>
 	</dialog>

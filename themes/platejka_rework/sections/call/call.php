@@ -4,15 +4,10 @@ $title_id = platejka_section_dom_id($section_instance, 'title');
 $items = is_array($section_data['items'] ?? null) ? $section_data['items'] : array();
 $call_heading = platejka_section_heading(array('text' => $section_data['title'] ?? '', 'accent' => $section_data['title_accent'] ?? '', 'decorative' => ! empty($section_data['title_accent'])), 'call__title');
 $call_heading = str_replace('class="call__title"', 'class="call__title" id="' . esc_attr($title_id) . '" data-call-title', $call_heading);
-$form_html = platejka_cf7_form($section_data['form'] ?? 0);
-$form_html = str_replace('wpcf7-text wpcf7-validates-as-required', 'wpcf7-text wpcf7-validates-as-required ui-input', $form_html);
-$form_html = str_replace('request__form-tel', 'request__form-tel ui-input js-phone-mask', $form_html);
-$form_html = str_replace('wpcf7-email', 'wpcf7-email ui-input', $form_html);
-$form_html = str_replace('request__form-btn', 'request__form-btn ui-button call__submit', $form_html);
-$form_html = str_replace('wpcf7-list-item"><label>', 'wpcf7-list-item call__consent"><label class="custom-checkbox">', $form_html);
-$form_html = str_replace('<input type="checkbox"', '<input class="custom-checkbox__field" type="checkbox"', $form_html);
-$form_html = str_replace('class="wpcf7-list-item-label"', 'class="wpcf7-list-item-label custom-checkbox__content"', $form_html);
-$form_html = preg_replace('/class="([^"]*ui-input[^"]*)"([^>]*name="your-message")/', 'class="$1 call__message"$2', $form_html);
+$form_id   = platejka_contact_modal_form_id( 'consultation', $section_data['form'] ?? 0 );
+$form_html = platejka_contact_modal_form( $form_id, 'call-section' );
+$form_html = platejka_cf7_remove_field_paragraph( $form_html, 'your-message' );
+$form_html = str_replace( array( 'contact-modal__submit', 'contact-modal__consent', 'contact-modal__message' ), array( 'call__submit', 'call__consent', 'call__message' ), $form_html );
 ?>
 <section class="call" id="<?php echo esc_attr($root_id); ?>" data-call aria-label="<?php echo esc_attr(wp_strip_all_tags((string) ($section_data['title'] ?? ''))); ?>">
   <div class="container">

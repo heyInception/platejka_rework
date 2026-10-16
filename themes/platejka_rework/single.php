@@ -35,7 +35,7 @@ while ( have_posts() ) :
 			</aside>
 			<article class="blog-content article-blog"><?php echo platejka_blog_rendered_content( $content ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Content is filtered by the_content for trusted editors. ?></article>
 		</div>
-		<section class="blog-cta"><div><p class="blog-cta__eyebrow">Есть задача?</p><h2>Обсудим решение для вашего бизнеса</h2><p>Оставьте заявку — команда «Платёжки» свяжется с вами и ответит на вопросы.</p></div><div class="blog-cta__actions"><button class="blog-button" type="button" data-graph-path="call">Обсудить задачу</button><a href="https://t.me/platejka_com" target="_blank" rel="noopener">Написать в Telegram</a></div></section>
+		<section class="blog-cta"><div><p class="blog-cta__eyebrow">Есть задача?</p><h2>Обсудим решение для вашего бизнеса</h2><p>Оставьте заявку — команда «Платёжки» свяжется с вами и ответит на вопросы.</p></div><div class="blog-cta__actions"><button class="blog-button" type="button" data-graph-path="call" data-contact-modal-open data-modal-context="blog" data-modal-source="blog-article-cta">Обсудить задачу</button><a href="https://t.me/platejka_com" target="_blank" rel="noopener">Написать в Telegram</a></div></section>
 		<?php if ( $related->have_posts() ) : ?><section class="blog-related" data-blog-related><div class="blog-section__heading"><h2>Читайте также</h2></div><div class="blog-grid"><?php while ( $related->have_posts() ) : $related->the_post(); get_template_part( 'template-parts/content-single', 'card' ); endwhile; ?></div></section><?php endif; wp_reset_postdata(); ?>
 	</div>
 </main>

@@ -1,0 +1,30 @@
+.contact-modal{border:0;border-radius:24px;padding:0;width:min(560px,calc(100% - 32px));max-height:calc(100dvh - 32px);color:var(--text-primary);background:var(--surface-primary);box-shadow:0 24px 80px rgba(0,0,0,.2)}
+.contact-modal::backdrop{background:var(--surface-overlay-strong)}
+.contact-modal__content{position:relative;overflow:auto;padding:40px;max-height:calc(100dvh - 32px)}
+.contact-modal__close{position:absolute;z-index:2;top:16px;right:16px;display:grid;place-items:center;border-radius:50%;width:40px;height:40px;font-size:28px;line-height:1;color:var(--text-primary);background:var(--surface-secondary)}
+.contact-modal__title{margin:0;padding-right:48px;font:700 32px/36px var(--font-family);letter-spacing:-.03em}
+.contact-modal__text{margin:12px 0 24px;color:var(--text-secondary);font:500 16px/24px var(--font-family)}
+.contact-modal__form .wpcf7-form,.contact-dialog [data-cf7-mount] .wpcf7-form{display:grid;gap:12px}
+.contact-modal__form .wpcf7-form>p,.contact-dialog [data-cf7-mount] .wpcf7-form>p{margin:0}
+.contact-modal__form .ui-input,.contact-modal__form textarea,.contact-dialog [data-cf7-mount] .ui-input,.contact-dialog [data-cf7-mount] textarea{max-width:none}
+.contact-modal__message{display:block;padding:15px 16px;min-height:120px;height:120px;line-height:28px;resize:vertical}
+.contact-modal__message::placeholder{color:var(--text-secondary);opacity:1}
+.contact-modal__submit{width:100%}
+.contact-dialog [data-cf7-mount] .contact-modal__submit{width:100%}
+.contact-modal__consent{margin:0}
+.contact-modal__consent label{position:relative;display:block;cursor:pointer}
+.contact-modal__consent input[type="checkbox"]{position:absolute;overflow:hidden;margin:-1px;border:0;padding:0;width:1px;height:1px;clip:rect(0 0 0 0);white-space:nowrap}
+.contact-modal__consent .wpcf7-list-item-label{position:relative;display:block;padding-left:32px;min-height:24px;font:500 14px/20px var(--font-family);letter-spacing:-.02em;color:var(--text-secondary)}
+.contact-modal__consent .wpcf7-list-item-label::before{position:absolute;top:0;left:0;border:1px solid var(--border-primary);border-radius:6px;width:22px;height:22px;background:var(--surface-primary);transition:border-color .2s ease,background-color .2s ease,box-shadow .2s ease;content:""}
+.contact-modal__consent .wpcf7-list-item-label::after{position:absolute;top:5px;left:8px;border:solid var(--text-overlay-primary);border-width:0 2px 2px 0;width:5px;height:9px;opacity:0;transform:rotate(45deg);content:""}
+.contact-modal__consent label:hover .wpcf7-list-item-label::before{border-color:var(--border-brand);background:var(--surface-secondary)}
+.contact-modal__consent input[type="checkbox"]:focus-visible+.wpcf7-list-item-label::before{outline:2px solid var(--border-brand);outline-offset:3px}
+.contact-modal__consent input[type="checkbox"]:checked+.wpcf7-list-item-label::before{border-color:var(--border-brand);background:var(--surface-brand)}
+.contact-modal__consent input[type="checkbox"]:checked+.wpcf7-list-item-label::after{opacity:1}
+.contact-modal__consent input[type="checkbox"].wpcf7-not-valid+.wpcf7-list-item-label::before,.contact-modal__consent input[type="checkbox"][aria-invalid="true"]+.wpcf7-list-item-label::before{border-width:2px;border-color:var(--status-error)}
+.contact-modal__consent input[type="checkbox"]:disabled+.wpcf7-list-item-label{opacity:.48;cursor:not-allowed}
+.contact-modal__success{border-radius:16px;padding:24px;background:var(--surface-brand-subtle);font:600 18px/28px var(--font-family);color:var(--text-brand)}
+.contact-modal__success p{margin:0}
+.contact-modal .wpcf7-not-valid-tip{margin-top:6px;color:var(--status-error);font:500 13px/18px var(--font-family)}
+.contact-modal .wpcf7-response-output{margin:4px 0 0!important;border:0!important;padding:0!important;color:var(--status-error)}
+@media(max-width:600px){.contact-modal{border-radius:20px;width:calc(100% - 16px);max-height:calc(100dvh - 16px)}.contact-modal__content{padding:28px 16px 20px;max-height:calc(100dvh - 16px)}.contact-modal__close{top:12px;right:12px}.contact-modal__title{font-size:26px;line-height:30px}.contact-modal__text{margin-bottom:20px}}

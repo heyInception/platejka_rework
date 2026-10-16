@@ -25,7 +25,7 @@ $labels = platejka_section_label_map($section_data['labels'] ?? array()); ?>
           <li><?php echo esc_html($labels['benefit_3'] ?? ''); ?></li>
         </ul>
       </div>
-      <div class="problems__actions"><button class="ui-button problems__submit" type="button" data-problems-dialog-open><?php echo esc_html($labels['submit'] ?? ''); ?></button>
+      <div class="problems__actions"><button class="ui-button problems__submit" type="button" data-contact-modal-open data-modal-context="problems" data-modal-source="problems-cta"><?php echo esc_html($labels['submit'] ?? ''); ?></button>
         <div>
           <a href="mailto:<?php echo esc_attr(sanitize_email($labels['email'] ?? '')); ?>"><?php echo esc_html($labels['write'] ?? ''); ?></a>
           <a href="tel:<?php echo esc_attr(preg_replace('/[^+0-9]/', '', $labels['phone'] ?? '')); ?>"><?php echo esc_html($labels['call'] ?? ''); ?></a>
@@ -33,10 +33,4 @@ $labels = platejka_section_label_map($section_data['labels'] ?? array()); ?>
       </div>
     </div>
   </div>
-  <dialog class="about-dialog problems__dialog" data-problems-dialog aria-labelledby="<?php echo esc_attr(platejka_section_dom_id($section_instance, 'problems-dialog-title')); ?>">
-    <div class="about-dialog__content"><button class="btn-reset about-dialog__close" type="button" data-problems-dialog-close aria-label="<?php echo esc_attr($labels['close'] ?? ''); ?>">×</button>
-      <h3 class="about-dialog__title" id="<?php echo esc_attr(platejka_section_dom_id($section_instance, 'problems-dialog-title')); ?>"><?php echo esc_html($labels['submit'] ?? ''); ?></h3>
-      <p class="about-dialog__text"><?php echo esc_html($labels['dialog_text'] ?? ''); ?></p>
-    </div>
-  </dialog>
 </section>

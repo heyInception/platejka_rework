@@ -38,14 +38,8 @@ $about_registry_urls = array(
   </div>
   <div class="container">
     <div class="about__cta">
-      <button class="ui-button about__cta-button" type="button" data-about-dialog-open><?php echo esc_html($labels['meeting_button'] ?? ''); ?></button>
+      <button class="ui-button about__cta-button" type="button" data-contact-modal-open data-modal-context="about" data-modal-source="about-meeting"><?php echo esc_html($labels['meeting_button'] ?? ''); ?></button>
       <address class="about__address"><?php echo esc_html($labels['address'] ?? ''); ?></address>
     </div>
   </div>
-  <dialog class="about-dialog" data-about-dialog aria-label="<?php echo esc_attr($labels['dialog_title'] ?? ''); ?>">
-    <div class="about-dialog__content"><button class="btn-reset about-dialog__close" type="button" data-about-dialog-close aria-label="<?php echo esc_attr($labels['close'] ?? ''); ?>">×</button>
-      <h2 class="about-dialog__title"><?php echo esc_html($labels['dialog_title'] ?? ''); ?></h2>
-      <p class="about-dialog__text"><?php echo esc_html($labels['dialog_text'] ?? ''); ?></p>
-    </div>
-  </dialog>
 </section>
