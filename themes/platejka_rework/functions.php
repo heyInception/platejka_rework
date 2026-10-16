@@ -162,6 +162,9 @@ add_action('wp_enqueue_scripts', 'platejka_rework_scripts');
 /** Page-builder data must be available before templates declare assets. */
 require get_template_directory() . '/inc/section-builder.php';
 
+/** Legal-document page routing and footer destinations. */
+require get_template_directory() . '/inc/legal-pages.php';
+
 /** Inherited ACF content and safe section-rendering helpers. */
 require get_template_directory() . '/inc/section-content.php';
 

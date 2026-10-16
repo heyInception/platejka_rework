@@ -28,7 +28,7 @@
           <div id="consentBox" class="open">
             <div id="consentContent">
               <p>
-                Мы используем cookies для оптимизации работы сайта и повышения его эффективности. Подробности в нашей <a href="https://platejka.com/privacy-policy">политике конфиденциальности</a>.
+                Мы используем cookies для оптимизации работы сайта и повышения его эффективности. Подробности в нашей <a href="<?php echo esc_url( get_permalink( 5170 ) ); ?>">политике использования cookie-файлов</a>.
               </p>
               <div class="buttons">
                 <button class="consentButton btn-reset ui-button">
@@ -83,10 +83,9 @@
         </div>
 
         <ul class="list-reset footer__legal-links">
-          <li><a href="#">Политика конфиденциальности</a></li>
-          <li><a href="#">Политика использования cookie-файлов</a></li>
-          <li><a href="#">Пользовательское соглашение</a></li>
-          <li><a href="#">Карта сайта</a></li>
+          <?php foreach ( platejka_rework_legal_pages() as $page_id => $label ) : ?>
+            <li><a href="<?php echo esc_url( get_permalink( $page_id ) ); ?>"><?php echo esc_html( $label ); ?></a></li>
+          <?php endforeach; ?>
         </ul>
 
 
