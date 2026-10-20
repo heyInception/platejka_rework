@@ -136,6 +136,9 @@ function platejka_resolve_section_data( array $config, int $post_id = 0 ): array
 	}
 
 	$resolved          = platejka_section_array( platejka_merge_section_data( $local, $global ) );
+	if ( in_array( $slug, array( 'review', 'review-main' ), true ) ) {
+		$resolved['disable_video_reviews'] = ! empty( $global['disable_video_reviews'] ) || ! empty( $row['disable_video_reviews'] );
+	}
 	$local_description = isset( $local['description'] ) ? trim( wp_strip_all_tags( (string) $local['description'] ) ) : '';
 	if ( 'hide' === ( $row['description_mode'] ?? 'inherit' ) && '' === $local_description ) {
 		$resolved['description'] = '';

@@ -9,6 +9,7 @@ $dialog_id      = platejka_section_dom_id( $section_instance, 'review-dialog-tit
 $labels         = platejka_section_label_map( $section_data['labels'] ?? array() );
 $video_items    = is_array( $section_data['video_items'] ?? null ) ? $section_data['video_items'] : array();
 $items          = is_array( $section_data['items'] ?? null ) ? $section_data['items'] : array();
+$videos_disabled = ! empty( $section_data['disable_video_reviews'] );
 ?>
 <section class="review" id="<?php echo esc_attr( $root_id ); ?>" aria-labelledby="<?php echo esc_attr( $title_id ); ?>" data-review>
   <div class="container">
@@ -19,12 +20,12 @@ $items          = is_array( $section_data['items'] ?? null ) ? $section_data['it
     </header>
 
     <div class="review__body">
-      <div class="review__tabs" role="tablist" aria-label="<?php echo esc_attr( $labels['tabs_label'] ?? '' ); ?>" data-review-tabs>
+      <?php if ( ! $videos_disabled ) : ?><div class="review__tabs" role="tablist" aria-label="<?php echo esc_attr( $labels['tabs_label'] ?? '' ); ?>" data-review-tabs>
         <button class="review__tab" type="button" role="tab" id="<?php echo esc_attr( $video_tab_id ); ?>" aria-controls="<?php echo esc_attr( $video_panel_id ); ?>" aria-selected="true"><?php echo esc_html( $labels['video_tab'] ?? '' ); ?></button>
         <button class="review__tab" type="button" role="tab" id="<?php echo esc_attr( $text_tab_id ); ?>" aria-controls="<?php echo esc_attr( $text_panel_id ); ?>" aria-selected="false" tabindex="-1"><?php echo esc_html( $labels['text_tab'] ?? '' ); ?></button>
-      </div>
+      </div><?php endif; ?>
 
-      <div id="<?php echo esc_attr( $video_panel_id ); ?>" role="tabpanel" aria-labelledby="<?php echo esc_attr( $video_tab_id ); ?>" data-review-video-panel>
+      <?php if ( ! $videos_disabled ) : ?><div id="<?php echo esc_attr( $video_panel_id ); ?>" role="tabpanel" aria-labelledby="<?php echo esc_attr( $video_tab_id ); ?>" data-review-video-panel>
         <div class="review__slider" data-horizontal-slider><div class="review__viewport" data-horizontal-slider-viewport tabindex="0" role="region" aria-label="<?php echo esc_attr( $labels['video_region'] ?? '' ); ?>"><div class="review__track" data-horizontal-slider-track>
           <?php foreach ( $video_items as $item ) :
 			$poster_url = is_numeric( $item['image'] ?? null ) ? wp_get_attachment_image_url( (int) $item['image'], 'large' ) : '';
@@ -35,9 +36,9 @@ $items          = is_array( $section_data['items'] ?? null ) ? $section_data['it
             </article>
           <?php endforeach; ?>
         </div></div><div class="review__controls" data-horizontal-slider-controls><button type="button" class="review__arrow review__arrow--prev" data-horizontal-slider-prev aria-label="<?php echo esc_attr( $labels['prev_video'] ?? '' ); ?>">‹</button><button type="button" class="review__arrow review__arrow--next" data-horizontal-slider-next aria-label="<?php echo esc_attr( $labels['next_video'] ?? '' ); ?>">›</button></div></div>
-      </div>
+      </div><?php endif; ?>
 
-      <div id="<?php echo esc_attr( $text_panel_id ); ?>" role="tabpanel" aria-labelledby="<?php echo esc_attr( $text_tab_id ); ?>" data-review-text-panel hidden>
+      <div id="<?php echo esc_attr( $text_panel_id ); ?>"<?php if ( ! $videos_disabled ) : ?> role="tabpanel" aria-labelledby="<?php echo esc_attr( $text_tab_id ); ?>" data-review-text-panel hidden<?php endif; ?>>
         <div class="review__slider" data-horizontal-slider><div class="review__viewport" data-horizontal-slider-viewport tabindex="0" role="region" aria-label="<?php echo esc_attr( $labels['text_region'] ?? '' ); ?>"><div class="review__track review__text-track" data-horizontal-slider-track>
           <?php foreach ( $items as $item ) :
 			$review_date = ! empty( $item['date'] ) ? strtotime( (string) $item['date'] ) : false;
@@ -49,5 +50,5 @@ $items          = is_array( $section_data['items'] ?? null ) ? $section_data['it
     </div>
   </div>
 
-  <dialog class="review__dialog" aria-labelledby="<?php echo esc_attr( $dialog_id ); ?>" data-review-dialog><button type="button" class="review__close" data-review-close aria-label="<?php echo esc_attr( $labels['close'] ?? '' ); ?>">×</button><div class="review__dialog-card"><video preload="none" playsinline></video><div class="review__loading" data-review-loading role="status" aria-label="<?php echo esc_attr( $labels['loading'] ?? '' ); ?>" hidden></div><div class="review__dialog-caption"><h2 id="<?php echo esc_attr( $dialog_id ); ?>"></h2><p class="review__dialog-role" data-review-dialog-role></p><p class="review__video-empty" data-review-empty><?php echo esc_html( $labels['empty'] ?? '' ); ?></p><p class="review__video-error" data-review-error hidden><?php echo esc_html( $labels['error'] ?? '' ); ?></p></div></div></dialog>
+  <?php if ( ! $videos_disabled ) : ?><dialog class="review__dialog" aria-labelledby="<?php echo esc_attr( $dialog_id ); ?>" data-review-dialog><button type="button" class="review__close" data-review-close aria-label="<?php echo esc_attr( $labels['close'] ?? '' ); ?>">×</button><div class="review__dialog-card"><video preload="none" playsinline></video><div class="review__loading" data-review-loading role="status" aria-label="<?php echo esc_attr( $labels['loading'] ?? '' ); ?>" hidden></div><div class="review__dialog-caption"><h2 id="<?php echo esc_attr( $dialog_id ); ?>"></h2><p class="review__dialog-role" data-review-dialog-role></p><p class="review__video-empty" data-review-empty><?php echo esc_html( $labels['empty'] ?? '' ); ?></p><p class="review__video-error" data-review-error hidden><?php echo esc_html( $labels['error'] ?? '' ); ?></p></div></div></dialog><?php endif; ?>
 </section>

@@ -48,6 +48,93 @@ function initHorizontalSlider(root) {
   const minimumControls = Number.parseInt(root.dataset.horizontalSliderMinControls || '0', 10);
   const desktopControlsOnly = root.hasAttribute('data-horizontal-slider-desktop-controls');
   const alignEverySlide = root.hasAttribute('data-horizontal-slider-align-every-slide');
+  if (root.hasAttribute('data-horizontal-slider-infinite') && slides.length > 1) {
+    const count = slides.length;
+    const makeClone = slide => {
+      const clone = slide.cloneNode(true);
+      clone.setAttribute('aria-hidden', 'true');
+      clone.removeAttribute('data-horizontal-slider-slide');
+      clone.removeAttribute('tabindex');
+      if (clone.tagName === 'IMG') clone.alt = '';
+      return clone;
+    };
+    slides.slice().reverse().forEach(slide => track.prepend(makeClone(slide)));
+    slides.forEach(slide => track.append(makeClone(slide)));
+    const allSlides = [...track.children];
+    allSlides.forEach(slide => { if (slide.tagName === 'IMG') slide.draggable = false; });
+    let index = count;
+    let pointerStart = null;
+    let dragStart = 0;
+    const offset = target => allSlides[target].offsetLeft;
+    const place = () => gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.set(track, { x: -offset(index) });
+    const syncControls = () => {
+      if (controls) controls.hidden = !shouldShowControls(count, minimumControls, desktop.matches, desktopControlsOnly);
+      if (previous) previous.disabled = false;
+      if (next) next.disabled = false;
+      indexedControls.forEach(control => {
+        const active = isIndexedControlActive(control.dataset.horizontalSliderGoTo, (index - count + count) % count, count);
+        control.setAttribute('aria-current', active ? 'true' : 'false');
+        control.classList.toggle('is-active', active);
+      });
+    };
+    const goTo = (target, immediate = false) => {
+      index = Math.max(count - 1, Math.min(count * 2, target));
+      gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.to(track, {
+        x: -offset(index),
+        duration: immediate || reducedMotion.matches ? 0 : 0.45,
+        ease: 'power3.out',
+        overwrite: 'auto',
+        onComplete: () => {
+          if (index === count - 1) index = count * 2 - 1;
+          else if (index === count * 2) index = count;
+          else return;
+          place();
+          syncControls();
+        }
+      });
+      syncControls();
+      root.dispatchEvent(new CustomEvent('horizontal-slider:change', { detail: { index: (index - count + count) % count } }));
+    };
+    const refresh = () => {
+      gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.killTweensOf(track);
+      if (index === count - 1) index = count * 2 - 1;
+      if (index === count * 2) index = count;
+      place();
+      syncControls();
+    };
+    previous?.addEventListener('click', () => goTo(index - 1));
+    next?.addEventListener('click', () => goTo(index + 1));
+    indexedControls.forEach(control => control.addEventListener('click', () => goTo(count + Number(control.dataset.horizontalSliderGoTo))));
+    viewport.addEventListener('keydown', event => {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+      event.preventDefault();
+      goTo(index + (event.key === 'ArrowRight' ? 1 : -1));
+    });
+    viewport.addEventListener('pointerdown', event => {
+      if (isInteractiveTarget(event.target)) return;
+      pointerStart = event.clientX;
+      dragStart = gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.getProperty(track, 'x') || 0;
+      viewport.setPointerCapture?.(event.pointerId);
+    });
+    viewport.addEventListener('pointermove', event => {
+      if (pointerStart === null) return;
+      gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.set(track, { x: dragStart + event.clientX - pointerStart });
+    });
+    const release = () => {
+      if (pointerStart === null) return;
+      pointerStart = null;
+      const position = -(gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.getProperty(track, 'x') || 0);
+      const nearest = allSlides.reduce((best, slide, slideIndex) => Math.abs(slide.offsetLeft - position) < Math.abs(allSlides[best].offsetLeft - position) ? slideIndex : best, index);
+      goTo(nearest);
+    };
+    viewport.addEventListener('pointerup', release);
+    viewport.addEventListener('pointercancel', release);
+    window.addEventListener('resize', refresh, { passive: true });
+    root.addEventListener('horizontal-slider:refresh', refresh);
+    root.dataset.horizontalSliderReady = 'true';
+    refresh();
+    return { goTo, refresh };
+  }
   let currentIndex = 0;
   let currentOffset = 0;
   let offsets = [];

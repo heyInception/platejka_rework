@@ -23,12 +23,14 @@ if (header) {
     let isSticky = false;
     let stickyTween;
     const syncStickyHeader = () => {
-      const shouldStick = headerTop.getBoundingClientRect().bottom <= 0;
-      header.style.setProperty('--header-sticky-height', String(headerBottom.offsetHeight) + 'px');
+      const shouldStick = header.getBoundingClientRect().top < 0;
+      header.style.setProperty('--header-top-height', String(headerTop.offsetHeight) + 'px');
+      header.style.setProperty('--header-sticky-height', String(headerTop.offsetHeight + headerBottom.offsetHeight) + 'px');
       if (shouldStick === isSticky) return;
       isSticky = shouldStick;
       stickyTween?.kill();
       header.classList.toggle('header--sticky', isSticky);
+      headerTop.classList.toggle('header__top--fixed', isSticky);
       headerBottom.classList.toggle('header__bottom--fixed', isSticky);
       if (!isSticky) {
         gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.set(headerBottom, {

@@ -717,6 +717,25 @@
                             "ui_off_text": ""
                         },
                         {
+                            "key": "field_platejka_about_row_review_main_disable_video_reviews_v1",
+                            "label": "Отключить видеоотзывы",
+                            "name": "disable_video_reviews",
+                            "type": "true_false",
+                            "instructions": "Показывать только текстовые отзывы в этой секции.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "Только текст",
+                            "ui_off_text": "Видео и текст"
+                        },
+                        {
                             "key": "field_platejka_about_row_review_main_anchor_v1",
                             "label": "Якорь секции",
                             "name": "anchor",
@@ -2858,5 +2877,5 @@
     "active": true,
     "description": "Локальный порядок и контент секций страницы «О компании».",
     "show_in_rest": 0,
-    "modified": 1791320000
+    "modified": 1792497600
 }

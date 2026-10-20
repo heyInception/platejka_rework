@@ -2263,6 +2263,21 @@
             "layout": "block",
             "sub_fields": [
                 {
+                    "key": "field_platejka_review_main_disable_video_reviews_v1",
+                    "label": "Отключить видеоотзывы",
+                    "name": "disable_video_reviews",
+                    "type": "true_false",
+                    "instructions": "Скрыть видеоотзывы во всех секциях отзывов. На страницах также можно отключить видео отдельно.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": { "width": "", "class": "", "id": "" },
+                    "message": "",
+                    "default_value": 0,
+                    "ui": 1,
+                    "ui_on_text": "Только текст",
+                    "ui_off_text": "Видео и текст"
+                },
+                {
                     "key": "field_platejka_review_main_eyebrow_v1",
                     "label": "Надпись над заголовком",
                     "name": "eyebrow",
@@ -5425,5 +5440,5 @@
     "active": true,
     "description": "Канонический контент секций, наследуемый страницами.",
     "show_in_rest": 0,
-    "modified": 1791712679
+    "modified": 1792497600
 }

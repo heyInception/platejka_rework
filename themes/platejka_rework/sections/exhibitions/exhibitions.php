@@ -6,7 +6,7 @@ $title_id   = platejka_section_dom_id( $instance, 'exhibitions-title' );
 $trademark  = platejka_section_array( $data['trademark'] ?? array() );
 $gallery    = platejka_section_array( $data['gallery'] ?? array() );
 ?>
-<section class="exhibitions"<?php echo '' !== $anchor ? ' id="' . esc_attr( $anchor ) . '"' : ''; ?> aria-labelledby="<?php echo esc_attr( $title_id ); ?>" data-horizontal-slider data-horizontal-slider-desktop-controls data-horizontal-slider-align-every-slide>
+<section class="exhibitions"<?php echo '' !== $anchor ? ' id="' . esc_attr( $anchor ) . '"' : ''; ?> aria-labelledby="<?php echo esc_attr( $title_id ); ?>" data-horizontal-slider data-horizontal-slider-infinite data-horizontal-slider-desktop-controls data-horizontal-slider-align-every-slide>
   <div class="container"><div class="exhibitions__layout">
     <div class="exhibitions__content">
       <div><h2 id="<?php echo esc_attr( $title_id ); ?>"><?php echo esc_html( (string) ( $data['title'] ?? '' ) ); ?></h2><h3><?php echo platejka_heading_text( $data['subtitle'] ?? '' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></h3><?php echo wpautop( wp_kses_post( (string) ( $data['description'] ?? '' ) ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
