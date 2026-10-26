@@ -39,7 +39,7 @@ $description = is_scalar( $section_data['description'] ?? null ) ? (string) $sec
 					<div class="process__item-heading">
 						<span class="process__number" aria-hidden="true"></span>
 						<span class="process__connector" aria-hidden="true"></span>
-						<h3><?php echo esc_html( $item['title'] ); ?></h3>
+						<div class="h3"><?php echo esc_html( $item['title'] ); ?></div>
 					</div>
 					<div class="process__content"><?php echo wp_kses_post( $item['text'] ); ?></div>
 				</li>

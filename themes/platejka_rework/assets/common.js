@@ -64,6 +64,8 @@ function initHorizontalSlider(root) {
     allSlides.forEach(slide => { if (slide.tagName === 'IMG') slide.draggable = false; });
     let index = count;
     let pointerStart = null;
+    let pointerStartY = null;
+    let gestureAxis = null;
     let dragStart = 0;
     const offset = target => allSlides[target].offsetLeft;
     const place = () => gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.set(track, { x: -offset(index) });
@@ -113,22 +115,34 @@ function initHorizontalSlider(root) {
     viewport.addEventListener('pointerdown', event => {
       if (isInteractiveTarget(event.target)) return;
       pointerStart = event.clientX;
+      pointerStartY = event.clientY;
+      gestureAxis = null;
       dragStart = gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.getProperty(track, 'x') || 0;
-      viewport.setPointerCapture?.(event.pointerId);
     });
     viewport.addEventListener('pointermove', event => {
       if (pointerStart === null) return;
+      if (gestureAxis === null && (Math.abs(event.clientX - pointerStart) > 6 || Math.abs(event.clientY - pointerStartY) > 6)) {
+        gestureAxis = Math.abs(event.clientX - pointerStart) > Math.abs(event.clientY - pointerStartY) ? 'x' : 'y';
+        if (gestureAxis === 'x') viewport.setPointerCapture?.(event.pointerId);
+      }
+      if (gestureAxis !== 'x') return;
       gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.set(track, { x: dragStart + event.clientX - pointerStart });
     });
-    const release = () => {
+    const release = (event, cancelled = false) => {
       if (pointerStart === null) return;
+      const distance = event.clientX - pointerStart;
       pointerStart = null;
-      const position = -(gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.getProperty(track, 'x') || 0);
-      const nearest = allSlides.reduce((best, slide, slideIndex) => Math.abs(slide.offsetLeft - position) < Math.abs(allSlides[best].offsetLeft - position) ? slideIndex : best, index);
-      goTo(nearest);
+      pointerStartY = null;
+      const horizontal = gestureAxis === 'x';
+      gestureAxis = null;
+      if (cancelled || !horizontal || Math.abs(distance) < (allSlides[index]?.offsetWidth || viewport.clientWidth) * 0.25) {
+        goTo(index);
+        return;
+      }
+      goTo(index + (distance < 0 ? 1 : -1));
     };
     viewport.addEventListener('pointerup', release);
-    viewport.addEventListener('pointercancel', release);
+    viewport.addEventListener('pointercancel', event => release(event, true));
     window.addEventListener('resize', refresh, { passive: true });
     root.addEventListener('horizontal-slider:refresh', refresh);
     root.dataset.horizontalSliderReady = 'true';
@@ -139,6 +153,8 @@ function initHorizontalSlider(root) {
   let currentOffset = 0;
   let offsets = [];
   let pointerStart = null;
+  let pointerStartY = null;
+  let gestureAxis = null;
   let dragStart = 0;
   const syncControls = () => {
     const maximum = Math.max(0, track.scrollWidth - viewport.clientWidth);
@@ -179,7 +195,6 @@ function initHorizontalSlider(root) {
     return currentIndex;
   };
   const refresh = () => goTo(currentIndex, true);
-  const nearestIndex = position => offsets.reduce((best, offset, index) => Math.abs(offset - position) < Math.abs(offsets[best] - position) ? index : best, 0);
   previous?.addEventListener('click', () => goTo(currentIndex - 1));
   next?.addEventListener('click', () => goTo(currentIndex + 1));
   indexedControls.forEach(control => {
@@ -193,23 +208,36 @@ function initHorizontalSlider(root) {
   viewport.addEventListener('pointerdown', event => {
     if (isInteractiveTarget(event.target)) return;
     pointerStart = event.clientX;
+    pointerStartY = event.clientY;
+    gestureAxis = null;
     dragStart = gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.getProperty(track, 'x') || 0;
-    viewport.setPointerCapture?.(event.pointerId);
   });
   viewport.addEventListener('pointermove', event => {
     if (pointerStart === null) return;
+    if (gestureAxis === null && (Math.abs(event.clientX - pointerStart) > 6 || Math.abs(event.clientY - pointerStartY) > 6)) {
+      gestureAxis = Math.abs(event.clientX - pointerStart) > Math.abs(event.clientY - pointerStartY) ? 'x' : 'y';
+      if (gestureAxis === 'x') viewport.setPointerCapture?.(event.pointerId);
+    }
+    if (gestureAxis !== 'x') return;
     gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.set(track, {
       x: dragStart + event.clientX - pointerStart
     });
   });
-  const release = () => {
+  const release = (event, cancelled = false) => {
     if (pointerStart === null) return;
-    const position = Math.max(0, -(gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.getProperty(track, 'x') || 0));
+    const distance = event.clientX - pointerStart;
     pointerStart = null;
-    goTo(nearestIndex(position));
+    pointerStartY = null;
+    const horizontal = gestureAxis === 'x';
+    gestureAxis = null;
+    if (cancelled || !horizontal || Math.abs(distance) < (slides[currentIndex]?.offsetWidth || viewport.clientWidth) * 0.25) {
+      goTo(currentIndex);
+      return;
+    }
+    goTo(currentIndex + (distance < 0 ? 1 : -1));
   };
   viewport.addEventListener('pointerup', release);
-  viewport.addEventListener('pointercancel', release);
+  viewport.addEventListener('pointercancel', event => release(event, true));
   window.addEventListener('resize', refresh, {
     passive: true
   });

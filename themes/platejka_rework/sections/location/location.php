@@ -36,8 +36,13 @@ $email      = sanitize_email( (string) ( $data['email'] ?? '' ) );
       <div class="location__gallery">
         <div class="location__viewport" data-horizontal-slider-viewport tabindex="0" role="region" aria-label="<?php echo esc_attr( (string) ( $data['gallery_label'] ?? '' ) ); ?>">
           <div class="location__track" data-horizontal-slider-track>
-            <?php foreach ( $gallery as $item ) : $item = platejka_section_array( $item ); ?>
-              <?php echo platejka_section_image( $item['image'] ?? 0, 'large', array( 'alt' => (string) ( $item['alt'] ?? '' ), 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => '(max-width: 767px) 100vw, 224px', 'data-horizontal-slider-slide' => '' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+            <?php foreach ( $gallery as $index => $item ) : $item = platejka_section_array( $item );
+				$image = $item['image'] ?? 0;
+				$relative = is_string( $image ) && str_starts_with( $image, 'theme://' ) ? ltrim( substr( $image, 8 ), '/' ) : '';
+				$full_url = '' !== $relative && preg_match( '~^[a-zA-Z0-9_./-]+$~', $relative ) && ! str_contains( $relative, '..' ) && is_file( get_theme_file_path( $relative ) ) ? get_theme_file_uri( $relative ) : wp_get_attachment_image_url( absint( $image ), 'full' );
+				if ( ! $full_url ) { continue; }
+				?>
+              <button class="location__thumb" type="button" data-horizontal-slider-slide data-location-gallery-thumb data-full-src="<?php echo esc_url( $full_url ); ?>" data-full-alt="<?php echo esc_attr( (string) ( $item['alt'] ?? '' ) ); ?>" aria-label="<?php echo esc_attr( sprintf( 'Открыть фото %d', $index + 1 ) ); ?>"><?php echo platejka_section_image( $image, 'medium', array( 'alt' => (string) ( $item['alt'] ?? '' ), 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => '(max-width: 767px) 100vw, 224px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></button>
             <?php endforeach; ?>
           </div>
         </div>
@@ -48,4 +53,12 @@ $email      = sanitize_email( (string) ( $data['email'] ?? '' ) );
       </div>
     </div>
   </div>
+  <?php if ( $gallery ) : ?>
+    <dialog class="location-lightbox" data-location-lightbox aria-label="Галерея офиса">
+      <button class="location-lightbox__close" type="button" data-location-lightbox-close aria-label="Закрыть">×</button>
+      <button class="location-lightbox__arrow location-lightbox__arrow--prev" type="button" data-location-lightbox-prev aria-label="Предыдущее фото">‹</button>
+      <figure class="location-lightbox__figure"><img data-location-lightbox-image alt="" draggable="false"><figcaption data-location-lightbox-count></figcaption></figure>
+      <button class="location-lightbox__arrow location-lightbox__arrow--next" type="button" data-location-lightbox-next aria-label="Следующее фото">›</button>
+    </dialog>
+  <?php endif; ?>
 </section>

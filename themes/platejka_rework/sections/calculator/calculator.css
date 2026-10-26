@@ -416,9 +416,9 @@
     box-shadow: 0 16px 24px rgba(37, 37, 42, 0.14);
     background: var(--surface-primary);
 }
-.calculator__summary h3 {
+.calculator__summary .h3 {
     font: 700 24px/28px var(--font-family);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.02em; 
 }
 .calculator__results {
     margin-top: 8px !important;

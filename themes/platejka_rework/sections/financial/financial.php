@@ -31,19 +31,19 @@ $test_url   = esc_url( (string) ( $test_link['url'] ?? '' ) );
       <div class="financial__details">
         <article class="financial__case">
           <div class="financial__labels"><span><?php echo esc_html( (string) ( $case['label'] ?? '' ) ); ?></span><strong><?php echo esc_html( (string) ( $case['badge'] ?? '' ) ); ?></strong></div>
-          <div class="financial__case-copy"><h3><?php echo esc_html( (string) ( $case['title'] ?? '' ) ); ?></h3><?php echo wpautop( wp_kses_post( (string) ( $case['text'] ?? '' ) ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
+          <div class="financial__case-copy"><div class="h3"><?php echo esc_html( (string) ( $case['title'] ?? '' ) ); ?></div><?php echo wpautop( wp_kses_post( (string) ( $case['text'] ?? '' ) ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
           <?php echo platejka_section_image( $case['image'] ?? 0, 'large', array( 'class' => 'financial__case-image', 'alt' => (string) ( $case['title'] ?? '' ), 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => '(max-width: 767px) 100vw, 635px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
           <?php echo platejka_section_image( $case['logo'] ?? 0, 'thumbnail', array( 'class' => 'financial__case-logo', 'alt' => '', 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => '40px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
         </article>
         <section class="financial__banks" aria-labelledby="<?php echo esc_attr( $banks_id ); ?>">
-          <h3 id="<?php echo esc_attr( $banks_id ); ?>"><?php echo esc_html( (string) ( $data['banks_title'] ?? '' ) ); ?></h3>
+          <div class="h3" id="<?php echo esc_attr( $banks_id ); ?>"><?php echo esc_html( (string) ( $data['banks_title'] ?? '' ) ); ?></div>
           <p><?php echo esc_html( (string) ( $data['banks_description'] ?? '' ) ); ?></p>
           <ul class="list-reset"><?php foreach ( $banks as $bank ) : $bank = platejka_section_array( $bank ); ?><li class="financial__bank"><?php echo platejka_section_image( $bank['image'] ?? 0, 'thumbnail', array( 'alt' => '', 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => '40px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php echo esc_html( (string) ( $bank['title'] ?? '' ) ); ?></li><?php endforeach; ?></ul>
         </section>
       </div>
     </div>
     <aside class="financial__test" aria-labelledby="<?php echo esc_attr( $test_id ); ?>">
-      <div class="financial__test-copy"><h3 id="<?php echo esc_attr( $test_id ); ?>"><?php echo esc_html( (string) ( $test['title'] ?? '' ) ); ?></h3><?php echo wpautop( wp_kses_post( (string) ( $test['text'] ?? '' ) ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php if ( '' !== $test_url ) : ?><a class="ui-button ui-button--secondary" href="<?php echo esc_attr( $test_url ); ?>"<?php echo ! empty( $test_link['target'] ) ? ' target="' . esc_attr( $test_link['target'] ) . '" rel="noopener"' : ''; ?>><?php echo esc_html( (string) ( $test_link['title'] ?? '' ) ); ?></a><?php endif; ?></div>
+      <div class="financial__test-copy"><div class="h3" id="<?php echo esc_attr( $test_id ); ?>"><?php echo esc_html( (string) ( $test['title'] ?? '' ) ); ?></div><?php echo wpautop( wp_kses_post( (string) ( $test['text'] ?? '' ) ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php if ( '' !== $test_url ) : ?><a class="ui-button ui-button--secondary" href="<?php echo esc_attr( $test_url ); ?>"<?php echo ! empty( $test_link['target'] ) ? ' target="' . esc_attr( $test_link['target'] ) . '" rel="noopener"' : ''; ?>><?php echo esc_html( (string) ( $test_link['title'] ?? '' ) ); ?></a><?php endif; ?></div>
       <?php echo platejka_section_image( $test['image'] ?? 0, 'large', array( 'class' => 'financial__test-image', 'alt' => '', 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => '(max-width: 767px) 100vw, 448px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
     </aside>
   </div>

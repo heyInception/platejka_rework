@@ -1,17 +1,30 @@
-<footer class="footer">
+<footer class="footer" itemprop="publisher" itemscope itemtype="https://schema.org/FinancialService" itemid="<?php echo esc_url( home_url( '/#organization' ) ); ?>">
+  <meta itemprop="name" content="<?php echo esc_attr( platejka_schema_value( 'name' ) ); ?>">
+  <meta itemprop="url" content="<?php echo esc_url( home_url( '/' ) ); ?>">
+  <?php foreach ( array( 'logo', 'image', 'social', 'price_range' ) as $schema_property ) :
+    $schema_value = platejka_schema_value( $schema_property );
+    $item_property = 'social' === $schema_property ? 'sameAs' : ( 'price_range' === $schema_property ? 'priceRange' : $schema_property );
+    if ( '' !== $schema_value ) : ?><meta itemprop="<?php echo esc_attr( $item_property ); ?>" content="<?php echo 'price_range' === $schema_property ? esc_attr( $schema_value ) : esc_url( $schema_value ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Both branches escape output. ?>"><?php endif;
+  endforeach; ?>
+  <?php if ( '' !== platejka_schema_value( 'latitude' ) && '' !== platejka_schema_value( 'longitude' ) ) : ?>
+    <span itemprop="geo" itemscope itemtype="https://schema.org/GeoCoordinates"><meta itemprop="latitude" content="<?php echo esc_attr( platejka_schema_value( 'latitude' ) ); ?>"><meta itemprop="longitude" content="<?php echo esc_attr( platejka_schema_value( 'longitude' ) ); ?>"></span>
+  <?php endif; ?>
+  <?php if ( '' !== platejka_schema_value( 'opening_days' ) && '' !== platejka_schema_value( 'opens' ) && '' !== platejka_schema_value( 'closes' ) ) : ?>
+    <meta itemprop="openingHours" content="<?php echo esc_attr( platejka_schema_value( 'opening_days' ) . ' ' . platejka_schema_value( 'opens' ) . '-' . platejka_schema_value( 'closes' ) ); ?>">
+  <?php endif; ?>
   <div class="container">
     <div class="footer__panel">
       <div class="footer__main">
         <address class="footer__contacts">
-          <a class="footer__contact footer__contact_phone" href="#">
+          <a class="footer__contact footer__contact_phone" href="tel:<?php echo esc_attr( platejka_schema_phone_href() ); ?>">
             <span class="footer__contact-icon" aria-hidden="true"></span>
-            <span><strong>8 800 533-88-19</strong><small>По всем вопросам</small></span>
+            <span><strong itemprop="telephone"><?php echo esc_html( platejka_schema_value( 'phone' ) ); ?></strong><small>По всем вопросам</small></span>
           </a>
-          <a class="footer__contact footer__contact_mail" href="#">
+          <a class="footer__contact footer__contact_mail" href="mailto:<?php echo esc_attr( platejka_schema_value( 'email' ) ); ?>">
             <span class="footer__contact-icon" aria-hidden="true"></span>
-            <span><strong>a@platejka.com</strong><small>Поддержка</small></span>
+            <span><strong itemprop="email"><?php echo esc_html( platejka_schema_value( 'email' ) ); ?></strong><small>Поддержка</small></span>
           </a>
-          <p class="footer__address">127204, Россия, Москва, Долгопрудненское шоссе, 3</p>
+          <p class="footer__address" itemprop="address" itemscope itemtype="https://schema.org/PostalAddress"><span itemprop="postalCode"><?php echo esc_html( platejka_schema_value( 'postcode' ) ); ?></span>, <span itemprop="addressLocality"><?php echo esc_html( platejka_schema_value( 'city' ) ); ?></span>, <span itemprop="streetAddress"><?php echo esc_html( platejka_schema_value( 'street' ) ); ?></span><meta itemprop="addressCountry" content="<?php echo esc_attr( platejka_schema_value( 'country' ) ); ?>"></p>
           <div class="footer__h2">Реквизиты и ИНН</div>
           <p class="footer__details">
 

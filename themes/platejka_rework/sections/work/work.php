@@ -13,19 +13,19 @@ $chevron_url  = get_theme_file_uri( 'sections/work/img/problems/ChevronRight.svg
       <?php foreach ( array_slice( $items, 0, 2 ) as $item ) : ?>
         <div class="work__document">
           <?php echo platejka_section_image( $item['image'] ?? 0, 'thumbnail', array( 'loading' => 'lazy', 'sizes' => '64px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-          <div class="work__wrap"><h3><?php echo esc_html( $item['title'] ?? '' ); ?></h3><div><?php echo wp_kses_post( $item['text'] ?? '' ); ?></div></div>
+          <div class="work__wrap"><div class="h3"><?php echo esc_html( $item['title'] ?? '' ); ?></div><div><?php echo wp_kses_post( $item['text'] ?? '' ); ?></div></div>
         </div>
       <?php endforeach; ?>
-      <?php if ( ! empty( $primary_link['url'] ) ) : ?>
-        <a class="ui-button work__link work__link--desktop" href="<?php echo esc_url( $primary_link['url'] ); ?>"<?php echo ! empty( $primary_link['target'] ) ? ' target="' . esc_attr( $primary_link['target'] ) . '"' : ''; ?>><?php echo esc_html( $primary_link['title'] ?? '' ); ?> <img src="<?php echo esc_url( $chevron_url ); ?>" width="20" height="20" alt=""></a>
+      <?php if ( ! empty( $primary_link['title'] ) ) : ?>
+        <button class="ui-button work__link work__link--desktop" type="button" data-work-modal-open><?php echo esc_html( $primary_link['title'] ); ?> <img src="<?php echo esc_url( $chevron_url ); ?>" width="20" height="20" alt=""></button>
       <?php endif; ?>
     </div>
     <div class="work__steps">
       <h2 id="<?php echo esc_attr( $title_id ); ?>"><?php echo esc_html( $section_data['title'] ?? '' ); ?></h2>
-      <ol><?php foreach ( array_slice( $items, 2 ) as $item ) : ?><li><h3><?php echo esc_html( $item['title'] ?? '' ); ?></h3><div><?php echo wp_kses_post( $item['text'] ?? '' ); ?></div></li><?php endforeach; ?></ol>
+      <ol><?php foreach ( array_slice( $items, 2 ) as $item ) : ?><li><div class="h3"><?php echo esc_html( $item['title'] ?? '' ); ?></div><div><?php echo wp_kses_post( $item['text'] ?? '' ); ?></div></li><?php endforeach; ?></ol>
     </div>
-    <?php if ( ! empty( $primary_link['url'] ) ) : ?>
-      <a class="ui-button work__link work__link--mobile" href="<?php echo esc_url( $primary_link['url'] ); ?>"<?php echo ! empty( $primary_link['target'] ) ? ' target="' . esc_attr( $primary_link['target'] ) . '"' : ''; ?>><?php echo esc_html( $primary_link['title'] ?? '' ); ?> <img src="<?php echo esc_url( $chevron_url ); ?>" width="20" height="20" alt=""></a>
+    <?php if ( ! empty( $primary_link['title'] ) ) : ?>
+      <button class="ui-button work__link work__link--mobile" type="button" data-work-modal-open><?php echo esc_html( $primary_link['title'] ); ?> <img src="<?php echo esc_url( $chevron_url ); ?>" width="20" height="20" alt=""></button>
     <?php endif; ?>
   </div>
 </section>

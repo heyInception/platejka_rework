@@ -175,6 +175,15 @@
     -o-object-fit: cover;
     object-fit: cover;
 }
+.infrastructure__network > picture img {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 447px;
+    -o-object-fit: cover;
+    object-fit: cover;
+}
 .infrastructure__entities {
     position: absolute;
     inset: 0;
@@ -391,6 +400,19 @@
     }
     .infrastructure__network > img {
         inset: auto 50% 0 auto;
+        width: 374px;
+        max-width: none;
+        height: 164px;
+        -webkit-transform: translateX(50%);
+        -ms-transform: translateX(50%);
+        transform: translateX(50%);
+        -webkit-filter: blur(100px);
+        filter: blur(100px);
+        -o-object-fit: cover;
+        object-fit: cover;
+    }
+    .infrastructure__network > picture img {
+         inset: auto 50% 0 auto;
         width: 374px;
         max-width: none;
         height: 164px;

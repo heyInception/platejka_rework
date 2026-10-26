@@ -51,7 +51,12 @@ $sections = platejka_use_sections( $sections );
 get_header();
 ?>
 
-	<main id="primary" class="site-main">
+	<main id="primary" class="site-main"<?php if ( platejka_is_service_page( $post_id ) ) : ?> itemprop="mainEntity" itemscope itemtype="https://schema.org/Service" itemid="<?php echo esc_url( get_permalink( $post_id ) . '#service' ); ?>"<?php endif; ?>>
+		<?php if ( platejka_is_service_page( $post_id ) ) : ?>
+			<meta itemprop="name" content="<?php echo esc_attr( get_the_title( $post_id ) ); ?>">
+			<meta itemprop="url" content="<?php echo esc_url( get_permalink( $post_id ) ); ?>">
+			<span itemprop="provider" itemscope itemtype="https://schema.org/FinancialService" itemid="<?php echo esc_url( home_url( '/#organization' ) ); ?>"><meta itemprop="name" content="<?php echo esc_attr( platejka_schema_value( 'name' ) ); ?>"></span>
+		<?php endif; ?>
 
 		<?php
 		while ( have_posts() ) :

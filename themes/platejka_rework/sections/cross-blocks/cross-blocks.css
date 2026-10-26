@@ -288,7 +288,7 @@
 	height: 28px;
 }
 
-.cb-guarantee h3 {
+.cb-guarantee .h3 {
 	margin: 0 0 12px;
 	font: 700 20px/24px var(--font-family);
 	letter-spacing: -.02em;

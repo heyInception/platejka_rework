@@ -145,7 +145,7 @@ $countries = array(
 
 				</div>
 				<div class="calculator__summary">
-					<h3><?php echo esc_html($label('summary')); ?></h3>
+					<div class="h3"><?php echo esc_html($label('summary')); ?></div>
 					<dl class="calculator__results">
 						<div>
 							<dt><?php echo esc_html($label('official_rate')); ?></dt>

@@ -28,3 +28,13 @@
 .contact-modal .wpcf7-not-valid-tip{margin-top:6px;color:var(--status-error);font:500 13px/18px var(--font-family)}
 .contact-modal .wpcf7-response-output{margin:4px 0 0!important;border:0!important;padding:0!important;color:var(--status-error)}
 @media(max-width:600px){.contact-modal{border-radius:20px;width:calc(100% - 16px);max-height:calc(100dvh - 16px)}.contact-modal__content{padding:28px 16px 20px;max-height:calc(100dvh - 16px)}.contact-modal__close{top:12px;right:12px}.contact-modal__title{font-size:26px;line-height:30px}.contact-modal__text{margin-bottom:20px}}
+.contact-modal--work{width:min(640px,calc(100% - 32px))}
+.contact-modal--work .wpcf7-form>p>label{display:grid;gap:6px;font:600 14px/20px var(--font-family)}
+.contact-modal--work .wpcf7-form>p>label .wpcf7-form-control-wrap{display:block}
+.contact-modal--work .wpcf7-form>p>label .ui-input{width:100%}
+.contact-modal--work .wpcf7-form label .wpcf7-tel{display:block;width:100%}
+.contact-modal--work .contact-modal__message{min-height:80px;height:80px}
+.contact-modal__file-label{display:grid;gap:8px;font:600 14px/20px var(--font-family)}
+.contact-modal__file-label input[type=file]{display:block;border:1px dashed var(--border-brand);border-radius:12px;padding:14px;width:100%;max-width:100%;background:var(--surface-brand-subtle);font:500 14px/20px var(--font-family);cursor:pointer}
+.contact-modal__file-label input[type=file]::file-selector-button{margin-right:12px;border:0;border-radius:8px;padding:10px 14px;background:var(--surface-brand);font:600 14px/20px var(--font-family);color:#fff;cursor:pointer}
+.contact-modal__file-label.has-file input[type=file]{border-style:solid}

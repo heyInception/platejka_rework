@@ -16,7 +16,7 @@ $link     = is_array( $section_data['link'] ?? null ) ? $section_data['link'] : 
       <?php foreach ( $items as $item ) : ?>
         <article class="protection__card">
           <?php echo platejka_section_image( $item['image'] ?? 0, 'thumbnail', array( 'alt' => '', 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => '48px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-          <div><h3><?php echo esc_html( $item['title'] ?? '' ); ?></h3><p><?php echo esc_html( $item['text'] ?? '' ); ?></p><?php if ( ! empty( $item['detail'] ) ) : ?><span><?php echo esc_html( $item['detail'] ); ?></span><?php endif; ?></div>
+          <div><div class="h3"><?php echo esc_html( $item['title'] ?? '' ); ?></div><p><?php echo esc_html( $item['text'] ?? '' ); ?></p><?php if ( ! empty( $item['detail'] ) ) : ?><span><?php echo esc_html( $item['detail'] ); ?></span><?php endif; ?></div>
         </article>
       <?php endforeach; ?>
     </div>

@@ -83,8 +83,9 @@ class Pretty_Breadcrumb
 
 			// Возвращаем последний элемент для страницы тега
 			return sprintf(
-				'<li class="breadcrumbs__item breadcrumbs__item_end" aria-current="page"><span>%s</span></li>',
-				$text
+				'<li class="breadcrumbs__item breadcrumbs__item_end" aria-current="page" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><span itemprop="name">%s</span><meta itemprop="position" content="%d"></li>',
+				esc_html( $text ),
+				++$this->el_position
 			);
 		}
 
@@ -98,8 +99,8 @@ class Pretty_Breadcrumb
 					</a>
 					<meta itemprop="position" content="%d"/>
 				</li>',
-				$link_data['url'],
-				$link_data['text'],
+				esc_url( $link_data['url'] ),
+				esc_html( $link_data['text'] ),
 				$this->el_position
 			);
 		}
@@ -110,7 +111,7 @@ class Pretty_Breadcrumb
 			<span itemprop="name">%s</span>
 			<meta itemprop="position" content="%d"/>
 			</li>',
-			$link_data['text'],
+			esc_html( $link_data['text'] ),
 			++$this->el_position
 		);
 	}
@@ -139,7 +140,7 @@ class Pretty_Breadcrumb
 		$html = str_replace(['<wrapper>', '</wrapper>'], '', $html);
 
 		// Формируем контейнер для li элементов
-		$ul = '<ul class="breadcrumbs__items" itemscope itemtype="http://schema.org/BreadcrumbList">%s</ul>';
+		$ul = '<ul class="breadcrumbs__items" itemscope itemtype="https://schema.org/BreadcrumbList">%s</ul>';
 
 		// Вставляем в контейнер li элементы
 		$html = sprintf($ul, $html);

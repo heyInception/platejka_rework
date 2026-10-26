@@ -97,7 +97,7 @@ if ( 'guarantees' === $layout ) {
 				<?php foreach ( $items as $item ) : ?>
 					<article class="cb-guarantee">
 						<div class="cb-guarantee__icon"><?php $icon = platejka_cross_block_icon( $item['icon'] ?? 0, (string) ( $item['title'] ?? '' ) ); echo '' !== $icon ? $icon : platejka_cross_block_fallback_icon(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
-						<?php if ( ! empty( $item['title'] ) ) : ?><h3><?php echo esc_html( $item['title'] ); ?></h3><?php endif; ?>
+						<?php if ( ! empty( $item['title'] ) ) : ?><div class="h3"><?php echo esc_html( $item['title'] ); ?></div><?php endif; ?>
 						<?php if ( ! empty( $item['text'] ) ) : ?><div class="cb-guarantee__text"><?php echo wp_kses_post( $item['text'] ); ?></div><?php endif; ?>
 					</article>
 				<?php endforeach; ?>
@@ -120,7 +120,7 @@ if ( in_array( $layout, array( 'transfer_goals', 'swift_problems', 'audience' ),
 	<section id="<?php echo esc_attr( $instance ); ?>" class="cross-block cb-card-section cb-card-section--<?php echo esc_attr( $layout ); ?>"><div class="container">
 		<h2 class="cb-heading"><?php echo esc_html( $title ); ?></h2>
 		<?php if ( ! empty( $row['intro'] ) ) : ?><div class="cb-intro"><?php echo wp_kses_post( $row['intro'] ); ?></div><?php endif; ?>
-		<div class="cb-card-grid"><?php foreach ( $items as $item ) : ?><article class="cb-card"><div class="cb-card__icon"><?php $icon = platejka_cross_block_icon( $item['icon'] ?? 0, (string) ( $item['title'] ?? '' ) ); echo '' !== $icon ? $icon : platejka_cross_block_fallback_icon(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div><?php if ( ! empty( $item['title'] ) ) : ?><h3 class="cb-card__title"><?php echo esc_html( $item['title'] ); ?></h3><?php endif; ?><?php if ( ! empty( $item['text'] ) ) : ?><div class="cb-card__text"><?php echo wp_kses_post( $item['text'] ); ?></div><?php endif; ?></article><?php endforeach; ?></div>
+		<div class="cb-card-grid"><?php foreach ( $items as $item ) : ?><article class="cb-card"><div class="cb-card__icon"><?php $icon = platejka_cross_block_icon( $item['icon'] ?? 0, (string) ( $item['title'] ?? '' ) ); echo '' !== $icon ? $icon : platejka_cross_block_fallback_icon(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div><?php if ( ! empty( $item['title'] ) ) : ?><div class="cb-card__title"><?php echo esc_html( $item['title'] ); ?></div><?php endif; ?><?php if ( ! empty( $item['text'] ) ) : ?><div class="cb-card__text"><?php echo wp_kses_post( $item['text'] ); ?></div><?php endif; ?></article><?php endforeach; ?></div>
 		<?php echo platejka_cross_block_cta( is_array( $row['cta'] ?? null ) ? $row['cta'] : null ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 	</div></section>
 	<?php

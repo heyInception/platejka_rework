@@ -48,6 +48,7 @@ function initShipmentsSlider(root) {
   let pointerId = null;
   let startX = 0;
   let startScrollLeft = 0;
+  let startIndex = 0;
   const getStep = () => cards[1] ? cards[1].offsetLeft - cards[0].offsetLeft : cards[0].getBoundingClientRect().width + 8;
   const snap = function () {
     let direction = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
@@ -68,6 +69,7 @@ function initShipmentsSlider(root) {
     pointerId = event.pointerId;
     startX = event.clientX;
     startScrollLeft = slider.scrollLeft;
+    startIndex = getClosestSlideIndex(startScrollLeft, getStep(), cards.length);
     slider.setPointerCapture(pointerId);
     gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.killTweensOf(slider);
   });
@@ -80,7 +82,13 @@ function initShipmentsSlider(root) {
     dragging = false;
     if (slider.hasPointerCapture(pointerId)) slider.releasePointerCapture(pointerId);
     pointerId = null;
-    snap();
+    const distance = event.clientX - startX;
+    if (event.type === 'pointercancel' || Math.abs(distance) < getStep() * 0.25) {
+      gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.to(slider, { scrollLeft: startIndex * getStep(), duration: 0.4, overwrite: 'auto' });
+    } else {
+      const target = Math.min(cards.length - 1, Math.max(0, startIndex + (distance < 0 ? 1 : -1)));
+      gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.to(slider, { scrollLeft: target * getStep(), duration: 0.4, ease: 'power3.out', overwrite: 'auto' });
+    }
   };
   slider.addEventListener('pointerup', release);
   slider.addEventListener('pointercancel', release);

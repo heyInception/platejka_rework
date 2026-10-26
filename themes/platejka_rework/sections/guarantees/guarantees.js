@@ -15,6 +15,7 @@ document.querySelectorAll('[data-guarantees-slider]').forEach(slider => {
   let pointerId = null;
   let startX = 0;
   let startScrollLeft = 0;
+  let startIndex = 0;
   const isMobile = () => window.matchMedia('(max-width: 1024px)').matches;
   const getStep = () => cards[1] ? cards[1].offsetLeft - cards[0].offsetLeft : 288;
   const snap = function () {
@@ -35,6 +36,7 @@ document.querySelectorAll('[data-guarantees-slider]').forEach(slider => {
     pointerId = event.pointerId;
     startX = event.clientX;
     startScrollLeft = slider.scrollLeft;
+    startIndex = getClosestSlideIndex(startScrollLeft, getStep(), cards.length);
     slider.setPointerCapture(pointerId);
     gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.killTweensOf(slider);
   });
@@ -46,7 +48,16 @@ document.querySelectorAll('[data-guarantees-slider]').forEach(slider => {
     if (event.pointerId !== pointerId) return;
     if (slider.hasPointerCapture(pointerId)) slider.releasePointerCapture(pointerId);
     pointerId = null;
-    snap();
+    const distance = event.clientX - startX;
+    const target = event.type === 'pointercancel' || Math.abs(distance) < getStep() * 0.25
+      ? startIndex
+      : Math.min(cards.length - 1, Math.max(0, startIndex + (distance < 0 ? 1 : -1)));
+    gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.to(slider, {
+      scrollLeft: target * getStep(),
+      duration: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 0.45,
+      ease: 'power3.out',
+      overwrite: 'auto'
+    });
   };
   slider.addEventListener('pointerup', release);
   slider.addEventListener('pointercancel', release);

@@ -14,9 +14,12 @@ function platejka_contact_modal_option( string $name, string $fallback = '' ): s
 }
 
 function platejka_contact_modal_form_id( string $type, $fallback = 0 ): int {
-	$field = 'calculator' === $type ? 'platejka_calculator_form' : 'platejka_consultation_form';
+	$field = 'calculator' === $type ? 'platejka_calculator_form' : ( 'work' === $type ? 'platejka_work_form' : 'platejka_consultation_form' );
 	$form_id = absint( platejka_contact_modal_option( $field, (string) absint( $fallback ) ) );
-	if ( ! $form_id && function_exists( 'platejka_resolve_section_data' ) ) {
+	if ( 'work' === $type && ! $form_id ) {
+		$form_id = absint( get_option( 'platejka_work_form_id', 0 ) );
+	}
+	if ( ! $form_id && 'work' !== $type && function_exists( 'platejka_resolve_section_data' ) ) {
 		$slug    = 'calculator' === $type ? 'calculator' : 'call';
 		$data    = platejka_resolve_section_data( array( 'slug' => $slug, 'mode' => 'default', 'row' => array() ), (int) get_queried_object_id() );
 		$form_id = absint( $data['form'] ?? 0 );
@@ -47,7 +50,9 @@ function platejka_contact_modal_style_form_html( string $html ): string {
 	$html = str_replace( 'wpcf7-text wpcf7-validates-as-required', 'wpcf7-text wpcf7-validates-as-required ui-input', $html );
 	$html = str_replace( 'request__form-tel', 'request__form-tel ui-input js-phone-mask', $html );
 	$html = str_replace( 'wpcf7-email', 'wpcf7-email ui-input', $html );
+	$html = str_replace( 'wpcf7-tel', 'wpcf7-tel ui-input js-phone-mask', $html );
 	$html = str_replace( 'wpcf7-textarea', 'wpcf7-textarea ui-input contact-modal__message', $html );
+	$html = str_replace( 'wpcf7-number', 'wpcf7-number ui-input', $html );
 	$html = str_replace( 'request__form-btn', 'request__form-btn ui-button contact-modal__submit', $html );
 	$html = str_replace( 'wpcf7-list-item"><label>', 'wpcf7-list-item contact-modal__consent"><label class="custom-checkbox">', $html );
 	$html = str_replace( '<input type="checkbox"', '<input class="custom-checkbox__field" type="checkbox"', $html );
@@ -112,6 +117,7 @@ function platejka_register_contact_modal_settings(): void {
 	$fields = array(
 		$form_field( 'field_platejka_modal_consultation_form_v1', 'platejka_consultation_form', __( 'Форма консультации', 'platejka_rework' ) ),
 		$form_field( 'field_platejka_modal_calculator_form_v1', 'platejka_calculator_form', __( 'Форма расчёта', 'platejka_rework' ) ),
+		$form_field( 'field_platejka_modal_work_form_v1', 'platejka_work_form', __( 'Форма документов для договора', 'platejka_rework' ) ),
 		$text_field( 'field_platejka_modal_default_title_v1', 'platejka_modal_default_title', __( 'Базовый заголовок', 'platejka_rework' ), __( 'Связаться с нами', 'platejka_rework' ) ),
 		$text_field( 'field_platejka_modal_default_text_v1', 'platejka_modal_default_text', __( 'Базовое описание', 'platejka_rework' ), __( 'Оставьте контакты — мы свяжемся с вами и ответим на вопросы.', 'platejka_rework' ) ),
 		$text_field( 'field_platejka_modal_success_v1', 'platejka_modal_success', __( 'Сообщение об успешной отправке', 'platejka_rework' ), __( 'Спасибо, заявка отправлена — скоро свяжемся.', 'platejka_rework' ) ),
@@ -123,6 +129,7 @@ function platejka_register_contact_modal_settings(): void {
 		'problems'           => array( 'Получить консультацию', 'Опишите задачу — мы поможем подобрать решение.' ),
 		'compliance_contact' => array( 'Обсудить подключение', 'Оставьте контакты — расскажем о подключении и требованиях.' ),
 		'compliance_test'    => array( 'Запустить тестовый платёж', 'Оставьте контакты — подготовим тестовый платёж.' ),
+		'faq'                => array( 'Задать свой вопрос', 'Напишите вопрос — мы свяжемся с вами и ответим.' ),
 	) as $context => $copy ) {
 		$fields[] = $text_field( 'field_platejka_modal_' . $context . '_title_v1', 'platejka_modal_' . $context . '_title', sprintf( __( '%s: заголовок', 'platejka_rework' ), $context ), $copy[0] );
 		$fields[] = $text_field( 'field_platejka_modal_' . $context . '_text_v1', 'platejka_modal_' . $context . '_text', sprintf( __( '%s: описание', 'platejka_rework' ), $context ), $copy[1] );
@@ -145,6 +152,7 @@ function platejka_render_consultation_modal(): void {
 		'problems'           => array( 'Получить консультацию', 'Опишите задачу — мы поможем подобрать решение.' ),
 		'compliance_contact' => array( 'Обсудить подключение', 'Оставьте контакты — расскажем о подключении и требованиях.' ),
 		'compliance_test'    => array( 'Запустить тестовый платёж', 'Оставьте контакты — подготовим тестовый платёж.' ),
+		'faq'                => array( 'Задать свой вопрос', 'Напишите вопрос — мы свяжемся с вами и ответим.' ),
 	);
 	foreach ( $defaults as $context => $copy ) {
 		$config[ $context ] = array(
@@ -181,6 +189,7 @@ function platejka_contact_modal_mail_context( array $components ): array {
 		'platejka-request-source' => 'Источник', 'platejka-page-title' => 'Страница', 'platejka-page-url' => 'URL',
 		'platejka-calculator-currency' => 'Валюта', 'platejka-calculator-amount' => 'Сумма', 'platejka-calculator-rate' => 'Курс',
 		'platejka-calculator-commission' => 'Комиссия', 'platejka-calculator-total' => 'Итого', 'platejka-calculator-summary' => 'Расчёт',
+		'invoice-amount' => 'Сумма инвойса', 'invoice-currency' => 'Валюта инвойса', 'invoice-recipient' => 'Реквизиты получателя', 'invoice-purpose' => 'Назначение платежа',
 	);
 	$lines = array();
 	foreach ( $labels as $key => $label ) {

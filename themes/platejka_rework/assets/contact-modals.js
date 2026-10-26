@@ -72,4 +72,42 @@
       calculatorSuccess.hidden = false;
     });
   });
+
+  const workDialog = document.querySelector('[data-work-dialog]');
+  if (workDialog) {
+    const workForm = workDialog.querySelector('[data-contact-modal-form]');
+    const workSuccess = workDialog.querySelector('[data-contact-modal-success]');
+    document.addEventListener('click', event => {
+      const opener = event.target.closest('[data-work-modal-open]');
+      if (!opener) return;
+      event.preventDefault();
+      if (workDialog.open) return;
+      workDialog.dialogOpener = opener;
+      setField(workDialog, 'platejka-page-title', document.title);
+      setField(workDialog, 'platejka-page-url', window.location.href);
+      workDialog.showModal();
+    });
+    workDialog.querySelector('[data-contact-modal-close]')?.addEventListener('click', () => workDialog.close());
+    workDialog.addEventListener('click', event => { if (event.target === workDialog) workDialog.close(); });
+    workDialog.addEventListener('close', () => {
+      workForm.hidden = false;
+      workSuccess.hidden = true;
+      workForm.querySelector('form')?.reset();
+      workDialog.dialogOpener?.focus?.();
+      workDialog.dialogOpener = null;
+    });
+    document.addEventListener('wpcf7mailsent', event => {
+      if (!workDialog.open || !workDialog.contains(event.target)) return;
+      workForm.hidden = true;
+      workSuccess.hidden = false;
+    });
+    const file = workDialog.querySelector('input[type="file"]');
+    if (file) {
+      file.setAttribute('accept', '.pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+      file.addEventListener('change', () => {
+        const label = file.closest('.contact-modal__file-label');
+        label?.classList.toggle('has-file', !!file.files?.length);
+      });
+    }
+  }
 })();

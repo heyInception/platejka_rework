@@ -185,8 +185,10 @@
   <script src="https://cdn.botfaqtor.ru/one.js"></script> -->
 </head>
 
-<body <?php body_class('page__body'); ?>>
+<body <?php body_class('page__body'); ?> itemscope itemtype="https://schema.org/WebPage"<?php if ( is_singular() ) : ?> itemid="<?php echo esc_url( get_permalink() ); ?>"<?php endif; ?>>
 	<?php wp_body_open(); ?>
+	<?php if ( is_singular() ) : ?><meta itemprop="url" content="<?php echo esc_url( get_permalink() ); ?>"><meta itemprop="name" content="<?php echo esc_attr( get_the_title() ); ?>"><?php endif; ?>
+	<span itemprop="isPartOf" itemscope itemtype="https://schema.org/WebSite"><meta itemprop="url" content="<?php echo esc_url( home_url( '/' ) ); ?>"><meta itemprop="name" content="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>"></span>
 	<?php platejka_render_section('preloader'); ?>
 	<div id="page" class="site">
 		<header class="header">
@@ -194,12 +196,12 @@
 				<div class="container">
 					<div class="header__row header__row_top">
 						<div class="header__left">
-							<div class="header__loc"><?php the_field('adres', 'option'); ?></div>
-							<div class="header__time"><?php the_field('vremya_raboty', 'option'); ?></div>
+							<div class="header__loc"><?php echo esc_html( platejka_schema_address() ); ?></div>
+							<div class="header__time"><?php echo esc_html( platejka_schema_opening_days_label() . ' ' . platejka_schema_value( 'opens' ) . '–' . platejka_schema_value( 'closes' ) ); ?></div>
 							<div class="header__cb">Внесен в реестр ЦБ</div>
 						</div>
 						<div class="header__right">
-							<a href="mailto:<?php the_field('pochta', 'option'); ?>" class="header__mail"><?php the_field('pochta', 'option'); ?></a>
+							<a href="mailto:<?php echo esc_attr( platejka_schema_value( 'email' ) ); ?>" class="header__mail"><?php echo esc_html( platejka_schema_value( 'email' ) ); ?></a>
 							<div class="header__phone">
 								<?php if (have_rows('socz_seti_header', 'option')) : ?>
 									<?php while (have_rows('socz_seti_header', 'option')) : the_row(); ?>
@@ -216,7 +218,7 @@
 									<?php // No rows found 
 									?>
 								<?php endif; ?>
-								<a href="tel:<?php the_field('telefon', 'option'); ?>"><?php the_field('telefon', 'option'); ?></a>
+								<a href="tel:<?php echo esc_attr( platejka_schema_phone_href() ); ?>"><?php echo esc_html( platejka_schema_value( 'phone' ) ); ?></a>
 							</div>
 							<div class="header__button">
 								<button class="btn-reset header__button_call" data-graph-path="call" data-contact-modal-open data-modal-context="header" data-modal-source="header-desktop">Связаться</button>
@@ -295,16 +297,16 @@
 								</nav>
 								<div class="header-menu-info">
 									<div class="header-menu-info__contacts">
-										<a class="header-menu-info__contact" href="tel:+78005338819">
+										<a class="header-menu-info__contact" href="tel:<?php echo esc_attr( platejka_schema_phone_href() ); ?>">
 											<span class="header-menu-info__icon header-menu-info__icon_phone" aria-hidden="true"></span>
-											<span><strong>8 800 533-88-19</strong><small>По всем вопросам</small></span>
+											<span><strong><?php echo esc_html( platejka_schema_value( 'phone' ) ); ?></strong><small>По всем вопросам</small></span>
 										</a>
-										<a class="header-menu-info__contact" href="mailto:a@platejka.com">
+										<a class="header-menu-info__contact" href="mailto:<?php echo esc_attr( platejka_schema_value( 'email' ) ); ?>">
 											<span class="header-menu-info__icon header-menu-info__icon_mail" aria-hidden="true"></span>
-											<span><strong>a@platejka.com</strong><small>Поддержка</small></span>
+											<span><strong><?php echo esc_html( platejka_schema_value( 'email' ) ); ?></strong><small>Поддержка</small></span>
 										</a>
 									</div>
-									<p class="header-menu-info__address">127204, Россия, Москва, Долгопрудненское шоссе, 3</p>
+									<p class="header-menu-info__address"><?php echo esc_html( platejka_schema_address() ); ?></p>
 									<p class="header-menu-info__details">
 										Расчётный счёт 40702810700000033434<br>
 										ПАО «РосДорБанк»<br>

@@ -28,7 +28,7 @@ $about_registry_urls = array(
                                               ?></div>
               <div class="about-card__content">
                 <div class="about-card__heading"><img class="about-card__logo<?php echo 0 === $index ? ' about-card__logo_sro' : ''; ?>" src="img/svg/<?php echo 0 === $index ? 'about-SRO.svg' : 'about-cb-rf.svg'; ?>" width="25" height="20" alt="">
-                  <h3 class="about-card__title"><?php echo esc_html($item['title'] ?? ''); ?></h3>
+                  <div class="about-card__title"><?php echo esc_html($item['title'] ?? ''); ?></div>
                 </div>
                 <div><?php echo wp_kses_post($item['text'] ?? ''); ?></div><?php if (isset($about_registry_urls[$index])) : ?><a class="ui-button ui-button--small about-card__link open-window" href="#" data-url="<?php echo esc_url($about_registry_urls[$index]); ?>" rel="nofollow noopener"><?php echo esc_html($item['link']['title'] ?? ''); ?></a><?php endif; ?>
               </div>

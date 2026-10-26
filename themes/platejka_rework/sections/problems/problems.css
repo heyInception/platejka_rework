@@ -90,7 +90,7 @@
 .problems__card-content {
     padding: 24px 24px 0;
 }
-.problems__card h3 {
+.problems__card .h3 {
     margin: 0 0 24px;
     font: 700 28px/32px var(--font-family);
     letter-spacing: -0.02em;
@@ -158,7 +158,7 @@
     background-size: cover;
     background-repeat: no-repeat;
 }
-.problems__cta h3 {
+.problems__cta .h3 {
     margin: 0 0 16px;
     font: 700 36px/40px var(--font-family);
     letter-spacing: -0.02em;
@@ -284,7 +284,7 @@
     .problems__card-content {
         padding: 16px 16px 0;
     }
-    .problems__card h3 {
+    .problems__card .h3 {
         margin-bottom: 24px;
         font-size: 20px;
         line-height: 24px;
@@ -316,7 +316,7 @@
         margin-top: 24px;
         padding: 16px;
     }
-    .problems__cta h3 {
+    .problems__cta .h3 {
         margin-bottom: 16px;
         font-size: 24px;
         line-height: 28px;
