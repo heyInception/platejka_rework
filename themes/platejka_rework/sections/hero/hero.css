@@ -391,7 +391,7 @@
     top: 4px;
     bottom: 4px;
     left: 4px;
-    width: calc((100% - 12px) / 2);
+    width: calc((100% - 12px) / 3);
     border-radius: 12px;
     background: var(--surface-primary);
     -webkit-box-shadow:
@@ -816,4 +816,67 @@
         -webkit-transition-duration: 0.01ms;
         transition-duration: 0.01ms;
     }
+}
+
+/* The internal-pages variant is scoped so the main and China heroes retain their styling. */
+.hero--pages .hero__wrap_top {
+    color: var(--text-primary);
+    background: var(--surface-brand-subtle);
+}
+.hero--pages .hero__badge {
+    color: var(--text-overlay-primary);
+    background: var(--status-warning);
+}
+.hero--pages .hero__title-primary,
+.hero--pages .hero__title-secondary {
+    color: var(--text-primary);
+}
+.hero--pages .hero__subtitle {
+    color: var(--text-secondary);
+}
+.hero--pages .hero__items {
+    display: block;
+    max-width: 100%;
+}
+.hero--pages .hero__items ul {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.hero--pages .hero__items li {
+    position: relative;
+    min-height: 24px;
+    padding-left: 28px;
+    font: 500 16px/24px var(--font-family);
+}
+.hero--pages .hero__items li::before {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    content: "";
+    background: url("img/svg/сheck.svg") center/20px 20px no-repeat;
+}
+.hero--pages .hero__info::before {
+    background-color: var(--icon-brand);
+    background-image: none;
+    -webkit-mask: url("img/svg/folder.svg") center/contain no-repeat;
+    mask: url("img/svg/folder.svg") center/contain no-repeat;
+}
+.hero--pages .hero__info {
+    margin-top: auto;
+}
+.hero--pages .hero-calculator__banner {
+    justify-content: center;
+    border-radius: 0;
+    background: transparent;
+}
+@media (max-width: 576px) {
+    .hero--pages .hero__items { width: 100%; }
+    .hero--pages .hero__items li { font-size: 14px; line-height: 20px; }
+    .hero--pages .hero__items li::before { top: 0; }
 }

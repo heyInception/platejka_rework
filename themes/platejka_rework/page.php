@@ -32,7 +32,7 @@ if ( platejka_rework_is_legal_page( $post_id ) ) {
 }
 
 $fallback_sections = array(
-		'hero',
+		in_array( (int) $post_id, array( 1873, 2109, 2075 ), true ) ? 'hero' : 'hero-pages',
 		'about',
 		'shipments',
 		'guarantees',

@@ -291,9 +291,11 @@
         font-size: 14px;
         line-height: 20px;
     }
-    .document-card__content p,
-    .document-card__content .document-card__file {
+    .document-card__content p {
         display: none;
+    }
+    .document-card__file {
+        margin-top: 4px;
     }
     .document-card__download {
         -ms-grid-column: 2;

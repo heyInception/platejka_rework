@@ -11,6 +11,7 @@ function platejka_normalize_section( $section ): ?array {
 
 	$aliases = array(
 		'hero-main'        => array( 'directory' => 'hero', 'template' => 'hero-main' ),
+		'hero-pages'       => array( 'directory' => 'hero', 'template' => 'hero-pages' ),
 		'call-about'       => array( 'directory' => 'call', 'template' => 'call-about' ),
 		'services-section' => array( 'directory' => 'service-sections', 'template' => 'services-section' ),
 	);

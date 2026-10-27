@@ -6,6 +6,7 @@ function platejka_section_builder_registry(): array {
 	$slugs = array(
 		'hero-main',
 		'hero',
+		'hero-pages',
 		'about',
 		'shipments',
 		'guarantees',
@@ -134,7 +135,7 @@ function platejka_validate_builder_rows( array $rows ) {
 		if ( 'process' === $slug && platejka_process_builder_row_is_enabled( $row ) && ! platejka_process_builder_row_is_complete( $row ) ) {
 			return new WP_Error( 'invalid_process_section', __( 'Для включенной секции «Процесс» заполните заголовок и хотя бы один шаг с заголовком и текстом.', 'platejka_rework' ) );
 		}
-		if ( in_array( $slug, array( 'hero-main', 'hero', 'about-hero' ), true ) ) {
+		if ( in_array( $slug, array( 'hero-main', 'hero', 'hero-pages', 'about-hero' ), true ) ) {
 			++$hero_count;
 		}
 

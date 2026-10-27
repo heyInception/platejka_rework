@@ -66,6 +66,19 @@ function platejka_section_label_map( $rows ): array {
 	return $labels;
 }
 
+/** Return whether an ACF group contains a meaningful saved value. */
+function platejka_section_has_value( $value ): bool {
+	if ( is_array( $value ) ) {
+		foreach ( $value as $part ) {
+			if ( platejka_section_has_value( $part ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+	return null !== $value && false !== $value && '' !== $value && 0 !== $value && '0' !== $value;
+}
+
 /** Keep the rendered template slug separate from its canonical options group. */
 function platejka_section_content_slug( string $template_slug ): string {
 	return 'review' === $template_slug ? 'review-main' : $template_slug;
@@ -104,6 +117,14 @@ function platejka_resolve_section_data( array $config, int $post_id = 0 ): array
 		$global = platejka_section_array( $seed['sections'][ $content_slug ] ?? array() );
 	}
 	$global = platejka_section_array( apply_filters( 'platejka_section_global_data', $global, $content_slug, $field_name ) );
+	if ( 'hero-pages' === $slug && function_exists( 'get_field' ) ) {
+		$china = platejka_section_array( get_field( 'hero', 'platejka_section_defaults' ) );
+		foreach ( array( 'experience', 'registry', 'association' ) as $shared_key ) {
+			if ( ! platejka_section_has_value( $global[ $shared_key ] ?? null ) && platejka_section_has_value( $china[ $shared_key ] ?? null ) ) {
+				$global[ $shared_key ] = $china[ $shared_key ];
+			}
+		}
+	}
 	if ( $variant ) {
 		$global = platejka_section_array( $global[ $mode ] ?? array() );
 	}
@@ -245,4 +266,47 @@ function platejka_section_file_url( $attachment_id ): string {
 	}
 	$url = wp_get_attachment_url( $attachment_id );
 	return is_string( $url ) ? $url : '';
+}
+
+/** @return array{label:string,icon:string,size:string} */
+function platejka_document_file_details( int $attachment_id ): array {
+	$details = array( 'label' => '', 'icon' => '', 'size' => '' );
+	if ( ! $attachment_id || 'attachment' !== get_post_type( $attachment_id ) ) {
+		return $details;
+	}
+
+	$mime = (string) get_post_mime_type( $attachment_id );
+	if ( 'application/pdf' === $mime ) {
+		$details['label'] = 'PDF';
+		$details['icon']  = 'pdf.svg';
+	} elseif ( in_array( $mime, array( 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ), true ) ) {
+		$details['label'] = 'Word';
+		$details['icon']  = 'word.svg';
+	}
+
+	$path = get_attached_file( $attachment_id );
+	if ( is_string( $path ) && is_file( $path ) ) {
+		$bytes = filesize( $path );
+		if ( false !== $bytes ) {
+			$details['size'] = size_format( $bytes, 1 );
+		}
+	}
+	return $details;
+}
+
+/** Render the selected image, a generated PDF preview, or the theme placeholder. */
+function platejka_document_preview( $image_id, int $file_id ): string {
+	$attributes = array( 'class' => 'document-card__preview', 'loading' => 'lazy', 'sizes' => '(max-width: 767px) 100vw, 280px', 'alt' => '' );
+	$placeholder = 'theme://sections/documents/img/documents/doc.png';
+	$manual     = $placeholder === $image_id ? '' : platejka_section_image( $image_id, 'medium', $attributes );
+	if ( '' !== $manual ) {
+		return $manual;
+	}
+	if ( $file_id && 'application/pdf' === get_post_mime_type( $file_id ) ) {
+		$preview = wp_get_attachment_image( $file_id, 'medium', false, $attributes );
+		if ( is_string( $preview ) && '' !== $preview ) {
+			return $preview;
+		}
+	}
+	return platejka_section_image( $placeholder, 'medium', $attributes );
 }

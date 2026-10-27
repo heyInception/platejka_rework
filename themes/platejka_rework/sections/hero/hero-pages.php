@@ -1,0 +1,49 @@
+<?php
+$root_id           = $section_anchor ?: $section_instance;
+$amount_id         = platejka_section_dom_id( $section_instance, 'hero-amount' );
+$dialog_title_id   = platejka_section_dom_id( $section_instance, 'contact-dialog-title' );
+$list_html         = is_string( $section_data['items_list'] ?? null ) ? $section_data['items_list'] : '';
+$title             = is_array( $section_data['title'] ?? null ) ? $section_data['title'] : array();
+$experience        = is_array( $section_data['experience'] ?? null ) ? $section_data['experience'] : array();
+$registry          = is_array( $section_data['registry'] ?? null ) ? $section_data['registry'] : array();
+$association       = is_array( $section_data['association'] ?? null ) ? $section_data['association'] : array();
+$background_image  = ! empty( $section_data['background_image'] ) ? $section_data['background_image'] : 'theme://sections/hero/img/hero-pages-bg.png';
+$blur_image        = ! empty( $section_data['blur_image'] ) ? $section_data['blur_image'] : 'theme://sections/hero/img/hero-pages-blur.png';
+$calculator_data   = platejka_resolve_section_data( array( 'slug' => 'calculator', 'mode' => 'default', 'row' => array() ), (int) get_queried_object_id() );
+$calculator_labels = platejka_section_label_map( $calculator_data['labels'] ?? array() );
+$calculator_rates  = function_exists( 'platejka_core_get_exchange_rates' ) ? platejka_core_get_exchange_rates() : array();
+?>
+<section class="hero hero--pages" id="<?php echo esc_attr( $root_id ); ?>" data-hero>
+  <div class="container">
+    <div class="hero__layout">
+      <div class="hero__content">
+        <div class="hero__wrap hero__wrap_top" data-hero-panel>
+          <?php echo platejka_section_image( $background_image, 'large', array( 'class' => 'hero__image', 'alt' => '', 'loading' => 'eager', 'decoding' => 'async', 'fetchpriority' => 'high', 'sizes' => '(max-width: 767px) 100vw, 864px', 'style' => 'height:100%;object-fit:cover', 'data-hero-image' => '' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+          <?php echo platejka_section_image( $blur_image, 'large', array( 'class' => 'hero__blur', 'alt' => '', 'loading' => 'eager', 'decoding' => 'async', 'sizes' => '(max-width: 767px) 100vw, 864px', 'style' => 'object-fit:cover', 'data-hero-blur' => '' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+          <?php if ( ! empty( $section_data['badge'] ) ) : ?><p class="hero__badge" data-hero-copy><?php echo esc_html( $section_data['badge'] ); ?></p><?php endif; ?>
+          <h1 class="hero__title" data-hero-copy><span class="hero__title-primary"><?php echo platejka_heading_text( $title['primary'] ?? '' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span><span class="hero__title-secondary"><?php echo platejka_heading_text( $title['secondary'] ?? '' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span></h1>
+          <?php if ( ! empty( $section_data['subtitle'] ) ) : ?><p class="hero__subtitle" data-hero-copy><?php echo esc_html( $section_data['subtitle'] ); ?></p><?php endif; ?>
+          <?php if ( trim( wp_strip_all_tags( $list_html ) ) ) : ?><div class="hero__items" data-hero-copy><?php echo wp_kses_post( $list_html ); ?></div><?php endif; ?>
+          <?php if ( ! empty( $section_data['info'] ) ) : ?><p class="hero__info" data-hero-copy><?php echo esc_html( $section_data['info'] ); ?></p><?php endif; ?>
+        </div>
+
+        <ul class="list-reset hero__trust" data-hero-cards>
+          <li class="hero__trust-card hero__trust-card_experience"><div class="hero__trust-years" aria-label="<?php echo esc_attr( $experience['value'] ?? '' ); ?>"><img src="img/hero__trust-years-left.svg" width="22" height="72" alt=""><span aria-hidden="true"><?php echo esc_html( $experience['value'] ?? '' ); ?></span><img src="img/hero__trust-years-right.svg" width="22" height="72" alt=""></div><p class="hero__trust-caption"><?php echo esc_html( $experience['label'] ?? '' ); ?></p></li>
+          <?php foreach ( array( 'registry' => $registry, 'association' => $association ) as $variant => $trust_item ) :
+			$link       = is_array( $trust_item['link'] ?? null ) ? $trust_item['link'] : array();
+			$link_class = 'registry' === $variant ? 'ui-link--overlay' : 'ui-link--inverse';
+			?>
+            <li class="hero__trust-card hero__trust-card_<?php echo esc_attr( $variant ); ?>"><p class="hero__trust-title"><?php echo platejka_heading_text( $trust_item['title'] ?? '' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p><?php echo platejka_section_image( $trust_item['image'] ?? 0, 'medium', array( 'class' => 'hero__trust-decor hero__trust-decor_' . $variant, 'alt' => '', 'loading' => 'eager', 'sizes' => '161px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php if ( 'registry' === $variant ) : ?><a class="ui-link <?php echo esc_attr( $link_class ); ?> hero__trust-link open-window" href="#" data-url="<?php echo esc_url( 'https://cbr.ru/finorg/foinfo/?ogrn=1257700335628' ); ?>" rel="nofollow noopener"><?php echo esc_html( $link['title'] ?? __( 'Проверить', 'platejka_rework' ) ); ?></a><?php elseif ( ! empty( $link['url'] ) ) : ?><a class="ui-link <?php echo esc_attr( $link_class ); ?> hero__trust-link" href="<?php echo esc_url( $link['url'] ); ?>"<?php echo ! empty( $link['target'] ) ? ' target="' . esc_attr( $link['target'] ) . '" rel="noopener"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>><?php echo esc_html( $link['title'] ?? '' ); ?></a><?php elseif ( ! empty( $link['title'] ) ) : ?><span class="ui-link <?php echo esc_attr( $link_class ); ?> hero__trust-link"><?php echo esc_html( $link['title'] ); ?></span><?php endif; ?></li>
+          <?php endforeach; ?>
+        </ul>
+      </div>
+
+      <form class="hero-calculator" data-hero-calculator data-currency-rates="<?php echo esc_attr( wp_json_encode( $calculator_rates ) ); ?>" novalidate>
+        <div class="hero-calculator__banner"><img src="img/svg/cb.svg" width="20" height="20" alt=""><span><?php echo esc_html__( 'В реестре ЦБ РФ и СРО платёжных агентов', 'platejka_rework' ); ?></span></div>
+        <div class="hero-calculator__body"><h2 class="hero-calculator__title"><?php echo esc_html( $calculator_labels['summary'] ?? '' ); ?></h2><div class="ui-tabs hero-calculator__currencies" aria-label="<?php echo esc_attr( $calculator_labels['currency'] ?? '' ); ?>"><span class="hero-calculator__indicator" data-currency-indicator aria-hidden="true"></span><?php foreach ( array( 'CNY' => 'cn-flag.png', 'USD' => 'usa-flag.png', 'EUR' => 'eur-flag.png' ) as $currency => $flag ) : ?><button class="ui-tab hero-calculator__currency<?php echo 'CNY' === $currency ? ' is-active' : ''; ?>" type="button" data-currency="<?php echo esc_attr( $currency ); ?>" aria-pressed="<?php echo 'CNY' === $currency ? 'true' : 'false'; ?>"><img class="hero-calculator__flag" src="img/<?php echo esc_attr( $flag ); ?>" width="20" height="20" alt=""><?php echo esc_html( $currency ); ?></button><?php endforeach; ?></div><div class="hero-calculator__field"><label class="hero-calculator__label" for="<?php echo esc_attr( $amount_id ); ?>"><?php echo esc_html( $calculator_labels['amount'] ?? '' ); ?></label><div class="hero-calculator__amount-wrap"><input class="ui-amount-input hero-calculator__amount" id="<?php echo esc_attr( $amount_id ); ?>" name="amount" type="number" min="1" step="1" inputmode="numeric" value="10000" data-role="amount" required><span class="hero-calculator__symbol" data-role="currency-symbol" aria-hidden="true">¥</span></div></div><dl class="hero-calculator__results"><?php foreach ( array( 'official_rate' => 'official-rate', 'conversion_rate' => 'conversion-rate', 'commission' => 'commission', 'total' => 'grand-total' ) as $label_key => $role ) : ?><div class="hero-calculator__result-row<?php echo 'total' === $label_key ? ' hero-calculator__result-row_total' : ''; ?>"><dt><?php echo esc_html( $calculator_labels[ $label_key ] ?? '' ); ?></dt><dd><output data-role="<?php echo esc_attr( $role ); ?>">0 ₽</output></dd></div><?php endforeach; ?></dl><button class="ui-button hero-calculator__submit" type="submit"><?php echo esc_html( $calculator_labels['request'] ?? '' ); ?></button><p class="hero-calculator__note"><img src="img/Shield-Check.svg" width="24" height="24" alt=""><?php echo esc_html( $calculator_data['note'] ?? '' ); ?></p></div>
+      </form>
+    </div>
+  </div>
+  <dialog class="contact-dialog" data-contact-dialog aria-labelledby="<?php echo esc_attr( $dialog_title_id ); ?>"><div class="contact-dialog__content"><button class="btn-reset contact-dialog__close" type="button" data-dialog-close aria-label="<?php echo esc_attr( $calculator_labels['close'] ?? '' ); ?>">×</button><h2 class="contact-dialog__title" id="<?php echo esc_attr( $dialog_title_id ); ?>"><?php echo esc_html( $calculator_labels['dialog'] ?? '' ); ?></h2><p class="contact-dialog__text"><?php echo esc_html__( 'Параметры расчёта готовы для заявки.', 'platejka_rework' ); ?></p><p class="contact-dialog__summary" data-dialog-summary><?php echo esc_html( $calculator_labels['summary_empty'] ?? '' ); ?></p><div data-cf7-mount><?php echo platejka_contact_modal_form( platejka_contact_modal_form_id( 'calculator', $calculator_data['form'] ?? 0 ), 'hero-calculator' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div></div></dialog>
+</section>
+<script type="application/json" data-calculator-labels-for="<?php echo esc_attr( $root_id ); ?>"><?php echo wp_json_encode( $calculator_labels ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></script>

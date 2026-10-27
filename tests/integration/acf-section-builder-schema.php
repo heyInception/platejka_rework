@@ -92,7 +92,7 @@ foreach ( (array) ( $builder['fields'] ?? array() ) as $field ) {
 $assert( 'field_platejka_page_builder_v1' === ( $builder_toggle['key'] ?? null ) && 'true_false' === ( $builder_toggle['type'] ?? null ), 'Builder toggle uses its stable key and boolean type.' );
 $assert( 'field_platejka_sections_v1' === ( $sections_field['key'] ?? null ) && 'flexible_content' === ( $sections_field['type'] ?? null ), 'Sections field uses its stable key and flexible-content type.' );
 
-$expected_layouts = array( 'hero-main', 'about', 'shipments', 'guarantees', 'documents', 'compliance', 'review-main', 'work', 'calculator', 'process', 'with-us', 'destinations', 'seo', 'problems', 'serves', 'cases', 'table', 'faq', 'call', 'hero', 'protection', 'review', 'cross-exchange', 'cross-company-metrics', 'cross-external-ratings', 'cross-key-facts', 'cross-transfer-goals', 'cross-swift-problems', 'cross-guarantees', 'cross-audience' );
+$expected_layouts = array( 'hero-main', 'about', 'shipments', 'guarantees', 'documents', 'compliance', 'review-main', 'work', 'calculator', 'process', 'with-us', 'destinations', 'seo', 'problems', 'serves', 'cases', 'table', 'faq', 'call', 'hero', 'hero-pages', 'protection', 'review', 'cross-exchange', 'cross-company-metrics', 'cross-external-ratings', 'cross-key-facts', 'cross-transfer-goals', 'cross-swift-problems', 'cross-guarantees', 'cross-audience' );
 $layouts = array_values( (array) ( $sections_field['layouts'] ?? array() ) );
 $assert( $expected_layouts === array_column( $layouts, 'name' ), 'Builder keeps the original layouts and appends the approved internal-page and cross-block layouts.' );
 foreach ( $layouts as $layout ) {
@@ -175,6 +175,7 @@ $assert( ! isset( $default_item_fields['price'] ), 'Internal shipment cards do n
 foreach (
 	array(
 		'hero'       => 'field_platejka_defaults_hero_v1',
+		'hero-pages' => 'field_platejka_defaults_hero_pages_v1',
 		'protection' => 'field_platejka_defaults_protection_v1',
 		'review'     => 'field_platejka_defaults_review_main_v1',
 	) as $layout_name => $clone_key

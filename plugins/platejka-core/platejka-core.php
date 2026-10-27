@@ -30,6 +30,7 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	require_once PLATEJKA_CORE_PATH . 'src/Cli/FaqMigrationCommand.php';
 	require_once PLATEJKA_CORE_PATH . 'src/Cli/LegacySectionsMigrationCommand.php';
 	require_once PLATEJKA_CORE_PATH . 'src/Cli/InternalHeroMigrationCommand.php';
+	require_once PLATEJKA_CORE_PATH . 'src/Cli/HeroPagesMigrationCommand.php';
 	require_once PLATEJKA_CORE_PATH . 'src/Cli/InternalPageAssemblyMigrationCommand.php';
 	require_once PLATEJKA_CORE_PATH . 'src/Migration/CrossBlockSqlDumpReader.php';
 	require_once PLATEJKA_CORE_PATH . 'src/Migration/CrossBlockMigrationPlanner.php';
@@ -40,6 +41,7 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	\WP_CLI::add_command( 'platejka section-builder migrate-faq', \Platejka\Core\Cli\FaqMigrationCommand::class );
 	\WP_CLI::add_command( 'platejka section-builder migrate-legacy-sections', \Platejka\Core\Cli\LegacySectionsMigrationCommand::class );
 	\WP_CLI::add_command( 'platejka section-builder migrate-internal-hero', \Platejka\Core\Cli\InternalHeroMigrationCommand::class );
+	\WP_CLI::add_command( 'platejka section-builder migrate-hero-pages', \Platejka\Core\Cli\HeroPagesMigrationCommand::class );
 	\WP_CLI::add_command( 'platejka section-builder migrate-internal-pages', \Platejka\Core\Cli\InternalPageAssemblyMigrationCommand::class );
 	\WP_CLI::add_command( 'platejka section-builder migrate-cross-blocks', \Platejka\Core\Cli\CrossBlockMigrationCommand::class );
 }
