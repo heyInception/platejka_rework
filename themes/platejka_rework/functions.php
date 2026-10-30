@@ -194,6 +194,9 @@ require get_template_directory() . '/inc/cross-blocks.php';
 /** Conditional section assets and rendering. */
 require get_template_directory() . '/inc/assets.php';
 
+/** Inline Marquiz placement and per-page controls. */
+require get_template_directory() . '/inc/marquiz-section.php';
+
 /**
  * Primary navigation walker.
  */

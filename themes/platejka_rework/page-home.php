@@ -45,7 +45,7 @@ get_header();
 		while ( have_posts() ) :
 			the_post();
 
-			platejka_render_sections( $sections );
+			platejka_render_page_sections_with_marquiz( $sections, $post_id );
 
 		endwhile; // End of the loop.
 		?>
