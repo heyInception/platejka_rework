@@ -559,7 +559,7 @@
         background: var(--surface-brand-subtle);
     }
     .header__tg_bottom > a::before {
-        background-image: url(img/svg/telegram-green.svg);
+        background-image: url(img/svg/phone-mobile-green.svg);
     }
     .header__wrap {
         display: -webkit-box;

@@ -6,13 +6,18 @@ $benefits   = array_slice($items, 0, 3);
 $cards      = array_slice($items, 3);
 $labels     = platejka_section_label_map($section_data['labels'] ?? array());
 $banks      = is_array($section_data['banks'] ?? null) ? $section_data['banks'] : array();
+$heading    = trim((string) ($section_data['title'] ?? ''));
+$split_at   = mb_strpos($heading, ',');
+$heading_first = false === $split_at ? $heading : mb_substr($heading, 0, $split_at + 1);
+$heading_second = false === $split_at ? '' : trim(mb_substr($heading, $split_at + 1));
 ?>
 <section class="compliance" id="<?php echo esc_attr($root_id); ?>" data-compliance aria-labelledby="<?php echo esc_attr($heading_id); ?>">
   <div class="container compliance__layout">
     <div class="compliance__intro">
       <?php if (! empty($section_data['eyebrow'])) : ?><p class="compliance__eyebrow"><?php echo esc_html($section_data['eyebrow']); ?></p><?php endif; ?>
-      <h2 id="<?php echo esc_attr($heading_id); ?>"><?php echo platejka_heading_text($section_data['title'] ?? ''); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
-                                                    ?></h2>
+      <h2 id="<?php echo esc_attr($heading_id); ?>"><?php echo platejka_heading_text($heading_first); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+                                                    ?><?php if ('' !== $heading_second) : ?><span><?php echo platejka_heading_text($heading_second); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+                                                                                                  ?></span><?php endif; ?></h2>
       <div class="compliance__lead"><?php echo wp_kses_post($section_data['description'] ?? ''); ?></div>
       <button class="ui-button compliance__button" type="button" data-contact-modal-open data-modal-context="compliance_contact" data-modal-source="compliance-contact"><?php echo esc_html($labels['contact'] ?? ''); ?> <span aria-hidden="true">›</span></button>
       <ul class="list-reset compliance__benefits"><?php foreach ($benefits as $item) : ?><li><?php echo platejka_section_image($item['image'] ?? 0, 'thumbnail', array('loading' => 'lazy', 'sizes' => '40px')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
@@ -26,9 +31,11 @@ $banks      = is_array($section_data['banks'] ?? null) ? $section_data['banks'] 
       </article><?php else : ?><article class="compliance__test">
         <div class="compliance__test-content">
           <div class="h3"><?php echo esc_html($item['title'] ?? ''); ?></div>
-          <div><?php echo wp_kses_post($item['text'] ?? ''); ?></div><button class="compliance__test-button" type="button" data-contact-modal-open data-modal-context="compliance_test" data-modal-source="compliance-test-payment"><?php echo esc_html($labels['test_payment'] ?? ''); ?> <span aria-hidden="true">›</span></button>
-        </div><?php echo platejka_section_image($item['image'] ?? 0, 'large', array('loading' => 'lazy', 'sizes' => '(max-width: 767px) 100vw, 310px')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
-              ?>
+          <div><?php echo wp_kses_post($item['text'] ?? ''); ?></div>
+          <button class="compliance__test-button" type="button" data-contact-modal-open data-modal-context="compliance_test" data-modal-source="compliance-test-payment"><?php echo esc_html($labels['test_payment'] ?? ''); ?> <span aria-hidden="true">›</span></button>
+        </div>
+        <?php echo platejka_section_image($item['image'] ?? 0, 'large', array('loading' => 'lazy', 'sizes' => '(max-width: 767px) 100vw, 310px')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+        ?>
       </article><?php endif; ?><?php endforeach; ?></div>
   </div>
 </section>

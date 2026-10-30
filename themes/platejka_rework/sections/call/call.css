@@ -70,9 +70,9 @@
 .call__layout {
     display: -ms-grid;
     display: grid;
-    -ms-grid-columns: minmax(0, 691px) minmax(0, 1fr);
-    grid-template-columns: minmax(0, 691px) minmax(0, 1fr);
-    gap: 60px;
+    -ms-grid-columns: minmax(0, 667px) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 667px) minmax(0, 1fr);
+    gap: 40px;
 }
 .call__column {
     display: -webkit-box;
@@ -100,7 +100,7 @@
 .call__trust .hero__trust-card {
     min-height: 112px;
     border-radius: 16px;
-    padding: 12px;
+    padding: 16px 19px;
 }
 .call__trust .hero__trust-years {
     gap: 6px;
@@ -115,6 +115,10 @@
     font-size: 12px;
     line-height: 16px;
 }
+.call__trust .hero__trust-title {
+    font: 500 16px / 150% var(--font-family);
+}
+
 .call__trust .hero__trust-card_registry,
 .call__trust .hero__trust-card_association {
     -webkit-box-pack: start;
@@ -258,7 +262,7 @@
         padding: 0 8px;
     }
     .call__panel {
-        border-radius: 0;
+        border-radius: 16px;
         padding: 24px 8px;
     }
     .call__layout {
@@ -282,11 +286,19 @@
         border-radius: 12px;
         padding: 8px;
     }
-    .call__trust .hero__trust-card_registry,
+    .call__trust .hero__trust-card_registry {
+        -webkit-box-pack: center !important;
+        -ms-flex-pack: center !important;
+        justify-content: center !important;
+        flex-flow: column !important;
+        align-items: center !important;
+    }
     .call__trust .hero__trust-card_association {
-        -webkit-box-pack: end;
-        -ms-flex-pack: end;
-        justify-content: flex-end;
+        -webkit-box-pack: center !important;
+        -ms-flex-pack: center !important;
+        justify-content: center !important;
+        flex-flow: column !important;
+        align-items: center !important;
     }
     .call__trust .hero__trust-years {
         font-size: 22px;
@@ -301,6 +313,8 @@
         -webkit-transform: translateX(50%);
         -ms-transform: translateX(50%);
         transform: translateX(50%);
+        position: static;
+        transform: none;
     }
     .call__form {
         border-radius: 16px;
@@ -486,6 +500,9 @@
     -o-object-fit: contain;
     object-fit: contain;
 }
+.wpcf7-spinner {
+    display: none;
+}
 @media (max-width: 1024px) {
     .call-about__cards {
         -ms-grid-columns: 1fr;
@@ -551,12 +568,13 @@
     }
 
     .hero__trust-caption {
-        font-size: 12px;
-        line-height: 20px;
+        font: 500 14px / 143% var(--font-family);
     }
 
-    .hero__trust-title {
-        font: 500 11px/16px var(--font-family);
+    .hero__trust-title,
+    .call__trust .hero__trust-title  {
+        font: 600 12px / 133% var(--font-family);
+        letter-spacing: -0.02em;
     }
 
     .hero__trust-link {

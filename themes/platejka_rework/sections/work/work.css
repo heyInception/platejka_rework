@@ -104,6 +104,11 @@
     -o-object-fit: contain;
     object-fit: contain;
 }
+.work__document picture {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 64px;
+    flex: 0 0 64px;
+}
 .work__wrap {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -125,7 +130,7 @@
     color: var(--text-secondary);
 }
 .work__link {
-    margin: 40px 0 0;
+    margin: 67px 0 0;
     width: 236px;
     font-size: 18px;
     font-weight: 500;
@@ -225,6 +230,10 @@
         flex-basis: 40px;
         width: 40px;
         height: 40px;
+    }
+    .work__document picture {
+        -ms-flex-preferred-size: 40px;
+        flex-basis: 40px;
     }
     .work__document .h3 {
         font-size: 20px;

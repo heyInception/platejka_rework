@@ -215,12 +215,6 @@
     -ms-grid-row: 1;
     -ms-grid-row-span: 2;
     grid-row: 1 / span 2;
-    border: 4px solid #fff;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    -o-object-fit: cover;
-    object-fit: cover;
 }
 
 .infrastructure__entity img {
@@ -334,6 +328,9 @@
     left: 703px;
     top: 279.745px;
 }
+.infrastructure__entity--active small::before {
+    background: url(img/infrastructure/suitcase-b.svg) center / contain no-repeat;
+}
 @media (max-width: 1024px) {
     .infrastructure {
         margin: 64px 0;
@@ -412,7 +409,7 @@
         object-fit: cover;
     }
     .infrastructure__network > picture img {
-         inset: auto 50% 0 auto;
+        inset: auto 50% 0 auto;
         width: 374px;
         max-width: none;
         height: 164px;
@@ -454,14 +451,30 @@
         width: 119px;
         min-height: 32px;
         gap: 8px;
+        max-height: 32px;
     }
-    .infrastructure__entity img {
+    .infrastructure__entity > img {
         -webkit-box-flex: 0;
-        -ms-flex: 0 0 32px;
-        flex: 0 0 32px;
+        -ms-flex: 0 0 0;
+        flex: 0 0 0;
         border-width: 3px;
         width: 26px;
         height: 26px;
+        max-width: 32px;
+    }
+    .infrastructure__entity picture img {
+        width: 26px;
+        height: 26px;
+        border: 3px solid #fff;
+        border-radius: 50%;
+    }
+    .infrastructure__entity picture {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 32px;
+        flex: 0 0 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     .infrastructure__entity-name {
         position: absolute;
@@ -475,17 +488,19 @@
     .infrastructure__entity small {
         font-size: 12px;
         line-height: 16px;
+        align-self: center;
     }
     .infrastructure__entity--thailand {
         -ms-flex-preferred-size: 178px;
         flex-basis: 178px;
         width: 178px;
     }
+
     .infrastructure__entity--active {
         -ms-flex-preferred-size: 123px;
         flex-basis: 123px;
         width: 123px;
-        min-height: 36px;
+        min-height: 32px;
     }
     .infrastructure__entity--active img {
         -ms-flex-preferred-size: 36px;

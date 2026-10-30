@@ -54,6 +54,9 @@
     background: var(--surface-secondary);
     background: var(--surface-primary);
 }
+main ~ .footer {
+    margin-top: -112px;
+}
 .footer p {
     margin: 0;
 }
@@ -80,8 +83,8 @@
 .footer__main {
     display: -ms-grid;
     display: grid;
-    -ms-grid-columns: minmax(0, 448px) minmax(0, 1fr);
-    grid-template-columns: minmax(0, 448px) minmax(0, 1fr);
+    -ms-grid-columns: minmax(0, 408px) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 408px) minmax(0, 1fr);
     gap: 40px;
 }
 .footer__contacts {
@@ -324,6 +327,9 @@
     letter-spacing: -0.02em;
 }
 @media (max-width: 1024px) {
+    main ~ .footer {
+        margin-top: 0;
+    }
     .footer__panel {
         border-radius: 0;
         padding: 0 0 24px;

@@ -1,10 +1,12 @@
 <?php $root_id = $section_anchor ?: $section_instance;
 $title_id = platejka_section_dom_id($section_instance, 'title');
 $items = is_array($section_data['items'] ?? null) ? $section_data['items'] : array();
-$labels = platejka_section_label_map($section_data['labels'] ?? array()); ?>
+$labels = platejka_section_label_map($section_data['labels'] ?? array());
+$title = esc_html((string) ($section_data['title'] ?? ''));
+$title = preg_replace('/(?<![\p{L}\p{N}])проблемы(?![\p{L}\p{N}])/iu', '<span>$0</span>', $title, 1); ?>
 <section class="problems" id="<?php echo esc_attr($root_id); ?>" aria-labelledby="<?php echo esc_attr($title_id); ?>">
   <div class="container">
-    <h2 id="<?php echo esc_attr($title_id); ?>"><?php echo esc_html($section_data['title'] ?? ''); ?></h2>
+    <h2 id="<?php echo esc_attr($title_id); ?>"><?php echo $title; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped before adding the span. ?></h2>
     <div class="problems__intro"><?php echo wp_kses_post($section_data['description'] ?? ''); ?></div>
     <div class="problems__viewport" data-problems-slider tabindex="0" role="region" aria-roledescription="slider" aria-label="<?php echo esc_attr($labels['region'] ?? ''); ?>">
       <div class="problems__track"><?php foreach ($items as $item) : ?><article class="problems__card">
@@ -27,7 +29,7 @@ $labels = platejka_section_label_map($section_data['labels'] ?? array()); ?>
       </div>
       <div class="problems__actions"><button class="ui-button problems__submit" type="button" data-contact-modal-open data-modal-context="problems" data-modal-source="problems-cta"><?php echo esc_html($labels['submit'] ?? ''); ?></button>
         <div>
-          <a href="mailto:<?php echo esc_attr( platejka_schema_value( 'email' ) ); ?>"><?php echo esc_html($labels['write'] ?? ''); ?></a>
+          <a href="mailto:<?php echo esc_attr( platejka_schema_value( 'email' ) ); ?>"><img src="img/problems/telegram.svg" width="20" height="20" alt="<?php echo esc_html($labels['write'] ?? ''); ?>" aria-hidden="true"><?php echo esc_html($labels['write'] ?? ''); ?></a>
           <a href="tel:<?php echo esc_html( platejka_schema_value( 'phone' ) ); ?>"><?php echo esc_html($labels['call'] ?? ''); ?></a>
         </div>
       </div>

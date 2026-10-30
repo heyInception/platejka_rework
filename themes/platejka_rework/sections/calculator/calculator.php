@@ -140,7 +140,7 @@ $countries = array(
 					</div>
 					<label class="calculator__field calculator__amount-field"><span class="calculator__field-label"><?php echo esc_html($label('amount')); ?></span><span class="calculator__amount-wrap"><input name="amount" type="number" inputmode="decimal" autocomplete="off" value="10000" data-role="amount" required><span data-role="currency-symbol" aria-hidden="true">¥</span></span></label>
 					<p class="calculator__rate-note">
-						<img src="img/svg/cb.svg" width="20" height="20" alt="">Расчёты проводим по курсу ЦБ РФ
+						<img src="img/svg/cb.svg" width="20" height="20" alt="Расчёты проводим по курсу ЦБ РФ">Расчёты проводим по курсу ЦБ РФ
 					</p>
 
 				</div>
@@ -164,8 +164,9 @@ $countries = array(
 							<dd><output data-role="grand-total">0 ₽</output></dd>
 						</div>
 					</dl>
-					<div class="calculator__actions"><button class="ui-button" type="submit" data-action="request"><?php echo esc_html($label('request')); ?></button><button class="ui-button calculator__telegram" type="button" data-action="telegram"><?php echo esc_html($label('telegram')); ?></button></div>
-					<p class="calculator__contract-note"><?php echo esc_html($section_data['note'] ?? ''); ?></p>
+					<div class="calculator__actions"><button class="ui-button" type="submit" data-action="request"><?php echo esc_html($label('request')); ?></button>
+					<button class="ui-button calculator__telegram" type="button" data-action="telegram"><img src="img/telegram.svg" width="20" height="20" alt="<?php echo esc_html($label('telegram')); ?>"><?php echo esc_html($label('telegram')); ?></button></div>
+					<p class="calculator__contract-note"><img src="img/Shield-Check.svg" width="20" height="20" alt="<?php echo esc_html($section_data['note'] ?? ''); ?>"><?php echo esc_html($section_data['note'] ?? ''); ?></p>
 				</div>
 			</div>
 		</form>

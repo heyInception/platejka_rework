@@ -22,7 +22,12 @@ $hero_description = preg_replace('/<p>/', '<p class="hero__subtitle" data-hero-c
           <ul class="list-reset hero__items" data-hero-copy><?php foreach ($items as $item) : ?><li class="hero__item"><span class="hero__item-title"><?php echo esc_html($item['title'] ?? ''); ?></span><span class="hero__item-content"><?php echo wp_kses_post($item['text'] ?? ''); ?></span></li><?php endforeach; ?></ul>
           <p class="hero__info" data-hero-copy><?php echo esc_html__('Полный пакет закрывающих документов для валютного контроля и таможни', 'platejka_rework'); ?></p>
         </div>
-        <ul class="list-reset hero__trust" data-hero-cards><?php foreach ($trust as $index => $item) : $trust_variant = array('experience', 'registry', 'association')[$index % 3]; ?><li class="hero__trust-card hero__trust-card_<?php echo esc_attr($trust_variant); ?>"><?php if (0 === $index) : ?><div class="hero__trust-years" aria-label="<?php echo esc_attr($item['value'] ?? ''); ?>"><span aria-hidden="true"><?php echo esc_html($item['value'] ?? ''); ?></span></div>
+        <ul class="list-reset hero__trust" data-hero-cards><?php foreach ($trust as $index => $item) : $trust_variant = array('experience', 'registry', 'association')[$index % 3]; ?><li class="hero__trust-card hero__trust-card_<?php echo esc_attr($trust_variant); ?>"><?php if (0 === $index) : ?>
+          <div class="hero__trust-years" aria-label="<?php echo esc_attr($item['value'] ?? ''); ?>">
+            <img src="img/hero__trust-years-left.svg" width="22" height="72" alt="<?php echo esc_html($item['value'] ?? ''); ?> - левая">
+            <span aria-hidden="true"><?php echo esc_html($item['value'] ?? ''); ?></span>
+            <img src="img/hero__trust-years-right.svg" width="22" height="72" alt="<?php echo esc_html($item['value'] ?? ''); ?> - правая">
+          </div>
                 <p class="hero__trust-caption"><?php echo esc_html($item['title'] ?? ''); ?></p><?php else : ?><p class="hero__trust-title"><?php echo esc_html($item['title'] ?? ''); ?></p><?php echo platejka_section_image($item['image'] ?? 0, 'medium', array('class' => 'hero__trust-decor hero__trust-decor_' . $trust_variant, 'loading' => 'lazy', 'sizes' => '161px')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
                                                                                                                                                                                               ?><?php if (1 === $index) : ?>
                 <a class="ui-link ui-link--overlay hero__trust-link open-window" href="#" data-url="<?php echo esc_url('https://cbr.ru/finorg/foinfo/?ogrn=1257700335628'); ?>" rel="nofollow noopener"><?php echo esc_html($item['link']['title'] ?? __('Проверить', 'platejka_rework')); ?></a><?php elseif (! empty($item['link']['url'])) : ?>
@@ -30,9 +35,9 @@ $hero_description = preg_replace('/<p>/', '<p class="hero__subtitle" data-hero-c
             </li><?php endforeach; ?></ul>
       </div>
       <form class="hero-calculator" data-hero-calculator data-currency-rates="<?php echo esc_attr(wp_json_encode($calculator_rates)); ?>" novalidate>
-        <div class="hero-calculator__banner"><span><?php echo esc_html__('В реестре ЦБ РФ и СРО платёжных агентов', 'platejka_rework'); ?></span></div>
+        <div class="hero-calculator__banner"><img src="img/svg/cb.svg" width="20" height="20" alt=""><span><?php echo esc_html__('В реестре ЦБ РФ и СРО платёжных агентов', 'platejka_rework'); ?></span></div>
         <div class="hero-calculator__body">
-          <h2 class="hero-calculator__title"><?php echo esc_html($calculator_labels['summary'] ?? ''); ?></h2>
+          <h2 class="hero-calculator__title"><?php echo esc_html($calculator_labels['summary_top'] ?? ''); ?></h2>
           <div class="ui-tabs hero-calculator__currencies" aria-label="<?php echo esc_attr($calculator_labels['currency'] ?? ''); ?>">
             <span class="hero-calculator__indicator" data-currency-indicator aria-hidden="true"></span>
             <?php foreach (array('CNY' => 'cn-flag.png', 'USD' => 'usa-flag.png', 'EUR' => 'eur-flag.png') as $currency => $flag) : ?>
@@ -47,8 +52,8 @@ $hero_description = preg_replace('/<p>/', '<p class="hero__subtitle" data-hero-c
           <dl class="hero-calculator__results"><?php foreach (array('official_rate' => 'official-rate', 'conversion_rate' => 'conversion-rate', 'commission' => 'commission', 'total' => 'grand-total') as $label_key => $role) : ?><div class="hero-calculator__result-row<?php echo 'total' === $label_key ? ' hero-calculator__result-row_total' : ''; ?>">
                 <dt><?php echo esc_html($calculator_labels[$label_key] ?? ''); ?></dt>
                 <dd><output data-role="<?php echo esc_attr($role); ?>">0 ₽</output></dd>
-              </div><?php endforeach; ?></dl><button class="ui-button hero-calculator__submit" type="submit"><?php echo esc_html($calculator_labels['request'] ?? ''); ?></button>
-          <p class="hero-calculator__note"><?php echo esc_html($calculator_data['note'] ?? ''); ?></p>
+              </div><?php endforeach; ?></dl><button class="ui-button hero-calculator__submit" type="submit"><?php echo esc_html($calculator_labels['request_top'] ?? ''); ?></button>
+          <p class="hero-calculator__note"><img src="img/Shield-Check.svg" width="24" height="24" alt=""><?php echo esc_html($calculator_data['note'] ?? ''); ?></p>
         </div>
       </form>
     </div>

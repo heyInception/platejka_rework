@@ -143,7 +143,7 @@ add_action('widgets_init', 'platejka_rework_widgets_init');
  */
 function platejka_rework_scripts()
 {
-	wp_enqueue_style('platejka_rework-commoncss', get_stylesheet_directory_uri() . '/assets/common.css', array(), '1.0.0');
+	wp_enqueue_style('platejka_rework-commoncss', get_stylesheet_directory_uri() . '/assets/common.css', array(), platejka_section_asset_version(get_theme_file_path('assets/common.css')));
 	wp_enqueue_style('platejka_rework-style', get_stylesheet_uri(), array(), _S_VERSION);
 	wp_enqueue_style('platejka_rework-dialog-overrides', get_template_directory_uri() . '/assets/dialog-overrides.css', array('platejka_rework-style'), _S_VERSION);
 	wp_enqueue_style('platejka_rework-contact-modals', get_template_directory_uri() . '/assets/contact-modals.css', array('platejka_rework-commoncss'), platejka_section_asset_version(get_theme_file_path('assets/contact-modals.css')));

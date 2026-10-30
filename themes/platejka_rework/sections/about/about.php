@@ -19,7 +19,7 @@ $about_registry_urls = array(
         <div class="about__intro">
           <?php if (! empty($section_data['eyebrow'])) : ?><span class="about__badge"><?php echo esc_html($section_data['eyebrow']); ?></span><?php endif; ?>
           <h2 class="screen-reader-text"><?php echo esc_html($about_title); ?></h2>
-          <div class="about__title" aria-hidden="true"><?php if ($about_accent) : ?><span class="about__title-accent"><?php echo esc_html($about_accent); ?></span><img class="about__title-check" src="img/svg/сheck.svg" width="40" height="40" alt=""><?php endif; ?><?php echo esc_html($about_remainder); ?><img class="about__title-bank" src="img/svg/about-cb-rf.svg" width="40" height="40" alt=""></div>
+          <div class="about__title" aria-hidden="true"><?php if ($about_accent) : ?><span class="about__title-accent"><?php echo esc_html($about_accent); ?></span><img class="about__title-check" src="img/svg/сheck.svg" width="40" height="40" alt=""><?php endif; ?><?php echo esc_html($labels['about_remainder'] ?? ''); ?><img class="about__title-bank" src="img/svg/about-cb-rf.svg" width="40" height="40" alt=""><?php echo esc_html($labels['about_remainder_last'] ?? ''); ?></div>
           <div class="about__description"><?php echo wp_kses_post($section_data['description'] ?? ''); ?></div>
           <?php if (! empty($section_data['primary_link']['url'])) : ?><a class="ui-link about__agreement" href="<?php echo esc_url($section_data['primary_link']['url']); ?>"><?php echo esc_html($section_data['primary_link']['title'] ?? ''); ?></a><?php endif; ?>
         </div>

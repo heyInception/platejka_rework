@@ -16,10 +16,10 @@ $quote_html = preg_replace( '/<p(\s|>)/', '<p data-employees-text$1', $quote_htm
             <img class="employees__quote-mark" src="img/employees/ps.svg" width="28" height="20" alt=""
               data-employees-quote-mark>
             <?php echo $quote_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-            <footer class="employees__author" data-employees-author>
+            <div class="employees__author" data-employees-author>
               <?php echo platejka_section_image( $data['author_image'] ?? 0, 'thumbnail', array( 'alt' => (string) ( $data['author_name'] ?? '' ), 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => '128px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
               <div><strong><?php echo esc_html( (string) ( $data['author_name'] ?? '' ) ); ?></strong><span><?php echo esc_html( (string) ( $data['author_role'] ?? '' ) ); ?></span></div>
-            </footer>
+            </div>
           </blockquote>
           <svg class="employees__signature" width="229" height="59" viewBox="0 0 229 59" fill="none"
             xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-employees-signature>

@@ -14,10 +14,10 @@ $icons       = array(
   'rbc' => 'img/call-about/rbc.svg',
   'lenta' => 'img/call-about/lenta.svg',
 );
-$form_id   = platejka_contact_modal_form_id( 'consultation', $section_data['form'] ?? 0 );
-$form_html = platejka_contact_modal_form( $form_id, 'call-about-section' );
-$form_html = platejka_cf7_remove_field_paragraph( $form_html, 'your-message' );
-$form_html = str_replace( array( 'contact-modal__submit', 'contact-modal__consent', 'contact-modal__message' ), array( 'call__submit', 'call__consent', 'call__message' ), $form_html );
+$form_id   = platejka_contact_modal_form_id('consultation', $section_data['form'] ?? 0);
+$form_html = platejka_contact_modal_form($form_id, 'call-about-section');
+$form_html = platejka_cf7_remove_field_paragraph($form_html, 'your-message');
+$form_html = str_replace(array('contact-modal__submit', 'contact-modal__consent', 'contact-modal__message'), array('call__submit', 'call__consent', 'call__message'), $form_html);
 ?>
 <section class="call" <?php echo '' !== $anchor ? ' id="' . esc_attr($anchor) . '"' : ''; ?> data-call aria-labelledby="<?php echo esc_attr($title_id); ?>">
   <div class="container">
@@ -33,12 +33,20 @@ $form_html = str_replace( array( 'contact-modal__submit', 'contact-modal__consen
             ?>
               <li class="hero__trust-card hero__trust-card_<?php echo esc_attr($variant); ?>" data-call-card>
                 <?php if ('experience' === $variant) : ?>
-                  <div class="hero__trust-years" aria-label="<?php echo esc_attr((string) ($item['value'] ?? '')); ?>"><img src="img/hero__trust-years-left.svg" width="16" height="52" alt=""><span aria-hidden="true"><?php echo esc_html((string) ($item['value'] ?? '')); ?></span><img src="img/hero__trust-years-right.svg" width="16" height="52" alt=""></div>
+                  <div class="hero__trust-years" aria-label="<?php echo esc_attr((string) ($item['value'] ?? '')); ?>">
+                    <img src="img/hero__trust-years-left.svg" width="16" height="52" alt="">
+                    <span aria-hidden="true"><?php echo esc_html((string) ($item['value'] ?? '')); ?></span>
+                    <img src="img/hero__trust-years-right.svg" width="16" height="52" alt="">
+                  </div>
                   <p class="hero__trust-caption"><?php echo esc_html((string) ($item['title'] ?? '')); ?></p>
                 <?php else : ?>
-                  <p class="hero__trust-title"><?php echo platejka_heading_text($item['title'] ?? ''); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
-                                                ?></p><?php echo platejka_section_image($item['image'] ?? 0, 'medium', array('class' => 'hero__trust-decor hero__trust-decor_' . $variant, 'alt' => '', 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => '161px')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
-                                                      ?>
+                  <?php echo platejka_section_image($item['image'] ?? 0, 'medium', array('class' => 'hero__trust-decor hero__trust-decor_' . $variant, 'alt' => '', 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => '161px')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+                  ?>
+                  <p class="hero__trust-title">
+                    <?php echo platejka_heading_text($item['title'] ?? ''); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+                    ?>
+                  </p>
+
                 <?php endif; ?>
               </li>
             <?php endforeach; ?>

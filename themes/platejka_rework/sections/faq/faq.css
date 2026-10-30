@@ -87,6 +87,12 @@
 }
 .faq__cta {
     margin-top: 24px;
+    min-width: 231px;
+    height: 60px;
+    font: 500 18px / 156% var(--font-family);
+    letter-spacing: -0.02em;
+    color: var(--surface-primary);
+    border-radius: 16px;
 }
 .faq__list {
     display: -webkit-box;
@@ -225,6 +231,11 @@
     }
     .faq__cta {
         margin-top: 16px;
+        height: 48px;
+        width: 100%;
+        min-width: auto;
+        font: 500 16px / 150% var(--font-family);
+        color: var(--surface-primary);
     }
     .faq__list {
         gap: 8px;

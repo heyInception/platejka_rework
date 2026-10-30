@@ -295,6 +295,8 @@
     margin-top: 24px;
     width: 330px;
     white-space: nowrap;
+    font: 500 18px / 156% var(--font-family);
+    letter-spacing: -0.02em;
 }
 .financial__test-image {
     position: absolute;

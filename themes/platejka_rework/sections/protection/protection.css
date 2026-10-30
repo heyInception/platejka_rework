@@ -57,8 +57,8 @@
 .protection .container {
     display: -ms-grid;
     display: grid;
-    -ms-grid-columns: minmax(0, 1fr) minmax(0, 1fr);
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    -ms-grid-columns: minmax(0, 612px) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 612px) minmax(0, 1fr);
     -webkit-box-align: stretch;
     -ms-flex-align: stretch;
     align-items: stretch;
@@ -95,6 +95,12 @@
 }
 .protection__link {
     margin-top: auto;
+    border-radius: 16px;
+    padding: 0 32px;
+    height: 60px;
+    font: 500 18px / 156% var(--font-family);
+    letter-spacing: -0.02em;
+    color: var(--surface-primary);
 }
 .protection__cards {
     display: -ms-grid;
@@ -114,13 +120,15 @@
     gap: 16px;
 }
 .protection__card img {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 48px;
-    flex: 0 0 48px;
-    width: 48px;
-    height: 48px;
+    width: 64px;
+    height: 64px;
     -o-object-fit: contain;
     object-fit: contain;
+}
+.protection__card picture {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 64px;
+    flex: 0 0 64px;
 }
 .protection__card .h3 {
     margin: 0 0 8px;

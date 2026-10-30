@@ -100,8 +100,8 @@
 .guarantees__cards {
     display: -ms-grid;
     display: grid;
-    -ms-grid-columns: minmax(0px, 498.5fr) minmax(0px, 612.5fr);
-    grid-template-columns: minmax(0px, 498.5fr) minmax(0px, 612.5fr);
+    -ms-grid-columns: minmax(0px, 496.5fr) minmax(0px, 612.5fr);
+    grid-template-columns: minmax(0px, 496.5fr) minmax(0px, 612.5fr);
     gap: 24px;
 }
 .guarantees__slider {
@@ -109,8 +109,8 @@
     display: grid;
     -ms-grid-columns: 415px 1fr;
     grid-template-columns: 415px 1fr;
-    -ms-grid-rows: 214px 362px;
-    grid-template-rows: 214px 362px;
+    -ms-grid-rows: 214px 322px;
+    grid-template-rows: 214px 322px;
     gap: 24px;
     min-width: 0;
 }
@@ -154,6 +154,9 @@
 }
 .guarantee-card_registry .h3 {
     margin-bottom: 16px;
+    font: 700 36px / 111% var(--font-family);
+    letter-spacing: -0.02em;
+    color: var(--surface-primary);
 }
 .guarantee-card_registry p {
     color: var(--text-overlay-secondary);
@@ -241,9 +244,29 @@
     color: var(--text-overlay-primary);
     background: #061910 url("img/guarantees/risk.png") center/cover no-repeat;
 }
-.guarantee-card_risk h3 {
-    font-size: 24px;
-    line-height: 28px;
+.guarantee-card_risk .h3 {
+    font: 700 24px / 117% var(--font-family);
+    letter-spacing: -0.02em;
+    color: var(--surface-primary);
+}
+.guarantee-card_office .h3 {
+    font: 700 36px / 111% var(--font-family);
+    letter-spacing: -0.02em;
+    color: var(--surface-primary);
+    position: relative;
+    z-index: 10;
+}
+.guarantee-card_clients .h3 {
+    font: 700 44px / 110% var(--font-family);
+    letter-spacing: -0.04em;
+    color: var(--surface-inverse);
+}
+.guarantee-card_risk .guarantee-card__content,
+.guarantee-card_clients .guarantee-card__content {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    height: 100%;
 }
 @media (max-width: 1024px) {
     .guarantees {
@@ -425,6 +448,9 @@
 }
 .guarantees--main .guarantee-card--main-featured .h3 {
     max-width: 100%;
+    font: 700 36px / 111% var(--font-family);
+    letter-spacing: -0.02em;
+    color: var(--surface-primary);
 }
 .guarantees--main .guarantee-card--main-featured p {
     margin-top: 16px;
@@ -450,9 +476,13 @@
     height: 100%;
     max-width: 100%;
 }
+.guarantees--main .guarantee-card--main-secondary div:last-child {
+    justify-content: flex-end;
+}
 .guarantees--main .guarantee-card--main-secondary .h3 {
     font-size: 36px;
     line-height: 40px;
+    font-weight: 700;
     color: inherit;
 }
 .guarantees--main .guarantee-card--main-secondary p {
@@ -477,6 +507,9 @@
     .guarantees--main .guarantee-card--main-featured {
         padding: 16px;
         min-height: 440px;
+    }
+    .guarantees--main .guarantee-card--main-featured .h3 {
+        font: 700 24px / 117% var(--font-family);
     }
     .guarantees--main .guarantee-card--main-secondary {
         -webkit-box-flex: 0;

@@ -102,8 +102,8 @@
 .serves__card img {
     display: block;
     margin-bottom: 24px;
-    width: 64px;
-    height: 64px;
+    width: 88px;
+    height: 88px;
     -o-object-fit: contain;
     object-fit: contain;
 }

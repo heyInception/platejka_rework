@@ -332,7 +332,7 @@
 }
 @media (max-width: 1024px) {
     .shipments--main {
-        padding-top: 64px;
+        padding-top: 0;
     }
     .shipments--main .shipment-card--main {
         min-height: 390px;
