@@ -540,3 +540,5 @@
         background-clip: text;
     }
 }
+
+@media (max-width: 1024px) { [data-guarantees-slider] { touch-action: auto; -webkit-overflow-scrolling: touch; } }

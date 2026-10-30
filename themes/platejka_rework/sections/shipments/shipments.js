@@ -64,7 +64,7 @@ function initShipmentsSlider(root) {
     });
   };
   slider.addEventListener('pointerdown', event => {
-    if (event.button !== 0 || !window.matchMedia('(max-width: 1024px)').matches) return;
+    if (event.pointerType === 'touch' || event.button !== 0 || !window.matchMedia('(max-width: 1024px)').matches) return;
     dragging = true;
     pointerId = event.pointerId;
     startX = event.clientX;

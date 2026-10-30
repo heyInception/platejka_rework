@@ -351,3 +351,5 @@
         font-size: 24px;
     }
 }
+
+@media (max-width: 1024px) { [data-shipments-slider] { touch-action: auto; -webkit-overflow-scrolling: touch; } }

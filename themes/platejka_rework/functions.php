@@ -150,6 +150,7 @@ function platejka_rework_scripts()
 	wp_style_add_data('platejka_rework-style', 'rtl', 'replace');
 
 	wp_enqueue_script('platejka_rework-common', get_template_directory_uri() . '/assets/common.js', array(), platejka_section_asset_version(get_theme_file_path('assets/common.js')), true);
+	wp_enqueue_script('platejka_rework-slider-touch-fallback', get_template_directory_uri() . '/assets/slider-touch-fallback.js', array('platejka_rework-common'), platejka_section_asset_version(get_theme_file_path('assets/slider-touch-fallback.js')), true);
 	wp_enqueue_script('platejka_rework-window-opener', get_template_directory_uri() . '/assets/window-opener.js', array('platejka_rework-common'), _S_VERSION, true);
 	wp_enqueue_script('platejka_rework-contact-modals', get_template_directory_uri() . '/assets/contact-modals.js', array('platejka_rework-common'), platejka_section_asset_version(get_theme_file_path('assets/contact-modals.js')), true);
 	wp_enqueue_script('platejka_rework-location-gallery', get_template_directory_uri() . '/assets/location-gallery.js', array(), platejka_section_asset_version(get_theme_file_path('assets/location-gallery.js')), true);

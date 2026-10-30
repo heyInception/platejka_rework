@@ -32,7 +32,7 @@ document.querySelectorAll('[data-guarantees-slider]').forEach(slider => {
     });
   };
   slider.addEventListener('pointerdown', event => {
-    if (event.button !== 0 || !isMobile()) return;
+    if (event.pointerType === 'touch' || event.button !== 0 || !isMobile()) return;
     pointerId = event.pointerId;
     startX = event.clientX;
     startScrollLeft = slider.scrollLeft;
