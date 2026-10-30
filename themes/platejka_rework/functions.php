@@ -180,6 +180,7 @@ require get_template_directory() . '/inc/section-content.php';
 
 /** Global Contact Form 7 modals and ACF settings. */
 require get_template_directory() . '/inc/contact-modals.php';
+require get_template_directory() . '/inc/exchange-settings.php';
 require get_template_directory() . '/inc/work-form.php';
 
 /** Editable organization details and HTML microdata. */

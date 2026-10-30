@@ -28,7 +28,7 @@ function platejka_cross_render_fixture( string $template, string $layout, array 
 
 platejka_cross_render_assert( is_file( $template ), 'Shared cross-block renderer is missing.' );
 platejka_cross_render_assert( is_file( $stylesheet ), 'Shared cross-block stylesheet is missing.' );
-platejka_cross_render_assert( ! is_file( $script ), 'Cross-block JavaScript must not exist.' );
+platejka_cross_render_assert( is_file( $script ), 'Exchange JavaScript is missing.' );
 platejka_cross_render_assert( function_exists( 'platejka_cross_block_aliases' ), 'Cross-block aliases are missing.' );
 
 $aliases = platejka_cross_block_aliases();
@@ -40,9 +40,9 @@ foreach ( $aliases as $alias ) {
 
 $exchange = platejka_cross_render_fixture( $template, 'wtt', array( 'title' => 'Курсы валют' ), 'cross-exchange-test' );
 platejka_cross_render_assert( str_contains( $exchange, 'id="cross-exchange-test"' ), 'Exchange section ID is missing.' );
-platejka_cross_render_assert( str_contains( $exchange, 'Курсы валют' ) && str_contains( $exchange, 'Обменять валюту' ), 'Exchange heading/CTA is missing.' );
+platejka_cross_render_assert( str_contains( $exchange, 'Курсы валют' ) && str_contains( $exchange, 'Оставить заявку' ) && str_contains( $exchange, 'Написать в Telegram' ), 'Exchange heading/actions are missing.' );
 platejka_cross_render_assert( str_contains( $exchange, 'USD' ) && str_contains( $exchange, 'EUR' ) && str_contains( $exchange, 'CNY' ), 'Server exchange values are missing.' );
-foreach ( array( 'class="cross-block cb-exchange calculate"', 'data-cb-exchange-calculator', 'class="calculate__buttons"', 'type="range"', 'class="calculate__range slider-progress"', 'data-action="buy"', 'data-action="sell"', 'data-exchange-rates', 'data-role="exchange-prompt"', 'data-role="exchange-value"', 'data-role="exchange-total"', 'Сколько вы хотите купить?', 'Сумма сделки' ) as $required ) {
+foreach ( array( 'class="cross-block cb-exchange calculate"', 'data-cb-exchange-calculator', 'class="calculate__buttons"', 'type="range"', 'type="number"', 'class="calculate__range slider-progress"', 'data-action="buy"', 'data-action="sell"', 'data-exchange-rates', 'data-exchange-commissions', 'data-role="exchange-prompt"', 'data-role="exchange-value"', 'data-role="exchange-total"', 'Сколько вы хотите купить?', 'Сумма сделки' ) as $required ) {
 	platejka_cross_render_assert( str_contains( $exchange, $required ), 'Exchange source structure is missing: ' . $required );
 }
 

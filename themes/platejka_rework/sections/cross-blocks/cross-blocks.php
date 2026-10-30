@@ -9,21 +9,25 @@ $instance = sanitize_html_class( $section_anchor ?: $section_instance );
 
 if ( 'wtt' === $layout ) {
 	$rates = platejka_cross_block_exchange_rates();
+	$commissions = function_exists( 'platejka_exchange_commission' )
+		? array( 'buy' => platejka_exchange_commission( 'buy' ), 'sell' => platejka_exchange_commission( 'sell' ) )
+		: array( 'buy' => 2.0, 'sell' => 5.0 );
 	?>
-	<section id="<?php echo esc_attr( $instance ); ?>" class="cross-block cb-exchange calculate" data-cb-exchange-calculator data-exchange-rates="<?php echo esc_attr( wp_json_encode( $rates ) ); ?>">
+	<section id="<?php echo esc_attr( $instance ); ?>" class="cross-block cb-exchange calculate" data-cb-exchange-calculator data-exchange-rates="<?php echo esc_attr( wp_json_encode( $rates ) ); ?>" data-exchange-commissions="<?php echo esc_attr( wp_json_encode( $commissions ) ); ?>">
 		<div class="container">
 			<div class="calculate__row">
 				<div class="calculate__wrap">
 					<div class="calculate__title"><h2><?php echo esc_html( $row['title'] ?? 'Рассчитайте стоимость международного перевода' ); ?></h2></div>
+					<p class="calculate__intro">Узнайте предварительную стоимость обмена по курсу ЦБ РФ</p>
 					<div class="calculate__rates"><?php foreach ( $rates as $currency => $rate ) : ?><div class="calculate__rate"><strong><?php echo esc_html( $currency ); ?></strong> <span><?php echo esc_html( number_format_i18n( $rate, 2 ) ); ?> ₽</span></div><?php endforeach; ?></div>
 				</div>
 				<div class="calculate__wrap calculate__wrap_width">
-					<div class="calculate__buttons"><button type="button" class="btn-reset calculate__button calculate__button_active is-active" data-action="buy">Купить</button><button type="button" class="btn-reset calculate__button" data-action="sell">Продать</button></div>
-					<div class="calculate__buttons"><?php foreach ( $rates as $currency => $rate ) : ?><button type="button" class="btn-reset calculate__button<?php echo 'USD' === $currency ? ' calculate__button_active is-active' : ''; ?>" data-currency="<?php echo esc_attr( $currency ); ?>"><?php echo esc_html( $currency ); ?></button><?php endforeach; ?></div>
+					<div class="calculate__buttons" role="group" aria-label="Направление обмена"><button type="button" class="btn-reset calculate__button calculate__button_active is-active" data-action="buy" aria-pressed="true">Купить</button><button type="button" class="btn-reset calculate__button" data-action="sell" aria-pressed="false">Продать</button></div>
+					<div class="calculate__buttons" role="group" aria-label="Валюта"><?php foreach ( $rates as $currency => $rate ) : ?><button type="button" class="btn-reset calculate__button<?php echo 'USD' === $currency ? ' calculate__button_active is-active' : ''; ?>" data-currency="<?php echo esc_attr( $currency ); ?>" aria-pressed="<?php echo 'USD' === $currency ? 'true' : 'false'; ?>"><?php echo esc_html( $currency ); ?></button><?php endforeach; ?></div>
 				</div>
 				<div class="calculate__column calculate__column_active">
-					<div class="calculate__wrapper"><div class="calculate__head" data-role="exchange-prompt">Сколько вы хотите купить?</div><div class="calculate__value" data-role="exchange-value">1 $</div><input type="range" class="calculate__range slider-progress" data-role="exchange-range" step="1" min="1" max="100000" value="1"></div>
-					<div class="calculate__wrapper"><div class="calculate__head">Сумма сделки</div><div class="calculate__value calculate__value_summ" data-role="exchange-total">0 ₽</div><a class="btn-reset calculate__button calculate__button_tg" href="https://t.me/platejka_com" target="_blank" rel="noopener noreferrer">Обменять валюту</a></div>
+					<div class="calculate__wrapper"><label class="calculate__head" data-role="exchange-prompt" for="<?php echo esc_attr( $instance ); ?>-amount">Сколько вы хотите купить?</label><div class="calculate__amount-wrap"><input class="calculate__amount" id="<?php echo esc_attr( $instance ); ?>-amount" type="number" min="1" step="1" inputmode="numeric" value="1000" data-role="exchange-amount" required><span data-role="exchange-symbol">$</span></div><span class="screen-reader-text" data-role="exchange-value">1 $</span><input type="range" class="calculate__range slider-progress" data-role="exchange-range" aria-label="Выбрать сумму" step="1" min="1" max="100000" value="1000"></div>
+					<div class="calculate__wrapper"><div class="calculate__head">Сумма сделки</div><div class="calculate__value calculate__value_summ" data-role="exchange-total" aria-live="polite">0 ₽</div><p class="calculate__detail" data-role="exchange-detail"></p><div class="calculate__actions"><button type="button" class="ui-button calculate__request" data-exchange-request>Оставить заявку</button><button type="button" class="btn-reset calculate__button calculate__button_tg" data-exchange-telegram>Написать в Telegram</button></div></div>
 				</div>
 			</div>
 		</div>
