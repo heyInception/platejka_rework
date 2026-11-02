@@ -249,7 +249,7 @@ function initHorizontalSlider(root) {
     refresh
   };
 }
-document.querySelectorAll('[data-horizontal-slider]').forEach(initHorizontalSlider);
+// Slider initialization is handled by assets/swiper-sliders.js.
 
 
 /***/ }),

@@ -519,6 +519,7 @@
     }
     .guarantees--main .guarantee-card--main-secondary div {
         max-width: 100%;
+        height: auto;
     }
     .guarantees--main .guarantee-card--main-secondary .h3 {
         font-size: 24px;

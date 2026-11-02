@@ -73,7 +73,7 @@ function platejka_rework_assets(): void {
 		if ( is_file( $style_path ) ) {
 			wp_enqueue_style( $handle, $base_url . '/' . $directory . '.css', array( 'platejka_rework-commoncss' ), platejka_section_asset_version( $style_path ) );
 		}
-		if ( is_file( $script_path ) ) {
+		if ( is_file( $script_path ) && ! in_array( $directory, array( 'guarantees', 'documents' ), true ) ) {
 			wp_enqueue_script( $handle, $base_url . '/' . $directory . '.js', array( 'platejka_rework-common' ), platejka_section_asset_version( $script_path ), true );
 			if ( 'review-main' === $directory ) {
 				$outbound_path = $base_path . '/review-outbound.js';
@@ -84,6 +84,17 @@ function platejka_rework_assets(): void {
 				wp_enqueue_script( $handle . '-labels', $base_url . '/' . $directory . '-labels.js', array( $handle ), platejka_section_asset_version( $labels_script_path ), true );
 			}
 		}
+	}
+	$slider_sections = array( 'cases', 'serves', 'with-us', 'location', 'exhibitions', 'developing', 'review', 'review-main', 'problems', 'guarantees', 'shipments', 'documents', 'about-hero' );
+	if ( array_intersect( $slider_sections, array_keys( $loaded ) ) ) {
+		$swiper_path = get_theme_file_path( 'assets/swiper/swiper-bundle.min.js' );
+		$swiper_css_path = get_theme_file_path( 'assets/swiper/swiper-bundle.min.css' );
+		$adapter_path = get_theme_file_path( 'assets/swiper-sliders.js' );
+		$adapter_css_path = get_theme_file_path( 'assets/swiper-sliders.css' );
+		wp_enqueue_style( 'platejka-swiper', get_theme_file_uri( 'assets/swiper/swiper-bundle.min.css' ), array(), platejka_section_asset_version( $swiper_css_path ) );
+		wp_enqueue_style( 'platejka-swiper-sliders', get_theme_file_uri( 'assets/swiper-sliders.css' ), array( 'platejka-swiper' ), platejka_section_asset_version( $adapter_css_path ) );
+		wp_enqueue_script( 'platejka-swiper', get_theme_file_uri( 'assets/swiper/swiper-bundle.min.js' ), array(), platejka_section_asset_version( $swiper_path ), true );
+		wp_enqueue_script( 'platejka-swiper-sliders', get_theme_file_uri( 'assets/swiper-sliders.js' ), array( 'platejka-swiper', 'platejka_rework-common' ), platejka_section_asset_version( $adapter_path ), true );
 	}
 
 	if ( isset( $loaded['hero'] ) && ! isset( $loaded['calculator'] ) ) {

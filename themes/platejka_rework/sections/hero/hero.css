@@ -141,7 +141,7 @@
     background: rgb(75 75 75 / 56%);
 }
 .hero__title {
-    max-width: 525px;
+    max-width: 600px;
     font: 700 46px/48px var(--font-family);
     letter-spacing: -0.04em;
     margin: 0;
