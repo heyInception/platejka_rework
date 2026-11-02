@@ -75,6 +75,10 @@ function platejka_rework_assets(): void {
 		}
 		if ( is_file( $script_path ) ) {
 			wp_enqueue_script( $handle, $base_url . '/' . $directory . '.js', array( 'platejka_rework-common' ), platejka_section_asset_version( $script_path ), true );
+			if ( 'review-main' === $directory ) {
+				$outbound_path = $base_path . '/review-outbound.js';
+				wp_enqueue_script( $handle . '-outbound', $base_url . '/review-outbound.js', array( $handle ), platejka_section_asset_version( $outbound_path ), true );
+			}
 			$labels_script_path = $base_path . '/' . $directory . '-labels.js';
 			if ( is_file( $labels_script_path ) ) {
 				wp_enqueue_script( $handle . '-labels', $base_url . '/' . $directory . '-labels.js', array( $handle ), platejka_section_asset_version( $labels_script_path ), true );
@@ -135,6 +139,27 @@ function platejka_render_section( $section ): void {
 
 	$mode = $config['mode'];
 	$section_data     = function_exists( 'platejka_resolve_section_data' ) ? platejka_resolve_section_data( $config, (int) get_queried_object_id() ) : array();
+	if ( in_array( $config['slug'], array( 'review', 'review-main' ), true ) && class_exists( 'Platejka\\Core\\Reviews\\ReviewPost' ) ) {
+		$shared_reviews = \Platejka\Core\Reviews\ReviewPost::cards( 9 );
+		if ( $shared_reviews ) {
+			$section_data['items'] = $shared_reviews;
+		}
+	}
+	if ( 'review-main' === $config['slug'] && is_array( $section_data['ratings'] ?? null ) ) {
+		$counts = get_option( 'platejka_review_counts', array() );
+		$names = array( 'Яндекс' => 'yandex', '2ГИС' => '2gis', 'Yell' => 'yell' );
+		foreach ( $section_data['ratings'] as &$rating ) {
+			$source = $names[ $rating['title'] ?? '' ] ?? '';
+			if ( is_array( $counts ) && isset( $counts[ $source ] ) && is_int( $counts[ $source ] ) ) {
+				$rating['caption'] = platejka_review_count_caption( $counts[ $source ] );
+				if ( 0 === $counts[ $source ] ) {
+					$rating['value'] = '—';
+					$rating['empty'] = true;
+				}
+			}
+		}
+		unset( $rating );
+	}
 	$section_instance = isset( $config['instance'] ) && is_string( $config['instance'] ) ? $config['instance'] : $config['slug'];
 	$section_anchor   = isset( $config['anchor'] ) && is_string( $config['anchor'] ) ? $config['anchor'] : '';
 	$legacy_layout    = function_exists( 'platejka_cross_block_layout_for_section' ) ? platejka_cross_block_layout_for_section( $config['slug'] ) : '';

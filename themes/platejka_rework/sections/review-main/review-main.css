@@ -130,11 +130,25 @@
     gap: 16px;
 }
 .review-main__rating {
+    position: relative;
     border-radius: 24px;
     padding: 16px;
     width: 228px;
     height: 88px;
     background: rgba(255, 255, 255, 0.08);
+}
+.review-main__rating-open {
+    position: absolute;
+    inset: 0;
+    border: 0;
+    border-radius: inherit;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+}
+.review-main__rating-open:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
 }
 .review-main__rating--accent {
     background: linear-gradient(135deg, #c37d32, #7b5a37);
@@ -322,6 +336,13 @@
     letter-spacing: -0.02em;
     color: #fff;
     background: rgba(255, 255, 255, 0.08);
+    border: 0;
+    text-align: left;
+    cursor: pointer;
+}
+.review-main__source:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
 }
 .review-main__source img {
     width: 20px;
@@ -529,7 +550,7 @@
         width: 24px;
         height: 24px;
     }
-    .review-main__rating > div:last-child {
+    .review-main__rating > div:nth-of-type(2) {
         display: block;
     }
     .review-main__rating span {

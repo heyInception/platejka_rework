@@ -20,10 +20,20 @@ require_once PLATEJKA_CORE_PATH . 'src/Acf/SectionSeed.php';
 require_once PLATEJKA_CORE_PATH . 'src/Acf/DefaultPageSeed.php';
 require_once PLATEJKA_CORE_PATH . 'src/Acf/AboutPageSeed.php';
 require_once PLATEJKA_CORE_PATH . 'src/Acf/LegacyFieldVisibility.php';
+require_once PLATEJKA_CORE_PATH . 'src/Reviews/Settings.php';
+require_once PLATEJKA_CORE_PATH . 'src/Reviews/ReviewPost.php';
+require_once PLATEJKA_CORE_PATH . 'src/Reviews/Outbound.php';
 
 \Platejka\Core\Acf\LegacyFieldVisibility::register();
+\Platejka\Core\Reviews\Settings::register();
+\Platejka\Core\Reviews\ReviewPost::register();
+\Platejka\Core\Reviews\Outbound::register();
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
+	require_once PLATEJKA_CORE_PATH . 'src/Cli/ReviewImportCommand.php';
+	\WP_CLI::add_command( 'platejka reviews import', \Platejka\Core\Cli\ReviewImportCommand::class );
+	require_once PLATEJKA_CORE_PATH . 'src/Cli/ReviewCountsCommand.php';
+	\WP_CLI::add_command( 'platejka reviews import-counts', \Platejka\Core\Cli\ReviewCountsCommand::class );
 	require_once PLATEJKA_CORE_PATH . 'src/Cli/SectionBuilderMigrationCommand.php';
 	require_once PLATEJKA_CORE_PATH . 'src/Cli/DefaultPageMigrationCommand.php';
 	require_once PLATEJKA_CORE_PATH . 'src/Cli/AboutPageMigrationCommand.php';

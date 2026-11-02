@@ -66,6 +66,14 @@ function platejka_section_label_map( $rows ): array {
 	return $labels;
 }
 
+/** Russian caption for a verified review count. */
+function platejka_review_count_caption( int $count ): string {
+	$last_two = $count % 100;
+	$last_one = $count % 10;
+	$word = 11 <= $last_two && $last_two <= 14 ? 'отзывов' : ( 1 === $last_one ? 'отзыв' : ( 2 <= $last_one && $last_one <= 4 ? 'отзыва' : 'отзывов' ) );
+	return $count . ' ' . $word;
+}
+
 /** Return whether an ACF group contains a meaningful saved value. */
 function platejka_section_has_value( $value ): bool {
 	if ( is_array( $value ) ) {
