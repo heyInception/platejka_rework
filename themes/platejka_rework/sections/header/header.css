@@ -119,8 +119,7 @@
 .header__loc::before,
 .header__time::before,
 .header__cb::before,
-.header__mail::before,
-.header__phone a::before {
+.header__mail::before {
     content: "";
     background-repeat: no-repeat;
     background-position: center center;
@@ -168,24 +167,31 @@
     align-items: center;
     gap: 9px;
 }
-.header__phone a::before {
-    background-image: url(img/svg/phone.svg);
+.header__phone a::before,
+.header__tg_bottom > a::before {
+    content: none;
 }
-.header__tg > a {
-    font-size: 0;
-    display: block;
-}
-.header__tg > a::before {
-    content: "";
-    background-image: url(img/svg/telegram.svg);
-    background-repeat: no-repeat;
-    background-position: center center;
-    width: 20px;
-    height: 20px;
+.header__tg_bottom > a {
+    font: 500 14px/143% var(--font-family);
+    color: var(--surface-brand);
     display: block;
 }
 .header__tg_bottom {
     display: none;
+}
+.header__social > a {
+    display: flex;
+    align-items: center;
+}
+.header__phone .header__social > a::before {
+    content: none;
+}
+.header__social img {
+    display: block;
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    flex-shrink: 0;
 }
 .header__button {
     border-radius: 8px;
@@ -554,12 +560,17 @@
         display: flex;
     }
     .header__tg_bottom > a {
+        font-size: 0;
         border-radius: 8px;
         padding: 8px 16px;
         background: var(--surface-brand-subtle);
     }
     .header__tg_bottom > a::before {
-        background-image: url(img/svg/phone-mobile-green.svg);
+        content: "";
+        display: block;
+        width: 22px;
+        height: 22px;
+        background: url(img/svg/phone-mobile-green.svg) center / contain no-repeat;
     }
     .header__wrap {
         display: -webkit-box;
@@ -785,6 +796,10 @@
     }
 }
 @media (max-width: 768px) {
+    .header__social img {
+        width: 13px;
+        height: 13px;
+    }
     .header__row_top {
         gap: 5px;
     }

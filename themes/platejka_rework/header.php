@@ -210,11 +210,24 @@
 							<div class="header__phone">
 								<?php if (have_rows('socz_seti_header', 'option')) : ?>
 									<?php while (have_rows('socz_seti_header', 'option')) : the_row(); ?>
-										<?php $ssylka = get_sub_field('ssylka'); ?>
+										<?php
+										$ssylka = get_sub_field('ssylka');
+										$icon = get_sub_field('svg');
+										$social_type = preg_replace('/^(?:social__link--|header__)/', '', (string) get_sub_field('class'));
+										// Older options use the OK choice for MAX, which had no dedicated choice.
+										if (is_array($ssylka) && in_array(strtolower((string) wp_parse_url($ssylka['url'], PHP_URL_HOST)), array('max.ru', 'www.max.ru'), true)) {
+											$social_type = 'max';
+										}
+										$social_class = 'header__' . sanitize_html_class($social_type);
+										?>
 										<?php if ($ssylka) : ?>
-											<div class="header__tg">
-												<a href="<?php echo esc_url($ssylka['url']); ?>" target="<?php echo esc_attr($ssylka['target']); ?>" class="social__link <?php the_sub_field('class'); ?>" aria-label="<?php echo esc_html($ssylka['title']); ?>" rel="nofollow">
-													<?php echo esc_html($ssylka['title']); ?>
+											<div class="header__social <?php echo esc_attr($social_class); ?>">
+												<a href="<?php echo esc_url($ssylka['url']); ?>" target="<?php echo esc_attr($ssylka['target']); ?>" class="header__social-link" aria-label="<?php echo esc_attr($ssylka['title'] ?: $social_type); ?>" rel="nofollow noopener noreferrer">
+													<?php if (!empty($icon['url'])) : ?>
+														<img src="<?php echo esc_url($icon['url']); ?>" alt="" width="22" height="22">
+													<?php else : ?>
+														<?php echo esc_html($ssylka['title'] ?: $social_type); ?>
+													<?php endif; ?>
 												</a>
 											</div>
 										<?php endif; ?>
